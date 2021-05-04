@@ -5,15 +5,15 @@ import 'package:flutter/material.dart';
 // A widget that displays the picture taken by the user.
 
 class DisplayPictureScreen extends StatelessWidget {
-  final String imagePath;
-  final Orientation cameraPhotoOrientation;
-  final bool historicalPhotoRotation;
-  final Size historicalPhotoSize;
-  final Size cameraPhotoSize;
-  final double historicalPhotoScale;
+  final String? imagePath;
+  final Orientation? cameraPhotoOrientation;
+  final bool? historicalPhotoRotation;
+  final Size? historicalPhotoSize;
+  final Size? cameraPhotoSize;
+  final double? historicalPhotoScale;
 
   const DisplayPictureScreen(
-      {Key key,
+      {Key? key,
         this.imagePath,
         this.cameraPhotoOrientation,
         this.historicalPhotoRotation,
@@ -32,7 +32,7 @@ class DisplayPictureScreen extends StatelessWidget {
           child: Column(children: <Widget>[
           InteractiveViewer(
               child: Image.file(
-                  File(imagePath),
+                  File(imagePath!),
                   width:MediaQuery.of(context).size.width,
                   height:MediaQuery.of(context).size.height/2,
               ),

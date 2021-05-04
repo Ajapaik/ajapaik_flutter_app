@@ -15,9 +15,9 @@ class TakePictureScreen extends StatefulWidget {
   final CameraDescription camera;
   final Photo historicalPhotoInfo;
   const TakePictureScreen({
-    Key key,
-    @required this.camera,
-    @required this.historicalPhotoInfo,
+    Key? key,
+    required this.camera,
+    required this.historicalPhotoInfo,
   }) : super(key: key);
 
   @override
@@ -27,11 +27,11 @@ class TakePictureScreen extends StatefulWidget {
 class TakePictureScreenState extends State<TakePictureScreen> {
 
   // Camera
-  CameraController _cameraController;
-  Future<void> _initializeCameraControllerFuture;
+  late CameraController _cameraController;
+  Future<void>? _initializeCameraControllerFuture;
   
   // Orientation tracking value
-  Orientation lastKnownOrientation;
+  Orientation? lastKnownOrientation;
 
   // Interactive viewer overlay
   TransformationController historicalPhotoController = TransformationController();
@@ -51,7 +51,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       // where it was saved.
       final image = await _cameraController.takePicture();
 
-      final context = historicalPhotoKey.currentContext;
+      final context = historicalPhotoKey.currentContext!;
       // If the picture was taken, display it on a new screen.
       Navigator.push(
         context,
@@ -59,7 +59,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
           builder: (context) => DisplayPictureScreen(
               // Pass the automatically generated path to
               // the DisplayPictureScreen widget.
-              imagePath: image?.path,
+              imagePath: image.path,
               cameraPhotoOrientation: lastKnownOrientation,
               historicalPhotoRotation: false,
               historicalPhotoSize: MediaQuery.of(context).size,
@@ -76,7 +76,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   // Center the historicalPhoto to the center of the screen
   void movehistoricalPhotoToCenter() {
     // get historicalPhoto's context
-    final context = historicalPhotoKey.currentContext;
+    final context = historicalPhotoKey.currentContext!;
 
     // Get size of the image layer. Positioning is correct only for fullscreen images
     final double w = MediaQuery.of(context).size.width;
@@ -118,7 +118,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     else if (lastKnownOrientation != currentDeviceOrientation) {
       lastKnownOrientation = currentDeviceOrientation;
       setCameraOrientation(currentDeviceOrientation);
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         // Re-render the page with new orientation
         setState(() {
           movehistoricalPhotoToCenter();
@@ -175,7 +175,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                 child: Container(
                     decoration: BoxDecoration(
                         border: Border.all(
-                      color: Colors.pink[800],
+                      color: Colors.pink[800]!,
                       width: 1,
                     )), //             <--- BoxDecoration here
 
@@ -201,7 +201,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                     key: historicalPhotoKey,
                     decoration: BoxDecoration(
                         border: Border.all(
-                      color: Colors.red[800],
+                      color: Colors.red[800]!,
                       width: 1,
                     )), //             <--- BoxDecoration here
 
@@ -252,7 +252,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                                     alignment: Alignment.center,
                                     transform: Matrix4.rotationY(
                                         historicalPhotoFlipped == true ? math.pi : 0),
-                                    child: Image.network(widget.historicalPhotoInfo.thumbnailUrl,
+                                    child: Image.network(widget.historicalPhotoInfo.thumbnailUrl!,
                                       //"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Grundsteinlegung_MiQua-7004_%28cropped%29.jpg/690px-Grundsteinlegung_MiQua-7004_%28cropped%29.jpg",
                                       //                          "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Katarina_Taikon_1953.jpg/596px-Katarina_Taikon_1953.jpg",
                                       color: Color.fromRGBO(

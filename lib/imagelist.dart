@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:camera/camera.dart';
@@ -8,50 +9,58 @@ import 'package:http/http.dart' as http;
 
 import 'camera.dart';
 
+
 Future<List<Photo>> fetchPhotos(http.Client client) async {
   final response = await client
 //      .get(Uri.parse('https://jsonplaceholder.typicode.com/photos'));
       .get(Uri.parse('https://commons.wikimedia.org/wiki/User:Zache/test.json?action=raw&ctype=application/json'));
   // Use the compute function to run parsePhotos in a separate isolate.
+   return compute(parsePhotos, response.body);
+}
+/*
+Future<List<Photo>> fetchPhotos(http.Client client) async {
+  final response = await client
+      .get(Uri.parse('https://jsonplaceholder.typicode.com/photos'));
+
+  // Use the compute function to run parsePhotos in a separate isolate.
   return compute(parsePhotos, response.body);
 }
-
+*/
 // A function that converts a response body into a List<Photo>.
 List<Photo> parsePhotos(String responseBody) {
   final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
   return parsed.map<Photo>((json) => Photo.fromJson(json)).toList();
 }
-
 class Photo {
-  final int albumId;
-  final int id;
-  final String title;
-  final String url;
-  final String thumbnailUrl;
+  final int? albumId;
+  final int? id;
+  final String? title;
+  final String? url;
+  final String? thumbnailUrl;
 
   Photo({this.albumId, this.id, this.title, this.url, this.thumbnailUrl});
 
   factory Photo.fromJson(Map<String, dynamic> json) {
     return Photo(
-      albumId: json['albumId'] as int,
-      id: json['id'] as int,
-      title: json['title'] as String,
-      url: json['url'] as String,
-      thumbnailUrl: json['thumbnailUrl'] as String,
+      albumId: json['albumId'] as int?,
+      id: json['id'] as int?,
+      title: json['title'] as String?,
+      url: json['url'] as String?,
+      thumbnailUrl: json['thumbnailUrl'] as String?,
     );
   }
 }
 
 class ImageListPage extends StatelessWidget {
-  final String title;
+  final String? title;
 
-  ImageListPage({Key key, this.title}) : super(key: key);
+  ImageListPage({Key? key, this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(title!),
       ),
       body: FutureBuilder<List<Photo>>(
         future: fetchPhotos(http.Client()),
@@ -68,16 +77,16 @@ class ImageListPage extends StatelessWidget {
 }
 
 class PhotosList extends StatelessWidget {
-  final List<Photo> photos;
+  final List<Photo>? photos;
 
-  PhotosList({Key key, this.photos}) : super(key: key);
+  PhotosList({Key? key, this.photos}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
       ),
-      itemCount: photos.length,
+      itemCount: photos!.length,
       itemBuilder: (context, index) {
         return new GestureDetector(
             onTap: () {
@@ -85,11 +94,11 @@ class PhotosList extends StatelessWidget {
                 CameraDescription firstCamera = availableCameras.first;
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => TakePictureScreen(camera: firstCamera, historicalPhotoInfo: photos[index] )),
+                  MaterialPageRoute(builder: (context) => TakePictureScreen(camera: firstCamera, historicalPhotoInfo: photos![index] )),
                 );
               });
             },
-            child:Image.network(photos[index].thumbnailUrl)
+            child:Image.network(photos![index].thumbnailUrl!)
         );
       },
     );
