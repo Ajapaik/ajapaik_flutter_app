@@ -14,6 +14,7 @@ import 'package:ajapaik_camera_test3/imagelist.dart';
 class TakePictureScreen extends StatefulWidget {
   final CameraDescription camera;
   final Photo historicalPhotoInfo;
+
   const TakePictureScreen({
     Key? key,
     required this.camera,
@@ -59,7 +60,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
           builder: (context) => DisplayPictureScreen(
               // Pass the automatically generated path to
               // the DisplayPictureScreen widget.
-              imagePath: image.path,
+              imagePath: image.path.toString(),
+              historicalImagePath: widget.historicalPhotoInfo.thumbnailUrl.toString(),
               cameraPhotoOrientation: lastKnownOrientation,
               historicalPhotoRotation: false,
               historicalPhotoSize: MediaQuery.of(context).size,
@@ -103,6 +105,31 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       _cameraController.lockCaptureOrientation(DeviceOrientation.portraitUp);
     } else {
       _cameraController.lockCaptureOrientation(DeviceOrientation.landscapeRight);
+    }
+  }
+
+  Image getImage(String filename) {
+    //"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Grundsteinlegung_MiQua-7004_%28cropped%29.jpg/690px-Grundsteinlegung_MiQua-7004_%28cropped%29.jpg",
+    //                          "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Katarina_Taikon_1953.jpg/596px-Katarina_Taikon_1953.jpg",
+
+    if (File(filename).existsSync())
+    {
+      return Image.file(File(filename),
+      color: Color.fromRGBO(
+      255, 255, 255, historicalPhotoTransparency),
+      colorBlendMode: BlendMode.modulate,
+      height: 8000,
+      width: 8000,
+      );
+    }
+    else {
+      return Image.network(filename,
+        color: Color.fromRGBO(
+            255, 255, 255, historicalPhotoTransparency),
+        colorBlendMode: BlendMode.modulate,
+        height: 8000,
+        width: 8000,
+      );
     }
   }
 
@@ -252,16 +279,13 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                                     alignment: Alignment.center,
                                     transform: Matrix4.rotationY(
                                         historicalPhotoFlipped == true ? math.pi : 0),
-                                    child: Image.network(widget.historicalPhotoInfo.thumbnailUrl!,
-                                      //"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Grundsteinlegung_MiQua-7004_%28cropped%29.jpg/690px-Grundsteinlegung_MiQua-7004_%28cropped%29.jpg",
-                                      //                          "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Katarina_Taikon_1953.jpg/596px-Katarina_Taikon_1953.jpg",
-                                      color: Color.fromRGBO(
-                                          255, 255, 255, historicalPhotoTransparency),
-                                      colorBlendMode: BlendMode.modulate,
-                                      height: 8000,
-                                      width: 8000,
-                                    ))))))),
-
+                                    child: getImage(widget.historicalPhotoInfo.thumbnailUrl!)
+                                )
+                            )
+                        )
+                    )
+                )
+            ),
             // Take photo button
             Positioned.fill(
                 child: Align(
