@@ -8,17 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:ajapaik_camera_test3/preview.dart';
-import 'package:ajapaik_camera_test3/imagelist.dart';
-
 
 class TakePictureScreen extends StatefulWidget {
   final CameraDescription camera;
-  final Photo historicalPhotoInfo;
+  final String historicalPhotoUri;
 
   const TakePictureScreen({
     Key? key,
     required this.camera,
-    required this.historicalPhotoInfo,
+    required this.historicalPhotoUri,
   }) : super(key: key);
 
   @override
@@ -61,7 +59,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
               // Pass the automatically generated path to
               // the DisplayPictureScreen widget.
               imagePath: image.path.toString(),
-              historicalImagePath: widget.historicalPhotoInfo.thumbnailUrl.toString(),
+              historicalImagePath: widget.historicalPhotoUri,
               cameraPhotoOrientation: lastKnownOrientation,
               historicalPhotoRotation: false,
               historicalPhotoSize: MediaQuery.of(context).size,
@@ -279,7 +277,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                                     alignment: Alignment.center,
                                     transform: Matrix4.rotationY(
                                         historicalPhotoFlipped == true ? math.pi : 0),
-                                    child: getImage(widget.historicalPhotoInfo.thumbnailUrl!)
+                                    child: getImage(widget.historicalPhotoUri)
                                 )
                             )
                         )

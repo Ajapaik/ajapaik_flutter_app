@@ -1,9 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
-import 'package:ajapaik_camera_test3/imagelist.dart';
-
+import 'package:ajapaik_camera_test3/projectlist.dart';
 
 Future<void> main() async {
   // Ensure that plugin services are initialized so that `availableCameras()`
@@ -26,7 +24,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData.dark(),
       title: appTitle,
-      home: ImageListPage(title: appTitle),
+      home: ProjectListPage(title: appTitle),
     );
   }
 }
