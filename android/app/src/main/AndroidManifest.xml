@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ee.ajapaik.ajapaik_camera_test3">
+    package="ee.ajapaik.ajapaik_flutter_app">
    <application
-        android:label="ajapaik_camera_test3"
+        android:label="ajapaik_flutter_app"
         android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/ic_launcher">
         <activity

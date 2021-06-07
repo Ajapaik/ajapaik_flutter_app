@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:ajapaik_camera_test3/projectlist.dart';
+import 'package:ajapaik_flutter_app/projectlist.dart';
 
 Future<void> main() async {
   // Ensure that plugin services are initialized so that `availableCameras()`
@@ -19,7 +19,7 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final appTitle = 'Test app';
+    final appTitle = 'Rephoto app';
 
     return MaterialApp(
       theme: ThemeData.dark(),

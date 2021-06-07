@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:ajapaik_camera_test3/preview.dart';
+import 'package:ajapaik_flutter_app/preview.dart';
 
 class TakePictureScreen extends StatefulWidget {
   final CameraDescription camera;

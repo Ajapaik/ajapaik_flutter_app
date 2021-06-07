@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:ajapaik_camera_test3/data/project.json.dart';
-import 'package:ajapaik_camera_test3/albumlist.dart';
+import 'package:ajapaik_flutter_app/data/project.json.dart';
+import 'package:ajapaik_flutter_app/albumlist.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'localfileselect.dart';
