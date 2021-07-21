@@ -1,4 +1,4 @@
-package ee.ajapaik.ajapaik_camera_test3
+package ee.ajapaik.ajapaik_flutter_app
 
 import io.flutter.embedding.android.FlutterActivity
 
