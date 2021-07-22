@@ -1,25 +1,67 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'projectlist.dart';
+import 'package:app_links/app_links.dart';
+import 'package:get/get.dart';
+import 'getxnavigation.dart';
+
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  final controller = Get.put(Controller());
+   MyApp({Key? key}) : super(key: key);
+
+  @override
+  _MyAppState createState() => _MyAppState();
+
+}
+class _MyAppState extends State<MyApp> {
+  late AppLinks _appLinks;
+  final controller = Get.put(Controller());
+
+  @override
+  void initState() {
+    initDeepLinks();
+    super.initState();
+  }
+
+  void initDeepLinks() async {
+    _appLinks = AppLinks(
+      onAppLink: (Uri uri, String stringUri) {
+        print('onAppLink: $stringUri');
+        String provider = uri.queryParameters["provider"].toString();
+        String username = "false";
+        String token = uri.queryParameters["token"].toString();
+        controller.doApiLogin(provider, username, token);
+        Get.back();
+      },
+    );
+
+/*    final appLink = await _appLinks.getInitialAppLink();
+    print("Applink: " + appLink.toString());
+    if (appLink != null) {
+      print('getInitialAppLink: ${appLink.queryParameters.toString()}');
+      //     openAppLink(appLink);
+    }*/
+  }
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     final appTitle = 'Rephoto app';
-    return MaterialApp(
+    return GetMaterialApp(
       title: appTitle,
       theme: ThemeData.dark(),
       home: ProjectListPage(title: appTitle),
     );
   }
 }
+
+
+
 /*
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);

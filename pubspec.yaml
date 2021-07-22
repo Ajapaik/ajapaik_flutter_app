@@ -40,6 +40,11 @@ dependencies:
   flutter_staggered_grid_view: ^0.4.0
   gallery_saver: ^2.1.2
   image_picker: ^0.8.2
+  app_links: ^2.2.0
+  flutter_signin_button: ^2.0.0
+  font_awesome_flutter: ^9.1.0
+  url_launcher: ^6.0.9
+  get: ^4.2.4
 
 dev_dependencies:
   flutter_test:

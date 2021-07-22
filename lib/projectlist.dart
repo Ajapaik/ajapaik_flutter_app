@@ -7,11 +7,15 @@ import 'package:ajapaik_flutter_app/albumlist.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'localfileselect.dart';
+import 'login.dart';
+import 'package:get/get.dart';
+import 'getxnavigation.dart';
 
 class ProjectListPage extends StatelessWidget {
   final String? title;
 
   ProjectListPage({Key? key, this.title}) : super(key: key);
+  final controller = Get.put(Controller());
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +30,18 @@ class ProjectListPage extends StatelessWidget {
 
           return snapshot.hasData
               ? ProjectList(photos: snapshot.data)
-              : Center(child: CircularProgressIndicator());
+              : const Center(child: CircularProgressIndicator());
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
-        onTap: (index) {showPicker(context);},
+        onTap: (index) {
+          print(index);
+          if (index == 2) {
+            Get.to( DisplayLoginScreen());
+          } else {
+            showPicker(context);
+          }
+        },
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.photo_library),
@@ -53,17 +64,17 @@ class ProjectListPage extends StatelessWidget {
 class ProjectList extends StatelessWidget {
   final List<Project>? photos;
 
-  ProjectList({Key? key, required this.photos}) : super(key: key);
+  const ProjectList({Key? key, required this.photos}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
         ),
         itemCount: photos!.length,
         itemBuilder: (context, index) {
-          return new GestureDetector(
+          return GestureDetector(
               onTap: () {
                 if (photos![index].geojson != null) {
                   Navigator.push(
