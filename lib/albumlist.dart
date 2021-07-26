@@ -7,6 +7,8 @@ import 'package:ajapaik_flutter_app/data/album.geojson.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'camera.dart';
+import 'upload.dart';
+import 'data/draft.json.dart';
 
 class AlbumListPage extends StatefulWidget {
   String pageTitle = "Not set";
@@ -14,7 +16,8 @@ class AlbumListPage extends StatefulWidget {
 
   AlbumListPage({Key? key}) : super(key: key);
 
-  AlbumListPage.network(this.pageTitle, this.dataSourceUrl);
+  AlbumListPage.network(this.pageTitle, this.dataSourceUrl, {Key? key})
+      : super(key: key);
 
   @override
   AlbumListPageState createState() => AlbumListPageState();
@@ -29,27 +32,25 @@ class AlbumListPageState extends State<AlbumListPage> {
 
   void sorting() {
     setState(() {
-      this.orderBy = (this.orderBy == "distance") ? "alpha" : "distance";
+      orderBy = (orderBy == "distance") ? "alpha" : "distance";
       refresh();
     });
   }
 
   void refresh() async {
-    await (this._albumData = fetchAlbum(http.Client(), getDataSourceUrl()));
+    await (_albumData = fetchAlbum(http.Client(), getDataSourceUrl()));
   }
 
   void toggleSearchDialog() {
-    this.searchDialogVisible = searchDialogVisible ? false : true;
+    searchDialogVisible = searchDialogVisible ? false : true;
   }
 
   String getDataSourceUrl() {
     String url = widget.dataSourceUrl;
     if (url.contains("?")) {
-      url +=
-          "&orderby=" + this.orderBy + "&orderdirection=" + this.orderDirection;
+      url += "&orderby=" + this.orderBy + "&orderdirection=" + orderDirection;
     } else {
-      url +=
-          "?orderby=" + this.orderBy + "&orderdirection=" + this.orderDirection;
+      url += "?orderby=" + this.orderBy + "&orderdirection=" + orderDirection;
     }
     return url;
   }
@@ -62,7 +63,7 @@ class AlbumListPageState extends State<AlbumListPage> {
   }
 
   Future<List<Album>> test(BuildContext context) {
-    return this._albumData!;
+    return _albumData!;
   }
 
   @override
@@ -76,7 +77,7 @@ class AlbumListPageState extends State<AlbumListPage> {
               tooltip: "Search",
               onPressed: toggleSearchDialog),*/
           IconButton(
-              icon: Icon(((this.orderBy == "distance")
+              icon: Icon(((orderBy == "distance")
                   ? Icons.sort_sharp
                   : Icons.sort_by_alpha)),
               tooltip: "Sort",
@@ -122,22 +123,30 @@ class AlbumList extends StatelessWidget {
 
   AlbumList({Key? key, this.albums}) : super(key: key);
 
-  void _take_rephoto(context, index) {
-    availableCameras().then((availableCameras) {
+  void _takeRephoto(context, index) {
+    availableCameras().then((availableCameras) async {
       CameraDescription firstCamera = availableCameras.first;
-      Navigator.push(
+      var rephoto = await Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => TakePictureScreen(
                 camera: firstCamera,
+                historicalPhotoId:
+                    albums!.first.features[index].properties.id.toString(),
                 historicalPhotoUri: albums!
                     .first.features[index].properties.thumbnail
                     .toString())),
       );
+      if (rephoto != false && rephoto != Null) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DisplayUploadScreen(draft: rephoto)));
+      }
     });
   }
 
-  void _move_to_geojson(context, index) {
+  void _moveToGeoJson(context, index) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -152,7 +161,7 @@ class AlbumList extends StatelessWidget {
     return StaggeredGridView.countBuilder(
         crossAxisCount: 4,
         staggeredTileBuilder: (int index) =>
-            new StaggeredTile.fit(index == 0 ? 4 : 2),
+            StaggeredTile.fit(index == 0 ? 4 : 2),
         mainAxisSpacing: 4.0,
         crossAxisSpacing: 4.0,
         itemCount: albums!.first.features.length + 1,
@@ -183,13 +192,13 @@ class AlbumList extends StatelessWidget {
   Widget contentTile(context, index) {
     // Remove header row from index
     index = index - 1;
-    return new GestureDetector(
+    return GestureDetector(
         onTap: () {
           if (albums!.first.features[index].properties.geojson != null &&
               albums!.first.features[index].properties.geojson != "") {
-            _move_to_geojson(context, index);
+            _moveToGeoJson(context, index);
           } else {
-            _take_rephoto(context, index);
+            _takeRephoto(context, index);
           }
         },
         child: Column(children: [

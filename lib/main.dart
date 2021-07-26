@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'projectlist.dart';
 import 'package:app_links/app_links.dart';
 import 'package:get/get.dart';
@@ -12,6 +11,7 @@ void main() {
 
 class MyApp extends StatefulWidget {
   final controller = Get.put(Controller());
+
    MyApp({Key? key}) : super(key: key);
 
   @override
@@ -22,20 +22,23 @@ class _MyAppState extends State<MyApp> {
   late AppLinks _appLinks;
   final controller = Get.put(Controller());
 
+
   @override
   void initState() {
+
+
     initDeepLinks();
     super.initState();
   }
 
   void initDeepLinks() async {
     _appLinks = AppLinks(
-      onAppLink: (Uri uri, String stringUri) {
+      onAppLink: (Uri uri, String stringUri) async {
         print('onAppLink: $stringUri');
         String provider = uri.queryParameters["provider"].toString();
         String username = "false";
         String token = uri.queryParameters["token"].toString();
-        controller.doApiLogin(provider, username, token);
+        bool t= await controller.doApiLogin(provider, username, token);
         Get.back();
       },
     );

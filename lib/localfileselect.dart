@@ -5,6 +5,7 @@ import 'package:gallery_saver/gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'camera.dart';
+
 final picker = ImagePicker();
 
 Future getImageFromGallery(context) async {
@@ -12,12 +13,13 @@ Future getImageFromGallery(context) async {
 
   if (pickedFile != null) {
     availableCameras().then((availableCameras) {
-          CameraDescription firstCamera = availableCameras.first;
+      CameraDescription firstCamera = availableCameras.first;
       Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => TakePictureScreen(
                 camera: firstCamera,
+                historicalPhotoId: pickedFile.path.toString(),
                 historicalPhotoUri: pickedFile.path.toString())),
       );
     });
@@ -28,7 +30,7 @@ Future getImageFromGallery(context) async {
 
 Future saveImageFromCamera() async {
   final pickedImage =
-  await picker.getImage(source: ImageSource.camera, imageQuality: 100);
+      await picker.getImage(source: ImageSource.camera, imageQuality: 100);
   if (pickedImage != null) {
     await GallerySaver.saveImage(pickedImage.path);
   } else {

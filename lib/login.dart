@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
 import 'getxnavigation.dart';
+import 'data/user.json.dart';
 
 class DisplayLoginScreen extends StatelessWidget {
   final controller = Get.put(Controller());
@@ -62,16 +63,46 @@ class DisplayLoginScreen extends StatelessWidget {
 
   Widget logoutButton() {
     return Center(
-        child: Wrap(spacing: 10, runSpacing: 10, children: <Widget>[
+        child: Column(children: <Widget>[
+      UserInfoBuilder(),
       SignInButtonBuilder(
         text: 'Sign out',
         icon: Icons.logout,
-        onPressed: () {
-          controller.logout();
+        onPressed: () async {
+          await controller.logout();
           Get.back();
         },
         backgroundColor: Color(0xFF3366cc),
       )
     ]));
+  }
+}
+
+class UserInfoBuilder extends StatelessWidget {
+  const UserInfoBuilder({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<User>(
+      future: fetchUser(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) print(snapshot.error);
+
+        return snapshot.hasData
+            ? UserInfoView(user: snapshot.data)
+            : const Center(child: CircularProgressIndicator());
+      },
+    );
+  }
+}
+
+class UserInfoView extends StatelessWidget {
+  final User? user;
+
+  const UserInfoView({Key? key, required this.user}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(user!.name);
   }
 }

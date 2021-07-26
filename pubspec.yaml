@@ -45,6 +45,8 @@ dependencies:
   font_awesome_flutter: ^9.1.0
   url_launcher: ^6.0.9
   get: ^4.2.4
+  geolocator: ^7.3.1
+  flutter_secure_storage: ^4.2.0
 
 dev_dependencies:
   flutter_test:

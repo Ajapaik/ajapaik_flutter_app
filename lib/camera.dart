@@ -12,10 +12,12 @@ import 'package:ajapaik_flutter_app/preview.dart';
 class TakePictureScreen extends StatefulWidget {
   final CameraDescription camera;
   final String historicalPhotoUri;
+  final String historicalPhotoId;
 
   const TakePictureScreen({
     Key? key,
     required this.camera,
+    required this.historicalPhotoId,
     required this.historicalPhotoUri,
   }) : super(key: key);
 
@@ -24,16 +26,16 @@ class TakePictureScreen extends StatefulWidget {
 }
 
 class TakePictureScreenState extends State<TakePictureScreen> {
-
   // Camera
   late CameraController _cameraController;
   Future<void>? _initializeCameraControllerFuture;
-  
+
   // Orientation tracking value
   Orientation? lastKnownOrientation;
 
   // Interactive viewer overlay
-  TransformationController historicalPhotoController = TransformationController();
+  TransformationController historicalPhotoController =
+      TransformationController();
   GlobalKey historicalPhotoKey = GlobalKey();
   bool historicalPhotoFlipped = false;
   double historicalPhotoTransparency = 0.65;
@@ -60,11 +62,12 @@ class TakePictureScreenState extends State<TakePictureScreen> {
               // the DisplayPictureScreen widget.
               imagePath: image.path.toString(),
               historicalImagePath: widget.historicalPhotoUri,
+              historicalImageId: widget.historicalPhotoId,
               cameraPhotoOrientation: lastKnownOrientation,
               historicalPhotoRotation: false,
               historicalPhotoSize: MediaQuery.of(context).size,
-              historicalPhotoScale: historicalPhotoController.value.getMaxScaleOnAxis()
-          ),
+              historicalPhotoScale:
+                  historicalPhotoController.value.getMaxScaleOnAxis()),
         ),
       );
     } catch (e) {
@@ -88,7 +91,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     // https://medium.com/flutter-community/advanced-flutter-matrix4-and-perspective-transformations-a79404a0d828
 
     final Matrix4 translationMatrix = historicalPhotoController.value;
-    final currentScaleValue = historicalPhotoController.value.getMaxScaleOnAxis();
+    final currentScaleValue =
+        historicalPhotoController.value.getMaxScaleOnAxis();
     final double centerX = (w - w * currentScaleValue) / 2;
     final double centerY = (h - h * currentScaleValue) / 2;
     translationMatrix.setTranslationRaw(centerX, centerY, 0.0);
@@ -102,7 +106,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     if (orientation == Orientation.portrait) {
       _cameraController.lockCaptureOrientation(DeviceOrientation.portraitUp);
     } else {
-      _cameraController.lockCaptureOrientation(DeviceOrientation.landscapeRight);
+      _cameraController
+          .lockCaptureOrientation(DeviceOrientation.landscapeRight);
     }
   }
 
@@ -110,20 +115,18 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     //"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Grundsteinlegung_MiQua-7004_%28cropped%29.jpg/690px-Grundsteinlegung_MiQua-7004_%28cropped%29.jpg",
     //                          "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Katarina_Taikon_1953.jpg/596px-Katarina_Taikon_1953.jpg",
 
-    if (File(filename).existsSync())
-    {
-      return Image.file(File(filename),
-      color: Color.fromRGBO(
-      255, 255, 255, historicalPhotoTransparency),
-      colorBlendMode: BlendMode.modulate,
-      height: 8000,
-      width: 8000,
+    if (File(filename).existsSync()) {
+      return Image.file(
+        File(filename),
+        color: Color.fromRGBO(255, 255, 255, historicalPhotoTransparency),
+        colorBlendMode: BlendMode.modulate,
+        height: 8000,
+        width: 8000,
       );
-    }
-    else {
-      return Image.network(filename,
-        color: Color.fromRGBO(
-            255, 255, 255, historicalPhotoTransparency),
+    } else {
+      return Image.network(
+        filename,
+        color: Color.fromRGBO(255, 255, 255, historicalPhotoTransparency),
         colorBlendMode: BlendMode.modulate,
         height: 8000,
         width: 8000,
@@ -241,21 +244,21 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
                         onInteractionUpdate: (details) {
                           //print("onInteractionUpdate:" + details.toString());
-                          pinchToZoomBusy=true;
+                          pinchToZoomBusy = true;
                           movehistoricalPhotoToCenter();
                         },
                         onInteractionStart: (details) {
-                         // pinchToZoomBusy=true;
+                          // pinchToZoomBusy=true;
                         },
                         onInteractionEnd: (details) {
-                          pinchToZoomBusy=false;
+                          pinchToZoomBusy = false;
                         },
                         child: Listener(
-                          onPointerMove: (details) {
+                            onPointerMove: (details) {
                               //print("onPointerMove: " + pinchToZoomBusy.toString());
                               //double diffX=details.localDelta.dx;
 
-                              if (pinchToZoomBusy==false) {
+                              if (pinchToZoomBusy == false) {
                                 setState(() {
                                   if (details.delta.dy > 1) {
                                     historicalPhotoTransparency =
@@ -276,14 +279,11 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                                 child: Transform(
                                     alignment: Alignment.center,
                                     transform: Matrix4.rotationY(
-                                        historicalPhotoFlipped == true ? math.pi : 0),
-                                    child: getImage(widget.historicalPhotoUri)
-                                )
-                            )
-                        )
-                    )
-                )
-            ),
+                                        historicalPhotoFlipped == true
+                                            ? math.pi
+                                            : 0),
+                                    child: getImage(
+                                        widget.historicalPhotoUri))))))),
             // Take photo button
             Positioned.fill(
                 child: Align(
@@ -328,13 +328,15 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                         ),
                         margin: EdgeInsets.only(top: 32),
                         child: IconButton(
-                            color:
-                                historicalPhotoFlipped ? Colors.green : Colors.white,
+                            color: historicalPhotoFlipped
+                                ? Colors.green
+                                : Colors.white,
                             icon: Icon(Icons.flip),
                             iconSize: 36.0,
                             onPressed: () {
                               setState(() {
-                                historicalPhotoFlipped = !historicalPhotoFlipped;
+                                historicalPhotoFlipped =
+                                    !historicalPhotoFlipped;
                               });
                             })))),
           ]);
