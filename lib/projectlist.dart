@@ -105,8 +105,9 @@ class ProjectList extends StatelessWidget {
         itemCount: photos!.length,
         itemBuilder: (context, index) {
           return GestureDetector(
-              onTap: () {
+              onTap: () async {
                 if (photos![index].geojson != null) {
+                  print(photos![index].name);
                   Navigator.push(
                     context,
                     MaterialPageRoute(

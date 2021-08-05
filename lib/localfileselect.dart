@@ -9,7 +9,7 @@ import 'camera.dart';
 final picker = ImagePicker();
 
 Future getImageFromGallery(context) async {
-  final pickedFile = await picker.getImage(source: ImageSource.gallery);
+  final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
   if (pickedFile != null) {
     availableCameras().then((availableCameras) {
@@ -30,7 +30,7 @@ Future getImageFromGallery(context) async {
 
 Future saveImageFromCamera() async {
   final pickedImage =
-      await picker.getImage(source: ImageSource.camera, imageQuality: 100);
+      await picker.pickImage(source: ImageSource.camera, imageQuality: 100);
   if (pickedImage != null) {
     await GallerySaver.saveImage(pickedImage.path);
   } else {

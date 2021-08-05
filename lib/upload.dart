@@ -5,6 +5,7 @@ import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'data/draft.json.dart';
+import 'login.dart';
 
 class DisplayUploadScreen extends StatelessWidget {
   final controller = Get.put(Controller());
@@ -18,9 +19,10 @@ class DisplayUploadScreen extends StatelessWidget {
         body: saveToButtons(context));
   }
 
-  uploadFile() async {
+  uploadFile(BuildContext context) async {
     final controller = Get.put(Controller());
 
+    print(draft.historicalImageId);
     print("Upload file Start");
     var postUri = Uri.parse("https://staging.ajapaik.ee/api/v1/photo/upload/");
     var request = http.MultipartRequest("POST", postUri);
@@ -38,13 +40,24 @@ class DisplayUploadScreen extends StatelessWidget {
     request.fields['yaw'] = '0'; // device_yaw
     request.fields['pitch'] = '0'; // device_pitch
     request.fields['roll'] = '0'; // device_roll
-    //request.fields['flip'] = '0'; // is rephoto flipped, optional
+    request.fields['flip'] = '0';
+    /* (draft.historicalPhotoFlipped == true)
+        ? '1'
+        : '0'; // is rephoto flipped, optional*/
     var multipart = await http.MultipartFile.fromPath(
         'original', File(draft.imagePath).path);
     request.files.add(multipart);
 
     print("Upload file send");
     print(request.fields);
+    Get.showSnackbar(
+      GetBar(
+        title: "Uploading file to Ajapaik",
+        message: "upload started",
+        duration: Duration(seconds: 3),
+      ),
+    );
+
     request
         .send()
         .then((result) async {
@@ -52,19 +65,44 @@ class DisplayUploadScreen extends StatelessWidget {
             if (response.statusCode == 200) {
               print("Uploaded! ");
               print('response.body ' + response.body);
+              Get.showSnackbar(
+                GetBar(
+                  title: "Uploading file to Ajapaik",
+                  message: "upload succesful",
+                  duration: Duration(seconds: 3),
+                ),
+              );
             } else {
               print("Upload failed " + response.statusCode.toString());
               print('response.body ' + response.body);
+              Get.showSnackbar(
+                GetBar(
+                  title: "Uploading file to Ajapaik",
+                  message: "upload failed " + response.statusCode.toString(),
+                  duration: Duration(seconds: 4),
+                ),
+              );
             }
 
             return response.body;
           });
         })
-        .catchError((err) => print('error : ' + err.toString()))
+        // ignore: invalid_return_type_for_catch_error
+        .catchError((err) => {
+              Get.showSnackbar(
+                GetBar(
+                  title: "Uploading file to Ajapaik",
+                  message: "upload failed " + err.toString(),
+                  duration: Duration(seconds: 3),
+                ),
+              )
+            })
         .whenComplete(() {});
   }
 
   Widget saveToButtons(context) {
+    print("saveButtons()");
+    print(draft.historicalImageId);
     return Center(
         child: Wrap(spacing: 10, runSpacing: 10, children: <Widget>[
       SignInButtonBuilder(
@@ -75,18 +113,30 @@ class DisplayUploadScreen extends StatelessWidget {
         },
         backgroundColor: const Color(0xFF3366cc),
       ),
-      SignInButtonBuilder(
-        text: 'Ajapaik',
-        icon: Icons.cloud_upload,
-        onPressed: () async {
-          await uploadFile();
-        },
-        backgroundColor: const Color(0xFF3366cc),
-      ),
+      if (draft.historicalImagePath.contains("ajapaik.ee"))
+        SignInButtonBuilder(
+          text: 'Ajapaik',
+          icon: Icons.cloud_upload,
+          onPressed: () async {
+            if (controller.getSession() == "") {
+              Get.to(DisplayLoginScreen());
+            } else {
+              uploadFile(context);
+              Navigator.pop(context);
+            }
+          },
+          backgroundColor: const Color(0xFF3366cc),
+        ),
       SignInButtonBuilder(
         text: 'Wikimedia Commons',
         icon: Icons.cloud_upload,
-        onPressed: () {},
+        onPressed: () {
+          if (controller.getSession() == "") {
+            Get.to(DisplayLoginScreen());
+          } else {
+            print("Logged in");
+          }
+        },
         backgroundColor: const Color(0xFF3366cc),
       ),
     ]));

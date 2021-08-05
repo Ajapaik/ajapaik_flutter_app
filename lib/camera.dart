@@ -1,6 +1,8 @@
 // A screen that allows users to take a picture using a given camera.
+import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
+import 'dart:ui' as ui;
 
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
@@ -40,6 +42,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   bool historicalPhotoFlipped = false;
   double historicalPhotoTransparency = 0.65;
   bool pinchToZoomBusy = false;
+  late Size historicalPhotoImageSize;
 
   /* TAKE PHOTO */
   void onTakePicture() async {
@@ -54,6 +57,10 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
       final context = historicalPhotoKey.currentContext!;
       // If the picture was taken, display it on a new screen.
+      print(historicalPhotoController.value.getMaxScaleOnAxis());
+      print(historicalPhotoImageSize);
+      print(MediaQuery.of(context).size);
+
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -65,7 +72,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
               historicalImageId: widget.historicalPhotoId,
               cameraPhotoOrientation: lastKnownOrientation,
               historicalPhotoRotation: false,
-              historicalPhotoSize: MediaQuery.of(context).size,
+              historicalPhotoFlipped: historicalPhotoFlipped,
+              historicalPhotoSize: historicalPhotoImageSize,
               historicalPhotoScale:
                   historicalPhotoController.value.getMaxScaleOnAxis()),
         ),
@@ -102,7 +110,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   }
 
   // Force-sync the camera orientation to the device orientation
-  void setCameraOrientation(orientation) {
+  Future<void> setCameraOrientation(orientation) async {
+    await _initializeCameraControllerFuture;
     if (orientation == Orientation.portrait) {
       _cameraController.lockCaptureOrientation(DeviceOrientation.portraitUp);
     } else {
@@ -111,12 +120,24 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     }
   }
 
+  Future<ui.Image> getImageInfo(Image image) async {
+    Completer<ui.Image> completer = new Completer<ui.Image>();
+    image.image.resolve(ImageConfiguration()).addListener(
+        ImageStreamListener((ImageInfo info, bool synchronousCall) {
+      completer.complete(info.image);
+    }));
+
+    ui.Image imageInfo = await completer.future;
+    return imageInfo;
+  }
+
   Image getImage(String filename) {
+    Image image;
     //"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Grundsteinlegung_MiQua-7004_%28cropped%29.jpg/690px-Grundsteinlegung_MiQua-7004_%28cropped%29.jpg",
     //                          "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Katarina_Taikon_1953.jpg/596px-Katarina_Taikon_1953.jpg",
 
     if (File(filename).existsSync()) {
-      return Image.file(
+      image = Image.file(
         File(filename),
         color: Color.fromRGBO(255, 255, 255, historicalPhotoTransparency),
         colorBlendMode: BlendMode.modulate,
@@ -124,7 +145,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         width: 8000,
       );
     } else {
-      return Image.network(
+      image = Image.network(
         filename,
         color: Color.fromRGBO(255, 255, 255, historicalPhotoTransparency),
         colorBlendMode: BlendMode.modulate,
@@ -132,6 +153,12 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         width: 8000,
       );
     }
+
+    getImageInfo(image).then((info) => {
+          historicalPhotoImageSize =
+              Size(info.height.toDouble(), info.width.toDouble())
+        });
+    return image;
   }
 
   /* Update screen elements on orientation change */
@@ -244,7 +271,9 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
                         onInteractionUpdate: (details) {
                           //print("onInteractionUpdate:" + details.toString());
-                          pinchToZoomBusy = true;
+                          if (details.scale != 1) {
+                            pinchToZoomBusy = true;
+                          }
                           movehistoricalPhotoToCenter();
                         },
                         onInteractionStart: (details) {

@@ -31,7 +31,7 @@ class Controller extends GetxController {
     String? s = await storage.read(key: 'session');
     if (s != null) {
       _session = s;
-      User u = await fetchUser();
+      await fetchUser();
     } else if (_session != "") {
       await logout();
     }
@@ -90,7 +90,7 @@ class Controller extends GetxController {
       print(response.body.toString());
       Map<String, dynamic> json = jsonDecode(response.body);
       await setSession(json["session"]);
-      User u = await fetchUser();
+      await fetchUser();
       update();
       return true;
     } else {

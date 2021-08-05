@@ -3,6 +3,7 @@ class Draft {
   final String imagePath;
   final String historicalImagePath;
   final String historicalImageId; // freely defined id, usually INT or URI
+  final bool historicalPhotoFlipped;
   final double lat;
   final double lon;
   final double accuracy;
@@ -16,6 +17,7 @@ class Draft {
     this.imagePath,
     this.historicalImagePath,
     this.historicalImageId,
+    this.historicalPhotoFlipped,
     this.date,
     this.scale,
     this.lon,
@@ -28,6 +30,7 @@ class Draft {
   Map<String, dynamic> toJson() => {
         'id': id,
         'historicalImageId': historicalImageId,
+        'historicalPhotoFlipped': historicalPhotoFlipped,
         'lat': lat,
         'lon': lon,
         'accuracy': accuracy,

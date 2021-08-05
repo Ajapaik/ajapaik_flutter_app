@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:ajapaik_flutter_app/services/geolocation.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 
@@ -21,9 +23,7 @@ class Album {
     String image = (json['image'] != null) ? json['image'].toString() : "";
 
     List<Feature> featureList = (json['features'] != null)
-        ? json['features']
-            .map<Feature>((i) => Feature.fromJson(i) as Feature)
-            .toList()
+        ? json['features'].map<Feature>((i) => Feature.fromJson(i)).toList()
         : Feature.empty();
     return Album(
         name: name,
@@ -80,12 +80,8 @@ class Feature {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['type'] = this.type;
-    if (this.geometry != null) {
-      data['geometry'] = this.geometry.toJson();
-    }
-    if (this.properties != null) {
-      data['properties'] = this.properties.toJson();
-    }
+    data['geometry'] = this.geometry.toJson();
+    data['properties'] = this.properties.toJson();
     return data;
   }
 }
@@ -191,7 +187,23 @@ class Properties {
   }
 }
 
+Future<String> addLocationToUrl(String url) async {
+  Position position = await determinePosition();
+  if (url.contains("__LAT__")) {
+    url = url.replaceFirst("__LAT__", position.latitude.toString());
+  } else {
+    url += "&latitude=" + position.latitude.toString();
+  }
+  if (url.contains("__LON__")) {
+    url = url.replaceFirst("__LON__", position.longitude.toString());
+  } else {
+    url += "&longitude=" + position.longitude.toString();
+  }
+  return url;
+}
+
 Future<List<Album>> fetchAlbum(http.Client client, String url) async {
+  url = await addLocationToUrl(url);
   final response = await client.get(Uri.parse(url));
   print(url);
   // Use the compute function to run parsePhotos in a separate isolate.

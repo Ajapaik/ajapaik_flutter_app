@@ -7,11 +7,16 @@ import 'package:ajapaik_flutter_app/data/album.geojson.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'camera.dart';
+import 'getxnavigation.dart';
 import 'upload.dart';
 import 'data/draft.json.dart';
+import 'package:get/get.dart';
 
+// ignore: must_be_immutable
 class AlbumListPage extends StatefulWidget {
-  String pageTitle = "Not set";
+  final controller = Get.put(Controller());
+
+  String pageTitle = "";
   String dataSourceUrl = "";
 
   AlbumListPage({Key? key}) : super(key: key);
@@ -30,15 +35,21 @@ class AlbumListPageState extends State<AlbumListPage> {
 
   Future<List<Album>>? _albumData;
 
-  void sorting() {
+  void sorting() async {
     setState(() {
       orderBy = (orderBy == "distance") ? "alpha" : "distance";
       refresh();
     });
+    Get.snackbar(
+      "Sorting",
+      "Order by " + orderBy,
+      // duration: Duration(seconds: 3),
+    );
   }
 
   void refresh() async {
-    await (_albumData = fetchAlbum(http.Client(), getDataSourceUrl()));
+    String url = getDataSourceUrl();
+    await (_albumData = fetchAlbum(http.Client(), url));
   }
 
   void toggleSearchDialog() {
@@ -52,13 +63,13 @@ class AlbumListPageState extends State<AlbumListPage> {
     } else {
       url += "?orderby=" + this.orderBy + "&orderdirection=" + orderDirection;
     }
+
     return url;
   }
 
   @override
   void initState() {
     refresh();
-
     super.initState();
   }
 
@@ -137,7 +148,7 @@ class AlbumList extends StatelessWidget {
                     .first.features[index].properties.thumbnail
                     .toString())),
       );
-      if (rephoto != false && rephoto != Null) {
+      if (rephoto.runtimeType == Draft) {
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -178,7 +189,7 @@ class AlbumList extends StatelessWidget {
   Widget headerTile(context, index) {
     var headerImage;
 
-    if (albums!.first.image != null && albums!.first.image != "") {
+    if (albums!.first.image != "") {
       headerImage = CachedNetworkImage(imageUrl: albums!.first.image);
     } else {
       headerImage = Container();

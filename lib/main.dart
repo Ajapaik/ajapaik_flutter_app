@@ -4,7 +4,6 @@ import 'package:app_links/app_links.dart';
 import 'package:get/get.dart';
 import 'getxnavigation.dart';
 
-
 void main() {
   runApp(MyApp());
 }
@@ -12,21 +11,18 @@ void main() {
 class MyApp extends StatefulWidget {
   final controller = Get.put(Controller());
 
-   MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
 
   @override
   _MyAppState createState() => _MyAppState();
-
 }
+
 class _MyAppState extends State<MyApp> {
   late AppLinks _appLinks;
   final controller = Get.put(Controller());
 
-
   @override
   void initState() {
-
-
     initDeepLinks();
     super.initState();
   }
@@ -38,7 +34,7 @@ class _MyAppState extends State<MyApp> {
         String provider = uri.queryParameters["provider"].toString();
         String username = "false";
         String token = uri.queryParameters["token"].toString();
-        bool t= await controller.doApiLogin(provider, username, token);
+        await controller.doApiLogin(provider, username, token);
         Get.back();
       },
     );
