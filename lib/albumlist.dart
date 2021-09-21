@@ -1,4 +1,3 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -6,11 +5,9 @@ import 'package:http/http.dart' as http;
 import 'package:ajapaik_flutter_app/data/album.geojson.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'camera.dart';
 import 'getxnavigation.dart';
-import 'upload.dart';
-import 'data/draft.json.dart';
 import 'package:get/get.dart';
+import 'rephoto.dart';
 
 // ignore: must_be_immutable
 class AlbumListPage extends StatefulWidget {
@@ -98,15 +95,15 @@ class AlbumListPageState extends State<AlbumListPage> {
       body: Column(children: [
         Flexible(
             child: FutureBuilder<List<Album>>(
-          future: test(context),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) print(snapshot.error);
+              future: test(context),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) print(snapshot.error);
 
-            return (snapshot.hasData)
-                ? AlbumList(albums: snapshot.data)
-                : Center(child: CircularProgressIndicator());
-          },
-        )),
+                return (snapshot.hasData)
+                    ? AlbumList(albums: snapshot.data)
+                    : Center(child: CircularProgressIndicator());
+              },
+            )),
       ]),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {},
@@ -134,28 +131,52 @@ class AlbumList extends StatelessWidget {
 
   AlbumList({Key? key, this.albums}) : super(key: key);
 
-  void _takeRephoto(context, index) {
-    availableCameras().then((availableCameras) async {
-      CameraDescription firstCamera = availableCameras.first;
-      var rephoto = await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => TakePictureScreen(
-                camera: firstCamera,
-                historicalPhotoId:
-                    albums!.first.features[index].properties.id.toString(),
-                historicalPhotoUri: albums!
-                    .first.features[index].properties.thumbnail
-                    .toString())),
-      );
-      if (rephoto.runtimeType == Draft) {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => DisplayUploadScreen(draft: rephoto)));
-      }
-    });
+  Future<void> _showphoto(context, index) async {
+    var rephoto = await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => Rephotoscreen(
+            historicalPhotoId:
+            albums!.first.features[index].properties.id.toString(),
+            historicalPhotoUri:
+            albums!.first.features[index].properties.thumbnail.toString(),
+            historicalName:
+            albums!.first.features[index].properties.name.toString(),
+            historicalDate:
+            albums!.first.features[index].properties.date.toString(),
+            historicalAuthor:
+            albums!.first.features[index].properties.author.toString(),
+            // historicalLatitude:
+            // albums!.first.features[index].geometry.coordinates[0].toString(),
+            // historicalLongitude:
+            // albums!.first.features[index].geometry.coordinates[1].toString(),
+          )
+      ),
+    );
   }
+
+  // void _takeRephoto(context, index) {
+  //   availableCameras().then((availableCameras) async {
+  //     CameraDescription firstCamera = availableCameras.first;
+  //     var rephoto = await Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //           builder: (context) => TakePictureScreen(
+  //               camera: firstCamera,
+  //               historicalPhotoId:
+  //                   albums!.first.features[index].properties.id.toString(),
+  //               historicalPhotoUri: albums!
+  //                   .first.features[index].properties.thumbnail
+  //                   .toString())),
+  //     );
+  //     if (rephoto.runtimeType == Draft) {
+  //       Navigator.push(
+  //           context,
+  //           MaterialPageRoute(
+  //               builder: (context) => DisplayUploadScreen(draft: rephoto)));
+  //     }
+  //   });
+  // }
 
   void _moveToGeoJson(context, index) {
     Navigator.push(
@@ -197,7 +218,7 @@ class AlbumList extends StatelessWidget {
 
     return Center(
         child:
-            Column(children: [headerImage, Text(albums!.first.description)]));
+        Column(children: [headerImage, Text(albums!.first.description)]));
   }
 
   Widget contentTile(context, index) {
@@ -209,7 +230,7 @@ class AlbumList extends StatelessWidget {
               albums!.first.features[index].properties.geojson != "") {
             _moveToGeoJson(context, index);
           } else {
-            _takeRephoto(context, index);
+            _showphoto(context, index);
           }
         },
         child: Column(children: [

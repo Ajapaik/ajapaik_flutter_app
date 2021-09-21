@@ -47,6 +47,8 @@ dependencies:
   get: ^4.2.4
   geolocator: ^7.3.1
   flutter_secure_storage: ^4.2.0
+  flutter_map: any
+  flutter_inappwebview:
 
 dev_dependencies:
   flutter_test:
