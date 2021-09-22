@@ -49,7 +49,8 @@ dependencies:
   flutter_secure_storage: ^4.2.0
   flutter_map: any
   flutter_inappwebview:
-  share:
+  share_plus: ^2.1.4
+  path_provider:
 
 dev_dependencies:
   flutter_test:

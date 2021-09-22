@@ -2,14 +2,13 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:gallery_saver/files.dart';
-import 'package:path/path.dart';
+//import 'package:gallery_saver/files.dart';
+//import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'photomanipulation.dart';
-//import 'package:share_plus/share_plus.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 class Rephotoscreen extends StatelessWidget {
 
@@ -46,8 +45,17 @@ class Rephotoscreen extends StatelessWidget {
         PopupMenuButton<int>(
             onSelected: (result) async {
               if (result == 0) {
-                await _fileFromImageUrl;
-                Share.share(file);
+              final urlImage =
+                  historicalPhotoUri;
+              final url = Uri.parse(urlImage);
+              final response = await http.get(url);
+              final bytes = response.bodyBytes;
+
+              final temp = await getTemporaryDirectory();
+              final path = '${temp.path}/image.jpg';
+              File(path).writeAsBytesSync(bytes);
+
+              await Share.shareFiles([path], text: 'moi');
               }
             },
             itemBuilder: (context) => [
@@ -122,18 +130,18 @@ class Rephotoscreen extends StatelessWidget {
   //   );
   // }
 
-  Future<File> _fileFromImageUrl() async {
-
-    final response = await http.get(Uri.parse(historicalPhotoUri));
-
-    final documentDirectory = await getApplicationDocumentsDirectory();
-
-    final file = File(join(documentDirectory.path, 'imagetest.png'));
-
-    file.writeAsBytesSync(response.bodyBytes);
-
-    return file;
-  }
+  // Future<File> _fileFromImageUrl() async {
+  //
+  //   final response = await http.get(Uri.parse(historicalPhotoUri));
+  //
+  //   final documentDirectory = await getApplicationDocumentsDirectory();
+  //
+  //   final file = File(join(documentDirectory.path, 'imagetest.png'));
+  //
+  //   file.writeAsBytesSync(response.bodyBytes);
+  //
+  //   return file;
+  // }
 
   _launchURL() async {
     const url = 'https://demo.tify.rocks/demo.html?manifest=https://ajapaik.ee/photo/199152/v2/manifest.json&tify={%22panX%22:0.5,%22panY%22:0.375,%22view%22:%22info%22,%22zoom%22:0.001}';
