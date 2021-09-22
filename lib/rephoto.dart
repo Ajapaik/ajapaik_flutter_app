@@ -55,7 +55,7 @@ class Rephotoscreen extends StatelessWidget {
               final path = '${temp.path}/image.jpg';
               File(path).writeAsBytesSync(bytes);
 
-              await Share.shareFiles([path], text: 'moi');
+              await Share.shareFiles([path], text: historicalName);
               }
             },
             itemBuilder: (context) => [
@@ -67,10 +67,8 @@ class Rephotoscreen extends StatelessWidget {
       body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            //crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              ElevatedButton(onPressed: _launchURL, child: Text('TEST123')),
-              ElevatedButton(onPressed: () {}, child: Text('Rephoto')),
               Expanded(
                 child:
                 GestureDetector(
@@ -84,9 +82,15 @@ class Rephotoscreen extends StatelessWidget {
                   child: Image.network(historicalPhotoUri),
                 ),
               ),
+
+              //ElevatedButton(onPressed: _launchURL, child: Text('TEST123')),
+
+
+
               Text(historicalName),
               Text(historicalDate),
               Text(historicalAuthor),
+              //Ongelma koordinaattien tuomisen kanssa string to double
               //FlutterMap(
               //   options: MapOptions(
               //     center: LatLng(60.99596, -24.46434),
@@ -113,6 +117,7 @@ class Rephotoscreen extends StatelessWidget {
               //         ),
               //       ],
               //     ),
+
             ],
           )),
     );
@@ -141,6 +146,12 @@ class Rephotoscreen extends StatelessWidget {
   //   file.writeAsBytesSync(response.bodyBytes);
   //
   //   return file;
+  // }
+
+        //Possibly required for deleting temp
+  // void main() {
+  //   final dir = Directory(path);
+  //   dir.deleteSync(recursive: true);
   // }
 
   _launchURL() async {
