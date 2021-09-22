@@ -1,9 +1,15 @@
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:gallery_saver/files.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'photomanipulation.dart';
-import 'package:share_plus/share_plus.dart';
+//import 'package:share_plus/share_plus.dart';
+import 'package:share/share.dart';
 
 class Rephotoscreen extends StatelessWidget {
 
@@ -36,24 +42,20 @@ class Rephotoscreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Rephoto'),
-        actions:[
-          PopupMenuButton<int>(
+      appBar: AppBar(title: Text('Rephoto'), actions: [
+        PopupMenuButton<int>(
+            onSelected: (result) async {
+              if (result == 0) {
+                await _fileFromImageUrl;
+                Share.share(file);
+              }
+            },
             itemBuilder: (context) => [
-              PopupMenuItem(
-                child: Text('Asetukset')
-              ),
-              PopupMenuItem(
-                child: Text('Jaa kuva')
-              ),
-              PopupMenuItem(
-                child: Text('Lisätietoja kuvasta')
-              )
-            ]
-          )
-        ]
-      ),
+                  const PopupMenuItem(child: Text('Jaa kuva'), value: 0),
+                  const PopupMenuItem(child: Text('Lisätietoja kuvasta'), value: 1),
+                  const PopupMenuItem(child: Text('Asetukset'), value: 2)
+                ])
+      ]),
       body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -119,6 +121,19 @@ class Rephotoscreen extends StatelessWidget {
   //             )),
   //   );
   // }
+
+  Future<File> _fileFromImageUrl() async {
+
+    final response = await http.get(Uri.parse(historicalPhotoUri));
+
+    final documentDirectory = await getApplicationDocumentsDirectory();
+
+    final file = File(join(documentDirectory.path, 'imagetest.png'));
+
+    file.writeAsBytesSync(response.bodyBytes);
+
+    return file;
+  }
 
   _launchURL() async {
     const url = 'https://demo.tify.rocks/demo.html?manifest=https://ajapaik.ee/photo/199152/v2/manifest.json&tify={%22panX%22:0.5,%22panY%22:0.375,%22view%22:%22info%22,%22zoom%22:0.001}';
