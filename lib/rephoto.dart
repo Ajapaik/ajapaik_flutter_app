@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'photomanipulation.dart';
+import 'package:share_plus/share_plus.dart';
 
 class Rephotoscreen extends StatelessWidget {
 
@@ -37,6 +38,21 @@ class Rephotoscreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Rephoto'),
+        actions:[
+          PopupMenuButton<int>(
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                child: Text('Asetukset')
+              ),
+              PopupMenuItem(
+                child: Text('Jaa kuva')
+              ),
+              PopupMenuItem(
+                child: Text('Lisätietoja kuvasta')
+              )
+            ]
+          )
+        ]
       ),
       body: Center(
           child: Column(
