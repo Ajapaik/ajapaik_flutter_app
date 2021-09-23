@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 //import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
-import 'package:url_launcher/url_launcher.dart';
+//import 'package:url_launcher/url_launcher.dart';
 import 'photomanipulation.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -43,6 +43,7 @@ class Rephotoscreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text('Rephoto'), actions: [
         PopupMenuButton<int>(
+          icon:const Icon(Icons.menu, color:Colors.white),
             onSelected: (result) async {
               if (result == 0) {
               final urlImage =
@@ -69,7 +70,7 @@ class Rephotoscreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             //crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Expanded(
+              Flexible(
                 child:
                 GestureDetector(
                   onTap: () {
@@ -82,15 +83,29 @@ class Rephotoscreen extends StatelessWidget {
                   child: Image.network(historicalPhotoUri),
                 ),
               ),
-
               //ElevatedButton(onPressed: _launchURL, child: Text('TEST123')),
 
-
-
-              Text(historicalName),
-              Text(historicalDate),
-              Text(historicalAuthor),
-              //Ongelma koordinaattien tuomisen kanssa string to double
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Text(historicalName),
+              )
+            ]),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Text(historicalDate),
+              )
+            ]),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Text(historicalAuthor),
+              )
+            ]),
+          ],
+        ),
+        //Ongelma koordinaattien tuomisen kanssa string to double
               //FlutterMap(
               //   options: MapOptions(
               //     center: LatLng(60.99596, -24.46434),
@@ -117,9 +132,7 @@ class Rephotoscreen extends StatelessWidget {
               //         ),
               //       ],
               //     ),
-
-            ],
-          )),
+      ),
     );
   }
 
@@ -154,13 +167,13 @@ class Rephotoscreen extends StatelessWidget {
   //   dir.deleteSync(recursive: true);
   // }
 
-  _launchURL() async {
-    const url = 'https://demo.tify.rocks/demo.html?manifest=https://ajapaik.ee/photo/199152/v2/manifest.json&tify={%22panX%22:0.5,%22panY%22:0.375,%22view%22:%22info%22,%22zoom%22:0.001}';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-}
+//   _launchURL() async {
+//     const url = 'https://demo.tify.rocks/demo.html?manifest=https://ajapaik.ee/photo/199152/v2/manifest.json&tify={%22panX%22:0.5,%22panY%22:0.375,%22view%22:%22info%22,%22zoom%22:0.001}';
+//     if (await canLaunch(url)) {
+//       await launch(url);
+//     } else {
+//       throw 'Could not launch $url';
+//     }
+//   }
+ }
 

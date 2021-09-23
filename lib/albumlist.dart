@@ -126,6 +126,20 @@ class AlbumListPageState extends State<AlbumListPage> {
   }
 }
 
+//Bottom navigation bar theme - just insert into code
+//Necessary for two different bottomnavigationbar locations? Ask if they can be rearranged at main.dart
+
+// Theme(
+// data: Theme.of(context).copyWith(
+// // sets the background color of the `BottomNavigationBar`
+// canvasColor: Colors.green,
+// // sets the active color of the `BottomNavigationBar` if `Brightness` is light
+// primaryColor: Colors.red,
+// textTheme: Theme.of(context)
+// .textTheme
+//     .copyWith(caption: const TextStyle(color: Colors.yellow))),
+// child:
+
 class AlbumList extends StatelessWidget {
   final List<Album>? albums;
 

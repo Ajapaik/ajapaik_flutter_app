@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'projectlist.dart';
 import 'package:app_links/app_links.dart';
@@ -47,13 +48,22 @@ class _MyAppState extends State<MyApp> {
     }*/
   }
 
+
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     final appTitle = 'Rephoto app';
+
     return GetMaterialApp(
       title: appTitle,
-      theme: ThemeData.dark(),
+      theme: ThemeData.dark(
+          // appBarTheme: const AppBarTheme(
+      //         backgroundColor: Colors.black,
+      //         foregroundColor: Colors.white,
+      //     ),
+      // scaffoldBackgroundColor: CupertinoColors.inactiveGray,
+      ),
       home: ProjectListPage(title: appTitle),
     );
   }
