@@ -18,26 +18,24 @@ class maniphoto extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Rephoto'),
-        ),
+            title: const Text('Rephoto application',
+                style: TextStyle(
+                  fontWeight: FontWeight.w200,
+                  fontFamily: 'Roboto',
+                ))),
         body: Center(
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Expanded(
-                      child: Container(
-                        // margin: const EdgeInsets.all(10.0),
-                        // decoration:
-                        // BoxDecoration(border: Border.all(color: Colors.blueAccent)),
-                          child: InAppWebView(initialUrlRequest: URLRequest
-                            (url:
-                          Uri.parse(historicalPhotoUri)))
-                      )
-                  ),
-                ]
-            )
-        )
-    );
+              Expanded(
+                  child: Container(
+                      // margin: const EdgeInsets.all(10.0),
+                      // decoration:
+                      // BoxDecoration(border: Border.all(color: Colors.blueAccent)),
+                      child: InAppWebView(
+                          initialUrlRequest:
+                              URLRequest(url: Uri.parse(historicalPhotoUri))))),
+            ])));
   }
 }

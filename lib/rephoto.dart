@@ -41,9 +41,13 @@ class Rephotoscreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Rephoto'), actions: [
+      appBar: AppBar(title: const Text('Rephoto application',
+      style: TextStyle(
+        fontWeight: FontWeight.w200,
+        fontFamily: 'Roboto',
+      )), actions: [
         PopupMenuButton<int>(
-          icon:const Icon(Icons.menu, color:Colors.white),
+            icon: const Icon(Icons.menu, color:Colors.white),
             onSelected: (result) async {
               if (result == 0) {
               final urlImage =
@@ -60,9 +64,9 @@ class Rephotoscreen extends StatelessWidget {
               }
             },
             itemBuilder: (context) => [
-                  const PopupMenuItem(child: Text('Jaa kuva'), value: 0),
-                  const PopupMenuItem(child: Text('Lisätietoja kuvasta'), value: 1),
-                  const PopupMenuItem(child: Text('Asetukset'), value: 2)
+                  PopupMenuItem(value: 0, child: Row(children: const [Icon(Icons.share), Text('Jaa kuva', textAlign: TextAlign.center,),] )),
+                  PopupMenuItem(value: 1, child: Row(children: const [Icon(Icons.info), Text('Lisätietoja kuvasta', textAlign: TextAlign.center,),] )),
+                  PopupMenuItem(value: 2, child: Row(children: const [Icon(Icons.settings), Text('Asetukset', textAlign: TextAlign.center,),] )),
                 ])
       ]),
       body: Center(
@@ -87,7 +91,7 @@ class Rephotoscreen extends StatelessWidget {
 
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.only(top: 50, bottom: 10),
                 child: Text(historicalName),
               )
             ]),
@@ -133,6 +137,16 @@ class Rephotoscreen extends StatelessWidget {
               //       ],
               //     ),
       ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 20),
+        child: FloatingActionButton(
+        elevation: 50,
+        child: const Icon(Icons.add),
+        onPressed: (){},
+      ),
+    ),
+      //floatingActionButtonLocation:
+      //FloatingActionButtonLocation.centerFloat,
     );
   }
 
