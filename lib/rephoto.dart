@@ -73,48 +73,52 @@ class Rephotoscreen extends StatelessWidget {
                   const PopupMenuItem(value: 2, child: ListTile(leading: Icon(Icons.settings), title: Text('Asetukset',), )),
                 ])
       ]),
-      body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            //crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Flexible(
-                child:
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => maniphoto(
-                          historicalPhotoUri: historicalPhotoUri,
-                        )));
-                  },
-                  child: Image.network(historicalPhotoUri),
-                ),
-              ),
-              //ElevatedButton(onPressed: _launchURL, child: Text('TEST123')),
-
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Expanded(
-                child: Text(historicalName,
-                maxLines: 5,
-                  overflow: TextOverflow.ellipsis,
-                )
-              )
-            ]),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Text(historicalDate),
-              )
-            ]),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Text(historicalAuthor),
-              )
-            ]),
-          ],
-        ),
+      body: getImageComparison(context),
+        //   child: Column(
+        //     //mainAxisAlignment: MainAxisAlignment.center,
+        //     //crossAxisAlignment: CrossAxisAlignment.stretch,
+        //     children: [
+        //       Flexible(
+        //         child:
+        //         GestureDetector(
+        //           onTap: () {
+        //             Navigator.push(
+        //                 context,
+        //                 MaterialPageRoute(builder: (context) => maniphoto(
+        //                   historicalPhotoUri: historicalPhotoUri,
+        //                 )));
+        //           },
+        //           child: Image.network(historicalPhotoUri),
+        //         ),
+        //       ),
+        //       //ElevatedButton(onPressed: _launchURL, child: Text('TEST123')),
+        //
+        //     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        //       Flexible(
+        //         child: Text(historicalName,
+        //         maxLines: 20,
+        //           overflow: TextOverflow.ellipsis,
+        //         )
+        //       )
+        //     ]),
+        //     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        //       Flexible(
+        //           child: Text(historicalDate,
+        //             maxLines: 5,
+        //             overflow: TextOverflow.ellipsis,
+        //           )
+        //       )
+        //     ]),
+        //     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        //       Flexible(
+        //           child: Text(historicalAuthor,
+        //             maxLines: 5,
+        //             overflow: TextOverflow.ellipsis,
+        //           )
+        //       )
+        //     ]),
+        //   ],
+        // ),
         //Ongelma koordinaattien tuomisen kanssa string to double
               //FlutterMap(
               //   options: MapOptions(
@@ -142,7 +146,7 @@ class Rephotoscreen extends StatelessWidget {
               //         ),
               //       ],
               //     ),
-      ),
+      //),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 20),
         child: FloatingActionButton(
@@ -219,5 +223,107 @@ class Rephotoscreen extends StatelessWidget {
 //       throw 'Could not launch $url';
 //     }
 //   }
- }
+  //_launchURL is a functionality that goes to test site
+// ElevatedButton(onPressed: _launchURL, child: Text('TEST123')),
+
+  Widget getImageComparison(BuildContext context) {
+    return OrientationBuilder(builder: (context, orientation) {
+      if (orientation == Orientation.portrait) {
+        return verticalPreview(context);
+      } else {
+        return horizontalPreview(context);
+      }
+    });
+  }
+
+  Widget verticalPreview(BuildContext context) {
+    return Column(
+      //crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Flexible(
+          child:
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) =>
+                      maniphoto(
+                        historicalPhotoUri: historicalPhotoUri,
+                      )));
+            },
+            child: Image.network(historicalPhotoUri),
+          ),
+        ),
+        //ElevatedButton(onPressed: _launchURL, child: Text('TEST123')),
+
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Flexible(
+              child: Text(historicalName,
+                maxLines: 20,
+                overflow: TextOverflow.ellipsis,
+              )
+          )
+        ]),
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Flexible(
+              child: Text(historicalDate,
+                maxLines: 5,
+                overflow: TextOverflow.ellipsis,
+              )
+          )
+        ]),
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Flexible(
+              child: Text(historicalAuthor,
+                maxLines: 5,
+                overflow: TextOverflow.ellipsis,
+              )
+          )
+        ]),
+      ],
+    );
+  }
+
+  Widget horizontalPreview(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 1,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => maniphoto(
+                            historicalPhotoUri: historicalPhotoUri,
+                          )));
+            },
+            child: Image.network(historicalPhotoUri),
+          ),
+        ),
+        Expanded(
+            child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+              Text(
+                historicalName,
+                maxLines: 20,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Text(
+                historicalDate,
+                maxLines: 5,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Text(
+                historicalAuthor,
+                maxLines: 5,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ])),
+      ],
+    );
+  }
+}
 
