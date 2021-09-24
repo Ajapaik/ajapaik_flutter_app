@@ -94,9 +94,11 @@ class Rephotoscreen extends StatelessWidget {
               //ElevatedButton(onPressed: _launchURL, child: Text('TEST123')),
 
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 50, bottom: 10),
-                child: Text(historicalName),
+              Expanded(
+                child: Text(historicalName,
+                maxLines: 5,
+                  overflow: TextOverflow.ellipsis,
+                )
               )
             ]),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -145,7 +147,7 @@ class Rephotoscreen extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 20),
         child: FloatingActionButton(
         elevation: 50,
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.camera),
         onPressed: (){
           _takeRephoto(context);
         },
