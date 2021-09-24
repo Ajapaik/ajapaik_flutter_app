@@ -16,15 +16,13 @@ import 'package:share_plus/share_plus.dart';
 
 class Rephotoscreen extends StatelessWidget {
 
-  // final List<Album>? albums;
-
   Rephotoscreen({Key? key,
     required String this.historicalPhotoId,
     required String this.historicalPhotoUri,
     required String this.historicalName,
     required String this.historicalDate,
     required String this.historicalAuthor,
-    //this.albums
+    //required for map functionality
     //required String this.historicalLatitude,
     //required String this.historicalLongitude
   })
@@ -36,6 +34,7 @@ class Rephotoscreen extends StatelessWidget {
   final String historicalDate;
   final String historicalAuthor;
 
+  //required for map functionality
   //final String historicalLatitude;
   //final String historicalLongitude;
 
@@ -45,148 +44,109 @@ class Rephotoscreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Rephoto application',
-      style: TextStyle(
-        fontWeight: FontWeight.w400,
-        fontFamily: 'Roboto',
-      )), actions: [
-        PopupMenuButton<int>(
-            icon: const Icon(Icons.menu, color:Colors.white),
-            onSelected: (result) async {
-              if (result == 0) {
-              final urlImage =
-                  historicalPhotoUri;
-              final url = Uri.parse(urlImage);
-              final response = await http.get(url);
-              final bytes = response.bodyBytes;
+      appBar: AppBar(
+          title: const Text('Rephoto application',
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontFamily: 'Roboto',
+              )),
+          actions: [
+            PopupMenuButton<int>(
+                icon: const Icon(Icons.menu, color: Colors.white),
+                onSelected: (result) async {
+                  if (result == 0) {
+                    final urlImage = historicalPhotoUri;
+                    final url = Uri.parse(urlImage);
+                    final response = await http.get(url);
+                    final bytes = response.bodyBytes;
 
-              final temp = await getTemporaryDirectory();
-              final path = '${temp.path}/image.jpg';
-              File(path).writeAsBytesSync(bytes);
+                    final temp = await getTemporaryDirectory();
+                    final path = '${temp.path}/image.jpg';
+                    File(path).writeAsBytesSync(bytes);
 
-              await Share.shareFiles([path], text: historicalName);
-              }
-            },
-            itemBuilder: (context) => [
-                  const PopupMenuItem(value: 0, child: ListTile(leading: Icon(Icons.share), title: Text('Jaa kuva',), )),
-                  const PopupMenuItem(value: 1, child: ListTile(leading: Icon(Icons.info), title: Text('Lisätietoja kuvasta',),)),
-                  const PopupMenuItem(value: 2, child: ListTile(leading: Icon(Icons.settings), title: Text('Asetukset',), )),
-                ])
-      ]),
+                    await Share.shareFiles([path], text: historicalName);
+                  }
+                },
+                itemBuilder: (context) => [
+                      const PopupMenuItem(
+                          value: 0,
+                          child: ListTile(
+                            leading: Icon(Icons.share),
+                            title: Text(
+                              'Jaa kuva',
+                            ),
+                          )),
+                      const PopupMenuItem(
+                          value: 1,
+                          child: ListTile(
+                            leading: Icon(Icons.info),
+                            title: Text(
+                              'Lisätietoja kuvasta',
+                            ),
+                          )),
+                      const PopupMenuItem(
+                          value: 2,
+                          child: ListTile(
+                            leading: Icon(Icons.settings),
+                            title: Text(
+                              'Asetukset',
+                            ),
+                          )),
+                    ])
+          ]),
       body: getImageComparison(context),
-        //   child: Column(
-        //     //mainAxisAlignment: MainAxisAlignment.center,
-        //     //crossAxisAlignment: CrossAxisAlignment.stretch,
-        //     children: [
-        //       Flexible(
-        //         child:
-        //         GestureDetector(
-        //           onTap: () {
-        //             Navigator.push(
-        //                 context,
-        //                 MaterialPageRoute(builder: (context) => maniphoto(
-        //                   historicalPhotoUri: historicalPhotoUri,
-        //                 )));
-        //           },
-        //           child: Image.network(historicalPhotoUri),
-        //         ),
-        //       ),
-        //       //ElevatedButton(onPressed: _launchURL, child: Text('TEST123')),
-        //
-        //     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        //       Flexible(
-        //         child: Text(historicalName,
-        //         maxLines: 20,
-        //           overflow: TextOverflow.ellipsis,
-        //         )
-        //       )
-        //     ]),
-        //     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        //       Flexible(
-        //           child: Text(historicalDate,
-        //             maxLines: 5,
-        //             overflow: TextOverflow.ellipsis,
-        //           )
-        //       )
-        //     ]),
-        //     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        //       Flexible(
-        //           child: Text(historicalAuthor,
-        //             maxLines: 5,
-        //             overflow: TextOverflow.ellipsis,
-        //           )
-        //       )
-        //     ]),
-        //   ],
-        // ),
-        //Ongelma koordinaattien tuomisen kanssa string to double
-              //FlutterMap(
-              //   options: MapOptions(
-              //     center: LatLng(60.99596, -24.46434),
-              //     zoom: 13.0,
-              //   ),
-              //   layers: [
-              //     TileLayerOptions(
-              //       urlTemplate:
-              //           "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-              //       subdomains: ['a', 'b', 'c'],
-              //       attributionBuilder: (_) {
-              //         return Text("© OpenStreetMap contributors");
-              //       },
-              //     ),
-              //     MarkerLayerOptions(
-              //       markers: [
-              //         Marker(
-              //           width: 80.0,
-              //           height: 80.0,
-              //           point: LatLng(60.99596, -24.46434),
-              //           builder: (ctx) => Container(
-              //             child: FlutterLogo(),
-              //           ),
-              //         ),
-              //       ],
-              //     ),
+      //Ongelma koordinaattien tuomisen kanssa string to double
+      //FlutterMap(
+      //   options: MapOptions(
+      //     center: LatLng(60.99596, -24.46434),
+      //     zoom: 13.0,
+      //   ),
+      //   layers: [
+      //     TileLayerOptions(
+      //       urlTemplate:
+      //           "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      //       subdomains: ['a', 'b', 'c'],
+      //       attributionBuilder: (_) {
+      //         return Text("© OpenStreetMap contributors");
+      //       },
+      //     ),
+      //     MarkerLayerOptions(
+      //       markers: [
+      //         Marker(
+      //           width: 80.0,
+      //           height: 80.0,
+      //           point: LatLng(60.99596, -24.46434),
+      //           builder: (ctx) => Container(
+      //             child: FlutterLogo(),
+      //           ),
+      //         ),
+      //       ],
+      //     ),
       //),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 20),
         child: FloatingActionButton(
-        elevation: 50,
-        child: const Icon(Icons.camera),
-        onPressed: (){
-          _takeRephoto(context);
-        },
+          elevation: 50,
+          child: const Icon(Icons.camera),
+          onPressed: () {
+            _takeRephoto(context);
+          },
+        ),
       ),
-    ),
-      //floatingActionButtonLocation:
-      //FloatingActionButtonLocation.centerFloat,
     );
   }
-
-  // Future<void> _photomani(context, index) async {
-  //   var photomani = await Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //         builder: (context) => maniphoto(
-  //               historicalPhotoUri: albums!
-  //                   .first.features[index].properties.thumbnail
-  //                   .toString(),
-  //             )),
-  //   );
-  // }
 
   void _takeRephoto(context) {
     availableCameras().then((availableCameras) async {
       CameraDescription firstCamera = availableCameras.first;
       var rephoto = await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => TakePictureScreen(
-                camera: firstCamera,
-                historicalPhotoId:
-                historicalPhotoId,
-                historicalPhotoUri:
-                historicalPhotoUri,
-      )));
+          context,
+          MaterialPageRoute(
+              builder: (context) => TakePictureScreen(
+                    camera: firstCamera,
+                    historicalPhotoId: historicalPhotoId,
+                    historicalPhotoUri: historicalPhotoUri,
+                  )));
       if (rephoto.runtimeType == Draft) {
         Navigator.push(
             context,
@@ -195,20 +155,6 @@ class Rephotoscreen extends StatelessWidget {
       }
     });
   }
-
-  // Future<File> _fileFromImageUrl() async {
-  //
-  //   final response = await http.get(Uri.parse(historicalPhotoUri));
-  //
-  //   final documentDirectory = await getApplicationDocumentsDirectory();
-  //
-  //   final file = File(join(documentDirectory.path, 'imagetest.png'));
-  //
-  //   file.writeAsBytesSync(response.bodyBytes);
-  //
-  //   return file;
-  // }
-
         //Possibly required for deleting temp
   // void main() {
   //   final dir = Directory(path);
@@ -223,7 +169,7 @@ class Rephotoscreen extends StatelessWidget {
 //       throw 'Could not launch $url';
 //     }
 //   }
-  //_launchURL is a functionality that goes to test site
+  //_launchURL is a functionality that goes to tify test site
 // ElevatedButton(onPressed: _launchURL, child: Text('TEST123')),
 
   Widget getImageComparison(BuildContext context) {
