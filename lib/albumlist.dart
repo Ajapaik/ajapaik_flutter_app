@@ -160,6 +160,7 @@ class AlbumList extends StatelessWidget {
             albums!.first.features[index].properties.date.toString(),
             historicalAuthor:
             albums!.first.features[index].properties.author.toString(),
+            //These are commented for future use in map functionality
             // historicalLatitude:
             // albums!.first.features[index].geometry.coordinates[0].toString(),
             // historicalLongitude:
@@ -168,29 +169,6 @@ class AlbumList extends StatelessWidget {
       ),
     );
   }
-
-  // void _takeRephoto(context, index) {
-  //   availableCameras().then((availableCameras) async {
-  //     CameraDescription firstCamera = availableCameras.first;
-  //     var rephoto = await Navigator.push(
-  //       context,
-  //       MaterialPageRoute(
-  //           builder: (context) => TakePictureScreen(
-  //               camera: firstCamera,
-  //               historicalPhotoId:
-  //                   albums!.first.features[index].properties.id.toString(),
-  //               historicalPhotoUri: albums!
-  //                   .first.features[index].properties.thumbnail
-  //                   .toString())),
-  //     );
-  //     if (rephoto.runtimeType == Draft) {
-  //       Navigator.push(
-  //           context,
-  //           MaterialPageRoute(
-  //               builder: (context) => DisplayUploadScreen(draft: rephoto)));
-  //     }
-  //   });
-  // }
 
   void _moveToGeoJson(context, index) {
     Navigator.push(

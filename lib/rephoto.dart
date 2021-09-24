@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:ajapaik_flutter_app/upload.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,12 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 //import 'package:url_launcher/url_launcher.dart';
+import 'camera.dart';
+import 'data/draft.json.dart';
 import 'photomanipulation.dart';
 import 'package:share_plus/share_plus.dart';
 
 class Rephotoscreen extends StatelessWidget {
 
-  //final List<Album>? albums;
+  // final List<Album>? albums;
 
   Rephotoscreen({Key? key,
     required String this.historicalPhotoId,
@@ -43,7 +47,7 @@ class Rephotoscreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Rephoto application',
       style: TextStyle(
-        fontWeight: FontWeight.w200,
+        fontWeight: FontWeight.w400,
         fontFamily: 'Roboto',
       )), actions: [
         PopupMenuButton<int>(
@@ -64,9 +68,9 @@ class Rephotoscreen extends StatelessWidget {
               }
             },
             itemBuilder: (context) => [
-                  PopupMenuItem(value: 0, child: Row(children: const [Icon(Icons.share), Text('Jaa kuva', textAlign: TextAlign.center,),] )),
-                  PopupMenuItem(value: 1, child: Row(children: const [Icon(Icons.info), Text('Lisätietoja kuvasta', textAlign: TextAlign.center,),] )),
-                  PopupMenuItem(value: 2, child: Row(children: const [Icon(Icons.settings), Text('Asetukset', textAlign: TextAlign.center,),] )),
+                  const PopupMenuItem(value: 0, child: ListTile(leading: Icon(Icons.share), title: Text('Jaa kuva',), )),
+                  const PopupMenuItem(value: 1, child: ListTile(leading: Icon(Icons.info), title: Text('Lisätietoja kuvasta',),)),
+                  const PopupMenuItem(value: 2, child: ListTile(leading: Icon(Icons.settings), title: Text('Asetukset',), )),
                 ])
       ]),
       body: Center(
@@ -142,7 +146,9 @@ class Rephotoscreen extends StatelessWidget {
         child: FloatingActionButton(
         elevation: 50,
         child: const Icon(Icons.add),
-        onPressed: (){},
+        onPressed: (){
+          _takeRephoto(context);
+        },
       ),
     ),
       //floatingActionButtonLocation:
@@ -161,6 +167,28 @@ class Rephotoscreen extends StatelessWidget {
   //             )),
   //   );
   // }
+
+  void _takeRephoto(context) {
+    availableCameras().then((availableCameras) async {
+      CameraDescription firstCamera = availableCameras.first;
+      var rephoto = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => TakePictureScreen(
+                camera: firstCamera,
+                historicalPhotoId:
+                historicalPhotoId,
+                historicalPhotoUri:
+                historicalPhotoUri,
+      )));
+      if (rephoto.runtimeType == Draft) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DisplayUploadScreen(draft: rephoto)));
+      }
+    });
+  }
 
   // Future<File> _fileFromImageUrl() async {
   //

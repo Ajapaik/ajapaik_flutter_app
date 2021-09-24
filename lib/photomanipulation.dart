@@ -7,7 +7,8 @@ class maniphoto extends StatelessWidget {
 
   maniphoto({
     Key? key,
-    required String this.historicalPhotoUri,
+    required String this.historicalPhotoUri
+    ,
   })
       :
         super(key: key);
@@ -20,7 +21,7 @@ class maniphoto extends StatelessWidget {
         appBar: AppBar(
             title: const Text('Rephoto application',
                 style: TextStyle(
-                  fontWeight: FontWeight.w200,
+                  fontWeight: FontWeight.w400,
                   fontFamily: 'Roboto',
                 ))),
         body: Center(
