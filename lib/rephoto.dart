@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 //import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 //import 'package:url_launcher/url_launcher.dart';
 import 'camera.dart';
 import 'data/draft.json.dart';
@@ -16,12 +17,14 @@ import 'package:share_plus/share_plus.dart';
 
 class Rephotoscreen extends StatelessWidget {
 
-  Rephotoscreen({Key? key,
-    required String this.historicalPhotoId,
-    required String this.historicalPhotoUri,
-    required String this.historicalName,
-    required String this.historicalDate,
-    required String this.historicalAuthor,
+    const Rephotoscreen({Key? key,
+    required this.historicalPhotoId,
+    required this.historicalPhotoUri,
+    required this.historicalName,
+    required this.historicalDate,
+    required this.historicalAuthor,
+      // required this.historicalLabel,
+    // required this.historicalSurl,
     //required for map functionality
     //required String this.historicalLatitude,
     //required String this.historicalLongitude
@@ -33,7 +36,8 @@ class Rephotoscreen extends StatelessWidget {
   final String historicalName;
   final String historicalDate;
   final String historicalAuthor;
-
+  // final String historicalLabel;
+  // final String historicalSurl;
   //required for map functionality
   //final String historicalLatitude;
   //final String historicalLongitude;
@@ -44,12 +48,14 @@ class Rephotoscreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset : false,
       appBar: AppBar(
           title: const Text('Rephoto application',
               style: TextStyle(
                 fontWeight: FontWeight.w400,
                 fontFamily: 'Roboto',
               )),
+
           actions: [
             PopupMenuButton<int>(
                 icon: const Icon(Icons.menu, color: Colors.white),
@@ -65,6 +71,15 @@ class Rephotoscreen extends StatelessWidget {
                     File(path).writeAsBytesSync(bytes);
 
                     await Share.shareFiles([path], text: historicalName);
+
+                    void _main() {
+                      final dir = Directory(path);
+                      dir.deleteSync(recursive: true);
+                    }
+                    _main();
+                  }
+                  if (result == 2) {
+                    _launchURL();
                   }
                 },
                 itemBuilder: (context) => [
@@ -85,7 +100,16 @@ class Rephotoscreen extends StatelessWidget {
                             ),
                           )),
                       const PopupMenuItem(
-                          value: 2,
+                        value: 2,
+                        child: ListTile(
+                          leading: Icon(Icons.enhance_photo_translate),
+                          title: Text(
+                            'TIFY-demo',
+                          ),
+                        ),
+                      ),
+                      const PopupMenuItem(
+                          value: 3,
                           child: ListTile(
                             leading: Icon(Icons.settings),
                             title: Text(
@@ -155,22 +179,6 @@ class Rephotoscreen extends StatelessWidget {
       }
     });
   }
-        //Possibly required for deleting temp
-  // void main() {
-  //   final dir = Directory(path);
-  //   dir.deleteSync(recursive: true);
-  // }
-
-//   _launchURL() async {
-//     const url = 'https://demo.tify.rocks/demo.html?manifest=https://ajapaik.ee/photo/199152/v2/manifest.json&tify={%22panX%22:0.5,%22panY%22:0.375,%22view%22:%22info%22,%22zoom%22:0.001}';
-//     if (await canLaunch(url)) {
-//       await launch(url);
-//     } else {
-//       throw 'Could not launch $url';
-//     }
-//   }
-  //_launchURL is a functionality that goes to tify test site
-// ElevatedButton(onPressed: _launchURL, child: Text('TEST123')),
 
   Widget getImageComparison(BuildContext context) {
     return OrientationBuilder(builder: (context, orientation) {
@@ -184,49 +192,68 @@ class Rephotoscreen extends StatelessWidget {
 
   Widget verticalPreview(BuildContext context) {
     return Column(
-      //crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Flexible(
-          child:
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) =>
-                      maniphoto(
-                        historicalPhotoUri: historicalPhotoUri,
-                      )));
-            },
-            child: Image.network(historicalPhotoUri),
-          ),
-        ),
-        //ElevatedButton(onPressed: _launchURL, child: Text('TEST123')),
-
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Flexible(
-              child: Text(historicalName,
-                maxLines: 20,
-                overflow: TextOverflow.ellipsis,
-              )
-          )
-        ]),
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Flexible(
-              child: Text(historicalDate,
-                maxLines: 5,
-                overflow: TextOverflow.ellipsis,
-              )
-          )
-        ]),
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Flexible(
-              child: Text(historicalAuthor,
-                maxLines: 5,
-                overflow: TextOverflow.ellipsis,
-              )
-          )
-        ]),
+        Expanded(
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => maniphoto(
+                              historicalPhotoUri: historicalPhotoUri,
+                            )));
+              },
+              child: Image.network(historicalPhotoUri),
+            )),
+        Expanded(
+          child: Padding(
+              padding: const EdgeInsets.all(40),
+              child: Column(
+                  // mainAxisSize: MainAxisSize.min,
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      historicalName,
+                      maxLines: 20,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      historicalDate,
+                      maxLines: 5,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      historicalAuthor,
+                      maxLines: 5,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    // const SizedBox(height: 10),
+                    // Text(
+                    //   historicalLabel,
+                    //   maxLines: 5,
+                    //   overflow: TextOverflow.ellipsis,
+                    // )
+                  ])),
+        )
       ],
+      // Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        //   Flexible(
+        //       child: Text(historicalSurl,
+        //         maxLines: 5,
+        //         overflow: TextOverflow.ellipsis,
+        //       )
+        //   )
+        // ]),
+        // Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        //   Flexible(
+        //       child: Text(historicalLabel,
+        //         maxLines: 5,
+        //         overflow: TextOverflow.ellipsis,
+        //       )
+        //   )
+        // ]),
     );
   }
 
@@ -248,28 +275,42 @@ class Rephotoscreen extends StatelessWidget {
           ),
         ),
         Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(40),
             child: Column(
                 mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
               Text(
                 historicalName,
                 maxLines: 20,
                 overflow: TextOverflow.ellipsis,
               ),
+              const SizedBox(height: 10),
               Text(
                 historicalDate,
                 maxLines: 5,
                 overflow: TextOverflow.ellipsis,
               ),
+              const SizedBox(height: 10),
               Text(
                 historicalAuthor,
                 maxLines: 5,
                 overflow: TextOverflow.ellipsis,
               ),
             ])),
-      ],
+        )],
     );
   }
+
+  _launchURL() async {
+    const url = 'https://demo.tify.rocks/demo.html?manifest=https://ajapaik.ee/photo/199152/v2/manifest.json&tify={%22panX%22:0.5,%22panY%22:0.375,%22view%22:%22info%22,%22zoom%22:0.001}';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
 }
 
