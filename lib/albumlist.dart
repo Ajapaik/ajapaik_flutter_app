@@ -160,10 +160,10 @@ class AlbumList extends StatelessWidget {
             albums!.first.features[index].properties.date.toString(),
             historicalAuthor:
             albums!.first.features[index].properties.author.toString(),
-            // historicalSurl:
-            // albums!.first.features[index].properties.sourceUrl.toString(),
-            // historicalLabel:
-            // albums!.first.features[index].properties.sourceLabel.toString(),
+            historicalSurl:
+            albums!.first.features[index].properties.sourceUrl.toString(),
+            historicalLabel:
+            albums!.first.features[index].properties.sourceLabel.toString(),
 
             //These are commented for future use in map functionality
             // historicalLatitude:

@@ -23,8 +23,8 @@ class Rephotoscreen extends StatelessWidget {
     required this.historicalName,
     required this.historicalDate,
     required this.historicalAuthor,
-      // required this.historicalLabel,
-    // required this.historicalSurl,
+    required this.historicalLabel,
+    required this.historicalSurl,
     //required for map functionality
     //required String this.historicalLatitude,
     //required String this.historicalLongitude
@@ -36,8 +36,8 @@ class Rephotoscreen extends StatelessWidget {
   final String historicalName;
   final String historicalDate;
   final String historicalAuthor;
-  // final String historicalLabel;
-  // final String historicalSurl;
+  final String historicalLabel;
+  final String historicalSurl;
   //required for map functionality
   //final String historicalLatitude;
   //final String historicalLongitude;
@@ -118,8 +118,10 @@ class Rephotoscreen extends StatelessWidget {
                           )),
                     ])
           ]),
-      body: getImageComparison(context),
-      //Ongelma koordinaattien tuomisen kanssa string to double
+        body: Column(children: [
+          Flexible(child: getImageComparison(context)),
+        ]),
+        //Ongelma koordinaattien tuomisen kanssa string to double
       //FlutterMap(
       //   options: MapOptions(
       //     center: LatLng(60.99596, -24.46434),
@@ -148,15 +150,13 @@ class Rephotoscreen extends StatelessWidget {
       //     ),
       //),
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 20),
-        child: FloatingActionButton(
-          elevation: 50,
-          child: const Icon(Icons.camera),
-          onPressed: () {
-            _takeRephoto(context);
-          },
-        ),
-      ),
+          padding: const EdgeInsets.only(bottom: 25.0, right: 25.0),
+          child: FloatingActionButton(
+            child: const Icon(Icons.camera),
+            onPressed: () {
+              _takeRephoto(context);
+            },
+          )),
     );
   }
 
@@ -214,7 +214,7 @@ class Rephotoscreen extends StatelessWidget {
                   children: [
                     Text(
                       historicalName,
-                      maxLines: 20,
+                      maxLines: 10,
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 10),
@@ -229,12 +229,18 @@ class Rephotoscreen extends StatelessWidget {
                       maxLines: 5,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    // const SizedBox(height: 10),
-                    // Text(
-                    //   historicalLabel,
-                    //   maxLines: 5,
-                    //   overflow: TextOverflow.ellipsis,
-                    // )
+                    const SizedBox(height: 10),
+                    Text(
+                      historicalLabel,
+                      maxLines: 5,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      historicalSurl,
+                      maxLines: 5,
+                      overflow: TextOverflow.ellipsis,
+                    )
                   ])),
         )
       ],
@@ -276,30 +282,43 @@ class Rephotoscreen extends StatelessWidget {
         ),
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.all(40),
-            child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-              Text(
-                historicalName,
-                maxLines: 20,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 10),
-              Text(
-                historicalDate,
-                maxLines: 5,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 10),
-              Text(
-                historicalAuthor,
-                maxLines: 5,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ])),
-        )],
+              padding: const EdgeInsets.all(30),
+              child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      historicalName,
+                      maxLines: 10,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      historicalDate,
+                      maxLines: 5,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      historicalAuthor,
+                      maxLines: 5,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      historicalLabel,
+                      maxLines: 5,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      historicalSurl,
+                      maxLines: 5,
+                      overflow: TextOverflow.ellipsis,
+                    )
+                  ])),
+        )
+      ],
     );
   }
 
