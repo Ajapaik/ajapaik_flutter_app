@@ -193,7 +193,7 @@ class Rephotoscreen extends StatelessWidget {
   Widget verticalPreview(BuildContext context) {
     return Column(
       children: [
-        Expanded(
+        Flexible(
             child: GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -207,7 +207,7 @@ class Rephotoscreen extends StatelessWidget {
             )),
         Expanded(
           child: Padding(
-              padding: const EdgeInsets.all(40),
+              padding: const EdgeInsets.all(20),
               child: Column(
                   // mainAxisSize: MainAxisSize.min,
                   // crossAxisAlignment: CrossAxisAlignment.center,
@@ -282,14 +282,14 @@ class Rephotoscreen extends StatelessWidget {
         ),
         Expanded(
           child: Padding(
-              padding: const EdgeInsets.all(30),
+              padding: const EdgeInsets.all(20),
               child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
                       historicalName,
-                      maxLines: 10,
+                      maxLines: 9,
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 10),
