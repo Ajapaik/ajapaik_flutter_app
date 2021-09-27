@@ -191,76 +191,49 @@ class Rephotoscreen extends StatelessWidget {
   }
 
   Widget verticalPreview(BuildContext context) {
-    return Column(
-      children: [
-        Flexible(
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => maniphoto(
-                              historicalPhotoUri: historicalPhotoUri,
-                            )));
-              },
-              child: Image.network(historicalPhotoUri),
-            )),
-        Expanded(
-          child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                  // mainAxisSize: MainAxisSize.min,
-                  // crossAxisAlignment: CrossAxisAlignment.center,
+    return Column(children: [
+      Flexible(
+          child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => maniphoto(
+                        historicalPhotoUri: historicalPhotoUri,
+                      )));
+        },
+        child: Image.network(historicalPhotoUri),
+      )),
+      Flexible(
+              child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      historicalName,
-                      maxLines: 10,
-                      overflow: TextOverflow.ellipsis,
+                    Expanded(
+                      child: Text(historicalAuthor),
                     ),
-                    const SizedBox(height: 10),
-                    Text(
-                      historicalDate,
-                      maxLines: 5,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      historicalAuthor,
-                      maxLines: 5,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      historicalLabel,
-                      maxLines: 5,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      historicalSurl,
-                      maxLines: 5,
-                      overflow: TextOverflow.ellipsis,
-                    )
+                    Expanded(
+                        child: Text(historicalDate))
                   ])),
-        )
-      ],
-      // Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        //   Flexible(
-        //       child: Text(historicalSurl,
-        //         maxLines: 5,
-        //         overflow: TextOverflow.ellipsis,
-        //       )
-        //   )
-        // ]),
-        // Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        //   Flexible(
-        //       child: Text(historicalLabel,
-        //         maxLines: 5,
-        //         overflow: TextOverflow.ellipsis,
-        //       )
-        //   )
-        // ]),
-    );
+      Flexible(
+          child: Padding(
+              padding: const EdgeInsets.all(5),
+              child: Column(children: [
+                const SizedBox(height: 10),
+                Text(
+                  historicalName,
+                  maxLines: 5,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 10),
+                Text(historicalLabel),
+                const SizedBox(height: 10),
+                Text(
+                  historicalSurl,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ])))
+    ]);
   }
 
   Widget horizontalPreview(BuildContext context) {
