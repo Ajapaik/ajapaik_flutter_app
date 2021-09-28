@@ -149,7 +149,7 @@ class AlbumList extends StatelessWidget {
     var rephoto = await Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => Rephotoscreen(
+          builder: (context) => RephotoScreen(
             historicalPhotoId:
             albums!.first.features[index].properties.id.toString(),
             historicalPhotoUri:

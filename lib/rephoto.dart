@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:ajapaik_flutter_app/settings.dart';
 import 'package:ajapaik_flutter_app/upload.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,9 +17,9 @@ import 'data/draft.json.dart';
 import 'photomanipulation.dart';
 import 'package:share_plus/share_plus.dart';
 
-class Rephotoscreen extends StatelessWidget {
+class RephotoScreen extends StatelessWidget {
 
-    const Rephotoscreen({Key? key,
+    const RephotoScreen({Key? key,
     required this.historicalPhotoId,
     required this.historicalPhotoUri,
     required this.historicalName,
@@ -72,7 +73,6 @@ class Rephotoscreen extends StatelessWidget {
                     File(path).writeAsBytesSync(bytes);
 
                     await Share.shareFiles([path], text: historicalName);
-
                     void _main() {
                       final dir = Directory(path);
                       dir.deleteSync(recursive: true);
@@ -84,6 +84,12 @@ class Rephotoscreen extends StatelessWidget {
                   }
                   if (result == 2) {
                     _launchTIFY();
+                  }
+                  if (result == 3) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                        builder: (context) => SettingsScreen()));
                   }
                 },
                 itemBuilder: (context) => [

@@ -51,6 +51,7 @@ dependencies:
   flutter_inappwebview:
   share_plus: ^2.1.4
   path_provider:
+  shared_preferences: ^2.0.8
 
 dev_dependencies:
   flutter_test:
