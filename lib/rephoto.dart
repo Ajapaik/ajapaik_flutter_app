@@ -3,6 +3,7 @@ import 'package:ajapaik_flutter_app/upload.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 //import 'package:gallery_saver/files.dart';
 //import 'package:path/path.dart';
@@ -78,8 +79,11 @@ class Rephotoscreen extends StatelessWidget {
                     }
                     _main();
                   }
+                  if (result == 1) {
+                    _launchInfo();
+                  }
                   if (result == 2) {
-                    _launchURL();
+                    _launchTIFY();
                   }
                 },
                 itemBuilder: (context) => [
@@ -190,52 +194,58 @@ class Rephotoscreen extends StatelessWidget {
     });
   }
 
-  Widget verticalPreview(BuildContext context) {
-    return Column(
-      children: [
-        Flexible(
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => maniphoto(
-                              historicalPhotoUri: historicalPhotoUri,
-                            )));
-              },
-              child: Image.network(historicalPhotoUri),
-            )),
-        Expanded(
-          child: Padding(
-              padding: const EdgeInsets.all(5),
-              child: Column(
-                  // mainAxisSize: MainAxisSize.min,
-                  // crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                        historicalAuthor + ', ' + historicalDate,
-                        maxLines: 2
+    Widget verticalPreview(BuildContext context) {
+      return Column(
+          children: [
+            Flexible(
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                maniphoto(
+                                  historicalPhotoUri: historicalPhotoUri,
+                                )));
+                  },
+                  child: Image.network(historicalPhotoUri),
+                )),
+      Expanded(
+        child: Padding(
+            padding: const EdgeInsets.all(5),
+            child: Column(
+                // mainAxisSize: MainAxisSize.min,
+                // crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(historicalAuthor + ', ' + historicalDate, maxLines: 2),
+                  const SizedBox(height: 10),
+                  Text(
+                    historicalName,
+                    maxLines: 5,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 10),
+                  Expanded(
+                    child: RichText(
+                      text: TextSpan(
+                          text: historicalLabel,
+                          style: const TextStyle(
+                            color: Colors.blue,
+                            decoration: TextDecoration.underline,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () async {
+                              if (await canLaunch(historicalSurl)) {
+                                await launch(historicalSurl);
+                              } else {
+                                throw 'Could not launch $historicalSurl';
+                              }
+                            }),
                     ),
-                    const SizedBox(height: 10),
-                    Text(
-                      historicalName,
-                      maxLines: 5,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                        historicalLabel
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      historicalSurl,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    )
-                  ])),
-        )
-      ],
-    );
+                  )
+                ])),
+      ),
+    ]);
   }
 
   Widget horizontalPreview(BuildContext context) {
@@ -291,7 +301,7 @@ class Rephotoscreen extends StatelessWidget {
     );
   }
 
-  _launchURL() async {
+  _launchTIFY() async {
     const url = 'https://demo.tify.rocks/demo.html?manifest=https://ajapaik.ee/photo/199152/v2/manifest.json&tify={%22panX%22:0.5,%22panY%22:0.375,%22view%22:%22info%22,%22zoom%22:0.001}';
     if (await canLaunch(url)) {
       await launch(url);
@@ -300,5 +310,14 @@ class Rephotoscreen extends StatelessWidget {
     }
   }
 
+    _launchInfo() async {
+      if (await canLaunch(historicalSurl)) {
+        await launch(historicalSurl);
+      } else {
+        throw 'Could not launch $historicalSurl';
+      }
+    }
+
 }
+
 
