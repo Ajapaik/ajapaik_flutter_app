@@ -26,7 +26,7 @@ class AlbumListPage extends StatefulWidget {
 }
 
 class AlbumListPageState extends State<AlbumListPage> {
-  String orderBy = "distance";
+  String orderBy = "alpha";
   String orderDirection = "desc";
   bool searchDialogVisible = false;
 
@@ -34,7 +34,7 @@ class AlbumListPageState extends State<AlbumListPage> {
 
   void sorting() async {
     setState(() {
-      orderBy = (orderBy == "distance") ? "alpha" : "distance";
+      orderBy = (orderBy == "alpha") ? "distance" : "alpha";
       refresh();
     });
     Get.snackbar(
@@ -85,9 +85,9 @@ class AlbumListPageState extends State<AlbumListPage> {
               tooltip: "Search",
               onPressed: toggleSearchDialog),*/
           IconButton(
-              icon: Icon(((orderBy == "distance")
-                  ? Icons.sort_sharp
-                  : Icons.sort_by_alpha)),
+              icon: Icon(((orderBy == "alpha")
+                  ? Icons.sort_by_alpha
+                  : Icons.sort_sharp)),
               tooltip: "Sort",
               onPressed: sorting),
         ],
