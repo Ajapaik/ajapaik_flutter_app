@@ -1,11 +1,13 @@
+import 'package:ajapaik_flutter_app/settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'projectlist.dart';
 import 'package:app_links/app_links.dart';
 import 'package:get/get.dart';
 import 'getxnavigation.dart';
 
-void main() {
+void main()  {
   runApp(MyApp());
 }
 
@@ -24,8 +26,15 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    _loadData();
     initDeepLinks();
     super.initState();
+  }
+  _loadData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      tooltip = prefs.getBool("tooltip")!;
+    });
   }
 
   void initDeepLinks() async {

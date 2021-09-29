@@ -1,19 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
-  static const keyLanguage = 'key-language';
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
 }
 
+bool tooltip = true;
 
 class _SettingsScreenState extends State<SettingsScreen> {
 
-  bool _tooltip = true;
-
   @override
   Widget build(BuildContext context) {
+
+    @override
+    _saveBool() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('tooltip', tooltip);
+    }
+
     return Scaffold(
         appBar: AppBar(
           title: const Text('Settings',
@@ -53,10 +59,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Text('Tooltip settings'),
                 SwitchListTile(
                   activeColor: Colors.blue,
-                  value: _tooltip,
+                  value: tooltip,
                   title: Text('Show tooltip'),
                   onChanged: (bool newValue){
-                    setState(() => _tooltip = newValue);
+                    setState(() => tooltip = newValue);
+                    _saveBool();
                   } ,
                 )
               ]
