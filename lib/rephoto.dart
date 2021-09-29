@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
@@ -13,10 +14,11 @@ import 'camera.dart';
 import 'data/draft.json.dart';
 import 'photomanipulation.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:latlong2/latlong.dart';
 
 class RephotoScreen extends StatelessWidget {
 
-    const RephotoScreen({Key? key,
+    RephotoScreen({Key? key,
     required this.historicalPhotoId,
     required this.historicalPhotoUri,
     required this.historicalName,
@@ -24,9 +26,7 @@ class RephotoScreen extends StatelessWidget {
     required this.historicalAuthor,
     required this.historicalLabel,
     required this.historicalSurl,
-    //required for map functionality
-    //required String this.historicalLatitude,
-    //required String this.historicalLongitude
+    required this.historicalCoordinates,
   })
       : super(key:key);
 
@@ -37,12 +37,8 @@ class RephotoScreen extends StatelessWidget {
   final String historicalAuthor;
   final String historicalLabel;
   final String historicalSurl;
-  //required for map functionality
-  //final String historicalLatitude;
-  //final String historicalLongitude;
 
-  //var lat = double.parse('historicalLatitude');
-  //var long = double.parse('historicalLongitude');
+  final String historicalCoordinates;
 
   @override
   Widget build(BuildContext context) {
@@ -128,34 +124,7 @@ class RephotoScreen extends StatelessWidget {
         body: Column(children: [
           Flexible(child: getImageComparison(context)),
         ]),
-        //Ongelma koordinaattien tuomisen kanssa string to double
-      //FlutterMap(
-      //   options: MapOptions(
-      //     center: LatLng(60.99596, -24.46434),
-      //     zoom: 13.0,
-      //   ),
-      //   layers: [
-      //     TileLayerOptions(
-      //       urlTemplate:
-      //           "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      //       subdomains: ['a', 'b', 'c'],
-      //       attributionBuilder: (_) {
-      //         return Text("© OpenStreetMap contributors");
-      //       },
-      //     ),
-      //     MarkerLayerOptions(
-      //       markers: [
-      //         Marker(
-      //           width: 80.0,
-      //           height: 80.0,
-      //           point: LatLng(60.99596, -24.46434),
-      //           builder: (ctx) => Container(
-      //             child: FlutterLogo(),
-      //           ),
-      //         ),
-      //       ],
-      //     ),
-      //),
+
       floatingActionButton: Padding(
           padding: const EdgeInsets.only(bottom: 25.0, right: 25.0),
           child: FloatingActionButton(
@@ -197,22 +166,20 @@ class RephotoScreen extends StatelessWidget {
     });
   }
 
-    Widget verticalPreview(BuildContext context) {
-      return Column(
-          children: [
-            Flexible(
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                maniphoto(
-                                  historicalPhotoUri: historicalPhotoUri,
-                                )));
-                  },
-                  child: Image.network(historicalPhotoUri),
-                )),
+  Widget verticalPreview(BuildContext context) {
+    return Column(children: [
+      Flexible(
+          child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => maniphoto(
+                        historicalPhotoUri: historicalPhotoUri,
+                      )));
+        },
+        child: Image.network(historicalPhotoUri),
+      )),
       Expanded(
         child: Padding(
             padding: const EdgeInsets.all(5),
@@ -245,6 +212,35 @@ class RephotoScreen extends StatelessWidget {
                               }
                             }),
                     ),
+                  ),
+                  Flexible(
+                    child: FlutterMap(
+                        options: MapOptions(
+                          center: LatLng(60.1699, 24.9384),
+                          zoom: 2.0,
+                        ),
+                        layers: [
+                          TileLayerOptions(
+                            urlTemplate:
+                                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                            subdomains: ['a', 'b', 'c'],
+                            attributionBuilder: (_) {
+                              return Text("© OpenStreetMap contributors");
+                            },
+                          ),
+                          MarkerLayerOptions(
+                            markers: [
+                              Marker(
+                                width: 80.0,
+                                height: 80.0,
+                                point: LatLng(60.1699, 24.9384),
+                                builder: (ctx) => Container(
+                                  child: FlutterLogo(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ]),
                   )
                 ])),
       ),
