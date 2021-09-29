@@ -168,9 +168,9 @@ class RephotoScreen extends StatelessWidget {
 
   Widget verticalPreview(BuildContext context) {
 
-    var latilong = double.parse(historicalCoordinates);
-    double lati = double.parse(latilong.toString().split(",")[0]);
-    double long = double.parse(latilong.toString().split(",")[1]);
+    var latlong = double.parse(historicalCoordinates);
+    double lati = double.parse(latlong.toString().split(",")[0]);
+    double long = double.parse(latlong.toString().split(",")[1]);
 
     return Column(children: [
       Flexible(
