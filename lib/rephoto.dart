@@ -167,6 +167,11 @@ class RephotoScreen extends StatelessWidget {
   }
 
   Widget verticalPreview(BuildContext context) {
+
+    var latilong = double.parse(historicalCoordinates);
+    double lati = double.parse(latilong.toString().split(",")[0]);
+    double long = double.parse(latilong.toString().split(",")[1]);
+
     return Column(children: [
       Flexible(
           child: GestureDetector(
@@ -216,7 +221,7 @@ class RephotoScreen extends StatelessWidget {
                   Flexible(
                     child: FlutterMap(
                         options: MapOptions(
-                          center: LatLng(60.1699, 24.9384),
+                          center: LatLng(lati, long),
                           zoom: 2.0,
                         ),
                         layers: [
@@ -233,7 +238,7 @@ class RephotoScreen extends StatelessWidget {
                               Marker(
                                 width: 80.0,
                                 height: 80.0,
-                                point: LatLng(60.1699, 24.9384),
+                                point: LatLng(lati, long),
                                 builder: (ctx) => Container(
                                   child: FlutterLogo(),
                                 ),
