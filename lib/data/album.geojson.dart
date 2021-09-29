@@ -88,17 +88,19 @@ class Feature {
 
 class Geometry {
   String type;
-  List<String> coordinates;
+  List<double> coordinates;
 
   Geometry({required this.type, required this.coordinates});
 
   factory Geometry.fromJson(Map<String, dynamic> json) {
-/*    String type = json['type'];
-    //List<String> coordinates = new List<String>.from(json['coordinates']);
+    String type = json['type'];
 
-    List<String> coordinates = [];
-*/
-    return Geometry(type: "", coordinates: []);
+    List<double> coordinates = [
+      json["coordinates"][0] as double,
+      json["coordinates"][1] as double
+    ];
+
+    return Geometry(type: type, coordinates: coordinates);
   }
 
   factory Geometry.empty() {
