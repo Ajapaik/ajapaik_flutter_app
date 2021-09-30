@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({Key? key}) : super(key: key);
+
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
 }
@@ -56,11 +58,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
                 const SizedBox(height: 10.0),
-                Text('Tooltip settings'),
+                const Text('Tooltip settings'),
                 SwitchListTile(
                   activeColor: Colors.blue,
                   value: tooltip,
-                  title: Text('Show tooltip'),
+                  title: const Text('Show tooltip'),
                   onChanged: (bool newValue){
                     setState(() => tooltip = newValue);
                     _saveBool();

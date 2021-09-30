@@ -26,7 +26,7 @@ class DisplayPictureScreen extends StatefulWidget {
   final Size? cameraPhotoSize;
   final double? historicalPhotoScale;
 
-  DisplayPictureScreen(
+  const DisplayPictureScreen(
       {Key? key,
       required this.imagePath,
       required this.historicalImagePath,
@@ -63,7 +63,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               // Go back to cameraview
-              BackButton(),
+              const BackButton(),
 
               // Take photo button
               ElevatedButton(
@@ -77,8 +77,8 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
                           "-" +
                           now.year.toString();
                   Position position = await determinePosition();
-                  print("Flipped");
-                  print(widget.historicalPhotoFlipped);
+                  ("Flipped");
+                  (widget.historicalPhotoFlipped);
                   Draft draft = Draft(
                     "",
                     widget.imagePath,
@@ -98,7 +98,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
                   Navigator.pop(context);
                   Navigator.pop(context, draft);
                 },
-                child: Icon(Icons.check),
+                child: const Icon(Icons.check),
               ),
 
               // Go two steps backward so the rephoto camera will be closed
@@ -132,7 +132,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
   }
 
   Image getImage2(String filename, BuildContext context) {
-    print("getImage2");
+    ("getImage2");
     Image image;
     bool validURL = Uri.parse(filename).host == '' ? false : true;
 
@@ -162,12 +162,12 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
       double centerY = 0;
 
       if (h > w) {
-        print("h>w");
+        ("h>w");
         scale = (h / w) / (widget.historicalPhotoScale ?? 1.0);
         centerX = (w - w * scale) / 2;
         centerY = (h - h * scale) / 4;
       } else {
-        print("h<w+");
+        ("h<w+");
         scale = (w / h) / (widget.historicalPhotoScale ?? 1.0);
         centerX = (w - w * scale) / 4;
         centerY = (h - h * scale) / 2;
@@ -188,8 +188,8 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
   }
 
   Future<ui.Image> getImageInfo(Image image) async {
-    Completer<ui.Image> completer = new Completer<ui.Image>();
-    image.image.resolve(ImageConfiguration()).addListener(
+    Completer<ui.Image> completer = Completer<ui.Image>();
+    image.image.resolve(const ImageConfiguration()).addListener(
         ImageStreamListener((ImageInfo info, bool synchronousCall) {
       completer.complete(info.image);
     }));

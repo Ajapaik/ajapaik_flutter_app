@@ -24,12 +24,29 @@ class _MyAppState extends State<MyApp> {
   late AppLinks _appLinks;
   final controller = Get.put(Controller());
 
+  double userLatitude = "" as double;
+  double userLongitude = "" as double;
+
   @override
   void initState() {
     _loadData();
+    // getCurrentLocation();
     initDeepLinks();
     super.initState();
   }
+
+//   getCurrentLocation() async {
+//     final geoposition = await Geolocator.getCurrentPosition(
+//         desiredAccuracy: LocationAccuracy.high);
+//
+//     setState(() {
+//       userLatitude = geoposition.latitude;
+//       userLongitude = geoposition.longitude;
+//     }
+//     );
+//   }
+// }
+
   _loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -40,7 +57,7 @@ class _MyAppState extends State<MyApp> {
   void initDeepLinks() async {
     _appLinks = AppLinks(
       onAppLink: (Uri uri, String stringUri) async {
-        print('onAppLink: $stringUri');
+        ('onAppLink: $stringUri');
         String provider = uri.queryParameters["provider"].toString();
         String username = "false";
         String token = uri.queryParameters["token"].toString();
@@ -62,7 +79,7 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final appTitle = 'Rephoto app';
+    const appTitle = 'Rephoto app';
 
     return GetMaterialApp(
       title: appTitle,
@@ -73,7 +90,7 @@ class _MyAppState extends State<MyApp> {
       //     ),
       // scaffoldBackgroundColor: CupertinoColors.inactiveGray,
       ),
-      home: ProjectListPage(title: appTitle),
+      home: const ProjectListPage(title: appTitle),
     );
   }
 }

@@ -24,7 +24,7 @@ Future getImageFromGallery(context) async {
       );
     });
   } else {
-    print('No image selected 0.');
+    ('No image selected 0.');
   }
 }
 
@@ -34,7 +34,7 @@ Future saveImageFromCamera() async {
   if (pickedImage != null) {
     await GallerySaver.saveImage(pickedImage.path);
   } else {
-    print('No image selected 1.');
+    ('No image selected 1.');
   }
 }
 
@@ -43,26 +43,24 @@ void showPicker(context) {
       context: context,
       builder: (BuildContext bc) {
         return SafeArea(
-          child: Container(
-            child: new Wrap(
-              children: <Widget>[
-                new ListTile(
-                    leading: new Icon(Icons.photo_library),
-                    title: new Text('Photo Library'),
-                    onTap: () {
-                      getImageFromGallery(context);
-                      Navigator.of(context).pop();
-                    }),
-                new ListTile(
-                  leading: new Icon(Icons.photo_camera),
-                  title: new Text('Camera'),
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                  leading: const Icon(Icons.photo_library),
+                  title: const Text('Photo Library'),
                   onTap: () {
-                    saveImageFromCamera();
+                    getImageFromGallery(context);
                     Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            ),
+                  }),
+              ListTile(
+                leading: const Icon(Icons.photo_camera),
+                title: const Text('Camera'),
+                onTap: () {
+                  saveImageFromCamera();
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
           ),
         );
       });

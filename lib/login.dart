@@ -25,9 +25,10 @@ class DisplayLoginScreen extends StatelessWidget {
     _launchURL(url);
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Login')),
+        appBar: AppBar(title: const Text('Login')),
         body: controller.getSession() == "" ? loginButtons() : logoutButton());
   }
 
@@ -52,7 +53,7 @@ class DisplayLoginScreen extends StatelessWidget {
         onPressed: () {
           doLogin("wikimedia-commons");
         },
-        backgroundColor: Color(0xFF3366cc),
+        backgroundColor: const Color(0xFF3366cc),
       ),
       SignInButton(
         Buttons.Email,
@@ -64,7 +65,7 @@ class DisplayLoginScreen extends StatelessWidget {
   Widget logoutButton() {
     return Center(
         child: Column(children: <Widget>[
-      UserInfoBuilder(),
+      const UserInfoBuilder(),
       SignInButtonBuilder(
         text: 'Sign out',
         icon: Icons.logout,
@@ -72,7 +73,7 @@ class DisplayLoginScreen extends StatelessWidget {
           await controller.logout();
           Get.back();
         },
-        backgroundColor: Color(0xFF3366cc),
+        backgroundColor: const Color(0xFF3366cc),
       )
     ]));
   }
@@ -86,7 +87,7 @@ class UserInfoBuilder extends StatelessWidget {
     return FutureBuilder<User>(
       future: fetchUser(),
       builder: (context, snapshot) {
-        if (snapshot.hasError) print(snapshot.error);
+        if (snapshot.hasError) (snapshot.error);
 
         return snapshot.hasData
             ? UserInfoView(user: snapshot.data)

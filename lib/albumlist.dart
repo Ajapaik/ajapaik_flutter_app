@@ -56,9 +56,9 @@ class AlbumListPageState extends State<AlbumListPage> {
   String getDataSourceUrl() {
     String url = widget.dataSourceUrl;
     if (url.contains("?")) {
-      url += "&orderby=" + this.orderBy + "&orderdirection=" + orderDirection;
+      url += "&orderby=" + orderBy + "&orderdirection=" + orderDirection;
     } else {
-      url += "?orderby=" + this.orderBy + "&orderdirection=" + orderDirection;
+      url += "?orderby=" + orderBy + "&orderdirection=" + orderDirection;
     }
 
     return url;
@@ -97,11 +97,11 @@ class AlbumListPageState extends State<AlbumListPage> {
             child: FutureBuilder<List<Album>>(
               future: test(context),
               builder: (context, snapshot) {
-                if (snapshot.hasError) print(snapshot.error);
+                if (snapshot.hasError) (snapshot.error);
 
                 return (snapshot.hasData)
                     ? AlbumList(albums: snapshot.data)
-                    : Center(child: CircularProgressIndicator());
+                    : const Center(child: CircularProgressIndicator());
               },
             )),
       ]),
@@ -143,7 +143,7 @@ class AlbumListPageState extends State<AlbumListPage> {
 class AlbumList extends StatelessWidget {
   final List<Album>? albums;
 
-  AlbumList({Key? key, this.albums}) : super(key: key);
+  const AlbumList({Key? key, this.albums}) : super(key: key);
 
   Future<void> _showphoto(context, index) async {
     var rephoto = await Navigator.push(
@@ -201,7 +201,7 @@ class AlbumList extends StatelessWidget {
   }
 
   Widget headerTile(context, index) {
-    var headerImage;
+    StatelessWidget headerImage;
 
     if (albums!.first.image != "") {
       headerImage = CachedNetworkImage(imageUrl: albums!.first.image);

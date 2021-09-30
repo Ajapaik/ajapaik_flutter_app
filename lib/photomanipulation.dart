@@ -3,11 +3,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
-class maniphoto extends StatelessWidget {
+class ManiPhoto extends StatelessWidget {
 
-  maniphoto({
+  const ManiPhoto({
     Key? key,
-    required String this.historicalPhotoUri
+    required this.historicalPhotoUri
     ,
   })
       :
@@ -30,13 +30,9 @@ class maniphoto extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
               Expanded(
-                  child: Container(
-                      // margin: const EdgeInsets.all(10.0),
-                      // decoration:
-                      // BoxDecoration(border: Border.all(color: Colors.blueAccent)),
-                      child: InAppWebView(
-                          initialUrlRequest:
-                              URLRequest(url: Uri.parse(historicalPhotoUri))))),
+                  child: InAppWebView(
+                      initialUrlRequest:
+                          URLRequest(url: Uri.parse(historicalPhotoUri)))),
             ])));
   }
 }

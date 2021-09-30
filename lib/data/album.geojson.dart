@@ -49,16 +49,16 @@ class Feature {
   factory Feature.fromJson2(Map<String, dynamic> json) {
     String type2 = json['type'];
     Properties properties2 = (json['properties'] != null)
-        ? new Properties.fromJson(json['properties'])
-        : new Properties.empty();
+        ? Properties.fromJson(json['properties'])
+        : Properties.empty();
 
-    print(json["geometry"].toString());
+    (json["geometry"].toString());
     Geometry geometry2 =
         ((json['geometry'] != null) && (json['geometry'].toString() != "[]"))
-            ? new Geometry.fromJson(json['geometry'])
-            : new Geometry.empty();
+            ? Geometry.fromJson(json['geometry'])
+            : Geometry.empty();
 
-    return new Feature(
+    return Feature(
         type: type2, geometry: geometry2, properties: properties2);
   }
 
@@ -67,21 +67,21 @@ class Feature {
 
     Geometry geometry2 =
         ((json['geometry'] != null) && (json['geometry'].toString() != "[]"))
-            ? new Geometry.fromJson(json['geometry'])
-            : new Geometry.empty();
+            ? Geometry.fromJson(json['geometry'])
+            : Geometry.empty();
 
     Properties properties2 = (json['properties'] != null)
-        ? new Properties.fromJson(json['properties'])
-        : new Properties.empty();
+        ? Properties.fromJson(json['properties'])
+        : Properties.empty();
 
     return Feature(type: type2, geometry: geometry2, properties: properties2);
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['type'] = this.type;
-    data['geometry'] = this.geometry.toJson();
-    data['properties'] = this.properties.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['type'] = type;
+    data['geometry'] = geometry.toJson();
+    data['properties'] = properties.toJson();
     return data;
   }
 }
@@ -108,9 +108,9 @@ class Geometry {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['type'] = this.type;
-    data['coordinates'] = this.coordinates;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['type'] = type;
+    data['coordinates'] = coordinates;
     return data;
   }
 }
@@ -172,19 +172,19 @@ class Properties {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['description'] = this.description;
-    data['date'] = this.date;
-    data['author'] = this.author;
-    data['source_url'] = this.sourceUrl;
-    data['source_label'] = this.sourceLabel;
-    data['favorites'] = this.favorites;
-    data['rephotos'] = this.rephotos;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['description'] = description;
+    data['date'] = date;
+    data['author'] = author;
+    data['source_url'] = sourceUrl;
+    data['source_label'] = sourceLabel;
+    data['favorites'] = favorites;
+    data['rephotos'] = rephotos;
     // Only https is allowed
-    data['thumbnail'] = this.thumbnail;
-    data['geojson'] = this.geojson;
+    data['thumbnail'] = thumbnail;
+    data['geojson'] = geojson;
     return data;
   }
 }
@@ -207,7 +207,7 @@ Future<String> addLocationToUrl(String url) async {
 Future<List<Album>> fetchAlbum(http.Client client, String url) async {
   url = await addLocationToUrl(url);
   final response = await client.get(Uri.parse(url));
-  print(url);
+  (url);
   // Use the compute function to run parsePhotos in a separate isolate.
   return compute(parseAlbums, response.body);
 }

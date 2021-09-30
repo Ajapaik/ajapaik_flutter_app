@@ -35,14 +35,14 @@ class Project {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['projectId'] = this.projectId.toString();
-    data['projectWikidataId'] = this.projectWikidataId;
-    data['institutionWikidataId'] = this.institutionWikidataId;
-    data['name'] = this.name;
-    data['homepage'] = this.homepage;
-    data['geojson'] = this.geojson;
-    data['thumbnailUrl'] = this.thumbnailUrl;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['projectId'] = projectId.toString();
+    data['projectWikidataId'] = projectWikidataId;
+    data['institutionWikidataId'] = institutionWikidataId;
+    data['name'] = name;
+    data['homepage'] = homepage;
+    data['geojson'] = geojson;
+    data['thumbnailUrl'] = thumbnailUrl;
     return data;
   }
 }

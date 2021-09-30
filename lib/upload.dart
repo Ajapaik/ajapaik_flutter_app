@@ -13,6 +13,7 @@ class DisplayUploadScreen extends StatelessWidget {
 
   DisplayUploadScreen({Key? key, required this.draft}) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: const Text('Save to')),
@@ -22,8 +23,8 @@ class DisplayUploadScreen extends StatelessWidget {
   uploadFile(BuildContext context) async {
     final controller = Get.put(Controller());
 
-    print(draft.historicalImageId);
-    print("Upload file Start");
+    (draft.historicalImageId);
+    ("Upload file Start");
     var postUri = Uri.parse("https://staging.ajapaik.ee/api/v1/photo/upload/");
     var request = http.MultipartRequest("POST", postUri);
     request.headers['Cookie'] = 'sessionid=' + controller.getSession();
@@ -48,13 +49,13 @@ class DisplayUploadScreen extends StatelessWidget {
         'original', File(draft.imagePath).path);
     request.files.add(multipart);
 
-    print("Upload file send");
-    print(request.fields);
+    ("Upload file send");
+    (request.fields);
     Get.showSnackbar(
       GetBar(
         title: "Uploading file to Ajapaik",
         message: "upload started",
-        duration: Duration(seconds: 3),
+        duration: const Duration(seconds: 3),
       ),
     );
 
@@ -63,23 +64,23 @@ class DisplayUploadScreen extends StatelessWidget {
         .then((result) async {
           http.Response.fromStream(result).then((response) {
             if (response.statusCode == 200) {
-              print("Uploaded! ");
-              print('response.body ' + response.body);
+              ("Uploaded! ");
+              ('response.body ' + response.body);
               Get.showSnackbar(
                 GetBar(
                   title: "Uploading file to Ajapaik",
                   message: "upload succesful",
-                  duration: Duration(seconds: 3),
+                  duration: const Duration(seconds: 3),
                 ),
               );
             } else {
-              print("Upload failed " + response.statusCode.toString());
-              print('response.body ' + response.body);
+              ("Upload failed " + response.statusCode.toString());
+              ('response.body ' + response.body);
               Get.showSnackbar(
                 GetBar(
                   title: "Uploading file to Ajapaik",
                   message: "upload failed " + response.statusCode.toString(),
-                  duration: Duration(seconds: 4),
+                  duration: const Duration(seconds: 4),
                 ),
               );
             }
@@ -93,7 +94,7 @@ class DisplayUploadScreen extends StatelessWidget {
                 GetBar(
                   title: "Uploading file to Ajapaik",
                   message: "upload failed " + err.toString(),
-                  duration: Duration(seconds: 3),
+                  duration: const Duration(seconds: 3),
                 ),
               )
             })
@@ -101,8 +102,8 @@ class DisplayUploadScreen extends StatelessWidget {
   }
 
   Widget saveToButtons(context) {
-    print("saveButtons()");
-    print(draft.historicalImageId);
+    ("saveButtons()");
+    (draft.historicalImageId);
     return Center(
         child: Wrap(spacing: 10, runSpacing: 10, children: <Widget>[
       SignInButtonBuilder(
@@ -134,7 +135,7 @@ class DisplayUploadScreen extends StatelessWidget {
           if (controller.getSession() == "") {
             Get.to(DisplayLoginScreen());
           } else {
-            print("Logged in");
+            ("Logged in");
           }
         },
         backgroundColor: const Color(0xFF3366cc),

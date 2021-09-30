@@ -19,7 +19,7 @@ import 'package:latlong2/latlong.dart';
 
 class RephotoScreen extends StatelessWidget {
 
-    RephotoScreen({Key? key,
+    const RephotoScreen({Key? key,
     required this.historicalPhotoId,
     required this.historicalPhotoUri,
     required this.historicalName,
@@ -83,7 +83,7 @@ class RephotoScreen extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                        builder: (context) => SettingsScreen()));
+                        builder: (context) => const SettingsScreen()));
                   }
                 },
                 itemBuilder: (context) => [
@@ -169,8 +169,12 @@ class RephotoScreen extends StatelessWidget {
 
   Widget verticalPreview(BuildContext context) {
 
-    double latitude = historicalCoordinates.coordinates[0];
-    double longitude = historicalCoordinates.coordinates[1];
+    double latitude = 0;
+    double longitude = 0;
+    if (!historicalCoordinates.coordinates.isEmpty) {
+      latitude = historicalCoordinates.coordinates[0];
+      longitude = historicalCoordinates.coordinates[1];
+    }
 
     return Column(children: [
       Flexible(
@@ -179,7 +183,7 @@ class RephotoScreen extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => maniphoto(
+                  builder: (context) => ManiPhoto(
                         historicalPhotoUri: historicalPhotoUri,
                       )));
         },
@@ -200,24 +204,23 @@ class RephotoScreen extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 10),
-                  Expanded(
-                    child: RichText(
-                      text: TextSpan(
-                          text: historicalLabel,
-                          style: const TextStyle(
-                            color: Colors.blue,
-                            decoration: TextDecoration.underline,
-                          ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () async {
-                              if (await canLaunch(historicalSurl)) {
-                                await launch(historicalSurl);
-                              } else {
-                                throw 'Could not launch $historicalSurl';
-                              }
-                            }),
-                    ),
+                  RichText(
+                    text: TextSpan(
+                        text: historicalLabel,
+                        style: const TextStyle(
+                          color: Colors.blue,
+                          decoration: TextDecoration.underline,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () async {
+                            if (await canLaunch(historicalSurl)) {
+                              await launch(historicalSurl);
+                            } else {
+                              throw 'Could not launch $historicalSurl';
+                            }
+                          }),
                   ),
+                  const SizedBox(height: 10),
                   Flexible(
                     child: FlutterMap(
                         options: MapOptions(
@@ -230,7 +233,7 @@ class RephotoScreen extends StatelessWidget {
                                 "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                             subdomains: ['a', 'b', 'c'],
                             attributionBuilder: (_) {
-                              return Text("© OpenStreetMap contributors");
+                              return const Text("© OpenStreetMap contributors");
                             },
                           ),
                           MarkerLayerOptions(
@@ -239,10 +242,15 @@ class RephotoScreen extends StatelessWidget {
                                 width: 80.0,
                                 height: 80.0,
                                 point: LatLng(latitude, longitude),
-                                builder: (ctx) => Container(
-                                  child: FlutterLogo(),
-                                ),
+                                builder: (ctx) => const Icon(Icons.location_pin, color: Colors.red)
                               ),
+                              // User location define variables in big screen
+                              // Marker(
+                              //   width: 80.0,
+                              //   height: 80.0,
+                              //   point: LatLng(),
+                              //   builder: (ctx) => const Icon(Icons.location_pin, color: Colors.red)
+                              // ),
                             ],
                           ),
                         ]),
@@ -262,7 +270,7 @@ class RephotoScreen extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => maniphoto(
+                      builder: (context) => ManiPhoto(
                             historicalPhotoUri: historicalPhotoUri,
                           )));
             },

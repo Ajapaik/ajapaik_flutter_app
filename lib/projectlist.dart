@@ -26,7 +26,7 @@ class ProjectListPageState extends State<ProjectListPage> {
   @override
   void initState() {
     controller.loadSession().then((_) => setState(() {
-          print("Updating login status to screen. Session " +
+          ("Updating login status to screen. Session " +
               controller.getSession());
         }));
     // TODO: implement initState
@@ -35,7 +35,7 @@ class ProjectListPageState extends State<ProjectListPage> {
 
   @override
   Widget build(BuildContext context) {
-    print(controller.getSession());
+    (controller.getSession());
     bool loggedIn = !(controller.getSession() == "");
 
     return Scaffold(
@@ -45,10 +45,10 @@ class ProjectListPageState extends State<ProjectListPage> {
       body: const ProjectListBuilder(),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {
-          print(index);
+          (index);
           if (index == 2) {
             Get.to(DisplayLoginScreen())?.then((_) => setState(() {
-                  print("foo" + controller.getSession());
+                  ("foo" + controller.getSession());
                 }));
           } else {
             showPicker(context);
@@ -81,7 +81,7 @@ class ProjectListBuilder extends StatelessWidget {
     return FutureBuilder<List<Project>>(
       future: fetchProjects(http.Client()),
       builder: (context, snapshot) {
-        if (snapshot.hasError) print(snapshot.error);
+        if (snapshot.hasError) (snapshot.error);
 
         return snapshot.hasData
             ? ProjectList(photos: snapshot.data)
@@ -107,7 +107,7 @@ class ProjectList extends StatelessWidget {
           return GestureDetector(
               onTap: () async {
                 if (photos![index].geojson != null) {
-                  print(photos![index].name);
+                  (photos![index].name);
                   Navigator.push(
                     context,
                     MaterialPageRoute(

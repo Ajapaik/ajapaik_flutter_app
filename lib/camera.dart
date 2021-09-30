@@ -57,9 +57,9 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
       final context = historicalPhotoKey.currentContext!;
       // If the picture was taken, display it on a new screen.
-      print(historicalPhotoController.value.getMaxScaleOnAxis());
-      print(historicalPhotoImageSize);
-      print(MediaQuery.of(context).size);
+      (historicalPhotoController.value.getMaxScaleOnAxis());
+      (historicalPhotoImageSize);
+      (MediaQuery.of(context).size);
 
       Navigator.push(
         context,
@@ -80,7 +80,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       );
     } catch (e) {
       // If an error occurs, log the error to the console.
-      print(e);
+      (e);
     }
   }
 
@@ -93,7 +93,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     final double w = MediaQuery.of(context).size.width;
     final double h = MediaQuery.of(context).size.height;
 
-    print(w.toString() + " " + h.toString());
+    (w.toString() + " " + h.toString());
 
     // Calculate correct X,Y position in the screen
     // https://medium.com/flutter-community/advanced-flutter-matrix4-and-perspective-transformations-a79404a0d828
@@ -121,8 +121,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   }
 
   Future<ui.Image> getImageInfo(Image image) async {
-    Completer<ui.Image> completer = new Completer<ui.Image>();
-    image.image.resolve(ImageConfiguration()).addListener(
+    Completer<ui.Image> completer = Completer<ui.Image>();
+    image.image.resolve(const ImageConfiguration()).addListener(
         ImageStreamListener((ImageInfo info, bool synchronousCall) {
       completer.complete(info.image);
     }));
@@ -244,7 +244,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                           return CameraPreview(_cameraController);
                         } else {
                           // Otherwise, display a loading indicator.
-                          return Center(child: CircularProgressIndicator());
+                          return const Center(child: CircularProgressIndicator());
                         }
                       },
                     ))),
@@ -266,7 +266,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                         maxScale: 2,
                         minScale: 0.3,
                         transformationController: historicalPhotoController,
-                        boundaryMargin: EdgeInsets.all(double.infinity),
+                        boundaryMargin: const EdgeInsets.all(double.infinity),
 //                        clipBehavior: Clip.none,
 
                         onInteractionUpdate: (details) {
@@ -292,13 +292,15 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                                   if (details.delta.dy > 1) {
                                     historicalPhotoTransparency =
                                         historicalPhotoTransparency + 0.01;
-                                    if (historicalPhotoTransparency > 1)
+                                    if (historicalPhotoTransparency > 1) {
                                       historicalPhotoTransparency = 1;
+                                    }
                                   } else if (details.delta.dy < -1) {
                                     historicalPhotoTransparency =
                                         historicalPhotoTransparency - 0.01;
-                                    if (historicalPhotoTransparency < 0)
+                                    if (historicalPhotoTransparency < 0) {
                                       historicalPhotoTransparency = 0;
+                                    }
                                   }
                                 });
                               }
@@ -321,16 +323,16 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                         ? Alignment.bottomCenter
                         : Alignment.centerRight,
                     child: Container(
-                        padding: EdgeInsets.all(7),
+                        padding: const EdgeInsets.all(7),
                         decoration: ShapeDecoration(
                           color: Theme.of(context).scaffoldBackgroundColor,
-                          shape: CircleBorder(),
+                          shape: const CircleBorder(),
                         ),
-                        margin: EdgeInsets.all(10),
+                        margin: const EdgeInsets.all(10),
                         child: ElevatedButton(
-                          child: Icon(Icons.camera, size: 50),
+                          child: const Icon(Icons.camera, size: 50),
                           style:
-                              ElevatedButton.styleFrom(shape: CircleBorder()),
+                              ElevatedButton.styleFrom(shape: const CircleBorder()),
                           onPressed: onTakePicture,
                         )))),
 
@@ -341,10 +343,10 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                     child: Container(
                         decoration: ShapeDecoration(
                           color: Theme.of(context).scaffoldBackgroundColor,
-                          shape: CircleBorder(),
+                          shape: const CircleBorder(),
                         ),
-                        margin: EdgeInsets.only(top: 32),
-                        child: BackButton()))),
+                        margin: const EdgeInsets.only(top: 32),
+                        child: const BackButton()))),
 
             // Flip old photo button
             Positioned.fill(
@@ -353,14 +355,14 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                     child: Container(
                         decoration: ShapeDecoration(
                           color: Theme.of(context).scaffoldBackgroundColor,
-                          shape: CircleBorder(),
+                          shape: const CircleBorder(),
                         ),
-                        margin: EdgeInsets.only(top: 32),
+                        margin: const EdgeInsets.only(top: 32),
                         child: IconButton(
                             color: historicalPhotoFlipped
                                 ? Colors.green
                                 : Colors.white,
-                            icon: Icon(Icons.flip),
+                            icon: const Icon(Icons.flip),
                             iconSize: 36.0,
                             onPressed: () {
                               setState(() {

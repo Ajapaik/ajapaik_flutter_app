@@ -35,7 +35,7 @@ class Controller extends GetxController {
     } else if (_session != "") {
       await logout();
     }
-    print("session: " + _session);
+    ("session: " + _session);
     return _session;
   }
 
@@ -75,7 +75,7 @@ class Controller extends GetxController {
       'username': username,
       'password': password,
     });
-    print(body);
+    (body);
 
     var url = Uri.parse("https://staging.ajapaik.ee/api/v1/login/");
     final http.Response response = await http.post(
@@ -87,14 +87,14 @@ class Controller extends GetxController {
     );
 
     if (response.statusCode == 200) {
-      print(response.body.toString());
+      (response.body.toString());
       Map<String, dynamic> json = jsonDecode(response.body);
       await setSession(json["session"]);
       await fetchUser();
       update();
       return true;
     } else {
-      print(response.body.toString());
+      (response.body.toString());
       throw Exception('Failed to create album.');
     }
   }

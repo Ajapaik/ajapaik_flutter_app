@@ -21,7 +21,7 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['name'] = name.toString();
     data['state'] = state.toString();
     data['wiki'] = wiki.toString();
@@ -39,9 +39,9 @@ Future<User> fetchUser() async {
         'Content-Type': 'application/json; charset=UTF-8',
         'Cookie': 'sessionid=' + controller.getSession()
       });
-  print("Session:" + controller.getSession());
+  ("Session:" + controller.getSession());
   // Use the compute function to run parsePhotos in a separate isolate.
   Map<String, dynamic> json = jsonDecode(response.body);
-  print(response.body);
+  (response.body);
   return User.fromJson(json);
 }
