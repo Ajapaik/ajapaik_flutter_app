@@ -12,6 +12,7 @@ import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'camera.dart';
 import 'data/draft.json.dart';
+import 'data/album.geojson.dart';
 import 'photomanipulation.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:latlong2/latlong.dart';
@@ -38,7 +39,7 @@ class RephotoScreen extends StatelessWidget {
   final String historicalLabel;
   final String historicalSurl;
 
-  final String historicalCoordinates;
+  final Geometry historicalCoordinates;
 
   @override
   Widget build(BuildContext context) {
@@ -168,8 +169,8 @@ class RephotoScreen extends StatelessWidget {
 
   Widget verticalPreview(BuildContext context) {
 
-    double latitude = double.parse(historicalCoordinates.split(",")[0]);
-    double longitude = double.parse(historicalCoordinates.split(",")[1]);
+    double latitude = historicalCoordinates.coordinates[0];
+    double longitude = historicalCoordinates.coordinates[1];
 
     return Column(children: [
       Flexible(

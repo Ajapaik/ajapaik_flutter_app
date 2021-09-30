@@ -165,7 +165,7 @@ class AlbumList extends StatelessWidget {
             historicalLabel:
             albums!.first.features[index].properties.sourceLabel.toString(),
             historicalCoordinates:
-            albums!.first.features[index].geometry.coordinates.toString(),
+            albums!.first.features[index].geometry,
           )
       ),
     );
