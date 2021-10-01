@@ -43,6 +43,7 @@ class RephotoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       resizeToAvoidBottomInset : false,
       appBar: AppBar(
@@ -221,40 +222,43 @@ class RephotoScreen extends StatelessWidget {
                           }),
                   ),
                   const SizedBox(height: 10),
-                  Flexible(
-                    child: FlutterMap(
-                        options: MapOptions(
-                          center: LatLng(latitude, longitude),
-                          zoom: 2.0,
-                        ),
-                        layers: [
-                          TileLayerOptions(
-                            urlTemplate:
+
+                          Expanded(
+                            child: FlutterMap(
+                            options: MapOptions(
+                              center: LatLng(latitude, longitude),
+                              zoom: 2.0,
+                            ),
+                            layers: [
+                              TileLayerOptions(
+                                urlTemplate:
                                 "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                            subdomains: ['a', 'b', 'c'],
-                            attributionBuilder: (_) {
-                              return const Text("© OpenStreetMap contributors");
-                            },
-                          ),
-                          MarkerLayerOptions(
-                            markers: [
-                              Marker(
-                                width: 80.0,
-                                height: 80.0,
-                                point: LatLng(latitude, longitude),
-                                builder: (ctx) => const Icon(Icons.location_pin, color: Colors.red)
+                                subdomains: ['a', 'b', 'c'],
+                                attributionBuilder: (_) {
+                                  return const Text(
+                                      "© OpenStreetMap contributors");
+                                },
                               ),
-                              // User location define variables in big screen
-                              // Marker(
-                              //   width: 80.0,
-                              //   height: 80.0,
-                              //   point: LatLng(),
-                              //   builder: (ctx) => const Icon(Icons.location_pin, color: Colors.red)
-                              // ),
-                            ],
-                          ),
-                        ]),
-                  )
+                              MarkerLayerOptions(
+                                markers: [
+                                  Marker(
+                                      width: 80.0,
+                                      height: 80.0,
+                                      point: LatLng(latitude, longitude),
+                                      builder: (ctx) =>
+                                      const Icon(
+                                          Icons.location_pin, color: Colors.red)
+                                  ),
+                                  // Marker(
+                                  //   width: 80.0,
+                                  //   height: 80.0,
+                                  //   point: LatLng(userLatitudeData, userLongitudeData),
+                                  //   builder: (ctx) => const Icon(Icons.location_pin, color: Colors.red)
+                                  // ),
+                                ],
+                              ),
+                            ]),
+                      )
                 ])),
       ),
     ]);

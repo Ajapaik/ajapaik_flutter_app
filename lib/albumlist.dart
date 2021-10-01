@@ -7,6 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'getxnavigation.dart';
 import 'package:get/get.dart';
+import 'map.dart';
 import 'rephoto.dart';
 
 // ignore: must_be_immutable
@@ -106,7 +107,11 @@ class AlbumListPageState extends State<AlbumListPage> {
             )),
       ]),
       bottomNavigationBar: BottomNavigationBar(
-        onTap: (index) {},
+        onTap: (index) {
+          if (index == 1) {
+            Get.to(() => const MapScreen());
+          }
+        },
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.photo_library),
