@@ -20,14 +20,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class RephotoScreen extends StatefulWidget {
 
-  @override
-  RephotoScreenState createState() {
-    return RephotoScreenState();
-  }
-}
-  class RephotoScreenState extends State {
+  final String historicalPhotoId;
+  final String historicalPhotoUri;
+  final String historicalName;
+  final String historicalDate;
+  final String historicalAuthor;
+  final String historicalLabel;
+  final String historicalSurl;
 
-    RephotoScreenState({Key? key,
+  final Geometry historicalCoordinates;
+
+  RephotoScreen({Key? key,
     required this.historicalPhotoId,
     required this.historicalPhotoUri,
     required this.historicalName,
@@ -39,15 +42,11 @@ class RephotoScreen extends StatefulWidget {
   })
       : super();
 
-  final String historicalPhotoId;
-  final String historicalPhotoUri;
-  final String historicalName;
-  final String historicalDate;
-  final String historicalAuthor;
-  final String historicalLabel;
-  final String historicalSurl;
+  @override
+  RephotoScreenState createState() => RephotoScreenState();
+}
 
-  final Geometry historicalCoordinates;
+  class RephotoScreenState extends State<RephotoScreen> {
 
   void getSettings() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -72,7 +71,7 @@ class RephotoScreen extends StatefulWidget {
                 icon: const Icon(Icons.menu, color: Colors.white),
                 onSelected: (result) async {
                   if (result == 0) {
-                    final urlImage = historicalPhotoUri;
+                    final urlImage = widget.historicalPhotoUri;
                     final url = Uri.parse(urlImage);
                     final response = await http.get(url);
                     final bytes = response.bodyBytes;
@@ -81,7 +80,7 @@ class RephotoScreen extends StatefulWidget {
                     final path = '${temp.path}/image.jpg';
                     File(path).writeAsBytesSync(bytes);
 
-                    await Share.shareFiles([path], text: historicalName);
+                    await Share.shareFiles([path], text: widget.historicalName);
                     void _main() {
                       final dir = Directory(path);
                       dir.deleteSync(recursive: true);
@@ -160,8 +159,8 @@ class RephotoScreen extends StatefulWidget {
           MaterialPageRoute(
               builder: (context) => TakePictureScreen(
                     camera: firstCamera,
-                    historicalPhotoId: historicalPhotoId,
-                    historicalPhotoUri: historicalPhotoUri,
+                    historicalPhotoId: widget.historicalPhotoId,
+                    historicalPhotoUri: widget.historicalPhotoUri,
                   )));
       if (rephoto.runtimeType == Draft) {
         Navigator.push(
@@ -186,9 +185,9 @@ class RephotoScreen extends StatefulWidget {
 
     double latitude = 0;
     double longitude = 0;
-    if (!historicalCoordinates.coordinates.isEmpty) {
-      latitude = historicalCoordinates.coordinates[0];
-      longitude = historicalCoordinates.coordinates[1];
+    if (!widget.historicalCoordinates.coordinates.isEmpty) {
+      latitude = widget.historicalCoordinates.coordinates[0];
+      longitude = widget.historicalCoordinates.coordinates[1];
     }
 
     return Column(children: [
@@ -199,10 +198,10 @@ class RephotoScreen extends StatefulWidget {
               context,
               MaterialPageRoute(
                   builder: (context) => ManiPhoto(
-                        historicalPhotoUri: historicalPhotoUri,
+                        historicalPhotoUri: widget.historicalPhotoUri,
                       )));
         },
-        child: Image.network(historicalPhotoUri),
+        child: Image.network(widget.historicalPhotoUri),
       )),
       Expanded(
         child: Padding(
@@ -211,27 +210,27 @@ class RephotoScreen extends StatefulWidget {
                 // mainAxisSize: MainAxisSize.min,
                 // crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(historicalAuthor + ', ' + historicalDate, maxLines: 2),
+                  Text(widget.historicalAuthor + ', ' + widget.historicalDate, maxLines: 2),
                   const SizedBox(height: 10),
                   Text(
-                    historicalName,
+                    widget.historicalName,
                     maxLines: 5,
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 10),
                   RichText(
                     text: TextSpan(
-                        text: historicalLabel,
+                        text: widget.historicalLabel,
                         style: const TextStyle(
                           color: Colors.blue,
                           decoration: TextDecoration.underline,
                         ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () async {
-                            if (await canLaunch(historicalSurl)) {
-                              await launch(historicalSurl);
+                            if (await canLaunch(widget.historicalSurl)) {
+                              await launch(widget.historicalSurl);
                             } else {
-                              throw 'Could not launch $historicalSurl';
+                              throw 'Could not launch $widget.historicalSurl';
                             }
                           }),
                   ),
@@ -291,10 +290,10 @@ class RephotoScreen extends StatefulWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => ManiPhoto(
-                            historicalPhotoUri: historicalPhotoUri,
+                            historicalPhotoUri: widget.historicalPhotoUri,
                           )));
             },
-            child: Image.network(historicalPhotoUri),
+            child: Image.network(widget.historicalPhotoUri),
           ),
         ),
         Expanded(
@@ -305,25 +304,25 @@ class RephotoScreen extends StatefulWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      historicalAuthor + ', ' + historicalDate,
+                      widget.historicalAuthor + ', ' + widget.historicalDate,
                       maxLines: 9,
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      historicalName,
+                      widget.historicalName,
                       maxLines: 5,
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      historicalLabel,
+                      widget.historicalLabel,
                       maxLines: 5,
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      historicalSurl,
+                      widget.historicalSurl,
                       maxLines: 5,
                       overflow: TextOverflow.ellipsis,
                     )
@@ -343,13 +342,47 @@ class RephotoScreen extends StatefulWidget {
   }
 
     _launchInfo() async {
-      if (await canLaunch(historicalSurl)) {
-        await launch(historicalSurl);
+      if (await canLaunch(widget.historicalSurl)) {
+        await launch(widget.historicalSurl);
       } else {
-        throw 'Could not launch $historicalSurl';
+        throw 'Could not launch $widget.historicalSurl';
       }
     }
 
+  // _showMap() async {
+  //   double latitude = 0;
+  //   double longitude = 0;
+  //   if (!widget.historicalCoordinates.coordinates.isEmpty) {
+  //     latitude = widget.historicalCoordinates.coordinates[0];
+  //     longitude = widget.historicalCoordinates.coordinates[1];
+  //   }
+  //
+  //   FlutterMap(
+  //       options: MapOptions(
+  //         center: LatLng(latitude, longitude),
+  //         interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
+  //         zoom: 13.0,
+  //       ),
+  //       layers: [
+  //         TileLayerOptions(
+  //           urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  //           subdomains: ['a', 'b', 'c'],
+  //           attributionBuilder: (_) {
+  //             return const Text("© OpenStreetMap contributors");
+  //           },
+  //         ),
+  //         MarkerLayerOptions(
+  //           markers: [
+  //             Marker(
+  //                 width: 80.0,
+  //                 height: 80.0,
+  //                 point: LatLng(latitude, longitude),
+  //                 builder: (ctx) =>
+  //                     const Icon(Icons.location_pin, color: Colors.red))
+  //           ],
+  //         ),
+  //       ]);
+  // }
 }
 
 
