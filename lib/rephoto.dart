@@ -227,7 +227,8 @@ class RephotoScreen extends StatelessWidget {
                             child: FlutterMap(
                             options: MapOptions(
                               center: LatLng(latitude, longitude),
-                              zoom: 2.0,
+                              interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
+                              zoom: 13.0,
                             ),
                             layers: [
                               TileLayerOptions(
