@@ -16,10 +16,18 @@ import 'data/album.geojson.dart';
 import 'photomanipulation.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class RephotoScreen extends StatelessWidget {
+class RephotoScreen extends StatefulWidget {
 
-    const RephotoScreen({Key? key,
+  @override
+  RephotoScreenState createState() {
+    return RephotoScreenState();
+  }
+}
+  class RephotoScreenState extends State {
+
+    RephotoScreenState({Key? key,
     required this.historicalPhotoId,
     required this.historicalPhotoUri,
     required this.historicalName,
@@ -29,7 +37,7 @@ class RephotoScreen extends StatelessWidget {
     required this.historicalSurl,
     required this.historicalCoordinates,
   })
-      : super(key:key);
+      : super();
 
   final String historicalPhotoId;
   final String historicalPhotoUri;
@@ -40,6 +48,12 @@ class RephotoScreen extends StatelessWidget {
   final String historicalSurl;
 
   final Geometry historicalCoordinates;
+
+  void getSettings() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? boolValue = prefs.getBool("tooltip");
+    setState((){});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -224,6 +238,7 @@ class RephotoScreen extends StatelessWidget {
                   const SizedBox(height: 10),
 
                           Expanded(
+
                             child: FlutterMap(
                             options: MapOptions(
                               center: LatLng(latitude, longitude),
@@ -334,7 +349,7 @@ class RephotoScreen extends StatelessWidget {
         throw 'Could not launch $historicalSurl';
       }
     }
-  //comment to push
+
 }
 
 

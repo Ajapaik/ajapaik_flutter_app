@@ -26,12 +26,12 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    _loadData();
+    loadData();
     initDeepLinks();
     super.initState();
   }
 
-  _loadData() async {
+  loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       tooltip = prefs.getBool("tooltip")!;
