@@ -157,7 +157,7 @@ class RephotoScreen extends StatefulWidget {
           child: FloatingActionButton(
             shape: const StadiumBorder(
               side: BorderSide(
-                  color: Colors.black, width: 2)),
+                  color: Colors.black87, width: 2)),
             child: const Icon(Icons.camera),
             onPressed: () {
               _takeRephoto(context);
@@ -218,6 +218,7 @@ class RephotoScreen extends StatefulWidget {
         },
                   child: Image.network(widget.historicalPhotoUri),
       )),
+      //Insert EdgeInsets here !!!
       Text(widget.historicalAuthor + ', ' + widget.historicalDate, maxLines: 2),
       const SizedBox(height: 10),
       Text(
