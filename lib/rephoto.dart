@@ -50,13 +50,15 @@ class RephotoScreen extends StatefulWidget {
 
   bool boolValue = true;
 
-  Future getTooltipValue() async {
+  getTooltipValue() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? boolValue = prefs.getBool("tooltip");
-    setState(() {
-      tooltip = boolValue!;
-    });
-    return boolValue;
+    var boolValue = prefs.getBool("tooltip");
+    if (boolValue != tooltip) {
+      setState(() {
+        tooltip=boolValue! == true;
+      });
+      return boolValue;
+    }
   }
 
   @override
@@ -100,9 +102,14 @@ class RephotoScreen extends StatefulWidget {
                   }
                   if (result == 3) {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                        builder: (context) => const SettingsScreen()));
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SettingsScreen()))
+                        .then((_) {
+                      setState(() {
+                        getTooltipValue();
+                      });
+                    });
                   }
                 },
                 itemBuilder: (context) => [
@@ -222,9 +229,6 @@ class RephotoScreen extends StatefulWidget {
                     maxLines: 5,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  Text(
-                    boolValue.toString()
-                  ),
                   const SizedBox(height: 10),
                   RichText(
                     text: TextSpan(
@@ -243,7 +247,7 @@ class RephotoScreen extends StatefulWidget {
                           }),
                   ),
                   const SizedBox(height: 10),
-
+                          if(tooltip == true)
                           Expanded(
 
                             child: FlutterMap(

@@ -58,11 +58,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
                 const SizedBox(height: 10.0),
-                const Text('Tooltip settings'),
+                const Text('Lisäasetukset'),
                 SwitchListTile(
                   activeColor: Colors.blue,
                   value: tooltip,
-                  title: const Text('Show tooltip'),
+                  title: const Text('Näytä kartta'),
                   onChanged: (bool newValue){
                     setState(() => tooltip = newValue);
                     _saveBool();
