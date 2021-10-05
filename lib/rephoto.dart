@@ -48,10 +48,15 @@ class RephotoScreen extends StatefulWidget {
 
   class RephotoScreenState extends State<RephotoScreen> {
 
-  void getSettings() async {
+  bool boolValue = true;
+
+  Future getTooltipValue() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool? boolValue = prefs.getBool("tooltip");
-    setState((){});
+    setState(() {
+      tooltip = boolValue!;
+    });
+    return boolValue;
   }
 
   @override
@@ -216,6 +221,9 @@ class RephotoScreen extends StatefulWidget {
                     widget.historicalName,
                     maxLines: 5,
                     overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    boolValue.toString()
                   ),
                   const SizedBox(height: 10),
                   RichText(
