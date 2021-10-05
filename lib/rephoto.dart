@@ -155,6 +155,9 @@ class RephotoScreen extends StatefulWidget {
       floatingActionButton: Padding(
           padding: const EdgeInsets.only(bottom: 25.0, right: 25.0),
           child: FloatingActionButton(
+            shape: const StadiumBorder(
+              side: BorderSide(
+                  color: Colors.black, width: 2)),
             child: const Icon(Icons.camera),
             onPressed: () {
               _takeRephoto(context);
@@ -205,89 +208,77 @@ class RephotoScreen extends StatefulWidget {
     return Column(children: [
       Flexible(
           child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ManiPhoto(
+            onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                      builder: (context) => ManiPhoto(
                         historicalPhotoUri: widget.historicalPhotoUri,
-                      )));
+                        )));
         },
-        child: Image.network(widget.historicalPhotoUri),
+                  child: Image.network(widget.historicalPhotoUri),
       )),
-      Expanded(
-        child: Padding(
-            padding: const EdgeInsets.all(5),
-            child: Column(
-                // mainAxisSize: MainAxisSize.min,
-                // crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(widget.historicalAuthor + ', ' + widget.historicalDate, maxLines: 2),
-                  const SizedBox(height: 10),
-                  Text(
-                    widget.historicalName,
-                    maxLines: 5,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 10),
-                  RichText(
-                    text: TextSpan(
-                        text: widget.historicalLabel,
-                        style: const TextStyle(
-                          color: Colors.blue,
-                          decoration: TextDecoration.underline,
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () async {
-                            if (await canLaunch(widget.historicalSurl)) {
-                              await launch(widget.historicalSurl);
-                            } else {
-                              throw 'Could not launch $widget.historicalSurl';
-                            }
-                          }),
-                  ),
-                  const SizedBox(height: 10),
-                          if(tooltip == true)
-                          Expanded(
-
-                            child: FlutterMap(
-                            options: MapOptions(
-                              center: LatLng(latitude, longitude),
-                              interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
-                              zoom: 13.0,
-                            ),
-                            layers: [
-                              TileLayerOptions(
-                                urlTemplate:
-                                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                                subdomains: ['a', 'b', 'c'],
-                                attributionBuilder: (_) {
-                                  return const Text(
-                                      "© OpenStreetMap contributors");
-                                },
-                              ),
-                              MarkerLayerOptions(
-                                markers: [
-                                  Marker(
-                                      width: 80.0,
-                                      height: 80.0,
-                                      point: LatLng(latitude, longitude),
-                                      builder: (ctx) =>
-                                      const Icon(
-                                          Icons.location_pin, color: Colors.red)
-                                  ),
-                                  // Marker(
-                                  //   width: 80.0,
-                                  //   height: 80.0,
-                                  //   point: LatLng(userLatitudeData, userLongitudeData),
-                                  //   builder: (ctx) => const Icon(Icons.location_pin, color: Colors.red)
-                                  // ),
-                                ],
-                              ),
-                            ]),
-                      )
-                ])),
+      Text(widget.historicalAuthor + ', ' + widget.historicalDate, maxLines: 2),
+      const SizedBox(height: 10),
+      Text(
+        widget.historicalName,
+        maxLines: 5,
+        overflow: TextOverflow.ellipsis,
       ),
+      const SizedBox(height: 10),
+      RichText(
+        text: TextSpan(
+            text: widget.historicalLabel,
+            style: const TextStyle(
+              color: Colors.blue,
+              decoration: TextDecoration.underline,
+            ),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () async {
+                if (await canLaunch(widget.historicalSurl)) {
+                  await launch(widget.historicalSurl);
+                } else {
+                  throw 'Could not launch $widget.historicalSurl';
+                }
+              }),
+      ),
+      const SizedBox(height: 10),
+      if (tooltip == true)
+        Expanded(
+          child: FlutterMap(
+              options: MapOptions(
+                center: LatLng(latitude, longitude),
+                interactiveFlags:
+                    InteractiveFlag.pinchZoom | InteractiveFlag.drag,
+                zoom: 13.0,
+              ),
+              layers: [
+                TileLayerOptions(
+                  urlTemplate:
+                      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                  subdomains: ['a', 'b', 'c'],
+                  attributionBuilder: (_) {
+                    return const Text("© OpenStreetMap contributors");
+                  },
+                ),
+                MarkerLayerOptions(
+                  markers: [
+                    Marker(
+                        width: 80.0,
+                        height: 80.0,
+                        point: LatLng(latitude, longitude),
+                        builder: (ctx) =>
+                            const Icon(Icons.location_pin, color: Colors.red)),
+                    // Marker(
+                    //   width: 80.0,
+                    //   height: 80.0,
+                    //   point: LatLng(userLatitudeData, userLongitudeData),
+                    //   builder: (ctx) => const Icon(Icons.location_pin, color: Colors.red)
+                    // ),
+                  ],
+                ),
+              ]),
+        )
     ]);
   }
 
