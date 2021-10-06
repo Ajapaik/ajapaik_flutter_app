@@ -208,42 +208,46 @@ class RephotoScreen extends StatefulWidget {
     return Column(children: [
       Flexible(
           child: GestureDetector(
-            onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                      builder: (context) => ManiPhoto(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ManiPhoto(
                         historicalPhotoUri: widget.historicalPhotoUri,
-                        )));
+                      )));
         },
-                  child: Image.network(widget.historicalPhotoUri),
+        child: Image.network(widget.historicalPhotoUri),
       )),
-      //Insert EdgeInsets here !!!
-      Text(widget.historicalAuthor + ', ' + widget.historicalDate, maxLines: 2),
-      const SizedBox(height: 10),
-      Text(
-        widget.historicalName,
-        maxLines: 5,
-        overflow: TextOverflow.ellipsis,
-      ),
-      const SizedBox(height: 10),
-      RichText(
-        text: TextSpan(
-            text: widget.historicalLabel,
-            style: const TextStyle(
-              color: Colors.blue,
-              decoration: TextDecoration.underline,
+      Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: Column(children: [
+            Text(widget.historicalAuthor + ', ' + widget.historicalDate,
+                maxLines: 2),
+            const SizedBox(height: 10),
+            Text(
+              widget.historicalName,
+              maxLines: 5,
+              overflow: TextOverflow.ellipsis,
             ),
-            recognizer: TapGestureRecognizer()
-              ..onTap = () async {
-                if (await canLaunch(widget.historicalSurl)) {
-                  await launch(widget.historicalSurl);
-                } else {
-                  throw 'Could not launch $widget.historicalSurl';
-                }
-              }),
-      ),
-      const SizedBox(height: 10),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                  text: widget.historicalLabel,
+                  style: const TextStyle(
+                    color: Colors.blue,
+                    decoration: TextDecoration.underline,
+                  ),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () async {
+                      if (await canLaunch(widget.historicalSurl)) {
+                        await launch(widget.historicalSurl);
+                      } else {
+                        throw 'Could not launch $widget.historicalSurl';
+                      }
+                    }),
+            ),
+            const SizedBox(height: 10),
+          ])),
       if (tooltip == true)
         Expanded(
           child: FlutterMap(
