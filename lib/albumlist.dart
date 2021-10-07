@@ -109,7 +109,10 @@ class AlbumListPageState extends State<AlbumListPage> {
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {
           if (index == 1) {
-            Get.to(() => const MapScreen());
+            Get.to(() => const MapScreen(
+
+
+            ));
           }
         },
         items: const <BottomNavigationBarItem>[

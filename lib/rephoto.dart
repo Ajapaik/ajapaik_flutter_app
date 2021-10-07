@@ -341,7 +341,8 @@ class RephotoScreen extends StatefulWidget {
   }
 
   _launchTIFY() async {
-    const url = 'https://demo.tify.rocks/demo.html?manifest=https://ajapaik.ee/photo/199152/v2/manifest.json&tify={%22panX%22:0.5,%22panY%22:0.375,%22view%22:%22info%22,%22zoom%22:0.001}';
+    const url =
+        'https://demo.tify.rocks/demo.html?manifest=https://ajapaik.ee/photo/199152/v2/manifest.json&tify={%22panX%22:0.5,%22panY%22:0.375,%22view%22:%22info%22,%22zoom%22:0.001}';
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -349,13 +350,13 @@ class RephotoScreen extends StatefulWidget {
     }
   }
 
-    _launchInfo() async {
-      if (await canLaunch(widget.historicalSurl)) {
-        await launch(widget.historicalSurl);
-      } else {
-        throw 'Could not launch $widget.historicalSurl';
-      }
+  _launchInfo() async {
+    if (await canLaunch(widget.historicalSurl)) {
+      await launch(widget.historicalSurl);
+    } else {
+      throw 'Could not launch $widget.historicalSurl';
     }
+  }
 
   // _showMap() async {
   //   double latitude = 0;
