@@ -6,34 +6,49 @@ import 'package:latlong2/latlong.dart';
 import 'data/album.geojson.dart';
 
 class MapScreen extends StatefulWidget {
-  final List<Album>? albums;
+  // final List<Album>? albums;
 
-  const MapScreen({Key? key, this.albums}) : super(key: key);
+  const MapScreen({Key? key}) : super(key: key);
 
-  Future<void> getAlbumCoordinates(context, index) async {
-    var albumCoordinates = albums!.first.features[index].geometry;
-  }
+  // Future<void> getAlbumCoordinates(context, index) async {
+  //   var albumCoordinates = albums!.first.features[index].geometry;
+  // }
 
   @override
   _UserLocationState createState() => _UserLocationState();
 }
 
 class _UserLocationState extends State<MapScreen> {
-  double userLatitudeData = 0;
-  double userLongitudeData = 0;
 
-  bool showMap = false;
+  late final List<Album>? albums;
+
+
+  final Future<Position> _location = Future<Position>.delayed(
+    const Duration(seconds: 2),
+        () =>  Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high),
+  );
+
+  //Load coordinates from album.geometry into a variable which then would be used to split again
+  //into latitude and longitude to then pass on to the list where it could be used in making the markers for map
+  Future _loadCoordinates(context, index) async {
+    var markerCoordinates = albums!.first.features[index].geometry;
+    setState(() {
+      return markerCoordinates;
+      });
+  }
+
+  //Return all the coordinates here on this list and distribute them as markers on fluttermap
+  List<Marker> allMarkers =[];
 
   @override
   void initState() {
     getCurrentLocation();
     super.initState();
-    Future.delayed(const Duration(milliseconds: 100), () {
-      setState(() {
-        showMap = true;
-      });
-    });
   }
+
+  double userLatitudeData = 0;
+  double userLongitudeData = 0;
 
   Future getCurrentLocation() async {
     final geoPosition = await Geolocator.getCurrentPosition(
@@ -51,15 +66,16 @@ class _UserLocationState extends State<MapScreen> {
         appBar: AppBar(title: const Text('Map')),
         body: Column(children: [
           Expanded(
-              child: FutureBuilder(builder: (BuildContext context,
+              child: FutureBuilder(                 //Instancing 2 different futures, can't pass index 'why?'
+                  future: Future.wait([_location, _loadCoordinates(context,index) ]),
+                  builder: (BuildContext context,
                   AsyncSnapshot<dynamic> snapshot) {
-                if (snapshot.data != 0) {
-                  return _buildFlutterMap(context);
-                } else if (snapshot.data == 0) {
-                }
-                return const LinearProgressIndicator (value: null);
-              },
-              )
+                  if (snapshot.hasError) (snapshot.error);
+                  return snapshot.hasData ?
+                  _buildFlutterMap(context)
+                      : const Center (
+                      child: LinearProgressIndicator(value: null));
+                })
           )
         ]
         )
@@ -86,6 +102,7 @@ class _UserLocationState extends State<MapScreen> {
           ),
           MarkerLayerOptions(
             markers: [
+              Set.from(allMarkers),
               Marker(
                   width: 80.0,
                   height: 80.0,
