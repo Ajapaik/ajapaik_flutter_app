@@ -8,7 +8,11 @@ import 'data/album.geojson.dart';
 class MapScreen extends StatefulWidget {
   // final List<Album>? albums;
 
-  const MapScreen({Key? key}) : super(key: key);
+  final Geometry markerCoordinates;
+
+  const MapScreen({Key? key,
+    required this.markerCoordinates})
+      : super(key: key);
 
   // Future<void> getAlbumCoordinates(context, index) async {
   //   var albumCoordinates = albums!.first.features[index].geometry;
@@ -20,26 +24,13 @@ class MapScreen extends StatefulWidget {
 
 class _UserLocationState extends State<MapScreen> {
 
-  late final List<Album>? albums;
-
-
   final Future<Position> _location = Future<Position>.delayed(
     const Duration(seconds: 2),
         () =>  Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high),
   );
 
-  //Load coordinates from album.geometry into a variable which then would be used to split again
-  //into latitude and longitude to then pass on to the list where it could be used in making the markers for map
-  Future _loadCoordinates(context, index) async {
-    var markerCoordinates = albums!.first.features[index].geometry;
-    setState(() {
-      return markerCoordinates;
-      });
-  }
-
-  //Return all the coordinates here on this list and distribute them as markers on fluttermap
-  List<Marker> allMarkers =[];
+  // List<Marker> allMarkers =[];
 
   @override
   void initState() {
@@ -64,10 +55,11 @@ class _UserLocationState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: const Text('Map')),
-        body: Column(children: [
+        body: Column(
+            children: [
           Expanded(
               child: FutureBuilder(                 //Instancing 2 different futures, can't pass index 'why?'
-                  future: Future.wait([_location, _loadCoordinates(context,index) ]),
+                  future: _location,
                   builder: (BuildContext context,
                   AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.hasError) (snapshot.error);
@@ -76,12 +68,11 @@ class _UserLocationState extends State<MapScreen> {
                       : const Center (
                       child: LinearProgressIndicator(value: null));
                 })
-          )
+          ),
         ]
         )
     );
   }
-
 
   Widget _buildFlutterMap(BuildContext context) {
     return FlutterMap(
@@ -102,7 +93,7 @@ class _UserLocationState extends State<MapScreen> {
           ),
           MarkerLayerOptions(
             markers: [
-              Set.from(allMarkers),
+              //Set.from(allMarkers),
               Marker(
                   width: 80.0,
                   height: 80.0,
