@@ -13,13 +13,13 @@ import 'rephoto.dart';
 // ignore: must_be_immutable
 class AlbumListPage extends StatefulWidget {
   final controller = Get.put(Controller());
-  final List<Album>? albums;
+
   String pageTitle = "";
   String dataSourceUrl = "";
 
-  AlbumListPage({Key? key, this.albums}) : super(key: key);
+  AlbumListPage({Key? key}) : super(key: key);
 
-  AlbumListPage.network(this.pageTitle, this.dataSourceUrl, {Key? key, this.albums})
+  AlbumListPage.network(this.pageTitle, this.dataSourceUrl, {Key? key})
       : super(key: key);
 
   @override
@@ -109,13 +109,16 @@ class AlbumListPageState extends State<AlbumListPage> {
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) async {
           if (index == 1) {
-            await Navigator.push(
-                context,
-                MaterialPageRoute(
-                builder: (context) => MapScreen(
-              markerCoordinates: widget.albums!.first.features[index].geometry,
-              )
-            ));
+            var a = await _albumData;
+            if (a != null) {
+              await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MapScreen(
+                        markerCoordinates: Geometry.empty(),
+                        markerCoordinatesList: a.first.features,
+                          )));
+            }
           }
         },
         items: const <BottomNavigationBarItem>[

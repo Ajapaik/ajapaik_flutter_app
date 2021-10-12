@@ -30,7 +30,7 @@ class RephotoScreen extends StatefulWidget {
 
   final Geometry historicalCoordinates;
 
-  const RephotoScreen({Key? key,
+  RephotoScreen({Key? key,
     required this.historicalPhotoId,
     required this.historicalPhotoUri,
     required this.historicalName,

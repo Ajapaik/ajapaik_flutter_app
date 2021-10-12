@@ -6,17 +6,15 @@ import 'package:latlong2/latlong.dart';
 import 'data/album.geojson.dart';
 
 class MapScreen extends StatefulWidget {
-  // final List<Album>? albums;
 
   final Geometry markerCoordinates;
+  final List<Feature> markerCoordinatesList;
 
   const MapScreen({Key? key,
-    required this.markerCoordinates})
+    required this.markerCoordinates,
+    required this.markerCoordinatesList,
+    })
       : super(key: key);
-
-  // Future<void> getAlbumCoordinates(context, index) async {
-  //   var albumCoordinates = albums!.first.features[index].geometry;
-  // }
 
   @override
   _UserLocationState createState() => _UserLocationState();
@@ -30,10 +28,46 @@ class _UserLocationState extends State<MapScreen> {
         desiredAccuracy: LocationAccuracy.high),
   );
 
-  // List<Marker> allMarkers =[];
+  void listToMarkers() {
+    List list = widget.markerCoordinatesList;
+    setState(() {
+      for (int x = 0; x < list.length; x++) {
+        double latitude = list[x]['lat'];
+        double longitude = list[x]['long'];
+        LatLng location = LatLng(latitude, longitude);
+        if (list.contains(location)) {
+          list.clear();
+          list.add(location);
+        } else {
+          list.add(location);
+        }
+
+        //Passing a dynamic marker id as the index here.
+        addMarker(list[x], x);
+      }
+    });
+  }
+
+  void addMarker(loc, index) {
+    //Making this markerId dynamic
+    final MarkerId markerId = MarkerId('Marker $index');
+
+    final Marker marker = Marker(
+      markerId: markerId,
+      position: LatLng(loc.latitude, loc.longitude),
+      infoWindow: InfoWindow(title: 'test'),
+    );
+
+    setState(() {
+      // adding a new marker to map
+      markers[markerId] = marker;
+      //print(marker);
+    });
+  }
 
   @override
   void initState() {
+    listToMarkers();
     getCurrentLocation();
     super.initState();
   }
@@ -58,7 +92,7 @@ class _UserLocationState extends State<MapScreen> {
         body: Column(
             children: [
           Expanded(
-              child: FutureBuilder(                 //Instancing 2 different futures, can't pass index 'why?'
+              child: FutureBuilder(
                   future: _location,
                   builder: (BuildContext context,
                   AsyncSnapshot<dynamic> snapshot) {
@@ -69,12 +103,19 @@ class _UserLocationState extends State<MapScreen> {
                       child: LinearProgressIndicator(value: null));
                 })
           ),
-        ]
-        )
+        ]),
     );
   }
 
   Widget _buildFlutterMap(BuildContext context) {
+
+    double imagelatitude = 0;
+    double imagelongitude = 0;
+    if (!widget.markerCoordinates.coordinates.isEmpty) {
+      imagelatitude = widget.markerCoordinates.coordinates[0];
+      imagelongitude = widget.markerCoordinates.coordinates[1];
+    }
+
     return FlutterMap(
         options: MapOptions(
           center: LatLng(userLatitudeData, userLongitudeData),
@@ -93,11 +134,17 @@ class _UserLocationState extends State<MapScreen> {
           ),
           MarkerLayerOptions(
             markers: [
-              //Set.from(allMarkers),
+              Set.of(markers.values),
               Marker(
                   width: 80.0,
                   height: 80.0,
                   point: LatLng(userLatitudeData, userLongitudeData),
+                  builder: (ctx) => const Icon(Icons.location_pin,
+                      color: Colors.red)),
+              Marker(
+                  width: 80.0,
+                  height: 80.0,
+                  point: LatLng(imagelatitude, imagelongitude),
                   builder: (ctx) => const Icon(Icons.location_pin,
                       color: Colors.red)),
             ],
