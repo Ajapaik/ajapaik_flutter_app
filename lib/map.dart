@@ -22,6 +22,9 @@ class MapScreen extends StatefulWidget {
 
 class _UserLocationState extends State<MapScreen> {
 
+  List<Marker> markerList = [];
+  Set<Polyline> polyline={};
+
   final Future<Position> _location = Future<Position>.delayed(
     const Duration(seconds: 2),
         () =>  Geolocator.getCurrentPosition(
@@ -31,15 +34,20 @@ class _UserLocationState extends State<MapScreen> {
   void listToMarkers() {
     List list = widget.markerCoordinatesList;
     setState(() {
+      markerList.clear();
+      polyline.clear();
       for (int x = 0; x < list.length; x++) {
-        double latitude = list[x]['lat'];
-        double longitude = list[x]['long'];
-        LatLng location = LatLng(latitude, longitude);
-        if (list.contains(location)) {
-          list.clear();
-          list.add(location);
-        } else {
-          list.add(location);
+        if (list[x].geometry.coordinates.length > 0) {
+          double latitude = list[x].geometry.coordinates[0];
+          double longitude = list[x].geometry.coordinates[1];
+          var m = Marker(
+              width: 80.0,
+              height: 80.0,
+              point: LatLng(latitude, longitude),
+              builder: (ctx) =>
+              const Icon(Icons.location_pin,
+                  color: Colors.red));
+          markerList.add(m);
         }
       }
     });
@@ -89,12 +97,16 @@ class _UserLocationState extends State<MapScreen> {
 
   Widget _buildFlutterMap(BuildContext context) {
 
-    double imagelatitude = 0;
-    double imagelongitude = 0;
-    if (!widget.markerCoordinates.coordinates.isEmpty) {
-      imagelatitude = widget.markerCoordinates.coordinates[0];
-      imagelongitude = widget.markerCoordinates.coordinates[1];
-    }
+    var points = <LatLng>[
+      LatLng(userLatitudeData, userLongitudeData)
+    ];
+
+    // double imagelatitude = 0;
+    // double imagelongitude = 0;
+    // if (!widget.markerCoordinates.coordinates.isEmpty) {
+    //   imagelatitude = widget.markerCoordinates.coordinates[0];
+    //   imagelongitude = widget.markerCoordinates.coordinates[1];
+    // }
 
     return FlutterMap(
         options: MapOptions(
@@ -112,21 +124,17 @@ class _UserLocationState extends State<MapScreen> {
               return const Text("© OpenStreetMap contributors");
             },
           ),
+          PolylineLayerOptions(
+            polylines: [
+              Polyline(
+                points: points,
+                strokeWidth: 20.0,
+                color: Colors.blue
+              )
+            ]
+          ),
           MarkerLayerOptions(
-            markers: [
-              Marker(
-                  width: 80.0,
-                  height: 80.0,
-                  point: LatLng(userLatitudeData, userLongitudeData),
-                  builder: (ctx) => const Icon(Icons.location_pin,
-                      color: Colors.red)),
-              Marker(
-                  width: 80.0,
-                  height: 80.0,
-                  point: LatLng(imagelatitude, imagelongitude),
-                  builder: (ctx) => const Icon(Icons.location_pin,
-                      color: Colors.red)),
-            ],
+            markers: markerList,
           ),
         ]
     );
@@ -168,5 +176,12 @@ class _UserLocationState extends State<MapScreen> {
 //               ]))
 //       ]));
 // }
+
+// Marker(
+// width: 80.0,
+// height: 80.0,
+// points: LatLng(userLatitudeData, userLongitudeData),
+// builder: (ctx) => const Icon(Icons.location_pin,
+// color: Colors.blue)),
 
 
