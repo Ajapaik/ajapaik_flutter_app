@@ -23,7 +23,6 @@ class MapScreen extends StatefulWidget {
 class _UserLocationState extends State<MapScreen> {
 
   List<Marker> markerList = [];
-  Set<Polyline> polyline={};
 
   final Future<Position> _location = Future<Position>.delayed(
     const Duration(seconds: 2),
@@ -35,7 +34,6 @@ class _UserLocationState extends State<MapScreen> {
     List list = widget.markerCoordinatesList;
     setState(() {
       markerList.clear();
-      polyline.clear();
       for (int x = 0; x < list.length; x++) {
         if (list[x].geometry.coordinates.length > 0) {
           double latitude = list[x].geometry.coordinates[0];
@@ -52,6 +50,26 @@ class _UserLocationState extends State<MapScreen> {
       }
     });
   }
+
+  // void updateLocation() async {
+  //   try {
+  //     Future<Position> newPosition = await _location
+  //         .getCurrentPosition(
+  //       desiredAccuracy: LocationAccuracy.bestForNavigation,
+  //     )
+  //         .timeout(new Duration(seconds: 5));
+  //     print(
+  //         'updateLocation(): ${newPosition.latitude.toString() + ',' + newPosition.longitude.toString()}');
+  //
+  //     setState(() {
+  //       _location = newPosition;
+  //       setMap();
+  //     });
+  //   } catch (error) {
+  //     print('Error updating location: ${error.toString()}');
+  //   }
+  // }
+
 
   @override
   void initState() {
@@ -97,9 +115,9 @@ class _UserLocationState extends State<MapScreen> {
 
   Widget _buildFlutterMap(BuildContext context) {
 
-    var points = <LatLng>[
-      LatLng(userLatitudeData, userLongitudeData)
-    ];
+    // var points = <LatLng>[
+    //   LatLng(userLatitudeData, userLongitudeData)
+    // ];
 
     // double imagelatitude = 0;
     // double imagelongitude = 0;
@@ -111,33 +129,38 @@ class _UserLocationState extends State<MapScreen> {
     return FlutterMap(
         options: MapOptions(
           center: LatLng(userLatitudeData, userLongitudeData),
-          interactiveFlags:
-          InteractiveFlag.pinchZoom | InteractiveFlag.drag,
+          interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
           zoom: 13.0,
         ),
         layers: [
           TileLayerOptions(
-            urlTemplate:
-            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
             subdomains: ['a', 'b', 'c'],
             attributionBuilder: (_) {
               return const Text("© OpenStreetMap contributors");
             },
           ),
-          PolylineLayerOptions(
-            polylines: [
-              Polyline(
-                points: points,
-                strokeWidth: 20.0,
-                color: Colors.blue
-              )
-            ]
-          ),
+          // PolylineLayerOptions(
+          //   polylines: [
+          //     Polyline(
+          //       points: points,
+          //       strokeWidth: 20.0,
+          //       color: Colors.blue
+          //     )
+          //   ]
+          // ),
           MarkerLayerOptions(
             markers: markerList,
           ),
-        ]
-    );
+          MarkerLayerOptions(markers: [
+            Marker(
+                width: 80.0,
+                height: 80.0,
+                point: LatLng(userLatitudeData, userLongitudeData),
+                builder: (ctx) =>
+                    const Icon(Icons.location_pin, color: Colors.blue)),
+          ])
+        ]);
   }
 }
 // @override
@@ -176,12 +199,5 @@ class _UserLocationState extends State<MapScreen> {
 //               ]))
 //       ]));
 // }
-
-// Marker(
-// width: 80.0,
-// height: 80.0,
-// points: LatLng(userLatitudeData, userLongitudeData),
-// builder: (ctx) => const Icon(Icons.location_pin,
-// color: Colors.blue)),
 
 
