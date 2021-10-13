@@ -41,27 +41,7 @@ class _UserLocationState extends State<MapScreen> {
         } else {
           list.add(location);
         }
-
-        //Passing a dynamic marker id as the index here.
-        addMarker(list[x], x);
       }
-    });
-  }
-
-  void addMarker(loc, index) {
-    //Making this markerId dynamic
-    final MarkerId markerId = MarkerId('Marker $index');
-
-    final Marker marker = Marker(
-      markerId: markerId,
-      position: LatLng(loc.latitude, loc.longitude),
-      infoWindow: InfoWindow(title: 'test'),
-    );
-
-    setState(() {
-      // adding a new marker to map
-      markers[markerId] = marker;
-      //print(marker);
     });
   }
 
@@ -134,7 +114,6 @@ class _UserLocationState extends State<MapScreen> {
           ),
           MarkerLayerOptions(
             markers: [
-              Set.of(markers.values),
               Marker(
                   width: 80.0,
                   height: 80.0,
