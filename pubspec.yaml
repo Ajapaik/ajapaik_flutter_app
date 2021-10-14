@@ -53,6 +53,7 @@ dependencies:
   path_provider:
   shared_preferences: ^2.0.8
   latlong2: ^0.8.1
+  location: ^4.2.0
 
 dev_dependencies:
   flutter_test:

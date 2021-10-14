@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -81,15 +82,30 @@ class _UserLocationState extends State<MapScreen> {
   double userLatitudeData = 0;
   double userLongitudeData = 0;
 
-  Future getCurrentLocation() async {
-    final geoPosition = await Geolocator.getCurrentPosition(
+  void getCurrentLocation() async {
+
+    var geoPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
 
-    setState(() {
-      userLatitudeData = geoPosition.latitude;
-      userLongitudeData = geoPosition.longitude;
-    });
+      setState(() {
+        userLatitudeData = geoPosition.latitude;
+        userLongitudeData = geoPosition.longitude;
+      });
   }
+
+  // Stream<void> listenCurrentLocation() async* {
+  //
+  //   Stream<Position> position = Geolocator.getPositionStream(desiredAccuracy:
+  //   LocationAccuracy.high, timeLimit: const Duration(seconds: 5));
+  //   position.listen((position) {
+  //     try {
+  //       final CurrentPositionMarker = Marker((marker) => marker.markerId.value == 'm1');
+  //       currentPositionMarker.copyWith(positionParam: LatLng(geoPosition.latitude, geoPosition.longitude));
+  //     } catch (_) {}
+  //         }
+  //     );
+  //   }
+
 
   @override
   Widget build(BuildContext context) {
