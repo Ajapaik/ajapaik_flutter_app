@@ -96,9 +96,9 @@ class _UserLocationState extends State<MapScreen> {
   void listenCurrentLocation() {
 
     Stream<Position> position = Geolocator.getPositionStream(desiredAccuracy:
-    LocationAccuracy.high, timeLimit: const Duration(seconds: 5));
+    LocationAccuracy.high, timeLimit: const Duration(seconds: 5), distanceFilter: 10);
     position.listen((position) {
-      if(position != userLatitudeData && position != userLongitudeData) {
+      if(position.latitude != userLatitudeData && position.longitude != userLongitudeData ) {
         return getCurrentLocation();
           }
         }
