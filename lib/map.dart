@@ -93,18 +93,17 @@ class _UserLocationState extends State<MapScreen> {
       });
   }
 
-  // Stream<void> listenCurrentLocation() async* {
-  //
-  //   Stream<Position> position = Geolocator.getPositionStream(desiredAccuracy:
-  //   LocationAccuracy.high, timeLimit: const Duration(seconds: 5));
-  //   position.listen((position) {
-  //     try {
-  //       final CurrentPositionMarker = Marker((marker) => marker.markerId.value == 'm1');
-  //       currentPositionMarker.copyWith(positionParam: LatLng(geoPosition.latitude, geoPosition.longitude));
-  //     } catch (_) {}
-  //         }
-  //     );
-  //   }
+  Stream<void> listenCurrentLocation() async* {
+
+    Stream<Position> position = Geolocator.getPositionStream(desiredAccuracy:
+    LocationAccuracy.high, timeLimit: const Duration(seconds: 5));
+    position.listen((position) {
+      if(position != userLatitudeData && position != userLongitudeData) {
+        return getCurrentLocation();
+          }
+        }
+      );
+    }
 
 
   @override
