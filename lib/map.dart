@@ -75,7 +75,7 @@ class _UserLocationState extends State<MapScreen> {
   @override
   void initState() {
     listToMarkers();
-    getCurrentLocation();
+    listenCurrentLocation();
     super.initState();
   }
 
@@ -93,7 +93,7 @@ class _UserLocationState extends State<MapScreen> {
       });
   }
 
-  Stream<void> listenCurrentLocation() async* {
+  void listenCurrentLocation() {
 
     Stream<Position> position = Geolocator.getPositionStream(desiredAccuracy:
     LocationAccuracy.high, timeLimit: const Duration(seconds: 5));
