@@ -13,6 +13,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'camera.dart';
 import 'data/draft.json.dart';
 import 'data/album.geojson.dart';
+import 'imagemapscreen.dart';
 import 'map.dart';
 import 'photomanipulation.dart';
 import 'package:share_plus/share_plus.dart';
@@ -256,7 +257,10 @@ class RephotoScreen extends StatefulWidget {
               await Navigator.push(
                   context,
                   MaterialPageRoute(
-                  builder: (context) => MapScreen()));
+                   builder: (context) => ImageMapScreen(
+                     imageLatitude: latitude,
+                     imageLongitude: longitude,
+                  )));
             },
             child: FlutterMap(
                 options: MapOptions(
