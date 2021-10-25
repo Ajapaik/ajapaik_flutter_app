@@ -13,6 +13,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'camera.dart';
 import 'data/draft.json.dart';
 import 'data/album.geojson.dart';
+import 'map.dart';
 import 'photomanipulation.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:latlong2/latlong.dart';
@@ -250,39 +251,47 @@ class RephotoScreen extends StatefulWidget {
           ])),
       if (tooltip == true)
         Expanded(
-          child: FlutterMap(
-              options: MapOptions(
-                center: LatLng(latitude, longitude),
-                interactiveFlags:
-                    InteractiveFlag.pinchZoom | InteractiveFlag.drag,
-                zoom: 13.0,
-              ),
-              layers: [
-                TileLayerOptions(
-                  urlTemplate:
-                      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                  subdomains: ['a', 'b', 'c'],
-                  attributionBuilder: (_) {
-                    return const Text("© OpenStreetMap contributors");
-                  },
+          child: GestureDetector(
+            onLongPress: () async {
+              await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                  builder: (context) => MapScreen()));
+            },
+            child: FlutterMap(
+                options: MapOptions(
+                  center: LatLng(latitude, longitude),
+                  interactiveFlags:
+                  InteractiveFlag.pinchZoom | InteractiveFlag.drag,
+                  zoom: 13.0,
                 ),
-                MarkerLayerOptions(
-                  markers: [
-                    Marker(
-                        width: 80.0,
-                        height: 80.0,
-                        point: LatLng(latitude, longitude),
-                        builder: (ctx) =>
-                            const Icon(Icons.location_pin, color: Colors.red)),
-                    // Marker(
-                    //   width: 80.0,
-                    //   height: 80.0,
-                    //   point: LatLng(userLatitudeData, userLongitudeData),
-                    //   builder: (ctx) => const Icon(Icons.location_pin, color: Colors.red)
-                    // ),
-                  ],
-                ),
-              ]),
+                layers: [
+                  TileLayerOptions(
+                    urlTemplate:
+                    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                    subdomains: ['a', 'b', 'c'],
+                    attributionBuilder: (_) {
+                      return const Text("© OpenStreetMap contributors");
+                    },
+                  ),
+                  MarkerLayerOptions(
+                    markers: [
+                      Marker(
+                          width: 80.0,
+                          height: 80.0,
+                          point: LatLng(latitude, longitude),
+                          builder: (ctx) =>
+                          const Icon(Icons.location_pin, color: Colors.red)),
+                      // Marker(
+                      //   width: 80.0,
+                      //   height: 80.0,
+                      //   point: LatLng(userLatitudeData, userLongitudeData),
+                      //   builder: (ctx) => const Icon(Icons.location_pin, color: Colors.red)
+                      // ),
+                    ],
+                  ),
+                ]),
+          )
         )
     ]);
   }

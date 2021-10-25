@@ -10,10 +10,14 @@ class MapScreen extends StatefulWidget {
 
   final Geometry markerCoordinates;
   final List<Feature> markerCoordinatesList;
+  final double userLatitudeData;
+  final double userLongitudeData;
 
   const MapScreen({Key? key,
     required this.markerCoordinates,
     required this.markerCoordinatesList,
+    required this.userLatitudeData,
+    required this.userLongitudeData,
     })
       : super(key: key);
 
@@ -51,26 +55,6 @@ class _UserLocationState extends State<MapScreen> {
       }
     });
   }
-
-  // void updateLocation() async {
-  //   try {
-  //     Future<Position> newPosition = await _location
-  //         .getCurrentPosition(
-  //       desiredAccuracy: LocationAccuracy.bestForNavigation,
-  //     )
-  //         .timeout(new Duration(seconds: 5));
-  //     print(
-  //         'updateLocation(): ${newPosition.latitude.toString() + ',' + newPosition.longitude.toString()}');
-  //
-  //     setState(() {
-  //       _location = newPosition;
-  //       setMap();
-  //     });
-  //   } catch (error) {
-  //     print('Error updating location: ${error.toString()}');
-  //   }
-  // }
-
 
   @override
   void initState() {
@@ -120,8 +104,33 @@ class _UserLocationState extends State<MapScreen> {
                   if (snapshot.hasError) (snapshot.error);
                   return snapshot.hasData ?
                   _buildFlutterMap(context)
-                      : const Center (
-                      child: LinearProgressIndicator(value: null));
+                      : Center (
+                      child: FlutterMap(
+                          options: MapOptions(
+                            center: LatLng(widget.userLatitudeData, widget.userLongitudeData),
+                            interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
+                            zoom: 13.0,
+                          ),
+                          layers: [
+                            TileLayerOptions(
+                              urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                              subdomains: ['a', 'b', 'c'],
+                              attributionBuilder: (_) {
+                                return const Text("© OpenStreetMap contributors");
+                              },
+                            ),
+                            MarkerLayerOptions(
+                              markers: markerList,
+                            ),
+                            MarkerLayerOptions(markers: [
+                              Marker(
+                                  width: 80.0,
+                                  height: 80.0,
+                                  point: LatLng(widget.userLatitudeData, widget.userLongitudeData),
+                                  builder: (ctx) =>
+                                  const Icon(Icons.location_pin, color: Colors.blue)),
+                            ])
+                          ]));
                 })
           ),
         ]),
@@ -129,17 +138,6 @@ class _UserLocationState extends State<MapScreen> {
   }
 
   Widget _buildFlutterMap(BuildContext context) {
-
-    // var points = <LatLng>[
-    //   LatLng(userLatitudeData, userLongitudeData)
-    // ];
-
-    // double imagelatitude = 0;
-    // double imagelongitude = 0;
-    // if (!widget.markerCoordinates.coordinates.isEmpty) {
-    //   imagelatitude = widget.markerCoordinates.coordinates[0];
-    //   imagelongitude = widget.markerCoordinates.coordinates[1];
-    // }
 
     return FlutterMap(
         options: MapOptions(
@@ -155,15 +153,6 @@ class _UserLocationState extends State<MapScreen> {
               return const Text("© OpenStreetMap contributors");
             },
           ),
-          // PolylineLayerOptions(
-          //   polylines: [
-          //     Polyline(
-          //       points: points,
-          //       strokeWidth: 20.0,
-          //       color: Colors.blue
-          //     )
-          //   ]
-          // ),
           MarkerLayerOptions(
             markers: markerList,
           ),
@@ -177,8 +166,6 @@ class _UserLocationState extends State<MapScreen> {
           ])
         ]);
   }
-
-  //testi
 }
 // @override
 // Widget build(BuildContext context) {

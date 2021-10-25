@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:ajapaik_flutter_app/data/album.geojson.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -65,8 +66,23 @@ class AlbumListPageState extends State<AlbumListPage> {
     return url;
   }
 
+  double userLatitudeData = 0;
+  double userLongitudeData = 0;
+
+  void getCurrentLocation() async {
+
+    var geoPosition = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    setState(() {
+      userLatitudeData = geoPosition.latitude;
+      userLongitudeData = geoPosition.longitude;
+    });
+  }
+
   @override
   void initState() {
+    getCurrentLocation();
     refresh();
     super.initState();
   }
@@ -115,6 +131,8 @@ class AlbumListPageState extends State<AlbumListPage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => MapScreen(
+                        userLatitudeData: userLatitudeData,
+                        userLongitudeData: userLongitudeData,
                         markerCoordinates: Geometry.empty(),
                         markerCoordinatesList: a.first.features,
                           )));
