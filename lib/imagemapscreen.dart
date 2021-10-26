@@ -9,10 +9,12 @@ class ImageMapScreen extends StatefulWidget {
 
   final double imageLatitude;
   final double imageLongitude;
+  final String historicalPhotoUri;
 
   const ImageMapScreen({Key? key,
       required this.imageLatitude,
       required this.imageLongitude,
+      required this.historicalPhotoUri,
   })
       :super(key: key);
 
@@ -100,22 +102,21 @@ class ImageMapState extends State<ImageMapScreen> {
                                       const Icon(Icons.location_pin, color: Colors.blue)),
                                 ]),
                                 MarkerLayerOptions(markers: [
-                                  Marker(
-                                      width: 80.0,
-                                      height: 80.0,
-                                      point: LatLng(widget.imageLatitude, widget.imageLongitude),
-                                      builder: (ctx) =>
-                                      const Icon(Icons.location_pin, color: Colors.red)),
-                                ])
-                              ]));
-                    })
-            ),
-          ]),
+                                Marker(
+                                    width: 80.0,
+                                    height: 80.0,
+                                    point: LatLng(widget.imageLatitude,
+                                        widget.imageLongitude),
+                                    builder: (ctx) =>
+                                    const Icon(Icons.location_pin, color: Colors.red)),
+                              ])
+                            ]));
+                })),
+      ]),
     );
   }
 
   Widget _buildFlutterMap(BuildContext context) {
-
     return FlutterMap(
         options: MapOptions(
           center: LatLng(widget.imageLatitude, widget.imageLongitude),
@@ -136,15 +137,27 @@ class ImageMapState extends State<ImageMapScreen> {
                 height: 80.0,
                 point: LatLng(userLatitudeData, userLongitudeData),
                 builder: (ctx) =>
-                const Icon(Icons.location_pin, color: Colors.blue)),
+                    const Icon(Icons.location_pin, color: Colors.blue)),
           ]),
           MarkerLayerOptions(markers: [
             Marker(
                 width: 80.0,
                 height: 80.0,
                 point: LatLng(widget.imageLatitude, widget.imageLongitude),
-                builder: (ctx) =>
-                const Icon(Icons.location_pin, color: Colors.red)),
+                builder: (ctx) => IconButton(
+                      icon: const Icon(Icons.location_pin, color: Colors.red),
+                      onPressed: () {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (builder) {
+                              return Container(
+                                  color: Colors.white,
+                                  child: Expanded(
+                                    child: Image.network(widget.historicalPhotoUri),
+                                  ));
+                            });
+                      },
+                    ))
           ])
         ]);
   }

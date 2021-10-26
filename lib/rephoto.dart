@@ -260,6 +260,7 @@ class RephotoScreen extends StatefulWidget {
                    builder: (context) => ImageMapScreen(
                      imageLatitude: latitude,
                      imageLongitude: longitude,
+                     historicalPhotoUri: widget.historicalPhotoUri,
                   )));
             },
             child: FlutterMap(
@@ -286,12 +287,6 @@ class RephotoScreen extends StatefulWidget {
                           point: LatLng(latitude, longitude),
                           builder: (ctx) =>
                           const Icon(Icons.location_pin, color: Colors.red)),
-                      // Marker(
-                      //   width: 80.0,
-                      //   height: 80.0,
-                      //   point: LatLng(userLatitudeData, userLongitudeData),
-                      //   builder: (ctx) => const Icon(Icons.location_pin, color: Colors.red)
-                      // ),
                     ],
                   ),
                 ]),
