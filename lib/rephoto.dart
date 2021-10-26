@@ -253,7 +253,7 @@ class RephotoScreen extends StatefulWidget {
       if (tooltip == true)
         Expanded(
           child: GestureDetector(
-            onLongPress: () async {
+            onDoubleTap: () async {
               await Navigator.push(
                   context,
                   MaterialPageRoute(
