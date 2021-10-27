@@ -34,6 +34,8 @@ class AlbumListPageState extends State<AlbumListPage> {
 
   Future<List<Album>>? _albumData;
 
+  late final List<Album>? albums;
+
   void sorting() async {
     setState(() {
       orderBy = (orderBy == "alpha") ? "distance" : "alpha";
@@ -131,6 +133,8 @@ class AlbumListPageState extends State<AlbumListPage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => MapScreen(
+                        historicalPhotoUri:
+                        albums!.first.features[index].properties.thumbnail.toString(),
                         userLatitudeData: userLatitudeData,
                         userLongitudeData: userLongitudeData,
                         markerCoordinates: Geometry.empty(),

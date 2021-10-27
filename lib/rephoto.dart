@@ -66,6 +66,13 @@ class RephotoScreen extends StatefulWidget {
   @override
   Widget build(BuildContext context) {
 
+    double latitude = 0;
+    double longitude = 0;
+    if (!widget.historicalCoordinates.coordinates.isEmpty) {
+      latitude = widget.historicalCoordinates.coordinates[0];
+      longitude = widget.historicalCoordinates.coordinates[1];
+    }
+
     return Scaffold(
       resizeToAvoidBottomInset : false,
       appBar: AppBar(
@@ -103,6 +110,16 @@ class RephotoScreen extends StatefulWidget {
                     _launchTIFY();
                   }
                   if (result == 3) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ImageMapScreen(
+                              imageLatitude: latitude,
+                              imageLongitude: longitude,
+                              historicalPhotoUri: widget.historicalPhotoUri,
+                            )));
+                  }
+                  if (result == 4) {
                     Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -142,6 +159,14 @@ class RephotoScreen extends StatefulWidget {
                       ),
                       const PopupMenuItem(
                           value: 3,
+                          child: ListTile(
+                            leading: Icon(Icons.map),
+                            title: Text(
+                              'Karttanäkymä',
+                            ),
+                          )),
+                      const PopupMenuItem(
+                          value: 4,
                           child: ListTile(
                             leading: Icon(Icons.settings),
                             title: Text(

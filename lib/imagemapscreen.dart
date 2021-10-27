@@ -68,7 +68,7 @@ class ImageMapState extends State<ImageMapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Map')),
-      body: Column(
+      body: Stack(
           children: [
             Expanded(
                 child: FutureBuilder(
@@ -112,6 +112,11 @@ class ImageMapState extends State<ImageMapScreen> {
                               ])
                             ]));
                 })),
+            Positioned(
+              bottom: 20,
+              left: 20,
+              child: Image.network(widget.historicalPhotoUri, width: 200, height: 100, fit:BoxFit.fill,),
+            ),
       ]),
     );
   }
@@ -144,20 +149,8 @@ class ImageMapState extends State<ImageMapScreen> {
                 width: 80.0,
                 height: 80.0,
                 point: LatLng(widget.imageLatitude, widget.imageLongitude),
-                builder: (ctx) => IconButton(
-                      icon: const Icon(Icons.location_pin, color: Colors.red),
-                      onPressed: () {
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (builder) {
-                              return Container(
-                                  color: Colors.white,
-                                  child: Expanded(
-                                    child: Image.network(widget.historicalPhotoUri),
-                                  ));
-                            });
-                      },
-                    ))
+                builder: (ctx) =>
+                const Icon(Icons.location_pin, color: Colors.red)),
           ])
         ]);
   }

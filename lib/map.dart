@@ -12,12 +12,14 @@ class MapScreen extends StatefulWidget {
   final List<Feature> markerCoordinatesList;
   final double userLatitudeData;
   final double userLongitudeData;
+  final String historicalPhotoUri;
 
   const MapScreen({Key? key,
     required this.markerCoordinates,
     required this.markerCoordinatesList,
     required this.userLatitudeData,
     required this.userLongitudeData,
+    required this.historicalPhotoUri,
     })
       : super(key: key);
 
@@ -48,8 +50,20 @@ class _UserLocationState extends State<MapScreen> {
               height: 80.0,
               point: LatLng(latitude, longitude),
               builder: (ctx) =>
-              const Icon(Icons.location_pin,
-                  color: Colors.red));
+                  IconButton(
+                    icon: const Icon(Icons.location_pin, color: Colors.red),
+                    onPressed: () {
+                      showBottomSheet(
+                          context: context,
+                          builder: (builder) {
+                            return Container(
+                                color: Colors.white,
+                                child: Expanded(
+                                  child: Image.network(widget.historicalPhotoUri),
+                                ));
+                          });
+                    },
+                  ),
           markerList.add(m);
         }
       }
@@ -167,6 +181,7 @@ class _UserLocationState extends State<MapScreen> {
         ]);
   }
 }
+
 // @override
 // Widget build(BuildContext context) {
 //   return Scaffold(
