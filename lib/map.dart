@@ -63,7 +63,7 @@ class _UserLocationState extends State<MapScreen> {
                                 ));
                           });
                     },
-                  ),
+                  ));
           markerList.add(m);
         }
       }
