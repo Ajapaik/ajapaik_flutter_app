@@ -37,9 +37,8 @@ class _UserLocationState extends State<MapScreen> {
         desiredAccuracy: LocationAccuracy.high),
   );
 
-  void listToMarkers() {
+  markersList(context) {
     List list = widget.markerCoordinatesList;
-    setState(() {
       markerList.clear();
       for (int x = 0; x < list.length; x++) {
         if (list[x].geometry.coordinates.length > 0) {
@@ -59,7 +58,7 @@ class _UserLocationState extends State<MapScreen> {
                             return Container(
                                 color: Colors.white,
                                 child: Expanded(
-                                  child: Image.network(widget.historicalPhotoUri),
+                                  child: Image.network(list[x].properties.thumbnail),
                                 ));
                           });
                     },
@@ -67,12 +66,11 @@ class _UserLocationState extends State<MapScreen> {
           markerList.add(m);
         }
       }
-    });
   }
 
   @override
   void initState() {
-    listToMarkers();
+    //listToMarkers();
     listenCurrentLocation();
     super.initState();
   }
@@ -181,42 +179,5 @@ class _UserLocationState extends State<MapScreen> {
         ]);
   }
 }
-
-// @override
-// Widget build(BuildContext context) {
-//   return Scaffold(
-//       appBar: AppBar(title: const Text('Map')),
-//       body: Column(children: [
-//         if (showMap && userLatitudeData != 0 && userLongitudeData != 0)
-//           Expanded(
-//               child: FlutterMap(
-//                   options: MapOptions(
-//                     center: LatLng(userLatitudeData, userLongitudeData),
-//                     interactiveFlags:
-//                         InteractiveFlag.pinchZoom | InteractiveFlag.drag,
-//                     zoom: 13.0,
-//                   ),
-//                   layers: [
-//                 TileLayerOptions(
-//                   urlTemplate:
-//                       "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-//                   subdomains: ['a', 'b', 'c'],
-//                   attributionBuilder: (_) {
-//                     return const Text("© OpenStreetMap contributors");
-//                   },
-//                 ),
-//                 MarkerLayerOptions(
-//                   markers: [
-//                     Marker(
-//                         width: 80.0,
-//                         height: 80.0,
-//                         point: LatLng(userLatitudeData, userLongitudeData),
-//                         builder: (ctx) => const Icon(Icons.location_pin,
-//                             color: Colors.red)),
-//                   ],
-//                 ),
-//               ]))
-//       ]));
-// }
 
 
