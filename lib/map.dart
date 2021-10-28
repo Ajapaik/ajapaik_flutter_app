@@ -132,7 +132,7 @@ class _UserLocationState extends State<MapScreen> {
                               },
                             ),
                             MarkerLayerOptions(
-                              markers: markerList,
+                              markers: markersList(context),
                             ),
                             MarkerLayerOptions(markers: [
                               Marker(
