@@ -112,11 +112,15 @@ class ImageMapState extends State<ImageMapScreen> {
                               ])
                             ]));
                 })),
-            Positioned(
-              bottom: 20,
-              left: 20,
-              child: Image.network(widget.historicalPhotoUri, width: 200, height: 100, fit:BoxFit.fill,),
-            ),
+            GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(top: 725, left: 10),
+              child: Image.network(widget.historicalPhotoUri,
+                  width: 200, height: 100, fit: BoxFit.fill),
+            )),
       ]),
     );
   }
