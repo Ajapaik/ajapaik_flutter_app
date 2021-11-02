@@ -3,6 +3,7 @@ import 'package:ajapaik_flutter_app/rephoto.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'data/album.geojson.dart';
@@ -40,58 +41,73 @@ class _UserLocationState extends State<MapScreen> {
 
   getMarkerList(context) {
     List list = widget.markerCoordinatesList;
-      markerList.clear();
-      for (int x = 0; x < list.length; x++) {
-        if (list[x].geometry.coordinates.length > 0) {
-          double latitude = list[x].geometry.coordinates[0];
-          double longitude = list[x].geometry.coordinates[1];
-          var m = Marker(
-              width: 80.0,
-              height: 80.0,
-              point: LatLng(latitude, longitude),
-              builder: (ctx) =>
-                  IconButton(
-                    icon: const Icon(Icons.location_pin, color: Colors.red),
-                    onPressed: () {
-                      showBottomSheet(
-                          context: context,
-                          builder: (builder) {
-                            return Container(
-                                color: Colors.white,
-                                child: Expanded(
-                                  child: GestureDetector(
-                                onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => RephotoScreen(
-                                        historicalPhotoId:
-                                        list[x].properties.id.toString(),
-                                        historicalPhotoUri:
-                                        list[x].properties.thumbnail.toString(),
-                                        historicalName:
-                                        list[x].properties.name.toString(),
-                                        historicalDate:
-                                        list[x].properties.date.toString(),
-                                        historicalAuthor:
-                                        list[x].properties.author.toString(),
-                                        historicalSurl:
-                                        list[x].properties.sourceUrl.toString(),
-                                        historicalLabel:
-                                        list[x].properties.sourceLabel.toString(),
-                                        historicalCoordinates:
-                                        list[x].geometry,
-                                      )));
-                                      Image.network(list[x].properties.thumbnail);
-                                  }),
-                                ));
-                          });
-                    },
-                  ));
-          markerList.add(m);
-        }
+    markerList.clear();
+    for (int x = 0; x < list.length; x++) {
+      if (list[x].geometry.coordinates.length > 0) {
+        double latitude = list[x].geometry.coordinates[0];
+        double longitude = list[x].geometry.coordinates[1];
+        var m = Marker(
+            width: 80.0,
+            height: 80.0,
+            point: LatLng(latitude, longitude),
+            builder: (ctx) => IconButton(
+                  icon: const Icon(Icons.location_pin, color: Colors.red),
+                  onPressed: () {
+                    showBottomSheet(
+                        context: context,
+                        builder: (builder) {
+                          return Container(
+                              color: Colors.white,
+                              child: Expanded(
+                                child: GestureDetector(
+                                    child: Image.network(
+                                        list[x].properties.thumbnail),
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  RephotoScreen(
+                                                    historicalPhotoId: list[x]
+                                                        .properties
+                                                        .id
+                                                        .toString(),
+                                                    historicalPhotoUri: list[x]
+                                                        .properties
+                                                        .thumbnail
+                                                        .toString(),
+                                                    historicalName: list[x]
+                                                        .properties
+                                                        .name
+                                                        .toString(),
+                                                    historicalDate: list[x]
+                                                        .properties
+                                                        .date
+                                                        .toString(),
+                                                    historicalAuthor: list[x]
+                                                        .properties
+                                                        .author
+                                                        .toString(),
+                                                    historicalSurl: list[x]
+                                                        .properties
+                                                        .sourceUrl
+                                                        .toString(),
+                                                    historicalLabel: list[x]
+                                                        .properties
+                                                        .sourceLabel
+                                                        .toString(),
+                                                    historicalCoordinates:
+                                                        list[x].geometry,
+                                                  )));
+                                    }),
+                              ));
+                        });
+                  },
+                ));
+        markerList.add(m);
       }
-      return markerList;
+    }
+    return markerList;
   }
 
   @override
@@ -180,6 +196,9 @@ class _UserLocationState extends State<MapScreen> {
 
     return FlutterMap(
         options: MapOptions(
+          plugins: [
+            MarkerClusterPlugin(),
+          ],
           center: LatLng(userLatitudeData, userLongitudeData),
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
           zoom: 13.0,

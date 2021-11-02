@@ -48,6 +48,7 @@ dependencies:
   geolocator: ^7.3.1
   flutter_secure_storage: ^4.2.0
   flutter_map: any
+  flutter_map_marker_cluster: any
   flutter_inappwebview:
   share_plus: ^2.1.4
   path_provider:
