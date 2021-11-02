@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:ajapaik_flutter_app/rephoto.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -58,7 +59,31 @@ class _UserLocationState extends State<MapScreen> {
                             return Container(
                                 color: Colors.white,
                                 child: Expanded(
-                                  child: Image.network(list[x].properties.thumbnail),
+                                  child: GestureDetector(
+                                onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => RephotoScreen(
+                                        historicalPhotoId:
+                                        list[x].properties.id.toString(),
+                                        historicalPhotoUri:
+                                        list[x].properties.thumbnail.toString(),
+                                        historicalName:
+                                        list[x].properties.name.toString(),
+                                        historicalDate:
+                                        list[x].properties.date.toString(),
+                                        historicalAuthor:
+                                        list[x].properties.author.toString(),
+                                        historicalSurl:
+                                        list[x].properties.sourceUrl.toString(),
+                                        historicalLabel:
+                                        list[x].properties.sourceLabel.toString(),
+                                        historicalCoordinates:
+                                        list[x].geometry,
+                                      )));
+                                      Image.network(list[x].properties.thumbnail);
+                                  }),
                                 ));
                           });
                     },
