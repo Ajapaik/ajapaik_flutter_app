@@ -37,7 +37,7 @@ class _UserLocationState extends State<MapScreen> {
         desiredAccuracy: LocationAccuracy.high),
   );
 
-  markersList(context) {
+  getMarkerList(context) {
     List list = widget.markerCoordinatesList;
       markerList.clear();
       for (int x = 0; x < list.length; x++) {
@@ -66,6 +66,7 @@ class _UserLocationState extends State<MapScreen> {
           markerList.add(m);
         }
       }
+      return markerList;
   }
 
   @override
@@ -104,6 +105,7 @@ class _UserLocationState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         appBar: AppBar(title: const Text('Map')),
         body: Column(
@@ -132,7 +134,7 @@ class _UserLocationState extends State<MapScreen> {
                               },
                             ),
                             MarkerLayerOptions(
-                              markers: markersList(context),
+                              markers: getMarkerList(context),
                             ),
                             MarkerLayerOptions(markers: [
                               Marker(
