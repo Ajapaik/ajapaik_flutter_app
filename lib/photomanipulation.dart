@@ -4,14 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class ManiPhoto extends StatelessWidget {
-
   const ManiPhoto({
     Key? key,
-    required this.historicalPhotoUri
-    ,
-  })
-      :
-        super(key: key);
+    required this.historicalPhotoUri,
+  }) : super(key: key);
 
   final String historicalPhotoUri;
 

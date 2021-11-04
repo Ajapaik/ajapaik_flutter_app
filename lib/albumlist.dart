@@ -31,8 +31,14 @@ class AlbumListPageState extends State<AlbumListPage> {
   String orderBy = "alpha";
   String orderDirection = "desc";
   bool searchDialogVisible = false;
+  double userLatitudeData = 0;
+  double userLongitudeData = 0;
 
   Future<List<Album>>? _albumData;
+
+  Future<List<Album>> test(BuildContext context) {
+    return _albumData!;
+  }
 
   void sorting() async {
     setState(() {
@@ -62,15 +68,10 @@ class AlbumListPageState extends State<AlbumListPage> {
     } else {
       url += "?orderby=" + orderBy + "&orderdirection=" + orderDirection;
     }
-
     return url;
   }
 
-  double userLatitudeData = 0;
-  double userLongitudeData = 0;
-
   void getCurrentLocation() async {
-
     var geoPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
 
@@ -85,10 +86,6 @@ class AlbumListPageState extends State<AlbumListPage> {
     getCurrentLocation();
     refresh();
     super.initState();
-  }
-
-  Future<List<Album>> test(BuildContext context) {
-    return _albumData!;
   }
 
   @override
@@ -112,15 +109,15 @@ class AlbumListPageState extends State<AlbumListPage> {
       body: Column(children: [
         Flexible(
             child: FutureBuilder<List<Album>>(
-              future: test(context),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) (snapshot.error);
+          future: test(context),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) (snapshot.error);
 
-                return (snapshot.hasData)
-                    ? AlbumList(albums: snapshot.data)
-                    : const Center(child: CircularProgressIndicator());
-              },
-            )),
+            return (snapshot.hasData)
+                ? AlbumList(albums: snapshot.data)
+                : const Center(child: CircularProgressIndicator());
+          },
+        )),
       ]),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) async {
@@ -131,12 +128,13 @@ class AlbumListPageState extends State<AlbumListPage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => MapScreen(
-                        historicalPhotoUri:
-                        a.first.features[index].properties.thumbnail.toString(),
-                        userLatitudeData: userLatitudeData,
-                        userLongitudeData: userLongitudeData,
-                        markerCoordinates: Geometry.empty(),
-                        markerCoordinatesList: a.first.features,
+                            historicalPhotoUri: a
+                                .first.features[index].properties.thumbnail
+                                .toString(),
+                            userLatitudeData: userLatitudeData,
+                            userLongitudeData: userLongitudeData,
+                            markerCoordinates: Geometry.empty(),
+                            markerCoordinatesList: a.first.features,
                           )));
             }
           }
@@ -160,48 +158,35 @@ class AlbumListPageState extends State<AlbumListPage> {
   }
 }
 
-//Bottom navigation bar theme - just insert into code
-//Necessary for two different bottomnavigationbar locations? Ask if they can be rearranged at main.dart
-
-// Theme(
-// data: Theme.of(context).copyWith(
-// // sets the background color of the `BottomNavigationBar`
-// canvasColor: Colors.green,
-// // sets the active color of the `BottomNavigationBar` if `Brightness` is light
-// primaryColor: Colors.red,
-// textTheme: Theme.of(context)
-// .textTheme
-//     .copyWith(caption: const TextStyle(color: Colors.yellow))),
-// child:
-
 class AlbumList extends StatelessWidget {
   final List<Album>? albums;
 
   const AlbumList({Key? key, this.albums}) : super(key: key);
 
   Future<void> _showphoto(context, index) async {
-    var rephoto = await Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => RephotoScreen(
-            historicalPhotoId:
-            albums!.first.features[index].properties.id.toString(),
-            historicalPhotoUri:
-            albums!.first.features[index].properties.thumbnail.toString(),
-            historicalName:
-            albums!.first.features[index].properties.name.toString(),
-            historicalDate:
-            albums!.first.features[index].properties.date.toString(),
-            historicalAuthor:
-            albums!.first.features[index].properties.author.toString(),
-            historicalSurl:
-            albums!.first.features[index].properties.sourceUrl.toString(),
-            historicalLabel:
-            albums!.first.features[index].properties.sourceLabel.toString(),
-            historicalCoordinates:
-            albums!.first.features[index].geometry,
-          )
-      ),
+                historicalPhotoId:
+                    albums!.first.features[index].properties.id.toString(),
+                historicalPhotoUri: albums!
+                    .first.features[index].properties.thumbnail
+                    .toString(),
+                historicalName:
+                    albums!.first.features[index].properties.name.toString(),
+                historicalDate:
+                    albums!.first.features[index].properties.date.toString(),
+                historicalAuthor:
+                    albums!.first.features[index].properties.author.toString(),
+                historicalSurl: albums!
+                    .first.features[index].properties.sourceUrl
+                    .toString(),
+                historicalLabel: albums!
+                    .first.features[index].properties.sourceLabel
+                    .toString(),
+                historicalCoordinates: albums!.first.features[index].geometry,
+              )),
     );
   }
 
@@ -245,7 +230,7 @@ class AlbumList extends StatelessWidget {
 
     return Center(
         child:
-        Column(children: [headerImage, Text(albums!.first.description)]));
+            Column(children: [headerImage, Text(albums!.first.description)]));
   }
 
   Widget contentTile(context, index) {

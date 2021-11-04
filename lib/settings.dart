@@ -12,10 +12,8 @@ class SettingsScreen extends StatefulWidget {
 bool tooltip = true;
 
 class _SettingsScreenState extends State<SettingsScreen> {
-
   @override
   Widget build(BuildContext context) {
-
     @override
     _saveBool() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -23,55 +21,46 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Settings',
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontFamily: 'Roboto',
-              )),
-        ),
-            body: SingleChildScrollView(
-            child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Card(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-                  child: Column(
-                    children: [
-                      ListTile(
-                        leading: const Icon(Icons.public, color: Colors.white),
-                        title: const Text('Vaihda kieli'),
-                        trailing: const Icon(Icons.keyboard_arrow_right),
-                        onTap:(){
-
-                        },
-                      ),
-                      ListTile(
-                        leading: const Icon(Icons.menu_book, color: Colors.white),
-                        title: const Text('Vaihda ympäristö'),
-                        trailing: const Icon(Icons.keyboard_arrow_right),
-                        onTap:(){
-
-                        },
-                      )
-                    ]
-                  ),
-                ),
-                const SizedBox(height: 10.0),
-                const Text('Lisäasetukset'),
-                SwitchListTile(
-                  activeColor: Colors.blue,
-                  value: tooltip,
-                  title: const Text('Näytä kartta'),
-                  onChanged: (bool newValue){
-                    setState(() => tooltip = newValue);
-                    _saveBool();
-                  } ,
-                )
-              ]
-            )
+      appBar: AppBar(
+        title: const Text('Settings',
+            style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontFamily: 'Roboto',
+            )),
+      ),
+      body: SingleChildScrollView(
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Card(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+          child: Column(children: [
+            ListTile(
+              leading: const Icon(Icons.public, color: Colors.white),
+              title: const Text('Vaihda kieli'),
+              trailing: const Icon(Icons.keyboard_arrow_right),
+              onTap: () {},
             ),
+            ListTile(
+              leading: const Icon(Icons.menu_book, color: Colors.white),
+              title: const Text('Vaihda ympäristö'),
+              trailing: const Icon(Icons.keyboard_arrow_right),
+              onTap: () {},
+            )
+          ]),
+        ),
+        const SizedBox(height: 10.0),
+        const Text('Lisäasetukset'),
+        SwitchListTile(
+          activeColor: Colors.blue,
+          value: tooltip,
+          title: const Text('Näytä kartta'),
+          onChanged: (bool newValue) {
+            setState(() => tooltip = newValue);
+            _saveBool();
+          },
+        )
+      ])),
     );
   }
-
 }
