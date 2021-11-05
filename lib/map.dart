@@ -215,8 +215,14 @@ class _UserLocationState extends State<MapScreen> {
               return const Text("© OpenStreetMap contributors");
             },
           ),
-          MarkerLayerOptions(
+          MarkerClusterLayerOptions(
+            maxClusterRadius: 120,
+            size: const Size(40, 40),
+            fitBoundsOptions: const FitBoundsOptions(
+              padding: EdgeInsets.all(50),
+          ),
             markers: markerList,
+              builder: (context, markers)
           ),
           MarkerLayerOptions(markers: [
             Marker(
