@@ -222,7 +222,12 @@ class _UserLocationState extends State<MapScreen> {
               padding: EdgeInsets.all(50),
           ),
             markers: markerList,
-              builder: (context, markers)
+              builder: (context, markers) {
+                return FloatingActionButton(
+                  child: Text(markers.length.toString()),
+                  onPressed: null,
+                );
+              }
           ),
           MarkerLayerOptions(markers: [
             Marker(
