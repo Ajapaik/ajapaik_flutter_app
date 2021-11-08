@@ -137,7 +137,13 @@ class _UserLocationState extends State<MapScreen> {
                                                     )));
                                       }),
                                 ));
-                          });
+                          }).closed.then((value) {
+                            open = false;
+                            setState(() {
+                              _colors[x] = Colors.red;
+                            });
+                      }
+                      );
                     } else {
                         Navigator.of(context).pop();
                         open = false;
@@ -192,9 +198,6 @@ class _UserLocationState extends State<MapScreen> {
                                       "© OpenStreetMap contributors");
                                 },
                               ),
-                              MarkerLayerOptions(
-                                markers: getMarkerList(context),
-                              ),
                               MarkerLayerOptions(markers: [
                                 Marker(
                                     width: 80.0,
@@ -235,7 +238,7 @@ class _UserLocationState extends State<MapScreen> {
             fitBoundsOptions: const FitBoundsOptions(
               padding: EdgeInsets.all(50),
           ),
-            markers: markerList,
+              markers: getMarkerList(context),
               builder: (context, markers) {
                 return FloatingActionButton(
                   child: Text(markers.length.toString()),
