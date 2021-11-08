@@ -33,6 +33,16 @@ class _UserLocationState extends State<MapScreen> {
   double userLongitudeData = 0;
   List<Marker> markerList = [];
   bool open = false;
+  List<Color> _colors = [];
+
+  getColorsForIcons() async {
+    await Future.delayed(
+        const Duration(seconds: 2)); //this show you are fetching data from server
+    _colors =
+        List.generate(100, (index) => Colors.red); // here 10 is items.length
+    setState(() {});
+  }
+
 
   final Future<Position> _location = Future<Position>.delayed(
     const Duration(seconds: 2),
@@ -64,6 +74,7 @@ class _UserLocationState extends State<MapScreen> {
 
   getMarkerList(context) {
     List list = widget.markerCoordinatesList;
+    Color _iconColor = Colors.red;
     markerList.clear();
     for (int x = 0; x < list.length; x++) {
       if (list[x].geometry.coordinates.length > 0) {
@@ -74,10 +85,13 @@ class _UserLocationState extends State<MapScreen> {
             height: 80.0,
             point: LatLng(latitude, longitude),
             builder: (ctx) => IconButton(
-                  icon: const Icon(Icons.location_pin, color: Colors.red),
+                  icon: Icon(Icons.location_pin, color: _colors[index]),
                   onPressed: () {
                     if (open == false) {
                       open = true;
+                      setState(() {
+                        _iconColor = Colors.white;
+                      });
                       showBottomSheet(
                           context: context,
                           builder: (builder) {
@@ -129,8 +143,11 @@ class _UserLocationState extends State<MapScreen> {
                                 ));
                           });
                     } else {
-                      Navigator.of(context).pop();
-                      open = false;
+                        Navigator.of(context).pop();
+                        open = false;
+                        setState(() {
+                          _iconColor = Colors.red;
+                        });
                     }
                   },
                 ));
@@ -143,6 +160,7 @@ class _UserLocationState extends State<MapScreen> {
   @override
   void initState() {
     listenCurrentLocation();
+    getColorsForIcons();
     super.initState();
   }
 
