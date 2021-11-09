@@ -186,7 +186,7 @@ class _UserLocationState extends State<MapScreen> {
                                     widget.userLongitudeData),
                                 interactiveFlags: InteractiveFlag.pinchZoom |
                                     InteractiveFlag.drag,
-                                zoom: 13.0,
+                                zoom: 17.0,
                               ),
                               layers: [
                               TileLayerOptions(
@@ -222,7 +222,7 @@ class _UserLocationState extends State<MapScreen> {
           ],
           center: LatLng(userLatitudeData, userLongitudeData),
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
-          zoom: 13.0,
+          zoom: 17.0,
         ),
         layers: [
           TileLayerOptions(
@@ -233,8 +233,9 @@ class _UserLocationState extends State<MapScreen> {
             },
           ),
           MarkerClusterLayerOptions(
-            maxClusterRadius: 120,
-            size: const Size(40, 40),
+            maxClusterRadius: 30,
+            size: const Size(30, 30),
+            disableClusteringAtZoom: 15,
             fitBoundsOptions: const FitBoundsOptions(
               padding: EdgeInsets.all(50),
           ),

@@ -79,7 +79,7 @@ class ImageMapState extends State<ImageMapScreen> {
                                     widget.imageLongitude),
                                 interactiveFlags: InteractiveFlag.pinchZoom |
                                     InteractiveFlag.drag,
-                                zoom: 13.0,
+                                zoom: 17.0,
                               ),
                               layers: [
                               TileLayerOptions(
@@ -131,7 +131,7 @@ class ImageMapState extends State<ImageMapScreen> {
         options: MapOptions(
           center: LatLng(widget.imageLatitude, widget.imageLongitude),
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
-          zoom: 13.0,
+          zoom: 17.0,
         ),
         layers: [
           TileLayerOptions(

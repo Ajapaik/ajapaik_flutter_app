@@ -304,7 +304,7 @@ class RephotoScreenState extends State<RephotoScreen> {
                 center: LatLng(latitude, longitude),
                 interactiveFlags:
                     InteractiveFlag.pinchZoom | InteractiveFlag.drag,
-                zoom: 13.0,
+                zoom: 17.0,
               ),
               layers: [
                 TileLayerOptions(
