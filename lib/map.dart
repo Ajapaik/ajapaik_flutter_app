@@ -200,8 +200,8 @@ class _UserLocationState extends State<MapScreen> {
                               ),
                               MarkerLayerOptions(markers: [
                                 Marker(
-                                    width: 80.0,
-                                    height: 80.0,
+                                    width: 40.0,
+                                    height: 40.0,
                                     point: LatLng(widget.userLatitudeData,
                                         widget.userLongitudeData),
                                     builder: (ctx) => const Icon(
@@ -249,8 +249,8 @@ class _UserLocationState extends State<MapScreen> {
           ),
           MarkerLayerOptions(markers: [
             Marker(
-                width: 80.0,
-                height: 80.0,
+                width: 40.0,
+                height: 40.0,
                 point: LatLng(userLatitudeData, userLongitudeData),
                 builder: (ctx) =>
                     const Icon(Icons.location_pin, color: Colors.blue)),
