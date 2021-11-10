@@ -40,7 +40,6 @@ class _UserLocationState extends State<MapScreen> {
         List.generate(100, (index) => Colors.red); // here 10 is items.length
   }
 
-
   final Future<Position> _location = Future<Position>.delayed(
     const Duration(seconds: 2),
     () => Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high),

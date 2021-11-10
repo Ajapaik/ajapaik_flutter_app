@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
@@ -48,6 +49,8 @@ class RephotoScreen extends StatefulWidget {
 
 class RephotoScreenState extends State<RephotoScreen> {
   bool boolValue = true;
+  double userLatitudeData = 0;
+  double userLongitudeData = 0;
 
   _getTooltipValue() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -96,6 +99,40 @@ class RephotoScreenState extends State<RephotoScreen> {
     } else {
       throw 'Could not launch $widget.historicalSurl';
     }
+  }
+
+  final Future<Position> _location = Future<Position>.delayed(
+    const Duration(seconds: 2),
+        () => Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high),
+  );
+
+  void getCurrentLocation() async {
+    var geoPosition = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    setState(() {
+      userLatitudeData = geoPosition.latitude;
+      userLongitudeData = geoPosition.longitude;
+    });
+  }
+
+  void listenCurrentLocation() {
+    Stream<Position> position = Geolocator.getPositionStream(
+        desiredAccuracy: LocationAccuracy.high,
+        timeLimit: const Duration(seconds: 5),
+        distanceFilter: 10);
+    position.listen((position) {
+      if (position.latitude != userLatitudeData &&
+          position.longitude != userLongitudeData) {
+        return getCurrentLocation();
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    listenCurrentLocation();
+    super.initState();
   }
 
   @override
@@ -289,44 +326,68 @@ class RephotoScreenState extends State<RephotoScreen> {
       if (tooltip == true)
         Expanded(
             child: GestureDetector(
-          onDoubleTap: () async {
-            await Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ImageMapScreen(
-                          imageLatitude: latitude,
-                          imageLongitude: longitude,
-                          historicalPhotoUri: widget.historicalPhotoUri,
-                        )));
-          },
-          child: FlutterMap(
-              options: MapOptions(
-                center: LatLng(latitude, longitude),
-                interactiveFlags:
-                    InteractiveFlag.pinchZoom | InteractiveFlag.drag,
-                zoom: 17.0,
-              ),
-              layers: [
-                TileLayerOptions(
-                  urlTemplate:
-                      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                  subdomains: ['a', 'b', 'c'],
-                  attributionBuilder: (_) {
-                    return const Text("© OpenStreetMap contributors");
-                  },
-                ),
-                MarkerLayerOptions(
-                  markers: [
-                    Marker(
-                        width: 80.0,
-                        height: 80.0,
-                        point: LatLng(latitude, longitude),
-                        builder: (ctx) =>
-                            const Icon(Icons.location_pin, color: Colors.red)),
-                  ],
-                ),
-              ]),
-        ))
+                onDoubleTap: () async {
+                  await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ImageMapScreen(
+                                imageLatitude: latitude,
+                                imageLongitude: longitude,
+                                historicalPhotoUri: widget.historicalPhotoUri,
+                              )));
+                },
+                child: FutureBuilder(
+                    future: _location,
+                    builder: (BuildContext context,
+                        AsyncSnapshot<dynamic> snapshot) {
+                      if (snapshot.hasError) (snapshot.error);
+                      return snapshot.hasData
+                          ? _buildFlutterMap(context)
+                          : Center(
+                              child: FlutterMap(
+                                  options: MapOptions(
+                                    center: LatLng(latitude, longitude),
+                                    interactiveFlags:
+                                        InteractiveFlag.pinchZoom |
+                                            InteractiveFlag.drag,
+                                    zoom: 17.0,
+                                  ),
+                                  layers: [
+                                    TileLayerOptions(
+                                      urlTemplate:
+                                          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                                      subdomains: ['a', 'b', 'c'],
+                                      attributionBuilder: (_) {
+                                        return const Text(
+                                            "© OpenStreetMap contributors");
+                                      },
+                                    ),
+                                    MarkerLayerOptions(
+                                      markers: [
+                                        Marker(
+                                            width: 80.0,
+                                            height: 80.0,
+                                            point: LatLng(latitude, longitude),
+                                            builder: (ctx) => const Icon(
+                                                Icons.location_pin,
+                                                color: Colors.red)),
+                                      ],
+                                    ),
+                                    MarkerLayerOptions(
+                                      markers: [
+                                        Marker(
+                                            width: 80.0,
+                                            height: 80.0,
+                                            point: LatLng(userLatitudeData,
+                                                userLongitudeData),
+                                            builder: (ctx) => const Icon(
+                                                Icons.location_pin,
+                                                color: Colors.blue)),
+                                      ],
+                                    ),
+                                  ]),
+                            );
+                    })))
     ]);
   }
 
@@ -382,4 +443,51 @@ class RephotoScreenState extends State<RephotoScreen> {
       ],
     );
   }
+
+  Widget _buildFlutterMap(BuildContext context) {
+    double latitude = 0;
+    double longitude = 0;
+    if (!widget.historicalCoordinates.coordinates.isEmpty) {
+      latitude = widget.historicalCoordinates.coordinates[0];
+      longitude = widget.historicalCoordinates.coordinates[1];
+    }
+
+    return FlutterMap(
+        options: MapOptions(
+          center: LatLng(latitude, longitude),
+          interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
+          zoom: 17.0,
+        ),
+        layers: [
+          TileLayerOptions(
+            urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            subdomains: ['a', 'b', 'c'],
+            attributionBuilder: (_) {
+              return const Text("© OpenStreetMap contributors");
+            },
+          ),
+          MarkerLayerOptions(
+            markers: [
+              Marker(
+                  width: 80.0,
+                  height: 80.0,
+                  point: LatLng(latitude, longitude),
+                  builder: (ctx) =>
+                  const Icon(Icons.location_pin, color: Colors.red)),
+            ],
+          ),
+          MarkerLayerOptions(
+            markers: [
+              Marker(
+                  width: 80.0,
+                  height: 80.0,
+                  point: LatLng(userLatitudeData, userLongitudeData),
+                  builder: (ctx) =>
+                  const Icon(Icons.location_pin, color: Colors.blue)),
+            ],
+          ),
+        ]);
+  }
 }
+
+
