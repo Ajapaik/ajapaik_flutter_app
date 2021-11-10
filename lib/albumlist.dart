@@ -33,6 +33,7 @@ class AlbumListPageState extends State<AlbumListPage> {
   bool searchDialogVisible = false;
   double userLatitudeData = 0;
   double userLongitudeData = 0;
+  bool toggle = false;
 
   Future<List<Album>>? _albumData;
 
@@ -99,6 +100,16 @@ class AlbumListPageState extends State<AlbumListPage> {
               tooltip: "Search",
               onPressed: toggleSearchDialog),*/
           IconButton(
+              icon: toggle
+                  ? const Icon(Icons.visibility)
+                  : const Icon(Icons.visibility_off),
+              onPressed: () {
+                setState(() {
+                  toggle = !toggle;
+                  }
+                );
+              }),
+          IconButton(
               icon: Icon(((orderBy == "alpha")
                   ? Icons.sort_by_alpha
                   : Icons.sort_sharp)),
@@ -160,8 +171,9 @@ class AlbumListPageState extends State<AlbumListPage> {
 
 class AlbumList extends StatelessWidget {
   final List<Album>? albums;
+  final bool toggle = true;
 
-  const AlbumList({Key? key, this.albums}) : super(key: key);
+  const AlbumList({Key? key, this.albums,}) : super(key: key);
 
   Future<void> _showphoto(context, index) async {
     await Navigator.push(
@@ -249,9 +261,12 @@ class AlbumList extends StatelessWidget {
           CachedNetworkImage(
               imageUrl: albums!.first.features[index].properties.thumbnail
                   .toString()),
-          Text(
-            albums!.first.features[index].properties.name.toString(),
-            textAlign: TextAlign.center,
+          Visibility(
+               child: Text(
+                 albums!.first.features[index].properties.name.toString(),
+                 textAlign: TextAlign.center,
+               ),
+            visible: toggle,
           )
         ]));
   }

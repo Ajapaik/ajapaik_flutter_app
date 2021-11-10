@@ -233,9 +233,9 @@ class _UserLocationState extends State<MapScreen> {
             },
           ),
           MarkerClusterLayerOptions(
-            maxClusterRadius: 30,
+            maxClusterRadius: 10,
             size: const Size(30, 30),
-            disableClusteringAtZoom: 15,
+            //disableClusteringAtZoom: 15,
             fitBoundsOptions: const FitBoundsOptions(
               padding: EdgeInsets.all(50),
           ),
