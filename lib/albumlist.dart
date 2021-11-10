@@ -33,6 +33,7 @@ class AlbumListPageState extends State<AlbumListPage> {
   bool searchDialogVisible = false;
   double userLatitudeData = 0;
   double userLongitudeData = 0;
+  bool toggle = true;
 
   Future<List<Album>>? _albumData;
 
@@ -100,8 +101,8 @@ class AlbumListPageState extends State<AlbumListPage> {
               onPressed: toggleSearchDialog),*/
           IconButton(
               icon: toggle
-                  ? const Icon(Icons.visibility)
-                  : const Icon(Icons.visibility_off),
+                  ? const Icon(Icons.visibility_off)
+                  : const Icon(Icons.visibility),
               onPressed: () {
                 setState(() {
                   toggle = !toggle;
