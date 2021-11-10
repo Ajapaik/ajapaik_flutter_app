@@ -33,7 +33,6 @@ class AlbumListPageState extends State<AlbumListPage> {
   bool searchDialogVisible = false;
   double userLatitudeData = 0;
   double userLongitudeData = 0;
-  bool toggle = false;
 
   Future<List<Album>>? _albumData;
 
@@ -125,7 +124,7 @@ class AlbumListPageState extends State<AlbumListPage> {
             if (snapshot.hasError) (snapshot.error);
 
             return (snapshot.hasData)
-                ? AlbumList(albums: snapshot.data)
+                ? AlbumList(albums: snapshot.data, toggle:toggle)
                 : const Center(child: CircularProgressIndicator());
           },
         )),
@@ -171,9 +170,9 @@ class AlbumListPageState extends State<AlbumListPage> {
 
 class AlbumList extends StatelessWidget {
   final List<Album>? albums;
-  final bool toggle = true;
+  final bool toggle;
 
-  const AlbumList({Key? key, this.albums,}) : super(key: key);
+  const AlbumList({Key? key, this.albums, this.toggle=true}) : super(key: key);
 
   Future<void> _showphoto(context, index) async {
     await Navigator.push(
