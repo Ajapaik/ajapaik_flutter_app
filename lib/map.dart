@@ -34,6 +34,8 @@ class _UserLocationState extends State<MapScreen> {
   List<Marker> markerList = [];
   bool open = false;
   List<Color> _colors = [];
+  final mapController = MapController;
+
 
   getColorsForIcons() async {
     _colors =
@@ -163,6 +165,7 @@ class _UserLocationState extends State<MapScreen> {
     listenCurrentLocation();
     getColorsForIcons();
     super.initState();
+    MapController();
   }
 
   @override

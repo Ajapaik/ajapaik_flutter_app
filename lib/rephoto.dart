@@ -454,9 +454,12 @@ class RephotoScreenState extends State<RephotoScreen> {
 
     return FlutterMap(
         options: MapOptions(
-          center: LatLng(latitude, longitude),
+          bounds: LatLngBounds(LatLng(latitude, longitude), LatLng(userLatitudeData, userLongitudeData)),
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
           zoom: 17.0,
+          boundsOptions: const FitBoundsOptions(
+          padding: EdgeInsets.all(100),
+          inside: true),
         ),
         layers: [
           TileLayerOptions(
