@@ -280,6 +280,9 @@ class RephotoScreenState extends State<RephotoScreen> {
       longitude = widget.historicalCoordinates.coordinates[1];
     }
 
+    double distance = Geolocator.distanceBetween(userLatitudeData, userLongitudeData, latitude, longitude);
+    double calcDistance = distance / 1000;
+
     return Column(children: [
       Flexible(
           child: GestureDetector(
@@ -322,6 +325,8 @@ class RephotoScreenState extends State<RephotoScreen> {
                     }),
             ),
             const SizedBox(height: 10),
+            Text(
+                calcDistance.toStringAsFixed(2) + ' Km'),
           ])),
       if (tooltip == true)
         Expanded(
@@ -437,7 +442,7 @@ class RephotoScreenState extends State<RephotoScreen> {
                       widget.historicalSurl,
                       maxLines: 5,
                       overflow: TextOverflow.ellipsis,
-                    )
+                    ),
                   ])),
         )
       ],

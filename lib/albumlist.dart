@@ -33,7 +33,7 @@ class AlbumListPageState extends State<AlbumListPage> {
   bool searchDialogVisible = false;
   double userLatitudeData = 0;
   double userLongitudeData = 0;
-  bool toggle = true;
+  bool toggle = false;
 
   Future<List<Album>>? _albumData;
 
@@ -257,17 +257,26 @@ class AlbumList extends StatelessWidget {
             _showphoto(context, index);
           }
         },
-        child: Column(children: [
+        child: Stack(children: [
           CachedNetworkImage(
               imageUrl: albums!.first.features[index].properties.thumbnail
                   .toString()),
           Visibility(
-               child: Text(
-                 albums!.first.features[index].properties.name.toString(),
-                 textAlign: TextAlign.center,
-               ),
+            child: Text(
+              albums!.first.features[index].properties.name.toString(),
+              textAlign: TextAlign.center,
+            ),
             visible: toggle,
-          )
-        ]));
+          ),
+          GestureDetector(
+            onTap: () {
+
+            },
+            child: const Align(
+              alignment: Alignment.topRight,
+             child: Icon(Icons.favorite_outlined, color: Colors.white, size: 35),
+          ))
+        ]),
+    );
   }
 }
