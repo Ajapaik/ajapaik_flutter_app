@@ -325,8 +325,13 @@ class RephotoScreenState extends State<RephotoScreen> {
                     }),
             ),
             const SizedBox(height: 10),
-            Text(
-                calcDistance.toStringAsFixed(2) + ' Km'),
+            if (distance >= 1000)
+              Text(
+                  calcDistance.toStringAsFixed(2) + ' Km'),
+            if (distance <= 999)
+              Text(
+                  distance.toStringAsFixed(2) + ' M'
+              )
           ])),
       if (tooltip == true)
         Expanded(
@@ -463,7 +468,7 @@ class RephotoScreenState extends State<RephotoScreen> {
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
           zoom: 17.0,
           boundsOptions: const FitBoundsOptions(
-          padding: EdgeInsets.all(100),
+          padding: EdgeInsets.all(185),
           inside: true),
         ),
         layers: [

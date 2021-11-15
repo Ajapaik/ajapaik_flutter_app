@@ -34,8 +34,7 @@ class _UserLocationState extends State<MapScreen> {
   List<Marker> markerList = [];
   bool open = false;
   List<Color> _colors = [];
-  final mapController = MapController;
-
+  late final MapController mapController;
 
   getColorsForIcons() async {
     _colors =
@@ -78,12 +77,15 @@ class _UserLocationState extends State<MapScreen> {
         double latitude = list[x].geometry.coordinates[0];
         double longitude = list[x].geometry.coordinates[1];
         var m = Marker(
-            width: 80.0,
-            height: 80.0,
+            width: 40.0,
+            height: 40.0,
             point: LatLng(latitude, longitude),
             builder: (ctx) => IconButton(
                   icon: Icon(Icons.location_pin, color: _colors[x]),
                   onPressed: () {
+                    var zoomInCoord = LatLng(list[x].geometry.coordinates[0], list[x].geometry.coordinates[1]);
+                    double zoom = 15;
+                    mapController.move(zoomInCoord, zoom);
                     if (open == false) {
                       open = true;
                       setState(() {
@@ -165,7 +167,7 @@ class _UserLocationState extends State<MapScreen> {
     listenCurrentLocation();
     getColorsForIcons();
     super.initState();
-    MapController();
+    mapController = MapController();
   }
 
   @override
@@ -218,6 +220,7 @@ class _UserLocationState extends State<MapScreen> {
 
   Widget _buildFlutterMap(BuildContext context) {
     return FlutterMap(
+      mapController: mapController,
         options: MapOptions(
           plugins: [
             MarkerClusterPlugin(),

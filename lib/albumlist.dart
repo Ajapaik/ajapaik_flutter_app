@@ -257,7 +257,7 @@ class AlbumList extends StatelessWidget {
             _showphoto(context, index);
           }
         },
-        child: Stack(children: [
+        child: Column(children: [
           CachedNetworkImage(
               imageUrl: albums!.first.features[index].properties.thumbnail
                   .toString()),
@@ -268,14 +268,15 @@ class AlbumList extends StatelessWidget {
             ),
             visible: toggle,
           ),
-          GestureDetector(
-            onTap: () {
-
-            },
-            child: const Align(
-              alignment: Alignment.topRight,
-             child: Icon(Icons.favorite_outlined, color: Colors.white, size: 35),
-          ))
+          // Favorites code snippet for icons to favorite pictures
+          // GestureDetector(
+          //   onTap: () {
+          //
+          //   },
+          //   child: const Align(
+          //     alignment: Alignment.topRight,
+          //    child: Icon(Icons.favorite_outlined, color: Colors.white, size: 35),
+          // ))
         ]),
     );
   }
