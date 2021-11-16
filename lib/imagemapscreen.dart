@@ -24,6 +24,7 @@ class ImageMapScreen extends StatefulWidget {
 class ImageMapState extends State<ImageMapScreen> {
   double userLatitudeData = 0;
   double userLongitudeData = 0;
+  late final MapController mapController;
 
   final Future<Position> _location = Future<Position>.delayed(
     const Duration(seconds: 2),
@@ -57,6 +58,7 @@ class ImageMapState extends State<ImageMapScreen> {
   void initState() {
     listenCurrentLocation();
     super.initState();
+    mapController = MapController();
   }
 
   @override
@@ -128,10 +130,14 @@ class ImageMapState extends State<ImageMapScreen> {
 
   Widget _buildFlutterMap(BuildContext context) {
     return FlutterMap(
+        mapController: mapController,
         options: MapOptions(
-          center: LatLng(widget.imageLatitude, widget.imageLongitude),
+          bounds: LatLngBounds(LatLng(widget.imageLatitude, widget.imageLongitude), LatLng(userLatitudeData, userLongitudeData)),
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
           zoom: 17.0,
+          boundsOptions: const FitBoundsOptions(
+            padding: EdgeInsets.all(100),
+          ),
         ),
         layers: [
           TileLayerOptions(

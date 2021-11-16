@@ -84,7 +84,7 @@ class _UserLocationState extends State<MapScreen> {
                   icon: Icon(Icons.location_pin, color: _colors[x]),
                   onPressed: () {
                     var zoomInCoord = LatLng(list[x].geometry.coordinates[0], list[x].geometry.coordinates[1]);
-                    double zoom = 15;
+                    double zoom = 18;
                     mapController.move(zoomInCoord, zoom);
                     if (open == false) {
                       open = true;
@@ -166,8 +166,8 @@ class _UserLocationState extends State<MapScreen> {
   void initState() {
     listenCurrentLocation();
     getColorsForIcons();
-    super.initState();
     mapController = MapController();
+    super.initState();
   }
 
   @override
@@ -238,20 +238,21 @@ class _UserLocationState extends State<MapScreen> {
             },
           ),
           MarkerClusterLayerOptions(
-            maxClusterRadius: 10,
-            size: const Size(30, 30),
-            //disableClusteringAtZoom: 15,
-            fitBoundsOptions: const FitBoundsOptions(
-              padding: EdgeInsets.all(50),
-          ),
+              maxClusterRadius: 10,
+              size: const Size(30, 30),
+              disableClusteringAtZoom: 15,
+              showPolygon: false,
+              spiderfyCircleRadius: 80,
+              fitBoundsOptions: const FitBoundsOptions(
+                padding: EdgeInsets.all(50),
+              ),
               markers: getMarkerList(context),
               builder: (context, markers) {
                 return FloatingActionButton(
                   child: Text(markers.length.toString()),
                   onPressed: null,
                 );
-              }
-          ),
+              }),
           MarkerLayerOptions(markers: [
             Marker(
                 width: 40.0,

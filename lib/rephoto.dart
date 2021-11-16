@@ -119,7 +119,7 @@ class RephotoScreenState extends State<RephotoScreen> {
   void listenCurrentLocation() {
     Stream<Position> position = Geolocator.getPositionStream(
         desiredAccuracy: LocationAccuracy.high,
-        timeLimit: const Duration(seconds: 5),
+        timeLimit: const Duration(seconds: 10),
         distanceFilter: 10);
     position.listen((position) {
       if (position.latitude != userLatitudeData &&
@@ -468,8 +468,8 @@ class RephotoScreenState extends State<RephotoScreen> {
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
           zoom: 17.0,
           boundsOptions: const FitBoundsOptions(
-          padding: EdgeInsets.all(185),
-          inside: true),
+          padding: EdgeInsets.all(50),
+          ),
         ),
         layers: [
           TileLayerOptions(
