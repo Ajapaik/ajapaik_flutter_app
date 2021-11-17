@@ -35,6 +35,8 @@ class _UserLocationState extends State<MapScreen> {
   bool open = false;
   List<Color> _colors = [];
   late final MapController mapController;
+  double zoomIn = 18;
+  double zoomOut = 16;
 
   getColorsForIcons() async {
     _colors =
@@ -84,8 +86,7 @@ class _UserLocationState extends State<MapScreen> {
                   icon: Icon(Icons.location_pin, color: _colors[x]),
                   onPressed: () {
                     var zoomInCoord = LatLng(list[x].geometry.coordinates[0], list[x].geometry.coordinates[1]);
-                    double zoom = 18;
-                    mapController.move(zoomInCoord, zoom);
+                    mapController.move(zoomInCoord, zoomIn);
                     if (open == false) {
                       open = true;
                       setState(() {
@@ -153,6 +154,7 @@ class _UserLocationState extends State<MapScreen> {
                         setState(() {
                           _colors[x] = Colors.red;
                         });
+                        mapController.move(zoomInCoord, zoomOut);
                     }
                   },
                 ));
