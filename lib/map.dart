@@ -35,8 +35,6 @@ class _UserLocationState extends State<MapScreen> {
   bool open = false;
   List<Color> _colors = [];
   late final MapController mapController;
-  double zoomIn = 18;
-  double zoomOut = 16;
 
   getColorsForIcons() async {
     _colors =
@@ -85,8 +83,6 @@ class _UserLocationState extends State<MapScreen> {
             builder: (ctx) => IconButton(
                   icon: Icon(Icons.location_pin, color: _colors[x]),
                   onPressed: () {
-                    var zoomInCoord = LatLng(list[x].geometry.coordinates[0], list[x].geometry.coordinates[1]);
-                    mapController.move(zoomInCoord, zoomIn);
                     if (open == false) {
                       open = true;
                       setState(() {
@@ -154,7 +150,6 @@ class _UserLocationState extends State<MapScreen> {
                         setState(() {
                           _colors[x] = Colors.red;
                         });
-                        mapController.move(zoomInCoord, zoomOut);
                     }
                   },
                 ));
@@ -221,6 +216,19 @@ class _UserLocationState extends State<MapScreen> {
   }
 
   Widget _buildFlutterMap(BuildContext context) {
+
+    int maxClusterRadius = 10;
+
+    getMyZoom(){
+      print(mapController.zoom);
+      if(mapController.zoom >= 16) {
+        setState(() {
+          maxClusterRadius = 0;
+        }
+        );
+      }
+    }
+
     return FlutterMap(
       mapController: mapController,
         options: MapOptions(
@@ -240,9 +248,8 @@ class _UserLocationState extends State<MapScreen> {
             },
           ),
           MarkerClusterLayerOptions(
-              maxClusterRadius: 10,
+              maxClusterRadius: maxClusterRadius,
               size: const Size(30, 30),
-              disableClusteringAtZoom: 15,
               showPolygon: false,
               spiderfyCircleRadius: 80,
               fitBoundsOptions: const FitBoundsOptions(
@@ -252,7 +259,7 @@ class _UserLocationState extends State<MapScreen> {
               builder: (context, markers) {
                 return FloatingActionButton(
                   child: Text(markers.length.toString()),
-                  onPressed: null,
+                  onPressed: getMyZoom(),
                 );
               }),
           MarkerLayerOptions(markers: [
