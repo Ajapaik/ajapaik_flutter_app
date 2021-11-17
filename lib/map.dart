@@ -31,6 +31,7 @@ class MapScreen extends StatefulWidget {
 class _UserLocationState extends State<MapScreen> {
   double userLatitudeData = 0;
   double userLongitudeData = 0;
+  int maxClusterRadius = 10;
   List<Marker> markerList = [];
   bool open = false;
   List<Color> _colors = [];
@@ -217,15 +218,14 @@ class _UserLocationState extends State<MapScreen> {
 
   Widget _buildFlutterMap(BuildContext context) {
 
-    int maxClusterRadius = 10;
-
     getMyZoom(){
       print(mapController.zoom);
-      if(mapController.zoom >= 16) {
-        setState(() {
-          maxClusterRadius = 0;
+      if (mapController.zoom >= 18) {
+          maxClusterRadius = 1;
+      } else {
+        if (mapController.zoom <=9) {
+          maxClusterRadius = 20;
         }
-        );
       }
     }
 
