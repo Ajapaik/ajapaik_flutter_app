@@ -10,6 +10,7 @@ import 'getxnavigation.dart';
 import 'package:get/get.dart';
 import 'map.dart';
 import 'rephoto.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class AlbumListPage extends StatefulWidget {
@@ -27,13 +28,14 @@ class AlbumListPage extends StatefulWidget {
   AlbumListPageState createState() => AlbumListPageState();
 }
 
+bool visibility = false;
+
 class AlbumListPageState extends State<AlbumListPage> {
   String orderBy = "alpha";
   String orderDirection = "desc";
   bool searchDialogVisible = false;
   double userLatitudeData = 0;
   double userLongitudeData = 0;
-  bool toggle = false;
 
   Future<List<Album>>? _albumData;
 
@@ -91,6 +93,13 @@ class AlbumListPageState extends State<AlbumListPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    @override
+    _saveBool() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('visibility', visibility);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.pageTitle),
@@ -100,12 +109,13 @@ class AlbumListPageState extends State<AlbumListPage> {
               tooltip: "Search",
               onPressed: toggleSearchDialog),*/
           IconButton(
-              icon: toggle
+              icon: visibility
                   ? const Icon(Icons.visibility_off)
                   : const Icon(Icons.visibility),
               onPressed: () {
+                _saveBool();
                 setState(() {
-                  toggle = !toggle;
+                  visibility = !visibility;
                   }
                 );
               }),
@@ -125,7 +135,7 @@ class AlbumListPageState extends State<AlbumListPage> {
             if (snapshot.hasError) (snapshot.error);
 
             return (snapshot.hasData)
-                ? AlbumList(albums: snapshot.data, toggle:toggle)
+                ? AlbumList(albums: snapshot.data, toggle:visibility)
                 : const Center(child: CircularProgressIndicator());
           },
         )),

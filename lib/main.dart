@@ -2,6 +2,7 @@ import 'package:ajapaik_flutter_app/settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'albumlist.dart';
 import 'projectlist.dart';
 import 'package:app_links/app_links.dart';
 import 'package:get/get.dart';
@@ -26,15 +27,23 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    loadData();
+    loadTooltipData();
+    loadVisibilityData();
     initDeepLinks();
     super.initState();
   }
 
-  loadData() async {
+  loadTooltipData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       tooltip = prefs.getBool("tooltip")!;
+    });
+  }
+
+  loadVisibilityData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      visibility = prefs.getBool("visibility")!;
     });
   }
 

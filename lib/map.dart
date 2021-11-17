@@ -34,6 +34,7 @@ class _UserLocationState extends State<MapScreen> {
   int maxClusterRadius = 100;
   List<Marker> markerList = [];
   bool open = false;
+  bool busy = false;
   List<Color> _colors = [];
   late final MapController mapController;
 
@@ -84,7 +85,7 @@ class _UserLocationState extends State<MapScreen> {
             builder: (ctx) => IconButton(
                   icon: Icon(Icons.location_pin, color: _colors[x]),
                   onPressed: () {
-                    if (open == false) {
+                    if (busy == false) {
                       open = true;
                       setState(() {
                         _colors[x] = Colors.white;
@@ -139,18 +140,20 @@ class _UserLocationState extends State<MapScreen> {
                                       }),
                                 ));
                           }).closed.then((value) {
-                            open = false;
+                            busy = false;
                             setState(() {
                               _colors[x] = Colors.red;
                             });
                       }
                       );
                     } else {
+                      if (open == true) {
                         Navigator.of(context).pop();
-                        open = false;
                         setState(() {
                           _colors[x] = Colors.red;
                         });
+                        open = false;
+                      }
                     }
                   },
                 ));
