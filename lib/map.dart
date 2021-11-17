@@ -31,7 +31,7 @@ class MapScreen extends StatefulWidget {
 class _UserLocationState extends State<MapScreen> {
   double userLatitudeData = 0;
   double userLongitudeData = 0;
-  int maxClusterRadius = 10;
+  int maxClusterRadius = 100;
   List<Marker> markerList = [];
   bool open = false;
   List<Color> _colors = [];
@@ -220,11 +220,11 @@ class _UserLocationState extends State<MapScreen> {
 
     getMyZoom(){
       print(mapController.zoom);
-      if (mapController.zoom >= 18) {
-          maxClusterRadius = 1;
+      if (mapController.zoom >= 17) {
+        maxClusterRadius = 5;
       } else {
         if (mapController.zoom <=9) {
-          maxClusterRadius = 20;
+          maxClusterRadius = 200;
         }
       }
     }
@@ -238,6 +238,7 @@ class _UserLocationState extends State<MapScreen> {
           center: LatLng(userLatitudeData, userLongitudeData),
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
           zoom: 17.0,
+          maxZoom: 18,
         ),
         layers: [
           TileLayerOptions(
@@ -251,7 +252,6 @@ class _UserLocationState extends State<MapScreen> {
               maxClusterRadius: maxClusterRadius,
               size: const Size(30, 30),
               showPolygon: false,
-              spiderfyCircleRadius: 80,
               fitBoundsOptions: const FitBoundsOptions(
                 padding: EdgeInsets.all(50),
               ),
