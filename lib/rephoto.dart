@@ -180,16 +180,16 @@ class RephotoScreenState extends State<RephotoScreen> {
                   if (result == 2) {
                     _launchTIFY();
                   }
-                  // if (result == 3) {
-                  //   Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //           builder: (context) => ImageMapScreen(
-                  //                 imageLatitude: latitude,
-                  //                 imageLongitude: longitude,
-                  //                 historicalPhotoUri: widget.historicalPhotoUri,
-                  //               )));
-                  // }
+                  if (result == 3) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ImageMapScreen(
+                                  imageLatitude: latitude,
+                                  imageLongitude: longitude,
+                                  historicalPhotoUri: widget.historicalPhotoUri,
+                                )));
+                  }
                   if (result == 4) {
                     Navigator.push(
                             context,
@@ -336,16 +336,16 @@ class RephotoScreenState extends State<RephotoScreen> {
       if (tooltip == true)
         Expanded(
             child: GestureDetector(
-                // onDoubleTap: () async {
-                //   await Navigator.push(
-                //       context,
-                //       MaterialPageRoute(
-                //           builder: (context) => ImageMapScreen(
-                //                 imageLatitude: latitude,
-                //                 imageLongitude: longitude,
-                //                 historicalPhotoUri: widget.historicalPhotoUri,
-                //               )));
-                // },
+                onDoubleTap: () async {
+                  await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ImageMapScreen(
+                                imageLatitude: latitude,
+                                imageLongitude: longitude,
+                                historicalPhotoUri: widget.historicalPhotoUri,
+                              )));
+                },
                 child: FutureBuilder(
                     future: _location,
                     builder: (BuildContext context,
