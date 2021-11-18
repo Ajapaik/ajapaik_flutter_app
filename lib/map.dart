@@ -87,6 +87,14 @@ class _UserLocationState extends State<MapScreen> {
                   onPressed: () {
                     if (busy == true) {
                       return;
+                    } else {
+                      if (open == true) {
+                        Navigator.of(context).pop();
+                        setState(() {
+                          _colors[x] = Colors.red;
+                        });
+                        open = false;
+                      }
                     }
                     if (open == false) {
                       busy = true;
@@ -150,14 +158,6 @@ class _UserLocationState extends State<MapScreen> {
                             });
                       }
                       );
-                    } else {
-                      if (open == true) {
-                        Navigator.of(context).pop();
-                        setState(() {
-                          _colors[x] = Colors.red;
-                        });
-                        open = false;
-                      }
                     }
                     busy = false;
                   },
