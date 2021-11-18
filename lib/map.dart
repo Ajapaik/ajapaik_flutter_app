@@ -85,7 +85,11 @@ class _UserLocationState extends State<MapScreen> {
             builder: (ctx) => IconButton(
                   icon: Icon(Icons.location_pin, color: _colors[x]),
                   onPressed: () {
-                    if (busy == false) {
+                    if (busy == true) {
+                      return;
+                    }
+                    if (open == false) {
+                      busy = true;
                       open = true;
                       setState(() {
                         _colors[x] = Colors.white;
@@ -140,7 +144,7 @@ class _UserLocationState extends State<MapScreen> {
                                       }),
                                 ));
                           }).closed.then((value) {
-                            busy = false;
+                            open = false;
                             setState(() {
                               _colors[x] = Colors.red;
                             });
@@ -155,6 +159,7 @@ class _UserLocationState extends State<MapScreen> {
                         open = false;
                       }
                     }
+                    busy = false;
                   },
                 ));
         markerList.add(m);

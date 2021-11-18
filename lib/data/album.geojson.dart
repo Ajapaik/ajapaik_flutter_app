@@ -96,8 +96,8 @@ class Geometry {
     String type = json['type'];
 
     List<double> coordinates = [
-      json["coordinates"][0].toDouble() as double,
-      json["coordinates"][1].toDouble() as double
+      json["coordinates"][1].toDouble() as double,
+      json["coordinates"][0].toDouble() as double
     ];
 
     return Geometry(type: type, coordinates: coordinates);
