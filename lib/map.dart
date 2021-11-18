@@ -107,50 +107,51 @@ class _UserLocationState extends State<MapScreen> {
                           builder: (builder) {
                             return Container(
                                 color: Colors.white,
-                                child: Expanded(
-                                  child: GestureDetector(
-                                      child: Image.network(
-                                          list[x].properties.thumbnail),
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    RephotoScreen(
-                                                      historicalPhotoId: list[x]
-                                                          .properties
-                                                          .id
-                                                          .toString(),
-                                                      historicalPhotoUri:
-                                                          list[x]
-                                                              .properties
-                                                              .thumbnail
-                                                              .toString(),
-                                                      historicalName: list[x]
-                                                          .properties
-                                                          .name
-                                                          .toString(),
-                                                      historicalDate: list[x]
-                                                          .properties
-                                                          .date
-                                                          .toString(),
-                                                      historicalAuthor: list[x]
-                                                          .properties
-                                                          .author
-                                                          .toString(),
-                                                      historicalSurl: list[x]
-                                                          .properties
-                                                          .sourceUrl
-                                                          .toString(),
-                                                      historicalLabel: list[x]
-                                                          .properties
-                                                          .sourceLabel
-                                                          .toString(),
-                                                      historicalCoordinates:
-                                                          list[x].geometry,
-                                                    )));
-                                      }),
-                                ));
+                                child: Image.network(
+                                         list[x].properties.thumbnail),
+                                  // child: GestureDetector(
+                                  //     child: Image.network(
+                                  //         list[x].properties.thumbnail),
+                                  //     onTap: () {
+                                  //       Navigator.push(
+                                  //           context,
+                                  //           MaterialPageRoute(
+                                  //               builder: (context) =>
+                                  //                   RephotoScreen(
+                                  //                     historicalPhotoId: list[x]
+                                  //                         .properties
+                                  //                         .id
+                                  //                         .toString(),
+                                  //                     historicalPhotoUri:
+                                  //                         list[x]
+                                  //                             .properties
+                                  //                             .thumbnail
+                                  //                             .toString(),
+                                  //                     historicalName: list[x]
+                                  //                         .properties
+                                  //                         .name
+                                  //                         .toString(),
+                                  //                     historicalDate: list[x]
+                                  //                         .properties
+                                  //                         .date
+                                  //                         .toString(),
+                                  //                     historicalAuthor: list[x]
+                                  //                         .properties
+                                  //                         .author
+                                  //                         .toString(),
+                                  //                     historicalSurl: list[x]
+                                  //                         .properties
+                                  //                         .sourceUrl
+                                  //                         .toString(),
+                                  //                     historicalLabel: list[x]
+                                  //                         .properties
+                                  //                         .sourceLabel
+                                  //                         .toString(),
+                                  //                     historicalCoordinates:
+                                  //                         list[x].geometry,
+                                  //                   )));
+                                  //     }),
+                                );
                           }).closed.then((value) {
                             open = false;
                             setState(() {
