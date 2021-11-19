@@ -106,69 +106,62 @@ class _UserLocationState extends State<MapScreen> {
                           context: context,
                           builder: (builder) {
                             busy = false;
-                            return Container(
-                                height: 300,
-                                width: 600,
-                                color: Colors.white,
-                                  child: Column(
-                                    children: [
-                                      Expanded(
-                                        child: GestureDetector(
-                                          child: Image.network(
-                                              list[x].properties.thumbnail),
-                                          onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        RephotoScreen(
-                                                          historicalPhotoId: list[x]
-                                                              .properties
-                                                              .id
-                                                              .toString(),
-                                                          historicalPhotoUri:
-                                                          list[x]
-                                                              .properties
-                                                              .thumbnail
-                                                              .toString(),
-                                                          historicalName: list[x]
-                                                              .properties
-                                                              .name
-                                                              .toString(),
-                                                          historicalDate: list[x]
-                                                              .properties
-                                                              .date
-                                                              .toString(),
-                                                          historicalAuthor: list[x]
-                                                              .properties
-                                                              .author
-                                                              .toString(),
-                                                          historicalSurl: list[x]
-                                                              .properties
-                                                              .sourceUrl
-                                                              .toString(),
-                                                          historicalLabel: list[x]
-                                                              .properties
-                                                              .sourceLabel
-                                                              .toString(),
-                                                          historicalCoordinates:
-                                                          list[x].geometry,
-                                                        )));
-                                          }),
-                                      )
-                                    ]
-                                  )
-                                );
+                            return Flex(
+                                direction: Axis.horizontal,
+                                children: [
+                              Expanded(
+                                child: GestureDetector(
+                                    child: Image.network(
+                                        list[x].properties.thumbnail),
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  RephotoScreen(
+                                                    historicalPhotoId: list[x]
+                                                        .properties
+                                                        .id
+                                                        .toString(),
+                                                    historicalPhotoUri: list[x]
+                                                        .properties
+                                                        .thumbnail
+                                                        .toString(),
+                                                    historicalName: list[x]
+                                                        .properties
+                                                        .name
+                                                        .toString(),
+                                                    historicalDate: list[x]
+                                                        .properties
+                                                        .date
+                                                        .toString(),
+                                                    historicalAuthor: list[x]
+                                                        .properties
+                                                        .author
+                                                        .toString(),
+                                                    historicalSurl: list[x]
+                                                        .properties
+                                                        .sourceUrl
+                                                        .toString(),
+                                                    historicalLabel: list[x]
+                                                        .properties
+                                                        .sourceLabel
+                                                        .toString(),
+                                                    historicalCoordinates:
+                                                        list[x].geometry,
+                                                  )));
+                                    }),
+                              )
+                            ]);
                           }).closed.then((value) {
-                            if (busy == false) {
-                              open = false;
-                            }
-                            setState(() {
-                              _colors[x] = Colors.red;
-                            });
-                            busy = false;
+                        if (busy == false) {
+                          open = false;
                         }
-                      );
+                        setState(() {
+                          _colors[x] = Colors.red;
+                        });
+                        busy = false;
+                      });
                     }
                   },
                 ));
@@ -235,20 +228,19 @@ class _UserLocationState extends State<MapScreen> {
   }
 
   Widget _buildFlutterMap(BuildContext context) {
-
-    getMyZoom(){
+    getMyZoom() {
       print(mapController.zoom);
       if (mapController.zoom >= 17) {
         maxClusterRadius = 5;
       } else {
-        if (mapController.zoom <=9) {
+        if (mapController.zoom <= 9) {
           maxClusterRadius = 200;
         }
       }
     }
 
     return FlutterMap(
-      mapController: mapController,
+        mapController: mapController,
         options: MapOptions(
           plugins: [
             MarkerClusterPlugin(),
