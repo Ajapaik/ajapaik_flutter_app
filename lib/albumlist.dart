@@ -177,7 +177,7 @@ class AlbumListPageState extends State<AlbumListPage> {
                               margin: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 10),
                               decoration: BoxDecoration(
-                                  color: Colors.grey[300],
+                                  color: Colors.grey[600],
                                   borderRadius: BorderRadius.circular(10)),
                               child: const TextField(
                                   textInputAction: TextInputAction.go,
@@ -187,7 +187,7 @@ class AlbumListPageState extends State<AlbumListPage> {
                                   )),
                             ),
                             MaterialButton(
-                              color: Colors.grey[800],
+                              color: Colors.grey[600],
                               onPressed: () {
                               },
                               child: const Text(
