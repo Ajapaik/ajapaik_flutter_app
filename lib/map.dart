@@ -89,6 +89,7 @@ class _UserLocationState extends State<MapScreen> {
                       return;
                     } else {
                       if (open == true) {
+                        print('done1');
                         Navigator.of(context).pop();
                         setState(() {
                           _colors[x] = Colors.red;
@@ -106,8 +107,9 @@ class _UserLocationState extends State<MapScreen> {
                           context: context,
                           builder: (builder) {
                             return Container(
+                                height: 400,
+                                width: 700,
                                 color: Colors.white,
-                                child: Expanded(
                                   child: GestureDetector(
                                       child: Image.network(
                                           list[x].properties.thumbnail),
@@ -150,8 +152,9 @@ class _UserLocationState extends State<MapScreen> {
                                                           list[x].geometry,
                                                     )));
                                       }),
-                                ));
+                                );
                           }).closed.then((value) {
+                            print('done2');
                             open = false;
                             setState(() {
                               _colors[x] = Colors.red;
