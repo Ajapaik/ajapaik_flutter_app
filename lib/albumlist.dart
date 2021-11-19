@@ -198,9 +198,18 @@ class AlbumListPageState extends State<AlbumListPage> {
                               )
                             ),
                             IconButton(
-                                padding: const EdgeInsets.only(right: 10) ,
+                                padding: const EdgeInsets.only(right: 10),
                                 onPressed: () {
-
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          // Retrieve the text the user has entered by using the
+                                          // TextEditingController.
+                                          content: Text(myController.text),
+                                        );
+                                      });
+                                  Navigator.pop(context);
                                 },
                                 icon: const Icon(Icons.search)),
                           ]));
