@@ -36,6 +36,7 @@ class AlbumListPageState extends State<AlbumListPage> {
   bool searchDialogVisible = false;
   double userLatitudeData = 0;
   double userLongitudeData = 0;
+  final myController = TextEditingController();
 
   Future<List<Album>>? _albumData;
 
@@ -89,6 +90,12 @@ class AlbumListPageState extends State<AlbumListPage> {
     getCurrentLocation();
     refresh();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    myController.dispose();
+    super.dispose();
   }
 
   @override
@@ -181,10 +188,11 @@ class AlbumListPageState extends State<AlbumListPage> {
                                 decoration: BoxDecoration(
                                     color: Colors.grey[600],
                                     borderRadius: BorderRadius.circular(10)),
-                                child: const TextField(
+                                child: TextField(
+                                    controller: myController,
                                     textInputAction: TextInputAction.go,
                                     textAlign: TextAlign.center,
-                                    decoration: InputDecoration.collapsed(
+                                    decoration: const InputDecoration.collapsed(
                                       hintText: 'Search for images',
                                     )),
                               )
