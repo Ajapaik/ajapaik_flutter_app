@@ -164,37 +164,37 @@ class AlbumListPageState extends State<AlbumListPage> {
                 context: context,
                 builder: (context) {
                   return Container(
-                      height: 200,
-                      child: Column(
+                      alignment: Alignment.topCenter,
+                      height: 400,
+                      child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
-                              height: 50,
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 10),
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 10),
-                              decoration: BoxDecoration(
-                                  color: Colors.grey[600],
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: const TextField(
-                                  textInputAction: TextInputAction.go,
-                                  textAlign: TextAlign.center,
-                                  decoration: InputDecoration.collapsed(
-                                    hintText: 'Type here to search for images',
-                                  )),
+                            Expanded(
+                              child: Container(
+                                height: 50,
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 15),
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 15),
+                                decoration: BoxDecoration(
+                                    color: Colors.grey[600],
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: const TextField(
+                                    textInputAction: TextInputAction.go,
+                                    textAlign: TextAlign.center,
+                                    decoration: InputDecoration.collapsed(
+                                      hintText: 'Search for images',
+                                    )),
+                              )
                             ),
-                            MaterialButton(
-                              color: Colors.grey[600],
-                              onPressed: () {
-                              },
-                              child: const Text(
-                                'Search',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            )
+                            IconButton(
+                                padding: const EdgeInsets.only(right: 10) ,
+                                onPressed: () {
+
+                                },
+                                icon: const Icon(Icons.search)),
                           ]));
                 });
           }
