@@ -309,6 +309,7 @@ class RephotoScreenState extends State<RephotoScreen> {
             ),
             const SizedBox(height: 10),
             RichText(
+              textAlign: TextAlign.center,
               text: TextSpan(
                   text: widget.historicalLabel,
                   style: const TextStyle(
