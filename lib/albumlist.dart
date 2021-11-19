@@ -93,7 +93,6 @@ class AlbumListPageState extends State<AlbumListPage> {
 
   @override
   Widget build(BuildContext context) {
-
     @override
     _saveBool() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -116,8 +115,7 @@ class AlbumListPageState extends State<AlbumListPage> {
                 _saveBool();
                 setState(() {
                   visibility = !visibility;
-                  }
-                );
+                });
               }),
           IconButton(
               icon: Icon(((orderBy == "alpha")
@@ -135,7 +133,7 @@ class AlbumListPageState extends State<AlbumListPage> {
             if (snapshot.hasError) (snapshot.error);
 
             return (snapshot.hasData)
-                ? AlbumList(albums: snapshot.data, toggle:visibility)
+                ? AlbumList(albums: snapshot.data, toggle: visibility)
                 : const Center(child: CircularProgressIndicator());
           },
         )),
@@ -159,6 +157,47 @@ class AlbumListPageState extends State<AlbumListPage> {
                           )));
             }
           }
+          if (index == 2) {
+            showModalBottomSheet(
+                isDismissible: true,
+                isScrollControlled: true,
+                context: context,
+                builder: (context) {
+                  return Container(
+                      height: 200,
+                      child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: 50,
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
+                              decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: const TextField(
+                                  textInputAction: TextInputAction.go,
+                                  textAlign: TextAlign.center,
+                                  decoration: InputDecoration.collapsed(
+                                    hintText: 'Type here to search for images',
+                                  )),
+                            ),
+                            MaterialButton(
+                              color: Colors.grey[800],
+                              onPressed: () {
+                              },
+                              child: const Text(
+                                'Search',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            )
+                          ]));
+                });
+          }
         },
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -170,8 +209,8 @@ class AlbumListPageState extends State<AlbumListPage> {
             label: 'Map',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add_a_photo),
-            label: 'Add a photo',
+            icon: Icon(Icons.search),
+            label: 'Search',
           ),
         ],
       ),
@@ -183,7 +222,8 @@ class AlbumList extends StatelessWidget {
   final List<Album>? albums;
   final bool toggle;
 
-  const AlbumList({Key? key, this.albums, this.toggle=true}) : super(key: key);
+  const AlbumList({Key? key, this.albums, this.toggle = true})
+      : super(key: key);
 
   Future<void> _showphoto(context, index) async {
     await Navigator.push(
@@ -259,35 +299,35 @@ class AlbumList extends StatelessWidget {
     // Remove header row from index
     index = index - 1;
     return GestureDetector(
-        onTap: () {
-          if (albums!.first.features[index].properties.geojson != null &&
-              albums!.first.features[index].properties.geojson != "") {
-            _moveToGeoJson(context, index);
-          } else {
-            _showphoto(context, index);
-          }
-        },
-        child: Column(children: [
-          CachedNetworkImage(
-              imageUrl: albums!.first.features[index].properties.thumbnail
-                  .toString()),
-          Visibility(
-            child: Text(
-              albums!.first.features[index].properties.name.toString(),
-              textAlign: TextAlign.center,
-            ),
-            visible: toggle,
+      onTap: () {
+        if (albums!.first.features[index].properties.geojson != null &&
+            albums!.first.features[index].properties.geojson != "") {
+          _moveToGeoJson(context, index);
+        } else {
+          _showphoto(context, index);
+        }
+      },
+      child: Column(children: [
+        CachedNetworkImage(
+            imageUrl:
+                albums!.first.features[index].properties.thumbnail.toString()),
+        Visibility(
+          child: Text(
+            albums!.first.features[index].properties.name.toString(),
+            textAlign: TextAlign.center,
           ),
-          // Favorites code snippet for icons to favorite pictures
-          // GestureDetector(
-          //   onTap: () {
-          //
-          //   },
-          //   child: const Align(
-          //     alignment: Alignment.topRight,
-          //    child: Icon(Icons.favorite_outlined, color: Colors.white, size: 35),
-          // ))
-        ]),
+          visible: toggle,
+        ),
+        // Favorites code snippet for icons to favorite pictures
+        // GestureDetector(
+        //   onTap: () {
+        //
+        //   },
+        //   child: const Align(
+        //     alignment: Alignment.topRight,
+        //    child: Icon(Icons.favorite_outlined, color: Colors.white, size: 35),
+        // ))
+      ]),
     );
   }
 }

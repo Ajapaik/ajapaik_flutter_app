@@ -89,7 +89,6 @@ class _UserLocationState extends State<MapScreen> {
                       return;
                     } else {
                       if (open == true) {
-                        print('done1');
                         Navigator.of(context).pop();
                         setState(() {
                           _colors[x] = Colors.red;
@@ -98,7 +97,6 @@ class _UserLocationState extends State<MapScreen> {
                       }
                     }
                     if (open == false) {
-                      print('done3');
                       busy = true;
                       open = true;
                       setState(() {
@@ -162,16 +160,16 @@ class _UserLocationState extends State<MapScreen> {
                                   )
                                 );
                           }).closed.then((value) {
-                            if (busy = false) {
+                            if (busy == false) {
                               open = false;
                             }
                             setState(() {
                               _colors[x] = Colors.red;
                             });
-                      }
+                            busy = false;
+                        }
                       );
                     }
-                    busy = false;
                   },
                 ));
         markerList.add(m);
