@@ -106,9 +106,7 @@ class _UserLocationState extends State<MapScreen> {
                           context: context,
                           builder: (builder) {
                             busy = false;
-                            return Flex(
-                                direction: Axis.horizontal,
-                                children: [
+                            return Row(children: [
                               Expanded(
                                 child: GestureDetector(
                                     child: Image.network(
