@@ -3,6 +3,7 @@ import 'package:ajapaik_flutter_app/rephoto.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map/plugin_api.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
@@ -33,6 +34,7 @@ class _UserLocationState extends State<MapScreen> {
   double userLongitudeData = 0;
   int maxClusterRadius = 100;
   List<Marker> markerList = [];
+  List<Bounds> boundsList = [];
   bool open = false;
   bool busy = false;
   List<Color> _colors = [];
@@ -169,6 +171,18 @@ class _UserLocationState extends State<MapScreen> {
     return markerList;
   }
 
+  getBoundsList(context) {
+    List list = widget.markerCoordinatesList;
+    boundsList.clear();
+    for (int x = 0; x < list.length; x++) {
+      if (list[x].geometry.coordinates.length > 0) {
+        double boundsLatitude = list[x].geometry.coordinates[0];
+        double boundsLongitude = list[x].geometry.coordinates[1];
+        var b = LatLng(boundsLatitude, boundsLongitude);
+      }
+    }
+  }
+
   @override
   void initState() {
     listenCurrentLocation();
@@ -280,14 +294,14 @@ class _UserLocationState extends State<MapScreen> {
         ]);
   }
 
-  LatLngBounds boundsFromLatLngList(List<LatLng> markerList) {
-    assert(markerList.isNotEmpty);
+  LatLngBounds boundsFromLatLngList(List<LatLng> markerCoordinatesList) {
+    assert(markerCoordinatesList.isNotEmpty);
     double x0 = 0;
     double x1 = 0;
     double y0 = 0;
     double y1 = 0;
-    for (LatLng latLng in markerList) {
-      if (x0 == null) {
+    for (LatLng latLng in markerCoordinatesList) {
+      if (x0 == 0) {
         x0 = x1 = latLng.latitude;
         y0 = y1 = latLng.longitude;
       } else {
