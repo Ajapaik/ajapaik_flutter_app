@@ -279,4 +279,24 @@ class _UserLocationState extends State<MapScreen> {
           ])
         ]);
   }
+
+  LatLngBounds boundsFromLatLngList(List<LatLng> markerList) {
+    assert(markerList.isNotEmpty);
+    double x0 = 0;
+    double x1 = 0;
+    double y0 = 0;
+    double y1 = 0;
+    for (LatLng latLng in markerList) {
+      if (x0 == null) {
+        x0 = x1 = latLng.latitude;
+        y0 = y1 = latLng.longitude;
+      } else {
+        if (latLng.latitude > x1) x1 = latLng.latitude;
+        if (latLng.latitude < x0) x0 = latLng.latitude;
+        if (latLng.longitude > y1) y1 = latLng.longitude;
+        if (latLng.longitude < y0) y0 = latLng.longitude;
+      }
+    }
+    return LatLngBounds(LatLng(x1, y1), LatLng(x0, y0));
+  }
 }
