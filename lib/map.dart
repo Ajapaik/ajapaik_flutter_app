@@ -40,7 +40,7 @@ class _UserLocationState extends State<MapScreen> {
 
   getColorsForIcons() async {
     _colors =
-        List.generate(100, (index) => Colors.red); // here 10 is items.length
+        List.generate(10000, (index) => Colors.red); // here 10 is items.length
   }
 
   final Future<Position> _location = Future<Position>.delayed(
@@ -245,7 +245,6 @@ class _UserLocationState extends State<MapScreen> {
           plugins: [
             MarkerClusterPlugin(),
           ],
-          center: LatLng(userLatitudeData, userLongitudeData),
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
           zoom: 17.0,
           maxZoom: 18,
@@ -282,4 +281,25 @@ class _UserLocationState extends State<MapScreen> {
           ])
         ]);
   }
+
+  LatLngBounds boundsFromLatLngList(List<LatLng> markerList) {
+    assert(markerList.isNotEmpty);
+    double x0 = 0;
+    double x1 = 0;
+    double y0 = 0;
+    double y1 = 0;
+    for (LatLng latLng in markerList) {
+      if (x0 == null) {
+        x0 = x1 = latLng.latitude;
+        y0 = y1 = latLng.longitude;
+      } else {
+        if (latLng.latitude > x1) x1 = latLng.latitude;
+        if (latLng.latitude < x0) x0 = latLng.latitude;
+        if (latLng.longitude > y1) y1 = latLng.longitude;
+        if (latLng.longitude < y0) y0 = latLng.longitude;
+      }
+    }
+    return LatLngBounds(LatLng(x1, y1), LatLng(x0, y0));
+  }
+
 }

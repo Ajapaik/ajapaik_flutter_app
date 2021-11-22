@@ -135,15 +135,15 @@ class AlbumListPageState extends State<AlbumListPage> {
       body: Column(children: [
         Flexible(
             child: FutureBuilder<List<Album>>(
-          future: test(context),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) (snapshot.error);
+              future: test(context),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) (snapshot.error);
 
-            return (snapshot.hasData)
-                ? AlbumList(albums: snapshot.data, toggle: visibility)
-                : const Center(child: CircularProgressIndicator());
-          },
-        )),
+                return (snapshot.hasData)
+                    ? AlbumList(albums: snapshot.data, toggle: visibility)
+                    : const Center(child: CircularProgressIndicator());
+              },
+            )),
       ]),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) async {
@@ -153,7 +153,8 @@ class AlbumListPageState extends State<AlbumListPage> {
               await Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => MapScreen(
+                      builder: (context) =>
+                          MapScreen(
                             historicalPhotoUri: a
                                 .first.features[index].properties.thumbnail
                                 .toString(),
@@ -178,37 +179,32 @@ class AlbumListPageState extends State<AlbumListPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Expanded(
-                              child: Container(
-                                height: 50,
-                                alignment: Alignment.center,
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 15),
-                                margin: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 15),
-                                decoration: BoxDecoration(
-                                    color: Colors.grey[600],
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: TextField(
-                                    controller: myController,
-                                    textInputAction: TextInputAction.go,
-                                    textAlign: TextAlign.center,
-                                    decoration: const InputDecoration.collapsed(
-                                      hintText: 'Search for images',
-                                    )),
-                              )
+                                child: Container(
+                                  height: 50,
+                                  alignment: Alignment.center,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 15),
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 15),
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey[600],
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: TextField(
+                                      controller: myController,
+                                      textInputAction: TextInputAction.go,
+                                      textAlign: TextAlign.center,
+                                      onChanged: onSearchTextChanged,
+                                      decoration: const InputDecoration
+                                          .collapsed(
+                                        hintText: 'Search for images',
+                                      )),
+                                )
                             ),
                             IconButton(
                                 padding: const EdgeInsets.only(right: 10),
                                 onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          // Retrieve the text the user has entered by using the
-                                          // TextEditingController.
-                                          content: Text(myController.text),
-                                        );
-                                      });
+                                  myController.clear();
+                                  onSearchTextChanged('');
                                   Navigator.pop(context);
                                 },
                                 icon: const Icon(Icons.search)),
@@ -232,6 +228,13 @@ class AlbumListPageState extends State<AlbumListPage> {
         ],
       ),
     );
+  }
+
+  onSearchTextChanged(String text) async {
+    if (text.isEmpty) {
+      setState(() {});
+      return;
+    }
   }
 }
 
