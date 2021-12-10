@@ -178,7 +178,8 @@ class _UserLocationState extends State<MapScreen> {
       if (list[x].geometry.coordinates.length > 0) {
         double boundsLatitude = list[x].geometry.coordinates[0];
         double boundsLongitude = list[x].geometry.coordinates[1];
-        var b = LatLng(boundsLatitude, boundsLongitude);
+        //var b = Bounds(boundsLatitude, boundsLongitude);
+        //boundsList.add(b);
       }
     }
   }
