@@ -72,6 +72,8 @@ class AlbumListPageState extends State<AlbumListPage> {
     } else {
       url += "?orderby=" + orderBy + "&orderdirection=" + orderDirection;
     }
+    String searchkey=myController.text;
+    url += "&search=" + searchkey;
     return url;
   }
 
@@ -203,9 +205,13 @@ class AlbumListPageState extends State<AlbumListPage> {
                             IconButton(
                                 padding: const EdgeInsets.only(right: 10),
                                 onPressed: () {
-                                  myController.clear();
                                   onSearchTextChanged('');
+                                  setState(() {
+                                    refresh();
+                                  });
+                                  myController.clear();
                                   Navigator.pop(context);
+
                                 },
                                 icon: const Icon(Icons.search)),
                           ]));
