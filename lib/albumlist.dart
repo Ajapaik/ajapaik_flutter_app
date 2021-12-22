@@ -194,6 +194,12 @@ class AlbumListPageState extends State<AlbumListPage> {
                                   child: TextField(
                                       controller: myController,
                                       textInputAction: TextInputAction.go,
+                                      onSubmitted: (value) {
+                                        setState(() {
+                                          refresh();
+                                          Navigator.pop(context);
+                                        });
+                                      },
                                       textAlign: TextAlign.center,
                                       onChanged: onSearchTextChanged,
                                       decoration: const InputDecoration
@@ -211,7 +217,6 @@ class AlbumListPageState extends State<AlbumListPage> {
                                   });
                                   myController.clear();
                                   Navigator.pop(context);
-
                                 },
                                 icon: const Icon(Icons.search)),
                           ]));

@@ -459,8 +459,8 @@ class RephotoScreenState extends State<RephotoScreen> {
     double latitude = 0;
     double longitude = 0;
     if (!widget.historicalCoordinates.coordinates.isEmpty) {
-      latitude = widget.historicalCoordinates.coordinates[0];
-      longitude = widget.historicalCoordinates.coordinates[1];
+      longitude = widget.historicalCoordinates.coordinates[0];
+      latitude = widget.historicalCoordinates.coordinates[1];
     }
 
     return FlutterMap(
