@@ -139,6 +139,10 @@ class AlbumListPageState extends State<AlbumListPage> {
             child: FutureBuilder<List<Album>>(
               future: test(context),
               builder: (context, snapshot) {
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
                 if (snapshot.hasError) (snapshot.error);
 
                 return (snapshot.hasData)
@@ -192,6 +196,7 @@ class AlbumListPageState extends State<AlbumListPage> {
                                       color: Colors.grey[600],
                                       borderRadius: BorderRadius.circular(10)),
                                   child: TextField(
+                                      autofocus: true,
                                       controller: myController,
                                       textInputAction: TextInputAction.go,
                                       onSubmitted: (value) {
@@ -211,24 +216,10 @@ class AlbumListPageState extends State<AlbumListPage> {
                             IconButton(
                                 padding: const EdgeInsets.only(right: 10),
                                 onPressed: () {
-                                  FutureBuilder<List<Album>>(
-                                      future: test(context),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.connectionState != ConnectionState.done) {
-                                          return const CircularProgressIndicator();
-                                        }
-                                        if (snapshot.hasError) {
-
-                                        }
-                                        if (snapshot.hasData) {
-                                          AlbumList(albums: snapshot.data);
-                                        }
-                                        return const CircularProgressIndicator();
-                                      });
                                   onSearchTextChanged('');
-                                  // setState(() {
-                                  //   refresh();
-                                  // });
+                                   setState(() {
+                                     refresh();
+                                   });
                                   myController.clear();
                                   Navigator.pop(context);
                                 },
