@@ -135,6 +135,13 @@ class AlbumListPageState extends State<AlbumListPage> {
         ],
       ),
       body: Column(children: [
+        Visibility(
+          visible: visibility,
+          child: Column(children: const [
+            Text('hello world'),
+          ]
+        ),
+        ),
         Flexible(
             child: FutureBuilder<List<Album>>(
               future: test(context),
@@ -205,7 +212,7 @@ class AlbumListPageState extends State<AlbumListPage> {
                                           Navigator.pop(context);
                                         });
                                       },
-                                      textAlign: TextAlign.center,
+                                      textAlign: TextAlign.start,
                                       onChanged: onSearchTextChanged,
                                       decoration: const InputDecoration
                                           .collapsed(
