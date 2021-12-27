@@ -137,8 +137,53 @@ class AlbumListPageState extends State<AlbumListPage> {
       body: Column(children: [
         Visibility(
           visible: visibility,
-          child: Column(children: const [
-            Text('hello world'),
+          child: Column(children: [
+                Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                      child: Container(
+                        height: 50,
+                        width: 325,
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 15),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 15),
+                        decoration: BoxDecoration(
+                            color: Colors.grey[600],
+                            borderRadius: BorderRadius.circular(10)),
+                        child: TextField(
+                            autofocus: true,
+                            controller: myController,
+                            textInputAction: TextInputAction.go,
+                            onSubmitted: (value) {
+                              setState(() {
+                                refresh();
+                                Navigator.pop(context);
+                              });
+                            },
+                            textAlign: TextAlign.start,
+                            onChanged: onSearchTextChanged,
+                            decoration: const InputDecoration
+                                .collapsed(
+                              hintText: 'Search for images',
+                            )),
+                      )
+                  ),
+                  IconButton(
+                      padding: const EdgeInsets.only(right: 10),
+                      onPressed: () {
+                        onSearchTextChanged('');
+                        setState(() {
+                          refresh();
+                        });
+                        myController.clear();
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(Icons.search)),
+                ])
           ]
         ),
         ),
