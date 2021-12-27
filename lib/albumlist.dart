@@ -155,13 +155,11 @@ class AlbumListPageState extends State<AlbumListPage> {
                             color: Colors.grey[600],
                             borderRadius: BorderRadius.circular(10)),
                         child: TextField(
-                            autofocus: true,
                             controller: myController,
                             textInputAction: TextInputAction.go,
                             onSubmitted: (value) {
                               setState(() {
                                 refresh();
-                                Navigator.pop(context);
                               });
                             },
                             textAlign: TextAlign.start,
@@ -180,10 +178,12 @@ class AlbumListPageState extends State<AlbumListPage> {
                           refresh();
                         });
                         myController.clear();
-                        Navigator.pop(context);
                       },
                       icon: const Icon(Icons.search)),
-                ])
+                ]),
+            Row(
+
+            ),
           ]
         ),
         ),
