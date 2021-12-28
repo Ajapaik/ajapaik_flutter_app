@@ -381,10 +381,29 @@ class AlbumList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StaggeredGridView.countBuilder(
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    if (height > width) {
+      return StaggeredGridView.countBuilder(
+          crossAxisCount: 4,
+          staggeredTileBuilder: (int index) =>
+              StaggeredTile.fit(index == 0 ? 4 : 2),
+          mainAxisSpacing: 4.0,
+          crossAxisSpacing: 4.0,
+          itemCount: albums!.first.features.length + 1,
+          // Number of items + header row
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              return headerTile(context, index);
+            } else {
+              return contentTile(context, index);
+            }
+          });
+    } else {
+      return StaggeredGridView.countBuilder(
         crossAxisCount: 4,
         staggeredTileBuilder: (int index) =>
-            StaggeredTile.fit(index == 0 ? 4 : 2),
+            StaggeredTile.fit(index == 0 ? 4 : 1),
         mainAxisSpacing: 4.0,
         crossAxisSpacing: 4.0,
         itemCount: albums!.first.features.length + 1,
@@ -396,6 +415,7 @@ class AlbumList extends StatelessWidget {
             return contentTile(context, index);
           }
         });
+    }
   }
 
   Widget headerTile(context, index) {
