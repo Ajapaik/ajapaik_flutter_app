@@ -194,7 +194,7 @@ class AlbumListPageState extends State<AlbumListPage> {
                           height: 50,
                           width: 325,
                               child: TextFormField(
-                                  enabled: true,
+                                  readOnly: true,
                                   controller: myController,
                                   decoration: InputDecoration(
                                     prefixIcon: IconButton(
