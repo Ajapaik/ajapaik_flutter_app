@@ -34,6 +34,7 @@ class AlbumListPageState extends State<AlbumListPage> {
   String orderBy = "alpha";
   String orderDirection = "desc";
   bool searchDialogVisible = false;
+  bool filterBoxOn = false;
   double userLatitudeData = 0;
   double userLongitudeData = 0;
   final myController = TextEditingController();
@@ -159,6 +160,7 @@ class AlbumListPageState extends State<AlbumListPage> {
                             textInputAction: TextInputAction.go,
                             onSubmitted: (value) {
                               setState(() {
+                                filterBoxOn = true;
                                 refresh();
                               });
                             },
@@ -173,19 +175,46 @@ class AlbumListPageState extends State<AlbumListPage> {
                   IconButton(
                       padding: const EdgeInsets.only(right: 10),
                       onPressed: () {
-                        onSearchTextChanged('');
                         setState(() {
                           refresh();
+                          filterBoxOn = true;
                         });
-                        myController.clear();
+                        onSearchTextChanged('');
                       },
                       icon: const Icon(Icons.search)),
                 ]),
             Row(
-
-            ),
-          ]
-        ),
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                      child: Visibility(
+                          visible: filterBoxOn,
+                          child: Container(
+                          height: 50,
+                          width: 325,
+                              child: TextFormField(
+                                  enabled: true,
+                                  controller: myController,
+                                  decoration: InputDecoration(
+                                    prefixIcon: IconButton(
+                                      icon: const Icon(Icons.cancel),
+                                      onPressed:() {
+                                        setState(() {
+                                          myController.clear();
+                                          filterBoxOn = false;
+                                          refresh();
+                                        });
+                                      }
+                                    )
+                                  ),
+                                  onChanged: (value) {
+                                    myController.text;
+                                  },
+                                  ),
+                          )))
+                ]),
+          ]),
         ),
         Flexible(
             child: FutureBuilder<List<Album>>(
