@@ -49,6 +49,7 @@ class RephotoScreen extends StatefulWidget {
 
 class RephotoScreenState extends State<RephotoScreen> {
   bool boolValue = true;
+  bool MapInfoVisibility = false;
   double userLatitudeData = 0;
   double userLongitudeData = 0;
 
@@ -249,16 +250,16 @@ class RephotoScreenState extends State<RephotoScreen> {
       body: Column(children: [
         Flexible(child: getImageComparison(context)),
       ]),
-      floatingActionButton: Padding(
-          padding: const EdgeInsets.only(bottom: 25.0, right: 25.0),
-          child: FloatingActionButton(
-            shape: const StadiumBorder(
-                side: BorderSide(color: Colors.black87, width: 2)),
-            child: const Icon(Icons.camera),
-            onPressed: () {
-              _takeRephoto(context);
-            },
-          )),
+      // floatingActionButton: Padding(
+      //     padding: const EdgeInsets.only(bottom: 25.0, right: 25.0),
+      //     child: FloatingActionButton(
+      //       shape: const StadiumBorder(
+      //           side: BorderSide(color: Colors.black87, width: 2)),
+      //       child: const Icon(Icons.camera),
+      //       onPressed: () {
+      //         _takeRephoto(context);
+      //       },
+      //     )),
     );
   }
 
@@ -282,9 +283,22 @@ class RephotoScreenState extends State<RephotoScreen> {
 
     double distance = Geolocator.distanceBetween(userLatitudeData, userLongitudeData, latitude, longitude);
     double calcDistance = distance / 1000;
+    String distanceToImage = '';
+    if (distance >= 1000) {
+      distanceToImage = calcDistance.toStringAsFixed(2) + ' Km';
+    } else {
+      distanceToImage = distance.toStringAsFixed(2) + ' M';
+    }
+
+    @override
+    _saveBool() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('visibility', MapInfoVisibility);
+    }
 
     return Column(children: [
-      Flexible(
+      Expanded(
+        flex: 0,
           child: GestureDetector(
         onTap: () {
           Navigator.push(
@@ -296,109 +310,141 @@ class RephotoScreenState extends State<RephotoScreen> {
         },
         child: Image.network(widget.historicalPhotoUri),
       )),
-      Padding(
-          padding: const EdgeInsets.only(left: 10, right: 10),
-          child: Column(children: [
-            Text(widget.historicalAuthor + ', ' + widget.historicalDate,
-                maxLines: 2),
-            const SizedBox(height: 10),
-            Text(
-              widget.historicalName,
-              maxLines: 5,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 10),
-            RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                  text: widget.historicalLabel,
-                  style: const TextStyle(
-                    color: Colors.blue,
-                    decoration: TextDecoration.underline,
-                  ),
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () async {
-                      if (await canLaunch(widget.historicalSurl)) {
-                        await launch(widget.historicalSurl);
-                      } else {
-                        throw 'Could not launch $widget.historicalSurl';
-                      }
-                    }),
-            ),
-            const SizedBox(height: 10),
-            if (distance >= 1000)
-              Text(
-                  calcDistance.toStringAsFixed(2) + ' Km'),
-            if (distance <= 999)
-              Text(
-                  distance.toStringAsFixed(2) + ' M'
-              )
-          ])),
+
+      Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+        Text(
+          distanceToImage
+      ),
+        IconButton(
+          alignment: Alignment.center,
+          iconSize: 50,
+            onPressed: () {
+              _takeRephoto(context);
+            },
+            icon: const Icon(Icons.camera)),
+        IconButton(
+            iconSize: 50,
+            icon: MapInfoVisibility
+                ? const Icon(Icons.map)
+                : const Icon(Icons.info_outline),
+            onPressed: () {
+              _saveBool();
+              setState(() {
+                MapInfoVisibility = !MapInfoVisibility;
+              });
+            }),
+        // Visibility(visible: false,
+        //   child: IconButton(
+        //     iconSize: 50,
+        //     icon: const Icon(Icons.cancel), onPressed: () {  },
+        // ),
+        // ),
+    ]),
+      // Padding(
+      //     padding: const EdgeInsets.only(left: 10, right: 10),
+      //     child: Column(children: [
+      //       Text(widget.historicalAuthor + ', ' + widget.historicalDate,
+      //           maxLines: 2),
+      //       const SizedBox(height: 10),
+      //       Text(
+      //         widget.historicalName,
+      //         maxLines: 5,
+      //         overflow: TextOverflow.ellipsis,
+      //       ),
+      //       const SizedBox(height: 10),
+      //       RichText(
+      //         textAlign: TextAlign.center,
+      //         text: TextSpan(
+      //             text: widget.historicalLabel,
+      //             style: const TextStyle(
+      //               color: Colors.blue,
+      //               decoration: TextDecoration.underline,
+      //             ),
+      //             recognizer: TapGestureRecognizer()
+      //               ..onTap = () async {
+      //                 if (await canLaunch(widget.historicalSurl)) {
+      //                   await launch(widget.historicalSurl);
+      //                 } else {
+      //                   throw 'Could not launch $widget.historicalSurl';
+      //                 }
+      //               }),
+      //       ),
+      //       const SizedBox(height: 10),
+      //       if (distance >= 1000) Text(calcDistance.toStringAsFixed(2) + ' Km'),
+      //       if (distance <= 999) Text(distance.toStringAsFixed(2) + ' M')
+      //     ])),
       if (tooltip == true)
         Expanded(
-            child: GestureDetector(
-                onDoubleTap: () async {
-                  await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ImageMapScreen(
+          child:
+            Align(
+                alignment: Alignment.bottomCenter,
+                child: GestureDetector(
+                    onDoubleTap: () async {
+                      await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ImageMapScreen(
                                 imageLatitude: latitude,
                                 imageLongitude: longitude,
                                 historicalPhotoUri: widget.historicalPhotoUri,
                               )));
-                },
-                child: FutureBuilder(
-                    future: _location,
-                    builder: (BuildContext context,
-                        AsyncSnapshot<dynamic> snapshot) {
-                      if (snapshot.hasError) (snapshot.error);
-                      return snapshot.hasData
-                          ? _buildFlutterMap(context)
-                          : Center(
-                              child: FlutterMap(
-                                  options: MapOptions(
-                                    center: LatLng(latitude, longitude),
-                                    interactiveFlags:
-                                        InteractiveFlag.pinchZoom |
-                                            InteractiveFlag.drag,
-                                    zoom: 17.0,
+                    },
+                    child: FutureBuilder(
+                        future: _location,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<dynamic> snapshot) {
+                          if (snapshot.hasError) (snapshot.error);
+                          return snapshot.hasData
+                              ? _buildFlutterMap(context)
+                              : Center(
+                            child: FlutterMap(
+                                options: MapOptions(
+                                  center: LatLng(latitude, longitude),
+                                  interactiveFlags:
+                                  InteractiveFlag.pinchZoom |
+                                  InteractiveFlag.drag,
+                                  zoom: 17.0,
+                                ),
+                                layers: [
+                                  TileLayerOptions(
+                                    urlTemplate:
+                                    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                                    subdomains: ['a', 'b', 'c'],
+                                    attributionBuilder: (_) {
+                                      return const Text(
+                                          "© OpenStreetMap contributors");
+                                    },
                                   ),
-                                  layers: [
-                                    TileLayerOptions(
-                                      urlTemplate:
-                                          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                                      subdomains: ['a', 'b', 'c'],
-                                      attributionBuilder: (_) {
-                                        return const Text(
-                                            "© OpenStreetMap contributors");
-                                      },
-                                    ),
-                                    MarkerLayerOptions(
-                                      markers: [
-                                        Marker(
-                                            width: 80.0,
-                                            height: 80.0,
-                                            point: LatLng(latitude, longitude),
-                                            builder: (ctx) => const Icon(
-                                                Icons.location_pin,
-                                                color: Colors.red)),
-                                      ],
-                                    ),
-                                    MarkerLayerOptions(
-                                      markers: [
-                                        Marker(
-                                            width: 80.0,
-                                            height: 80.0,
-                                            point: LatLng(userLatitudeData,
-                                                userLongitudeData),
-                                            builder: (ctx) => const Icon(
-                                                Icons.location_pin,
-                                                color: Colors.blue)),
-                                      ],
-                                    ),
-                                  ]),
-                            );
-                    })))
+                                  MarkerLayerOptions(
+                                    markers: [
+                                      Marker(
+                                          width: 80.0,
+                                          height: 80.0,
+                                          point: LatLng(latitude, longitude),
+                                          builder: (ctx) => const Icon(
+                                              Icons.location_pin,
+                                              color: Colors.red)),
+                                    ],
+                                  ),
+                                  MarkerLayerOptions(
+                                    markers: [
+                                      Marker(
+                                          width: 80.0,
+                                          height: 80.0,
+                                          point: LatLng(userLatitudeData,
+                                              userLongitudeData),
+                                          builder: (ctx) => const Icon(
+                                              Icons.location_pin,
+                                              color: Colors.blue)),
+                                    ],
+                                  ),
+                                ]),
+                          );
+                        }))
+            )
+                )
     ]);
   }
 
