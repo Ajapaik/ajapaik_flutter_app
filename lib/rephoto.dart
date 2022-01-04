@@ -50,6 +50,7 @@ class RephotoScreen extends StatefulWidget {
 class RephotoScreenState extends State<RephotoScreen> {
   bool boolValue = true;
   bool MapInfoVisibility = false;
+  bool newMapInfoValue = true;
   double userLatitudeData = 0;
   double userLongitudeData = 0;
 
@@ -62,6 +63,12 @@ class RephotoScreenState extends State<RephotoScreen> {
       });
       return boolValue;
     }
+  }
+
+  void getMapInfoValue() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    MapInfoVisibility = prefs.getBool("MapInfoVisibility")!;
+    setState(() {});
   }
 
   void _takeRephoto(context) {
@@ -104,7 +111,7 @@ class RephotoScreenState extends State<RephotoScreen> {
 
   final Future<Position> _location = Future<Position>.delayed(
     const Duration(seconds: 2),
-        () => Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high),
+    () => Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high),
   );
 
   void getCurrentLocation() async {
@@ -133,6 +140,7 @@ class RephotoScreenState extends State<RephotoScreen> {
   @override
   void initState() {
     listenCurrentLocation();
+    getMapInfoValue();
     super.initState();
   }
 
@@ -250,16 +258,6 @@ class RephotoScreenState extends State<RephotoScreen> {
       body: Column(children: [
         Flexible(child: getImageComparison(context)),
       ]),
-      // floatingActionButton: Padding(
-      //     padding: const EdgeInsets.only(bottom: 25.0, right: 25.0),
-      //     child: FloatingActionButton(
-      //       shape: const StadiumBorder(
-      //           side: BorderSide(color: Colors.black87, width: 2)),
-      //       child: const Icon(Icons.camera),
-      //       onPressed: () {
-      //         _takeRephoto(context);
-      //       },
-      //     )),
     );
   }
 
@@ -281,7 +279,8 @@ class RephotoScreenState extends State<RephotoScreen> {
       longitude = widget.historicalCoordinates.coordinates[1];
     }
 
-    double distance = Geolocator.distanceBetween(userLatitudeData, userLongitudeData, latitude, longitude);
+    double distance = Geolocator.distanceBetween(
+        userLatitudeData, userLongitudeData, latitude, longitude);
     double calcDistance = distance / 1000;
     String distanceToImage = '';
     if (distance >= 1000) {
@@ -291,9 +290,9 @@ class RephotoScreenState extends State<RephotoScreen> {
     }
 
     @override
-    _saveBool() async {
+    _saveMapInfoBool() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('visibility', MapInfoVisibility);
+      await prefs.setBool('MapInfoVisibility', MapInfoVisibility);
     }
 
     return Column(children: [
@@ -310,32 +309,32 @@ class RephotoScreenState extends State<RephotoScreen> {
             },
             child: Image.network(widget.historicalPhotoUri),
           )),
-
       Padding(
-          padding: const EdgeInsets.only(top: 20),
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+          padding: const EdgeInsets.only(top: 20, bottom: 20),
+          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text(distanceToImage),
-            IconButton(
-                alignment: Alignment.center,
-                iconSize: 50,
-                onPressed: () {
-                  _takeRephoto(context);
-                },
-                icon: const Icon(Icons.camera)),
+            Padding(
+              padding: const EdgeInsets.only(left: 50, right: 50),
+              child: IconButton(
+                  alignment: Alignment.center,
+                  iconSize: 50,
+                  onPressed: () {
+                    _takeRephoto(context);
+                  },
+                  icon: const Icon(Icons.camera)),
+            ),
             IconButton(
                 iconSize: 50,
                 icon: MapInfoVisibility
                     ? const Icon(Icons.info_outline)
                     : const Icon(Icons.map),
                 onPressed: () {
-                  _saveBool();
+                  _saveMapInfoBool();
                   setState(() {
                     MapInfoVisibility = !MapInfoVisibility;
                   });
                 }),
           ])),
-
       Visibility(
         visible: MapInfoVisibility == true,
         child: Expanded(
@@ -444,7 +443,6 @@ class RephotoScreenState extends State<RephotoScreen> {
   }
 
   Widget horizontalPreview(BuildContext context) {
-
     double latitude = 0;
     double longitude = 0;
     if (!widget.historicalCoordinates.coordinates.isEmpty) {
@@ -452,7 +450,8 @@ class RephotoScreenState extends State<RephotoScreen> {
       longitude = widget.historicalCoordinates.coordinates[1];
     }
 
-    double distance = Geolocator.distanceBetween(userLatitudeData, userLongitudeData, latitude, longitude);
+    double distance = Geolocator.distanceBetween(
+        userLatitudeData, userLongitudeData, latitude, longitude);
     double calcDistance = distance / 1000;
     String distanceToImage = '';
     if (distance >= 1000) {
@@ -462,9 +461,9 @@ class RephotoScreenState extends State<RephotoScreen> {
     }
 
     @override
-    _saveBool() async {
+    _saveMapInfoBool() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('visibility', MapInfoVisibility);
+      await prefs.setBool('MapInfoVisibility', MapInfoVisibility);
     }
 
     return Row(
@@ -494,11 +493,11 @@ class RephotoScreenState extends State<RephotoScreen> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ImageMapScreen(
-                                  imageLatitude: latitude,
-                                  imageLongitude: longitude,
-                                  historicalPhotoUri:
-                                  widget.historicalPhotoUri,
-                                )));
+                                      imageLatitude: latitude,
+                                      imageLongitude: longitude,
+                                      historicalPhotoUri:
+                                          widget.historicalPhotoUri,
+                                    )));
                       },
                       child: FutureBuilder(
                           future: _location,
@@ -508,50 +507,51 @@ class RephotoScreenState extends State<RephotoScreen> {
                             return snapshot.hasData
                                 ? _buildFlutterMap(context)
                                 : Center(
-                              child: FlutterMap(
-                                  options: MapOptions(
-                                    center: LatLng(latitude, longitude),
-                                    interactiveFlags:
-                                    InteractiveFlag.pinchZoom |
-                                    InteractiveFlag.drag,
-                                    zoom: 17.0,
-                                  ),
-                                  layers: [
-                                    TileLayerOptions(
-                                      urlTemplate:
-                                      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                                      subdomains: ['a', 'b', 'c'],
-                                      attributionBuilder: (_) {
-                                        return const Text(
-                                            "© OpenStreetMap contributors");
-                                      },
-                                    ),
-                                    MarkerLayerOptions(
-                                      markers: [
-                                        Marker(
-                                            width: 80.0,
-                                            height: 80.0,
-                                            point:
-                                            LatLng(latitude, longitude),
-                                            builder: (ctx) => const Icon(
-                                                Icons.location_pin,
-                                                color: Colors.red)),
-                                      ],
-                                    ),
-                                    MarkerLayerOptions(
-                                      markers: [
-                                        Marker(
-                                            width: 80.0,
-                                            height: 80.0,
-                                            point: LatLng(userLatitudeData,
-                                                userLongitudeData),
-                                            builder: (ctx) => const Icon(
-                                                Icons.location_pin,
-                                                color: Colors.blue)),
-                                      ],
-                                    ),
-                                  ]),
-                            );
+                                    child: FlutterMap(
+                                        options: MapOptions(
+                                          center: LatLng(latitude, longitude),
+                                          interactiveFlags:
+                                              InteractiveFlag.pinchZoom |
+                                                  InteractiveFlag.drag,
+                                          zoom: 17.0,
+                                        ),
+                                        layers: [
+                                          TileLayerOptions(
+                                            urlTemplate:
+                                                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                                            subdomains: ['a', 'b', 'c'],
+                                            attributionBuilder: (_) {
+                                              return const Text(
+                                                  "© OpenStreetMap contributors");
+                                            },
+                                          ),
+                                          MarkerLayerOptions(
+                                            markers: [
+                                              Marker(
+                                                  width: 80.0,
+                                                  height: 80.0,
+                                                  point: LatLng(
+                                                      latitude, longitude),
+                                                  builder: (ctx) => const Icon(
+                                                      Icons.location_pin,
+                                                      color: Colors.red)),
+                                            ],
+                                          ),
+                                          MarkerLayerOptions(
+                                            markers: [
+                                              Marker(
+                                                  width: 80.0,
+                                                  height: 80.0,
+                                                  point: LatLng(
+                                                      userLatitudeData,
+                                                      userLongitudeData),
+                                                  builder: (ctx) => const Icon(
+                                                      Icons.location_pin,
+                                                      color: Colors.blue)),
+                                            ],
+                                          ),
+                                        ]),
+                                  );
                           })))),
         ),
         Visibility(
@@ -598,7 +598,8 @@ class RephotoScreenState extends State<RephotoScreen> {
             )),
         Padding(
           padding: const EdgeInsets.only(
-            right: 30, left: 30,
+            right: 30,
+            left: 30,
           ),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -617,7 +618,7 @@ class RephotoScreenState extends State<RephotoScreen> {
                         ? const Icon(Icons.info_outline)
                         : const Icon(Icons.map),
                     onPressed: () {
-                      _saveBool();
+                      _saveMapInfoBool();
                       setState(() {
                         MapInfoVisibility = !MapInfoVisibility;
                       });
@@ -638,11 +639,12 @@ class RephotoScreenState extends State<RephotoScreen> {
 
     return FlutterMap(
         options: MapOptions(
-          bounds: LatLngBounds(LatLng(latitude, longitude), LatLng(userLatitudeData, userLongitudeData)),
+          bounds: LatLngBounds(LatLng(latitude, longitude),
+              LatLng(userLatitudeData, userLongitudeData)),
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
           zoom: 17.0,
           boundsOptions: const FitBoundsOptions(
-          padding: EdgeInsets.all(50),
+            padding: EdgeInsets.all(50),
           ),
         ),
         layers: [
@@ -660,7 +662,7 @@ class RephotoScreenState extends State<RephotoScreen> {
                   height: 80.0,
                   point: LatLng(latitude, longitude),
                   builder: (ctx) =>
-                  const Icon(Icons.location_pin, color: Colors.red)),
+                      const Icon(Icons.location_pin, color: Colors.red)),
             ],
           ),
           MarkerLayerOptions(
@@ -670,11 +672,9 @@ class RephotoScreenState extends State<RephotoScreen> {
                   height: 80.0,
                   point: LatLng(userLatitudeData, userLongitudeData),
                   builder: (ctx) =>
-                  const Icon(Icons.location_pin, color: Colors.blue)),
+                      const Icon(Icons.location_pin, color: Colors.blue)),
             ],
           ),
         ]);
   }
 }
-
-

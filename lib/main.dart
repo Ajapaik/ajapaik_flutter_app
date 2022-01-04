@@ -29,6 +29,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     loadTooltipData();
     loadVisibilityData();
+    loadInfoVisibilityData();
     initDeepLinks();
     super.initState();
   }
@@ -44,6 +45,13 @@ class _MyAppState extends State<MyApp> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       visibility = prefs.getBool("visibility")!;
+    });
+  }
+
+  loadInfoVisibilityData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      visibility = prefs.getBool("MapInfoVisibility")!;
     });
   }
 

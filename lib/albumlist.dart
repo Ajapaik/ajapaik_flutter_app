@@ -190,7 +190,7 @@ class AlbumListPageState extends State<AlbumListPage> {
                   Flexible(
                       child: Visibility(
                           visible: filterBoxOn,
-                          child: Container(
+                          child: SizedBox(
                           height: 50,
                           width: 325,
                               child: TextFormField(
