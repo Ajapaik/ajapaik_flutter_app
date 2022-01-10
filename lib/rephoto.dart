@@ -307,7 +307,7 @@ class RephotoScreenState extends State<RephotoScreen> {
                             historicalPhotoUri: widget.historicalPhotoUri,
                           )));
             },
-            child: Image.network(widget.historicalPhotoUri, height: 400),
+            child: Image.network(widget.historicalPhotoUri, height: 350, width: 350),
           )),
       Padding(
           padding: const EdgeInsets.only(top: 20, bottom: 20),
