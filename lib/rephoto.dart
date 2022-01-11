@@ -296,8 +296,10 @@ class RephotoScreenState extends State<RephotoScreen> {
     }
 
     return Column(children: [
-      Expanded(
-          flex: 0,
+      ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxHeight: 350,
+          ),
           child: GestureDetector(
             onTap: () {
               Navigator.push(
@@ -307,7 +309,8 @@ class RephotoScreenState extends State<RephotoScreen> {
                             historicalPhotoUri: widget.historicalPhotoUri,
                           )));
             },
-            child: Image.network(widget.historicalPhotoUri, height: 350, width: 350, fit: BoxFit.contain),
+            child:
+                Image.network(widget.historicalPhotoUri, fit: BoxFit.contain),
           )),
       Padding(
           padding: const EdgeInsets.only(top: 20, bottom: 20),
