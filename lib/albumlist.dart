@@ -125,12 +125,14 @@ class AlbumListPageState extends State<AlbumListPage> {
               onPressed: toggleSearchDialog),*/
           IconButton(
               icon: searchVisibility
-                  ? const Icon(Icons.search_off)
+                  ? const Icon(Icons.search, color: Color(0xff03dac6))
                   : const Icon(Icons.search),
               onPressed: () {
                 _searchBool();
                 setState(() {
-                  nameVisibility = !nameVisibility;
+                  if(nameVisibility == false){
+                    nameVisibility = !nameVisibility;
+                  }
                   searchVisibility = !searchVisibility;
                 });
               }),
@@ -264,60 +266,6 @@ class AlbumListPageState extends State<AlbumListPage> {
             setState(() {
               nameVisibility = !nameVisibility;
             });
-            // showModalBottomSheet(
-            //     isDismissible: true,
-            //     isScrollControlled: true,
-            //     context: context,
-            //     builder: (context) {
-            //       return Container(
-            //           alignment: Alignment.topCenter,
-            //           height: 400,
-            //           child: Row(
-            //               mainAxisSize: MainAxisSize.max,
-            //               mainAxisAlignment: MainAxisAlignment.center,
-            //               children: [
-            //                 Expanded(
-            //                     child: Container(
-            //                       height: 50,
-            //                       alignment: Alignment.center,
-            //                       padding: const EdgeInsets.symmetric(
-            //                           horizontal: 15, vertical: 15),
-            //                       margin: const EdgeInsets.symmetric(
-            //                           horizontal: 15, vertical: 15),
-            //                       decoration: BoxDecoration(
-            //                           color: Colors.grey[600],
-            //                           borderRadius: BorderRadius.circular(10)),
-            //                       child: TextField(
-            //                           autofocus: true,
-            //                           controller: myController,
-            //                           textInputAction: TextInputAction.go,
-            //                           onSubmitted: (value) {
-            //                             setState(() {
-            //                               refresh();
-            //                               Navigator.pop(context);
-            //                             });
-            //                           },
-            //                           textAlign: TextAlign.start,
-            //                           onChanged: onSearchTextChanged,
-            //                           decoration: const InputDecoration
-            //                               .collapsed(
-            //                             hintText: 'Search for images',
-            //                           )),
-            //                     )
-            //                 ),
-            //                 // IconButton(
-            //                 //     padding: const EdgeInsets.only(right: 10),
-            //                 //     onPressed: () {
-            //                 //       onSearchTextChanged('');
-            //                 //        setState(() {
-            //                 //          refresh();
-            //                 //        });
-            //                 //       myController.clear();
-            //                 //       Navigator.pop(context);
-            //                 //     },
-            //                 //     icon: const Icon(Icons.search)),
-            //               ]));
-            //     });
           }
         },
         items: <BottomNavigationBarItem>[
