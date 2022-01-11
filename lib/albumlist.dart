@@ -28,7 +28,8 @@ class AlbumListPage extends StatefulWidget {
   AlbumListPageState createState() => AlbumListPageState();
 }
 
-bool visibility = false;
+bool nameVisibility = false;
+bool searchVisibility = false;
 
 class AlbumListPageState extends State<AlbumListPage> {
   String orderBy = "alpha";
@@ -106,7 +107,12 @@ class AlbumListPageState extends State<AlbumListPage> {
     @override
     _saveBool() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('visibility', visibility);
+      await prefs.setBool('visibility', nameVisibility);
+    }
+
+    _searchBool() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('searchVisibility', searchVisibility);
     }
 
     return Scaffold(
@@ -118,13 +124,14 @@ class AlbumListPageState extends State<AlbumListPage> {
               tooltip: "Search",
               onPressed: toggleSearchDialog),*/
           IconButton(
-              icon: visibility
-                  ? const Icon(Icons.visibility_off)
-                  : const Icon(Icons.visibility),
+              icon: searchVisibility
+                  ? const Icon(Icons.search_off)
+                  : const Icon(Icons.search),
               onPressed: () {
-                _saveBool();
+                _searchBool();
                 setState(() {
-                  visibility = !visibility;
+                  nameVisibility = !nameVisibility;
+                  searchVisibility = !searchVisibility;
                 });
               }),
           IconButton(
@@ -137,7 +144,7 @@ class AlbumListPageState extends State<AlbumListPage> {
       ),
       body: Column(children: [
         Visibility(
-          visible: visibility,
+          visible: searchVisibility,
           child: Column(children: [
                 Row(
                 mainAxisSize: MainAxisSize.min,
@@ -227,7 +234,7 @@ class AlbumListPageState extends State<AlbumListPage> {
                 if (snapshot.hasError) (snapshot.error);
 
                 return (snapshot.hasData)
-                    ? AlbumList(albums: snapshot.data, toggle: visibility)
+                    ? AlbumList(albums: snapshot.data, toggle: nameVisibility)
                     : const Center(child: CircularProgressIndicator());
               },
             )),
@@ -253,7 +260,10 @@ class AlbumListPageState extends State<AlbumListPage> {
             }
           }
           if (index == 2) {
-
+            _saveBool();
+            setState(() {
+              nameVisibility = !nameVisibility;
+            });
             // showModalBottomSheet(
             //     isDismissible: true,
             //     isScrollControlled: true,
@@ -320,19 +330,11 @@ class AlbumListPageState extends State<AlbumListPage> {
             label: 'Map',
           ),
           BottomNavigationBarItem(
-            icon: IconButton(
-              icon: visibility
-                  ? const Icon(Icons.visibility_off)
-                  : const Icon(Icons.visibility),
-              onPressed: () {
-                _saveBool();
-                setState(() {
-                  visibility = !visibility;
-                });
-              },
-            ),
-            label: '',
-          )
+            icon: nameVisibility
+                ? const Icon(Icons.visibility_off)
+                : const Icon(Icons.visibility),
+            label: 'Visibility',
+          ),
         ],
       ),
     );

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'albumlist.dart';
+import 'rephoto.dart';
 import 'projectlist.dart';
 import 'package:app_links/app_links.dart';
 import 'package:get/get.dart';
@@ -44,14 +45,14 @@ class _MyAppState extends State<MyApp> {
   loadVisibilityData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      visibility = prefs.getBool("visibility")!;
+      nameVisibility = prefs.getBool("visibility")!;
     });
   }
 
   loadInfoVisibilityData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      visibility = prefs.getBool("MapInfoVisibility")!;
+      nameVisibility = prefs.getBool("mapInfoVisibility")!;
     });
   }
 

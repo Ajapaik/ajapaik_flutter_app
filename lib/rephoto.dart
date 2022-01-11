@@ -49,7 +49,7 @@ class RephotoScreen extends StatefulWidget {
 
 class RephotoScreenState extends State<RephotoScreen> {
   bool boolValue = true;
-  bool MapInfoVisibility = false;
+  bool mapInfoVisibility = false;
   bool newMapInfoValue = true;
   double userLatitudeData = 0;
   double userLongitudeData = 0;
@@ -67,7 +67,7 @@ class RephotoScreenState extends State<RephotoScreen> {
 
   void getMapInfoValue() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    MapInfoVisibility = prefs.getBool("MapInfoVisibility")!;
+    mapInfoVisibility = prefs.getBool("MapInfoVisibility")!;
     setState(() {});
   }
 
@@ -292,7 +292,7 @@ class RephotoScreenState extends State<RephotoScreen> {
     @override
     _saveMapInfoBool() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('MapInfoVisibility', MapInfoVisibility);
+      await prefs.setBool('MapInfoVisibility', mapInfoVisibility);
     }
 
     return Column(children: [
@@ -328,18 +328,18 @@ class RephotoScreenState extends State<RephotoScreen> {
             ),
             IconButton(
                 iconSize: 50,
-                icon: MapInfoVisibility
+                icon: mapInfoVisibility
                     ? const Icon(Icons.info_outline)
                     : const Icon(Icons.map),
                 onPressed: () {
                   _saveMapInfoBool();
                   setState(() {
-                    MapInfoVisibility = !MapInfoVisibility;
+                    mapInfoVisibility = !mapInfoVisibility;
                   });
                 }),
           ])),
       Visibility(
-        visible: MapInfoVisibility == true,
+        visible: mapInfoVisibility == true,
         child: Expanded(
             child: Align(
                 alignment: Alignment.bottomCenter,
@@ -410,7 +410,7 @@ class RephotoScreenState extends State<RephotoScreen> {
                         })))),
       ),
       Visibility(
-          visible: MapInfoVisibility == false,
+          visible: mapInfoVisibility == false,
           child: Padding(
             padding: const EdgeInsets.only(left: 10, right: 10, top: 25),
             child: Column(children: [
@@ -466,7 +466,7 @@ class RephotoScreenState extends State<RephotoScreen> {
     @override
     _saveMapInfoBool() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('MapInfoVisibility', MapInfoVisibility);
+      await prefs.setBool('MapInfoVisibility', mapInfoVisibility);
     }
 
     return Row(
@@ -486,7 +486,7 @@ class RephotoScreenState extends State<RephotoScreen> {
           ),
         ),
         Visibility(
-          visible: MapInfoVisibility == true,
+          visible: mapInfoVisibility == true,
           child: Expanded(
               child: Align(
                   alignment: Alignment.bottomCenter,
@@ -558,7 +558,7 @@ class RephotoScreenState extends State<RephotoScreen> {
                           })))),
         ),
         Visibility(
-            visible: MapInfoVisibility == false,
+            visible: mapInfoVisibility == false,
             child: Expanded(
               child: Padding(
                   padding: const EdgeInsets.all(20),
@@ -617,13 +617,13 @@ class RephotoScreenState extends State<RephotoScreen> {
                     icon: const Icon(Icons.camera)),
                 IconButton(
                     iconSize: 50,
-                    icon: MapInfoVisibility
+                    icon: mapInfoVisibility
                         ? const Icon(Icons.info_outline)
                         : const Icon(Icons.map),
                     onPressed: () {
                       _saveMapInfoBool();
                       setState(() {
-                        MapInfoVisibility = !MapInfoVisibility;
+                        mapInfoVisibility = !mapInfoVisibility;
                       });
                     }),
               ]),
