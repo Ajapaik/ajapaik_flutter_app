@@ -258,6 +258,8 @@ class _UserLocationState extends State<MapScreen> {
           plugins: [
             MarkerClusterPlugin(),
           ],
+          center: LatLng(widget.userLatitudeData,
+              widget.userLongitudeData),
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
           zoom: 17.0,
           maxZoom: 18,

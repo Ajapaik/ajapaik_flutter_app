@@ -253,75 +253,86 @@ class AlbumListPageState extends State<AlbumListPage> {
             }
           }
           if (index == 2) {
-            showModalBottomSheet(
-                isDismissible: true,
-                isScrollControlled: true,
-                context: context,
-                builder: (context) {
-                  return Container(
-                      alignment: Alignment.topCenter,
-                      height: 400,
-                      child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                                child: Container(
-                                  height: 50,
-                                  alignment: Alignment.center,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 15),
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 15),
-                                  decoration: BoxDecoration(
-                                      color: Colors.grey[600],
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: TextField(
-                                      autofocus: true,
-                                      controller: myController,
-                                      textInputAction: TextInputAction.go,
-                                      onSubmitted: (value) {
-                                        setState(() {
-                                          refresh();
-                                          Navigator.pop(context);
-                                        });
-                                      },
-                                      textAlign: TextAlign.start,
-                                      onChanged: onSearchTextChanged,
-                                      decoration: const InputDecoration
-                                          .collapsed(
-                                        hintText: 'Search for images',
-                                      )),
-                                )
-                            ),
-                            IconButton(
-                                padding: const EdgeInsets.only(right: 10),
-                                onPressed: () {
-                                  onSearchTextChanged('');
-                                   setState(() {
-                                     refresh();
-                                   });
-                                  myController.clear();
-                                  Navigator.pop(context);
-                                },
-                                icon: const Icon(Icons.search)),
-                          ]));
-                });
+
+            // showModalBottomSheet(
+            //     isDismissible: true,
+            //     isScrollControlled: true,
+            //     context: context,
+            //     builder: (context) {
+            //       return Container(
+            //           alignment: Alignment.topCenter,
+            //           height: 400,
+            //           child: Row(
+            //               mainAxisSize: MainAxisSize.max,
+            //               mainAxisAlignment: MainAxisAlignment.center,
+            //               children: [
+            //                 Expanded(
+            //                     child: Container(
+            //                       height: 50,
+            //                       alignment: Alignment.center,
+            //                       padding: const EdgeInsets.symmetric(
+            //                           horizontal: 15, vertical: 15),
+            //                       margin: const EdgeInsets.symmetric(
+            //                           horizontal: 15, vertical: 15),
+            //                       decoration: BoxDecoration(
+            //                           color: Colors.grey[600],
+            //                           borderRadius: BorderRadius.circular(10)),
+            //                       child: TextField(
+            //                           autofocus: true,
+            //                           controller: myController,
+            //                           textInputAction: TextInputAction.go,
+            //                           onSubmitted: (value) {
+            //                             setState(() {
+            //                               refresh();
+            //                               Navigator.pop(context);
+            //                             });
+            //                           },
+            //                           textAlign: TextAlign.start,
+            //                           onChanged: onSearchTextChanged,
+            //                           decoration: const InputDecoration
+            //                               .collapsed(
+            //                             hintText: 'Search for images',
+            //                           )),
+            //                     )
+            //                 ),
+            //                 // IconButton(
+            //                 //     padding: const EdgeInsets.only(right: 10),
+            //                 //     onPressed: () {
+            //                 //       onSearchTextChanged('');
+            //                 //        setState(() {
+            //                 //          refresh();
+            //                 //        });
+            //                 //       myController.clear();
+            //                 //       Navigator.pop(context);
+            //                 //     },
+            //                 //     icon: const Icon(Icons.search)),
+            //               ]));
+            //     });
           }
         },
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
+        items: <BottomNavigationBarItem>[
+          const BottomNavigationBarItem(
             icon: Icon(Icons.photo_library),
             label: 'Nearest',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.map),
             label: 'Map',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
+            icon: IconButton(
+              icon: visibility
+                  ? const Icon(Icons.visibility_off)
+                  : const Icon(Icons.visibility),
+              onPressed: () {
+                _saveBool();
+                setState(() {
+                  visibility = !visibility;
+                });
+              },
+            ),
+            label: '',
+          )
         ],
       ),
     );
