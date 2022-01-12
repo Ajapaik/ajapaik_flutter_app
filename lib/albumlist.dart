@@ -115,6 +115,10 @@ class AlbumListPageState extends State<AlbumListPage> {
       await prefs.setBool('searchVisibility', searchVisibility);
     }
 
+    Color visibilityIconColor = searchVisibility
+        ? Theme.of(context).disabledColor
+        : Theme.of(context).primaryColorLight;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.pageTitle),
@@ -128,12 +132,9 @@ class AlbumListPageState extends State<AlbumListPage> {
                   ? const Icon(Icons.search, color: Color(0xff03dac6))
                   : const Icon(Icons.search),
               onPressed: () {
-                _searchBool();
                 setState(() {
-                  if(nameVisibility == false){
-                    nameVisibility = !nameVisibility;
-                  }
                   searchVisibility = !searchVisibility;
+                  _searchBool();
                 });
               }),
           IconButton(
@@ -227,19 +228,21 @@ class AlbumListPageState extends State<AlbumListPage> {
         ),
         Flexible(
             child: FutureBuilder<List<Album>>(
-              future: test(context),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+          future: test(context),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-                if (snapshot.hasError) (snapshot.error);
+            if (snapshot.hasError) (snapshot.error);
 
-                return (snapshot.hasData)
-                    ? AlbumList(albums: snapshot.data, toggle: nameVisibility)
-                    : const Center(child: CircularProgressIndicator());
-              },
-            )),
+            return (snapshot.hasData)
+                ? AlbumList(
+                    albums: snapshot.data,
+                    toggle: nameVisibility | searchVisibility)
+                : const Center(child: CircularProgressIndicator());
+          },
+        )),
       ]),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) async {
@@ -262,9 +265,9 @@ class AlbumListPageState extends State<AlbumListPage> {
             }
           }
           if (index == 2) {
-            _saveBool();
             setState(() {
               nameVisibility = !nameVisibility;
+              _saveBool();
             });
           }
         },
@@ -279,8 +282,8 @@ class AlbumListPageState extends State<AlbumListPage> {
           ),
           BottomNavigationBarItem(
             icon: nameVisibility
-                ? const Icon(Icons.visibility_off)
-                : const Icon(Icons.visibility),
+                ? Icon(Icons.visibility_off, color: visibilityIconColor)
+                : Icon(Icons.visibility, color: visibilityIconColor),
             label: 'Visibility',
           ),
         ],
