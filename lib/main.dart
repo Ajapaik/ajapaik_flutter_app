@@ -1,6 +1,8 @@
+import 'package:ajapaik_flutter_app/demolocalization.dart';
 import 'package:ajapaik_flutter_app/settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'albumlist.dart';
 import 'rephoto.dart';
@@ -8,6 +10,7 @@ import 'projectlist.dart';
 import 'package:app_links/app_links.dart';
 import 'package:get/get.dart';
 import 'getxnavigation.dart';
+import 'demolocalization.dart';
 
 void main()  {
   runApp(MyApp());
@@ -84,6 +87,15 @@ class _MyAppState extends State<MyApp> {
     const appTitle = 'Rephoto app';
 
     return GetMaterialApp(
+      supportedLocales: const [
+        Locale('fi', 'FI'),
+        Locale('en', 'US'),
+      ],
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
       title: appTitle,
       theme: ThemeData.dark(
           // appBarTheme: const AppBarTheme(

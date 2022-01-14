@@ -58,13 +58,13 @@ dependencies:
   latlong2: ^0.8.1
   location: ^4.3.0
   provider: ^6.0.2
+
   flutter_localizations:
     sdk: flutter
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -77,6 +77,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
+  assets:
+    - lib/test123/en.json
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
