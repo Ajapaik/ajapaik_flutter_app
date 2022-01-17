@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:ajapaik_flutter_app/demolocalization.dart';
 import 'package:ajapaik_flutter_app/settings.dart';
 import 'package:ajapaik_flutter_app/upload.dart';
 import 'package:camera/camera.dart';
@@ -156,7 +157,7 @@ class RephotoScreenState extends State<RephotoScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-          title: const Text('Rephoto application',
+          title: Text(AppLocalizations.of(context).translate('message'),
               style: TextStyle(
                 fontWeight: FontWeight.w400,
                 fontFamily: 'Roboto',

@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'main.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -20,29 +22,48 @@ class AppLocalizations {
   static const LocalizationsDelegate<AppLocalizations> delegate =
   _AppLocalizationsDelegate();
 
-  Map<String, String> _localizedStrings = {}; //if this doesn't work, switch '= {}' with 'late Map<String, String> _localizedStrings;'
+  Map<String, String> _localizationStrings = {}; //if this doesn't work, switch '= {}' with 'late Map<String, String> _localizedStrings;'
 
   Future<bool> load() async {
     // Load the language JSON file from the "lang" folder
     String jsonString =
     await rootBundle.loadString('lib/test123/${locale.languageCode}.json');
+
     Map<String, dynamic> jsonMap = json.decode(jsonString);
 
-    _localizedStrings = jsonMap.map((key, value) {
+    _localizationStrings = jsonMap.map((key, value) {
       return MapEntry(key, value.toString());
     });
-
     return true;
+  }
+
+  Future<void> setLocale(Locale locale) async {
+    final SharedPreferences _prefs = await SharedPreferences.getInstance();
+    final _languageCode = locale.languageCode;
+    await _prefs.setString('locale', _languageCode);
+    print('locale saved!');
+  }
+
+  static Future<Locale?> getLocale() async {
+    final SharedPreferences _prefs = await SharedPreferences.getInstance();
+    final String? _languageCode = _prefs.getString('locale');
+    if (_languageCode == null) return null;
+
+    Locale _locale;
+    _languageCode == 'en'
+        ? _locale = Locale('en', 'US')
+        : _locale = Locale('ar', 'EG');
+    return _locale;
   }
 
   // This method will be called from every widget which needs a localized text
   String? translate(String key) {
-    return _localizedStrings[key];
+    return _localizationStrings[key];
   }
 }
 
-class _AppLocalizationsDelegate
-    extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations>
+  {
   // This delegate instance will never change (it doesn't even have fields!)
   // It can provide a constant constructor.
   const _AppLocalizationsDelegate();
@@ -58,6 +79,7 @@ class _AppLocalizationsDelegate
     // AppLocalizations class is where the JSON loading actually runs
     AppLocalizations localizations = AppLocalizations(locale);
     await localizations.load();
+
     return localizations;
   }
 
