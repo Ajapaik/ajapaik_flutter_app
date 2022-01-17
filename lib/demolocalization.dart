@@ -2,8 +2,6 @@ import 'dart:convert';
 import 'dart:ui';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'main.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
@@ -50,9 +48,9 @@ class AppLocalizations {
     if (_languageCode == null) return null;
 
     Locale _locale;
-    _languageCode == 'en'
-        ? _locale = Locale('en', 'US')
-        : _locale = Locale('ar', 'EG');
+    _languageCode == 'fi'
+        ? _locale = const Locale('fi', 'FI')
+        : _locale = const Locale('en', 'US');
     return _locale;
   }
 
