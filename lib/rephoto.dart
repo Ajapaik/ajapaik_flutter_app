@@ -157,7 +157,7 @@ class RephotoScreenState extends State<RephotoScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.translate('harmi'),
+          title: Text(AppLocalizations.of(context)!.translate('title'),
               style: const TextStyle(
                 fontWeight: FontWeight.w400,
                 fontFamily: 'Roboto',

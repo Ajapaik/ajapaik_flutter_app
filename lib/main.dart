@@ -88,14 +88,27 @@ class _MyAppState extends State<MyApp> {
 
     return GetMaterialApp(
       supportedLocales: const [
-        Locale('fi', 'FI'),
         Locale('en', 'US'),
+        Locale('fi', 'FI'),
       ],
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
+
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (var supportedLocaleLanguage in supportedLocales) {
+          if (supportedLocaleLanguage.languageCode == locale?.languageCode &&
+              supportedLocaleLanguage.countryCode == locale?.countryCode) {
+            return supportedLocaleLanguage;
+          }
+        }
+
+        // If device not support with locale to get language code then default get first on from the list
+        return supportedLocales.first;
+      },
+
       title: appTitle,
       theme: ThemeData.dark(
           // appBarTheme: const AppBarTheme(
