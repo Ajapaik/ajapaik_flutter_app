@@ -157,7 +157,7 @@ class RephotoScreenState extends State<RephotoScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.translate('title'),
+          title: Text(AppLocalizations.of(context)!.translate('rePhoto-appbarTitle'),
               style: const TextStyle(
                 fontWeight: FontWeight.w400,
                 fontFamily: 'Roboto',
@@ -213,48 +213,41 @@ class RephotoScreenState extends State<RephotoScreen> {
                   }
                 },
                 itemBuilder: (context) => [
-                      const PopupMenuItem(
+                      PopupMenuItem(
                           value: 0,
                           child: ListTile(
-                            leading: Icon(Icons.share),
-                            title: Text(
-                              'Jaa kuva',
-                            ),
-                          )),
-                      const PopupMenuItem(
+                            leading: const Icon(Icons.share),
+                            title: Text(AppLocalizations.of(context)!.translate('rePhoto-popupMenu1')
+                            ))),
+                      PopupMenuItem(
                           value: 1,
                           child: ListTile(
-                            leading: Icon(Icons.info),
-                            title: Text(
-                              'Lisätietoja kuvasta',
-                            ),
-                          )),
-                      const PopupMenuItem(
+                            leading: const Icon(Icons.info),
+                            title: Text(AppLocalizations.of(context)!.translate('rePhoto-popupMenu2')
+                          ))),
+                      PopupMenuItem(
                         value: 2,
                         child: ListTile(
-                          leading: Icon(Icons.enhance_photo_translate),
-                          title: Text(
-                            'TIFY-demo',
+                          leading: const Icon(Icons.enhance_photo_translate),
+                          title: Text(AppLocalizations.of(context)!.translate('rePhoto-popupMenu3')
                           ),
                         ),
                       ),
-                      const PopupMenuItem(
+                      PopupMenuItem(
                           value: 3,
                           child: ListTile(
-                            leading: Icon(Icons.map),
-                            title: Text(
-                              'Karttanäkymä',
+                            leading: const Icon(Icons.map),
+                            title: Text(AppLocalizations.of(context)!.translate('rePhoto-popupMenu4')
                             ),
                           )),
-                      const PopupMenuItem(
+                      PopupMenuItem(
                           value: 4,
                           child: ListTile(
-                            leading: Icon(Icons.settings),
-                            title: Text(
-                              'Asetukset',
+                            leading: const Icon(Icons.settings),
+                            title: Text(AppLocalizations.of(context)!.translate('rePhoto-popupMenu5')
                             ),
                           )),
-                    ])
+                      ])
           ]),
       body: Column(children: [
         Flexible(child: getImageComparison(context)),

@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
+import 'demolocalization.dart';
+
 class ManiPhoto extends StatelessWidget {
   const ManiPhoto({
     Key? key,
@@ -15,8 +17,8 @@ class ManiPhoto extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: const Text('Rephoto application',
-                style: TextStyle(
+            title: Text(AppLocalizations.of(context)!.translate('photoManipulation-appbarTitle'),
+                style: const TextStyle(
                   fontWeight: FontWeight.w400,
                   fontFamily: 'Roboto',
                 ))),

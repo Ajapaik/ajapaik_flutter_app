@@ -8,6 +8,7 @@ import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'data/album.geojson.dart';
+import 'demolocalization.dart';
 
 class MapScreen extends StatefulWidget {
   final Geometry markerCoordinates;
@@ -195,7 +196,7 @@ class _UserLocationState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Map')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.translate('map-appbarTitle'))),
       body: Column(children: [
         Expanded(
             child: FutureBuilder(

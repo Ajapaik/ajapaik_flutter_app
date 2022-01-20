@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'demolocalization.dart';
+
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
@@ -23,8 +25,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings',
-            style: TextStyle(
+        title: Text(AppLocalizations.of(context)!.translate('settings-appbarTitle'),
+            style: const TextStyle(
               fontWeight: FontWeight.w400,
               fontFamily: 'Roboto',
             )),
@@ -38,24 +40,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: Column(children: [
             ListTile(
               leading: const Icon(Icons.public, color: Colors.white),
-              title: const Text('Vaihda kieli'),
+              title: Text(AppLocalizations.of(context)!.translate('settings-cardItem1')),
               trailing: const Icon(Icons.keyboard_arrow_right),
               onTap: () {},
             ),
             ListTile(
               leading: const Icon(Icons.menu_book, color: Colors.white),
-              title: const Text('Vaihda ympäristö'),
+              title: Text(AppLocalizations.of(context)!.translate('settings-cardItem2')),
               trailing: const Icon(Icons.keyboard_arrow_right),
               onTap: () {},
             )
           ]),
         ),
         const SizedBox(height: 10.0),
-        const Text('Lisäasetukset'),
+                Text(AppLocalizations.of(context)!.translate('settings-helperText')),
         SwitchListTile(
           activeColor: Colors.blue,
           value: tooltip,
-          title: const Text('Näytä kartta'),
+          title: Text(AppLocalizations.of(context)!.translate('settings-showMapTile')),
           onChanged: (bool newValue) {
             setState(() => tooltip = newValue);
             _saveBool();

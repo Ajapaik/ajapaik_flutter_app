@@ -3,6 +3,7 @@ import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
+import 'demolocalization.dart';
 import 'getxnavigation.dart';
 import 'data/user.json.dart';
 
@@ -28,7 +29,7 @@ class DisplayLoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Login')),
+        appBar: AppBar(title: Text(AppLocalizations.of(context)!.translate('login-appBarTitle'))),
         body: controller.getSession() == "" ? loginButtons() : logoutButton());
   }
 

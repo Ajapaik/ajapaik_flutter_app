@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:ajapaik_flutter_app/data/album.geojson.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'demolocalization.dart';
 import 'getxnavigation.dart';
 import 'package:get/get.dart';
 import 'map.dart';
@@ -272,20 +273,20 @@ class AlbumListPageState extends State<AlbumListPage> {
           }
         },
         items: <BottomNavigationBarItem>[
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.photo_library),
-            label: 'Nearest',
-          ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.map),
-            label: 'Map',
-          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.photo_library),
+            label: (AppLocalizations.of(context)!.translate('albumList-navItem1')
+          )),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.map),
+            label: (AppLocalizations.of(context)!.translate('albumList-navItem2')
+            )),
           BottomNavigationBarItem(
             icon: nameVisibility
                 ? Icon(Icons.visibility_off, color: visibilityIconColor)
                 : Icon(Icons.visibility, color: visibilityIconColor),
-            label: 'Visibility',
-          ),
+            label: (AppLocalizations.of(context)!.translate('albumList-navItem3')
+            )),
         ],
       ),
     );

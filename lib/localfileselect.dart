@@ -5,6 +5,7 @@ import 'package:gallery_saver/gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'camera.dart';
+import 'demolocalization.dart';
 
 final picker = ImagePicker();
 
@@ -47,14 +48,14 @@ void showPicker(context) {
             children: <Widget>[
               ListTile(
                   leading: const Icon(Icons.photo_library),
-                  title: const Text('Photo Library'),
+                  title: Text(AppLocalizations.of(context)!.translate('localFileSelect-option1')),
                   onTap: () {
                     getImageFromGallery(context);
                     Navigator.of(context).pop();
                   }),
               ListTile(
                 leading: const Icon(Icons.photo_camera),
-                title: const Text('Camera'),
+                title: Text(AppLocalizations.of(context)!.translate('localFileSelect-option2')),
                 onTap: () {
                   saveImageFromCamera();
                   Navigator.of(context).pop();

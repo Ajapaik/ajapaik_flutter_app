@@ -5,6 +5,8 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
+import 'demolocalization.dart';
+
 class ImageMapScreen extends StatefulWidget {
   final double imageLatitude;
   final double imageLongitude;
@@ -64,7 +66,7 @@ class ImageMapState extends State<ImageMapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Map')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.translate('imageMapScreen-appbarTitle'))),
       body: Stack(children: [
         Positioned(
             child: FutureBuilder(
@@ -119,12 +121,16 @@ class ImageMapState extends State<ImageMapScreen> {
             onTap: () {
               Navigator.pop(context);
             },
-            child: Padding(
-              padding: const EdgeInsets.only(top: 725, left: 10),
-              child: Image.network(widget.historicalPhotoUri,
-                  width: 200, height: 100, fit: BoxFit.fill),
-            )),
-        ]),
+             child: Padding(
+                padding: const EdgeInsets.only(top: 650, left: 10, bottom: 10),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    maxHeight: 350,
+                  ),
+                  child: Image.network(widget.historicalPhotoUri,
+                      fit: BoxFit.contain),
+                ))),
+      ]),
     );
   }
 

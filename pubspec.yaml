@@ -78,8 +78,9 @@ dev_dependencies:
 # The following section is specific to Flutter.
 flutter:
   assets:
-    - lib/test123/en.json
-    - lib/test123/fi.json
+    - lib/i18n/en.json
+    - lib/i18n/fi.json
+    - lib/i18n/qqq.json
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

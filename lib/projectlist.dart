@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:ajapaik_flutter_app/data/project.json.dart';
 import 'package:ajapaik_flutter_app/albumlist.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'demolocalization.dart';
 import 'localfileselect.dart';
 import 'login.dart';
 import 'package:get/get.dart';
@@ -55,17 +56,19 @@ class ProjectListPageState extends State<ProjectListPage> {
           }
         },
         items: <BottomNavigationBarItem>[
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.photo_library),
-            label: 'Library',
-          ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.camera),
-            label: 'Take photo',
-          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.photo_library),
+            label: (AppLocalizations.of(context)!.translate('projectList-navItem1')
+            )),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.camera),
+            label: (AppLocalizations.of(context)!.translate('projectList-navItem2')
+            )),
           BottomNavigationBarItem(
             icon: Icon((loggedIn ? Icons.person : Icons.login)),
-            label: (loggedIn ? "Logout" : "Login"),
+            label: (loggedIn ? (AppLocalizations.of(context)!.translate('projectList-navItem4')
+            ) : (AppLocalizations.of(context)!.translate('projectList-navItem3')
+            )),
           ),
         ],
       ),
