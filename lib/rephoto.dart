@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:ajapaik_flutter_app/demolocalization.dart';
 import 'package:ajapaik_flutter_app/settings.dart';
@@ -54,6 +55,7 @@ class RephotoScreenState extends State<RephotoScreen> {
   bool newMapInfoValue = true;
   double userLatitudeData = 0;
   double userLongitudeData = 0;
+  StreamSubscription<Position>? _positionStream;
 
   _getTooltipValue() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -125,12 +127,17 @@ class RephotoScreenState extends State<RephotoScreen> {
     });
   }
 
-  void listenCurrentLocation() {
-    Stream<Position> position = Geolocator.getPositionStream(
-        desiredAccuracy: LocationAccuracy.high,
-        timeLimit: const Duration(seconds: 10),
-        distanceFilter: 10);
-    position.listen((position) {
+  void listenCurrentLocation(){
+    late LocationSettings locationSettings;
+
+    locationSettings = const LocationSettings(
+        accuracy: LocationAccuracy.best,
+        distanceFilter: 10,
+        timeLimit: Duration(seconds: 5)
+    );
+    _positionStream = Geolocator.getPositionStream(
+        locationSettings: locationSettings).listen((Position position)
+    {
       if (position.latitude != userLatitudeData &&
           position.longitude != userLongitudeData) {
         return getCurrentLocation();

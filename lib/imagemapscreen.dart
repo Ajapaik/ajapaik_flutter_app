@@ -27,6 +27,7 @@ class ImageMapState extends State<ImageMapScreen> {
   double userLatitudeData = 0;
   double userLongitudeData = 0;
   late final MapController mapController;
+  StreamSubscription<Position>? _positionStream;
 
   final Future<Position> _location = Future<Position>.delayed(
     const Duration(seconds: 2),
@@ -43,12 +44,17 @@ class ImageMapState extends State<ImageMapScreen> {
     });
   }
 
-  void listenCurrentLocation() {
-    Stream<Position> position = Geolocator.getPositionStream(
-        desiredAccuracy: LocationAccuracy.high,
-        timeLimit: const Duration(seconds: 5),
-        distanceFilter: 10);
-    position.listen((position) {
+  void listenCurrentLocation(){
+    late LocationSettings locationSettings;
+
+    locationSettings = const LocationSettings(
+        accuracy: LocationAccuracy.best,
+        distanceFilter: 10,
+        timeLimit: Duration(seconds: 5)
+    );
+    _positionStream = Geolocator.getPositionStream(
+        locationSettings: locationSettings).listen((Position position)
+    {
       if (position.latitude != userLatitudeData &&
           position.longitude != userLongitudeData) {
         return getCurrentLocation();

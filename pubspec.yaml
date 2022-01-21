@@ -47,7 +47,7 @@ dependencies:
   font_awesome_flutter: ^9.2.0
   url_launcher: ^6.0.18
   get: ^4.6.1
-  geolocator: ^7.7.1 #streamPosition rewritten as of 8.0.0, doesn't work with the current code
+  geolocator: ^8.0.3
   flutter_secure_storage: ^5.0.2
   flutter_map: 0.14.0
   flutter_map_marker_cluster: 0.4.4

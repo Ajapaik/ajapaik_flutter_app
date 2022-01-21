@@ -41,6 +41,8 @@ class _UserLocationState extends State<MapScreen> {
   List<Color> _colors = [];
   late final MapController mapController;
 
+  StreamSubscription<Position>? _positionStream;
+
   getColorsForIcons() async {
     _colors =
         List.generate(10000, (index) => Colors.red); // here 10 is items.length
@@ -61,12 +63,17 @@ class _UserLocationState extends State<MapScreen> {
     });
   }
 
-  void listenCurrentLocation() {
-    Stream<Position> position = Geolocator.getPositionStream(
-        desiredAccuracy: LocationAccuracy.high,
-        timeLimit: const Duration(seconds: 5),
-        distanceFilter: 10);
-    position.listen((position) {
+  void listenCurrentLocation(){
+    late LocationSettings locationSettings;
+
+    locationSettings = const LocationSettings(
+        accuracy: LocationAccuracy.best,
+        distanceFilter: 10,
+        timeLimit: Duration(seconds: 5)
+    );
+    _positionStream = Geolocator.getPositionStream(
+        locationSettings: locationSettings).listen((Position position)
+    {
       if (position.latitude != userLatitudeData &&
           position.longitude != userLongitudeData) {
         return getCurrentLocation();
