@@ -20,7 +20,8 @@ class AppLocalizations {
   static const LocalizationsDelegate<AppLocalizations> delegate =
   _AppLocalizationsDelegate();
 
-  Map<String, String> _localizationStrings = {}; //if this doesn't work, switch '= {}' with 'late Map<String, String> _localizedStrings;'
+  Map<String, String> _localizationStrings = {};
+  Map<String, String> _defaultLocalizationStrings = {};
 
   Future<bool> load() async {
     // Load the language JSON file from the "lang" folder
@@ -30,6 +31,19 @@ class AppLocalizations {
     Map<String, dynamic> jsonMap = json.decode(jsonString);
 
     _localizationStrings = jsonMap.map((key, value) {
+      return MapEntry(key, value.toString());
+    });
+    return true;
+  }
+
+  Future<bool> loadDefault() async {
+    // Load the language JSON file from the "lang" folder
+    String jsonString =
+    await rootBundle.loadString('lib/i18n/en.json');
+
+    Map<String, dynamic> jsonMap = json.decode(jsonString);
+
+    _defaultLocalizationStrings = jsonMap.map((key, value) {
       return MapEntry(key, value.toString());
     });
     return true;
@@ -48,16 +62,16 @@ class AppLocalizations {
     if (_languageCode == null) return null;
 
     Locale _locale;
-    _languageCode == 'fi'
-        ? _locale = const Locale('fi', 'FI')
-        : _locale = const Locale('en', 'US');
+    _languageCode == 'en'
+        ? _locale = const Locale('en', 'US')
+        : _locale = const Locale('fi', 'FI');
     return _locale;
   }
 
   // This method will be called from every widget which needs a localized text
   String translate(String key) {
-    String defaultStringkey = "";
-    return _localizationStrings[key] ?? key;
+    String? translation = _localizationStrings[key] ?? _defaultLocalizationStrings[key];
+    return translation ?? key;
   }
 }
 
