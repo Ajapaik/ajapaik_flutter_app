@@ -92,6 +92,7 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations>
     // AppLocalizations class is where the JSON loading actually runs
     AppLocalizations localizations = AppLocalizations(locale);
     await localizations.load();
+    await localizations.loadDefault();
 
     return localizations;
   }
