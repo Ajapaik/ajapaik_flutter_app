@@ -4,8 +4,6 @@ import 'package:ajapaik_flutter_app/demolocalization.dart';
 import 'package:ajapaik_flutter_app/settings.dart';
 import 'package:ajapaik_flutter_app/upload.dart';
 import 'package:camera/camera.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -43,7 +41,7 @@ class RephotoScreen extends StatefulWidget {
     required this.historicalLabel,
     required this.historicalSurl,
     required this.historicalCoordinates,
-  }) : super();
+  }) : super(key: key);
 
   @override
   RephotoScreenState createState() => RephotoScreenState();
@@ -132,13 +130,13 @@ class RephotoScreenState extends State<RephotoScreen> {
     LocationSettings locationSettings = const LocationSettings(
         accuracy: LocationAccuracy.best,
         distanceFilter: 10,
-        timeLimit: Duration(seconds: 5)
+        timeLimit: Duration(seconds: 10)
     );
     _positionStream = Geolocator.getPositionStream(
-        locationSettings: locationSettings).listen((Position position)
+        locationSettings: locationSettings).listen((Position geoPosition)
     {
-      if (position.latitude != userLatitudeData &&
-          position.longitude != userLongitudeData) {
+      if (geoPosition.latitude != userLatitudeData &&
+          geoPosition.longitude != userLongitudeData) {
         return getCurrentLocation();
       }
     });
@@ -155,7 +153,7 @@ class RephotoScreenState extends State<RephotoScreen> {
   Widget build(BuildContext context) {
     double latitude = 0;
     double longitude = 0;
-    if (!widget.historicalCoordinates.coordinates.isEmpty) {
+    if (widget.historicalCoordinates.coordinates.isNotEmpty) {
       latitude = widget.historicalCoordinates.coordinates[0];
       longitude = widget.historicalCoordinates.coordinates[1];
     }
@@ -274,7 +272,7 @@ class RephotoScreenState extends State<RephotoScreen> {
   Widget verticalPreview(BuildContext context) {
     double latitude = 0;
     double longitude = 0;
-    if (!widget.historicalCoordinates.coordinates.isEmpty) {
+    if (widget.historicalCoordinates.coordinates.isNotEmpty) {
       latitude = widget.historicalCoordinates.coordinates[0];
       longitude = widget.historicalCoordinates.coordinates[1];
     }
@@ -448,7 +446,7 @@ class RephotoScreenState extends State<RephotoScreen> {
   Widget horizontalPreview(BuildContext context) {
     double latitude = 0;
     double longitude = 0;
-    if (!widget.historicalCoordinates.coordinates.isEmpty) {
+    if (widget.historicalCoordinates.coordinates.isNotEmpty) {
       latitude = widget.historicalCoordinates.coordinates[0];
       longitude = widget.historicalCoordinates.coordinates[1];
     }
@@ -635,7 +633,7 @@ class RephotoScreenState extends State<RephotoScreen> {
   Widget _buildFlutterMap(BuildContext context) {
     double latitude = 0;
     double longitude = 0;
-    if (!widget.historicalCoordinates.coordinates.isEmpty) {
+    if (widget.historicalCoordinates.coordinates.isNotEmpty) {
       longitude = widget.historicalCoordinates.coordinates[0];
       latitude = widget.historicalCoordinates.coordinates[1];
     }

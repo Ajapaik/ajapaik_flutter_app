@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
@@ -52,10 +51,10 @@ class ImageMapState extends State<ImageMapScreen> {
         timeLimit: Duration(seconds: 5)
     );
     _positionStream = Geolocator.getPositionStream(
-        locationSettings: locationSettings).listen((Position position)
+        locationSettings: locationSettings).listen((Position geoPosition)
     {
-      if (position.latitude != userLatitudeData &&
-          position.longitude != userLongitudeData) {
+      if (geoPosition.latitude != userLatitudeData &&
+          geoPosition.longitude != userLongitudeData) {
         return getCurrentLocation();
       }
     });

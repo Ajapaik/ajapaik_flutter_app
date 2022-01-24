@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ui';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -53,7 +52,6 @@ class AppLocalizations {
     final SharedPreferences _prefs = await SharedPreferences.getInstance();
     final _languageCode = locale.languageCode;
     await _prefs.setString('locale', _languageCode);
-    print('locale saved!');
   }
 
   static Future<Locale?> getLocale() async {

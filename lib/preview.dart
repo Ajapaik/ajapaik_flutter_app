@@ -5,7 +5,6 @@ import 'dart:math' as math;
 import 'package:geolocator/geolocator.dart';
 import 'services/geolocation.dart';
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:get/get.dart';

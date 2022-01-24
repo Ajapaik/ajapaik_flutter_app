@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
@@ -29,12 +27,11 @@ class AlbumListPage extends StatefulWidget {
   AlbumListPageState createState() => AlbumListPageState();
 }
 
-bool nameVisibility = false;
-bool searchVisibility = false;
-
 class AlbumListPageState extends State<AlbumListPage> {
   String orderBy = "alpha";
   String orderDirection = "desc";
+  bool nameVisibility = false;
+  bool searchVisibility = false;
   bool searchDialogVisible = false;
   bool filterBoxOn = false;
   double userLatitudeData = 0;

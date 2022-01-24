@@ -52,10 +52,10 @@ class DisplayUploadScreen extends StatelessWidget {
     ("Upload file send");
     (request.fields);
     Get.showSnackbar(
-      GetBar(
+      const GetSnackBar(
         title: "Uploading file to Ajapaik",
         message: "upload started",
-        duration: const Duration(seconds: 3),
+        duration: Duration(seconds: 3),
       ),
     );
 
@@ -67,17 +67,17 @@ class DisplayUploadScreen extends StatelessWidget {
               ("Uploaded! ");
               ('response.body ' + response.body);
               Get.showSnackbar(
-                GetBar(
+                const GetSnackBar(
                   title: "Uploading file to Ajapaik",
                   message: "upload succesful",
-                  duration: const Duration(seconds: 3),
+                  duration: Duration(seconds: 3),
                 ),
               );
             } else {
               ("Upload failed " + response.statusCode.toString());
               ('response.body ' + response.body);
               Get.showSnackbar(
-                GetBar(
+                GetSnackBar(
                   title: "Uploading file to Ajapaik",
                   message: "upload failed " + response.statusCode.toString(),
                   duration: const Duration(seconds: 4),
@@ -91,7 +91,7 @@ class DisplayUploadScreen extends StatelessWidget {
         // ignore: invalid_return_type_for_catch_error
         .catchError((err) => {
               Get.showSnackbar(
-                GetBar(
+                GetSnackBar(
                   title: "Uploading file to Ajapaik",
                   message: "upload failed " + err.toString(),
                   duration: const Duration(seconds: 3),

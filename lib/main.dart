@@ -1,11 +1,7 @@
 import 'package:ajapaik_flutter_app/demolocalization.dart';
-import 'package:ajapaik_flutter_app/settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'albumlist.dart';
-import 'rephoto.dart';
 import 'projectlist.dart';
 import 'package:app_links/app_links.dart';
 import 'package:get/get.dart';
@@ -31,33 +27,33 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    loadTooltipData();
-    loadVisibilityData();
-    loadInfoVisibilityData();
+    // loadTooltipData();
+    // loadVisibilityData();
+    // loadInfoVisibilityData();
     initDeepLinks();
     super.initState();
   }
 
-  loadTooltipData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      tooltip = prefs.getBool("tooltip")!;
-    });
-  }
+  // loadTooltipData() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     tooltip = prefs.getBool("tooltip")!;
+  //   });
+  // }
 
-  loadVisibilityData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      nameVisibility = prefs.getBool("visibility")!;
-    });
-  }
+  // loadVisibilityData() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     nameVisibility = prefs.getBool("visibility")!;
+  //   });
+  // }
 
-  loadInfoVisibilityData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      nameVisibility = prefs.getBool("mapInfoVisibility")!;
-    });
-  }
+  // loadInfoVisibilityData() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     nameVisibility = prefs.getBool("mapInfoVisibility")!;
+  //   });
+  // }
 
   void initDeepLinks() async {
     _appLinks = AppLinks(

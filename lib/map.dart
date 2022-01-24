@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'package:ajapaik_flutter_app/rephoto.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:geolocator/geolocator.dart';
@@ -71,10 +69,10 @@ class _UserLocationState extends State<MapScreen> {
         timeLimit: Duration(seconds: 5)
     );
     _positionStream = Geolocator.getPositionStream(
-        locationSettings: locationSettings).listen((Position position)
+        locationSettings: locationSettings).listen((Position geoPosition)
     {
-      if (position.latitude != userLatitudeData &&
-          position.longitude != userLongitudeData) {
+      if (geoPosition.latitude != userLatitudeData &&
+          geoPosition.longitude != userLongitudeData) {
         return getCurrentLocation();
       }
     });
@@ -249,7 +247,6 @@ class _UserLocationState extends State<MapScreen> {
 
   Widget _buildFlutterMap(BuildContext context) {
     getMyZoom() {
-      print(mapController.zoom);
       if (mapController.zoom >= 17) {
         maxClusterRadius = 5;
       } else {
