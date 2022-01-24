@@ -64,9 +64,8 @@ class _UserLocationState extends State<MapScreen> {
   }
 
   void listenCurrentLocation(){
-    late LocationSettings locationSettings;
 
-    locationSettings = const LocationSettings(
+    LocationSettings locationSettings = const LocationSettings(
         accuracy: LocationAccuracy.best,
         distanceFilter: 10,
         timeLimit: Duration(seconds: 5)
