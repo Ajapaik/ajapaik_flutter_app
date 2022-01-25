@@ -346,11 +346,10 @@ class AlbumList extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     if (height > width) {
-      return GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,
-            mainAxisSpacing: 2.0,
-            crossAxisSpacing: 2.0,
-          ),
+      return MasonryGridView.count(
+        crossAxisCount: 2,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
         itemCount: albums!.first.features.length + 1,
         itemBuilder: (context, index) {
           if (index == 0) {
@@ -361,11 +360,10 @@ class AlbumList extends StatelessWidget {
         },
       );
     } else {
-      return GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4,
-          mainAxisSpacing: 4.0,
-          crossAxisSpacing: 4.0,
-        ),
+      return MasonryGridView.count(
+        crossAxisCount: 4,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
         itemCount: albums!.first.features.length + 1,
         itemBuilder: (context, index) {
           if (index == 0) {
