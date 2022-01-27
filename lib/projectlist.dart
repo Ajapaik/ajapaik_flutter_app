@@ -4,6 +4,7 @@ import 'package:ajapaik_flutter_app/data/project.json.dart';
 import 'package:ajapaik_flutter_app/albumlist.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'demolocalization.dart';
+import 'homepage.dart';
 import 'localfileselect.dart';
 import 'login.dart';
 import 'package:get/get.dart';
@@ -40,6 +41,16 @@ class ProjectListPageState extends State<ProjectListPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(title!),
+        actions: [
+          IconButton(icon: const Icon(Icons.home_rounded), onPressed: () async {
+            await Navigator.push(
+                context,
+                MaterialPageRoute(
+                builder: (context) => HomePage()));
+          },
+          )
+        ]
+
       ),
       body: const ProjectListBuilder(),
       bottomNavigationBar: BottomNavigationBar(
