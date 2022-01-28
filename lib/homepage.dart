@@ -1,9 +1,12 @@
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 
 import 'data/album.geojson.dart';
+import 'demolocalization.dart';
+import 'getxnavigation.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -20,6 +23,7 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   String orderBy = "alpha";
   String orderDirection = "desc";
+  final controller = Get.put(Controller());
   final myController = TextEditingController();
 
   Future<List<Album>>? _albumData;
@@ -66,6 +70,10 @@ class HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    controller.loadSession().then((_) => setState(() {
+      ("Updating login status to screen. Session " +
+          controller.getSession());
+    }));
     refresh();
     super.initState();
   }
@@ -78,6 +86,10 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    (controller.getSession());
+    bool loggedIn = !(controller.getSession() == "");
+
     return Scaffold(
         appBar: AppBar(
             title: Container(
@@ -115,6 +127,36 @@ class HomePageState extends State<HomePage> {
                           onPressed: () {
                             myController.clear();
                           }, icon: const Icon(Icons.clear))),
-                )))));
+                )))),
+            body: Column(children: []),
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem> [
+          BottomNavigationBarItem(
+              icon: const Icon(Icons.home_rounded),
+              label: (AppLocalizations.of(context)!.translate('homePage-NavItem1')
+              )),
+          BottomNavigationBarItem(
+              icon: const Icon(Icons.favorite_border),
+              label: (AppLocalizations.of(context)!.translate('homePage-NavItem2')
+              )),
+          BottomNavigationBarItem(
+              icon: const Icon(Icons.camera),
+              label: (AppLocalizations.of(context)!.translate('homePage-NavItem3')
+              )),
+          BottomNavigationBarItem(
+              icon: const Icon(Icons.explore),
+              label: (AppLocalizations.of(context)!.translate('homePage-NavItem4')
+              )),
+          BottomNavigationBarItem(
+            icon: Icon((loggedIn ? Icons.person : Icons.login)),
+            label: (loggedIn
+                ? (AppLocalizations.of(context)!
+                    .translate('homePage-NavItem6'))
+                : (AppLocalizations.of(context)!
+                    .translate('homePage-NavItem5'))),
+          )
+        ],
+      ),
+    );
   }
 }
