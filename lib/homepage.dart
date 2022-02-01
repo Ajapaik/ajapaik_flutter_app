@@ -1,3 +1,5 @@
+import 'package:ajapaik_flutter_app/page/events_page.dart';
+import 'package:ajapaik_flutter_app/page/liked_page.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -27,7 +29,10 @@ class HomePageState extends State<HomePage> {
   final controller = Get.put(Controller());
   final myController = TextEditingController();
 
-  final screens = [];
+  final screens = [
+    const LikedPage(),
+    const EventsPage(),
+  ];
 
   Future<List<Album>>? _albumData;
 
@@ -137,7 +142,10 @@ class HomePageState extends State<HomePage> {
                             myController.clear();
                           }, icon: const Icon(Icons.clear))),
                 )))),
-            body: Column(children: []),
+            body: IndexedStack(
+              index: _selectedIndex,
+              children: screens,
+            ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
