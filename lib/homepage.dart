@@ -23,8 +23,11 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   String orderBy = "alpha";
   String orderDirection = "desc";
+  int _selectedIndex = 0;
   final controller = Get.put(Controller());
   final myController = TextEditingController();
+
+  final screens = [];
 
   Future<List<Album>>? _albumData;
 
@@ -76,6 +79,12 @@ class HomePageState extends State<HomePage> {
     }));
     refresh();
     super.initState();
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
@@ -130,6 +139,9 @@ class HomePageState extends State<HomePage> {
                 )))),
             body: Column(children: []),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
         items: <BottomNavigationBarItem> [
           BottomNavigationBarItem(
               icon: const Icon(Icons.home_rounded),
