@@ -146,6 +146,7 @@ class HomePageState extends State<HomePage> {
               index: _selectedIndex,
               children: screens,
             ),
+
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
