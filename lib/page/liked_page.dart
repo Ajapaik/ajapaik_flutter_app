@@ -9,6 +9,6 @@ class LikedPage extends StatefulWidget {
 class LikedPageState extends State<LikedPage> {
   @override
   Widget build(BuildContext context) {
-    return const Text('hello world');
+    return const Text('hello world2');
   }
 }

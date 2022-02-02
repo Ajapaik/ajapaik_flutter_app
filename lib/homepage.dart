@@ -1,5 +1,6 @@
 import 'package:ajapaik_flutter_app/page/events_page.dart';
 import 'package:ajapaik_flutter_app/page/liked_page.dart';
+import 'package:ajapaik_flutter_app/page/main_page.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -30,8 +31,11 @@ class HomePageState extends State<HomePage> {
   final myController = TextEditingController();
 
   final screens = [
+    const MainPage(),
     const LikedPage(),
+    const Text(''),
     const EventsPage(),
+    const Text(''),
   ];
 
   Future<List<Album>>? _albumData;
