@@ -17,8 +17,6 @@ class HomePage extends StatefulWidget {
 
   HomePage({Key? key}) : super(key: key);
 
-  HomePage.network(this.dataSourceUrl, {Key? key}) : super(key: key);
-
   @override
   HomePageState createState() =>HomePageState();
 }
@@ -31,7 +29,7 @@ class HomePageState extends State<HomePage> {
   final myController = TextEditingController();
 
   final screens = [
-    const MainPage(),
+    MainPage(),
     const LikedPage(),
     const Text(''),
     const EventsPage(),
@@ -40,7 +38,7 @@ class HomePageState extends State<HomePage> {
 
   Future<List<Album>>? _albumData;
 
-  Future<List<Album>> test(BuildContext context) {
+  Future<List<Album>> albumData(BuildContext context) {
     return _albumData!;
   }
 
