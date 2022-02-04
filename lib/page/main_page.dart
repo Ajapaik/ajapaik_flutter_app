@@ -30,6 +30,7 @@ class MainPageState extends State<MainPage> {
 
   String orderBy = "alpha";
   String orderDirection = "desc";
+  int renderState = 1;
   bool nameVisibility = false;
   bool searchVisibility = false;
   final myController = TextEditingController();
@@ -87,9 +88,10 @@ class MainPageState extends State<MainPage> {
             ElevatedButton(onPressed: () {  },
               child: const Text('Map'),),
             ElevatedButton(onPressed: () {  },
-              child: const Text('Photos'),),
+              child: const Text('Albums'),),
           ],
         ),
+        const SizedBox(height: 20),
         Flexible(
             child: FutureBuilder<List<Album>>(
               future: albumData(context),
@@ -103,7 +105,8 @@ class MainPageState extends State<MainPage> {
                 return (snapshot.hasData)
                     ? MainPageList(
                     albums: snapshot.data,
-                    toggle: nameVisibility | searchVisibility)
+                    toggle: nameVisibility | searchVisibility,
+                    renderState: renderState)
                     : const Center(child: CircularProgressIndicator());
               },
             )),
@@ -116,8 +119,9 @@ class MainPageState extends State<MainPage> {
 class MainPageList extends StatelessWidget {
   final List<Album>? albums;
   final bool toggle;
+  final int renderState;
 
-  const MainPageList({Key? key, this.albums, this.toggle = true})
+  const MainPageList({Key? key, this.albums, this.toggle = true, required this.renderState})
       : super(key: key);
 
   Future<void> _showphoto(context, index) async {
@@ -159,6 +163,16 @@ class MainPageList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+      if(renderState == 1) {
+        return photoView(context);
+      }
+      if (renderState == 2){
+
+      }
+      throw Exception('We couldnt find what you were looking for');
+  }
+
+  Widget photoView (context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     if (height > width) {
@@ -241,4 +255,7 @@ class MainPageList extends StatelessWidget {
       ]),
     );
   }
+
+
+
 }

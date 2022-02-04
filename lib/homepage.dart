@@ -8,6 +8,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 
 import 'data/album.geojson.dart';
+import 'data/project.json.dart';
 import 'demolocalization.dart';
 import 'getxnavigation.dart';
 
@@ -29,7 +30,7 @@ class HomePageState extends State<HomePage> {
   final myController = TextEditingController();
 
   final screens = [
-    MainPage(),
+    MainPage.network("", "https://fiwiki-tools.toolforge.org/api/ajapaiknearest.php?latitude=49.84189&longitude=24.0315&search=&limit=100&orderby=alpha&orderdirection=desc&search=Auroran&latitude=60.1952073&longitude=24.9252243"),
     const LikedPage(),
     const Text(''),
     const EventsPage(),
@@ -181,5 +182,17 @@ class HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+}
+
+class PhotoList extends StatelessWidget {
+  final List<Project>? photos;
+
+  const PhotoList({Key? key, required this.photos}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    throw UnimplementedError();
   }
 }
