@@ -1,6 +1,7 @@
 import 'package:ajapaik_flutter_app/data/album.geojson.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
@@ -27,13 +28,39 @@ class MainPage extends StatefulWidget {
 
 class MainPageState extends State<MainPage> {
 
+  String orderBy = "alpha";
+  String orderDirection = "desc";
   bool nameVisibility = false;
   bool searchVisibility = false;
+  final myController = TextEditingController();
 
   Future<List<Album>>? _albumData;
 
   Future<List<Album>> albumData(BuildContext context) {
     return _albumData!;
+  }
+
+  String getDataSourceUrl() {
+    String url = widget.dataSourceUrl;
+    if (url.contains("?")) {
+      url += "&orderby=" + orderBy + "&orderdirection=" + orderDirection;
+    } else {
+      url += "?orderby=" + orderBy + "&orderdirection=" + orderDirection;
+    }
+    String searchkey=myController.text;
+    url += "&search=" + searchkey;
+    return url;
+  }
+
+  void refresh() async {
+    String url = getDataSourceUrl();
+    await (_albumData = fetchAlbum(http.Client(), url));
+  }
+
+  @override
+  void initState() {
+    refresh();
+    super.initState();
   }
 
   @override
