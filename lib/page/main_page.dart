@@ -23,9 +23,8 @@ class MainPage extends StatefulWidget {
 
   String pageTitle = "";
   String dataSourceUrl = "";
-  final List<Album>? albums;
 
-  MainPage.network(this.pageTitle, this.dataSourceUrl, this.albums, {Key? key})
+  MainPage.network(this.pageTitle, this.dataSourceUrl, {Key? key})
       : super(key: key);
 
   @override
@@ -37,8 +36,6 @@ class MainPageState extends State<MainPage> {
   bool nameVisibility = false;
   bool searchVisibility = false;
   bool toggle = false;
-  bool open = false;
-  bool busy = false;
   double userLatitudeData = 0;
   double userLongitudeData = 0;
   int renderState = 1;
@@ -113,29 +110,253 @@ class MainPageState extends State<MainPage> {
     });
   }
 
+  @override
+  void initState() {
+    listenCurrentLocation();
+    getColorsForIcons();
+    mapController = MapController();
+    refresh();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    // if(renderState == 1) {
+    //   return photoView(context);
+    // }
+    // if (renderState == 2){
+    //   return mapView(context);
+    // }
+
+    _saveBool() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('visibility', nameVisibility);
+    }
+
+    _searchBool() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('searchVisibility', searchVisibility);
+    }
+    return Scaffold(
+      body: Column(children: [
+        const SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            ElevatedButton(onPressed: () { setState(() {
+              renderState = 1;
+            }); },
+            child: const Text('Photos'),),
+            ElevatedButton(onPressed: () {
+              setState(() {
+                renderState = 2;
+              });
+            },
+              child: const Text('Map'),),
+            ElevatedButton(onPressed: () {
+              setState(() {
+                renderState = 3;
+              });
+            },
+              child: const Text('Albums'),),
+          ],
+        ),
+        const SizedBox(height: 20),
+        Flexible(
+            child: FutureBuilder<List<Album>>(
+              future: albumData(context),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (snapshot.hasError) (snapshot.error);
+
+                return (snapshot.hasData)
+                    ? AlbumList(
+                    albums: snapshot.data)
+                    : const Center(child: CircularProgressIndicator());
+              },
+            )),
+      ],
+      ),
+    );
+  }
+
+//   Widget photoView (context) {
+//     double width = MediaQuery.of(context).size.width;
+//     double height = MediaQuery.of(context).size.height;
+//     if (height > width) {
+//       return MasonryGridView.count(
+//         crossAxisCount: 2,
+//         crossAxisSpacing: 8,
+//         mainAxisSpacing: 8,
+//         itemCount: widget.albums!.first.features.length + 1,
+//         itemBuilder: (context, index) {
+//           if (index == 0) {
+//             return headerTile(context, index);
+//           } else {
+//             return contentTile(context, index);
+//           }
+//         },
+//       );
+//     } else {
+//       return MasonryGridView.count(
+//         crossAxisCount: 4,
+//         crossAxisSpacing: 8,
+//         mainAxisSpacing: 8,
+//         itemCount: widget.albums!.first.features.length + 1,
+//         itemBuilder: (context, index) {
+//           if (index == 0) {
+//             return headerTile(context, index);
+//           } else {
+//             return contentTile(context, index);
+//           }
+//         },
+//       );
+//     }
+//   }
+//
+//   Widget headerTile(context, index) {
+//     StatelessWidget headerImage;
+//
+//     if (widget.albums!.first.image != "") {
+//       headerImage = CachedNetworkImage(imageUrl: widget.albums!.first.image);
+//     } else {
+//       headerImage = Container();
+//     }
+//
+//     return Center(
+//         child:
+//         Column(children: [headerImage, Text(widget.albums!.first.description)]));
+//   }
+//
+//   Widget contentTile(context, index) {
+//     // Remove header row from index
+//     index = index - 1;
+//     return GestureDetector(
+//       onTap: () {
+//         if (widget.albums!.first.features[index].properties.geojson != null &&
+//             widget.albums!.first.features[index].properties.geojson != "") {
+//           _moveToGeoJson(context, index);
+//         } else {
+//           _showphoto(context, index);
+//         }
+//       },
+//       child: Column(children: [
+//         CachedNetworkImage(
+//             imageUrl:
+//             widget.albums!.first.features[index].properties.thumbnail.toString()),
+//         Visibility(
+//           child: Text(
+//             widget.albums!.first.features[index].properties.name.toString(),
+//             textAlign: TextAlign.center,
+//           ),
+//           visible: toggle,
+//         ),
+//         // Favorites code snippet for icons to favorite pictures
+//         // GestureDetector(
+//         //   onTap: () {
+//         //
+//         //   },
+//         //   child: const Align(
+//         //     alignment: Alignment.topRight,
+//         //    child: Icon(Icons.favorite_outlined, color: Colors.white, size: 35),
+//         // ))
+//       ]),
+//     );
+//   }
+//
+//   Widget mapView (context) {
+//     getMyZoom() {
+//       if (mapController.zoom >= 17) {
+//         maxClusterRadius = 5;
+//       } else {
+//         if (mapController.zoom <= 9) {
+//           maxClusterRadius = 200;
+//         }
+//       }
+//     }
+//
+//     return FlutterMap(
+//         mapController: mapController,
+//         options: MapOptions(
+//           plugins: [
+//             MarkerClusterPlugin(),
+//           ],
+//           center: LatLng(userLatitudeData,
+//               userLongitudeData),
+//           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
+//           zoom: 17.0,
+//           maxZoom: 18,
+//         ),
+//         layers: [
+//           TileLayerOptions(
+//             urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+//             subdomains: ['a', 'b', 'c'],
+//             attributionBuilder: (_) {
+//               return const Text("© OpenStreetMap contributors");
+//             },
+//           ),
+//           MarkerClusterLayerOptions(
+//               maxClusterRadius: maxClusterRadius,
+//               size: const Size(30, 30),
+//               showPolygon: false,
+//               fitBoundsOptions: const FitBoundsOptions(
+//                 padding: EdgeInsets.all(50),
+//               ),
+//               markers: getMarkerList(context),
+//               builder: (context, markers) {
+//                 return FloatingActionButton(
+//                   child: Text(markers.length.toString()),
+//                   onPressed: getMyZoom(),
+//                 );
+//               }),
+//           MarkerLayerOptions(markers: [
+//             Marker(
+//                 width: 40.0,
+//                 height: 40.0,
+//                 point: LatLng(userLatitudeData, userLongitudeData),
+//                 builder: (ctx) =>
+//                 const Icon(Icons.location_pin, color: Colors.blue)),
+//           ])
+//         ]);
+//   }
+}
+
+class MainPageBuilder extends StatefulWidget {
+
+  final List<Album>? albums;
+  bool open = false;
+  bool busy = false;
+
+  MainPageBuilder({Key? key, this.albums})
+      : super(key: key);
+
   Future<void> _showphoto(context, index) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => RephotoScreen(
             historicalPhotoId:
-            widget.albums!.first.features[index].properties.id.toString(),
-            historicalPhotoUri: widget.albums!
+            albums!.first.features[index].properties.id.toString(),
+            historicalPhotoUri: albums!
                 .first.features[index].properties.thumbnail
                 .toString(),
             historicalName:
-            widget.albums!.first.features[index].properties.name.toString(),
+            albums!.first.features[index].properties.name.toString(),
             historicalDate:
-            widget.albums!.first.features[index].properties.date.toString(),
+            albums!.first.features[index].properties.date.toString(),
             historicalAuthor:
-            widget.albums!.first.features[index].properties.author.toString(),
-            historicalSurl: widget.albums!
+            albums!.first.features[index].properties.author.toString(),
+            historicalSurl: albums!
                 .first.features[index].properties.sourceUrl
                 .toString(),
-            historicalLabel: widget.albums!
+            historicalLabel: albums!
                 .first.features[index].properties.sourceLabel
                 .toString(),
-            historicalCoordinates: widget.albums!.first.features[index].geometry,
+            historicalCoordinates: albums!.first.features[index].geometry,
           )),
     );
   }
@@ -145,13 +366,13 @@ class MainPageState extends State<MainPage> {
       context,
       MaterialPageRoute(
           builder: (context) => MainPage.network(
-              widget.albums!.first.features[index].properties.name!,
-              widget.albums!.first.features[index].properties.geojson!)),
+              albums!.first.features[index].properties.name!,
+              albums!.first.features[index].properties.geojson!)),
     );
   }
 
   getMarkerList(context) {
-    List list = widget.albums!.first.features;
+    List list = albums!.first.features;
     markerList.clear();
     for (int x = 0; x < list.length; x++) {
       if (list[x].geometry.coordinates.length > 0) {
@@ -249,216 +470,13 @@ class MainPageState extends State<MainPage> {
   }
 
   @override
-  void initState() {
-    listenCurrentLocation();
-    getColorsForIcons();
-    mapController = MapController();
-    refresh();
-    super.initState();
-  }
+  MainPageBuilderState createState() =>MainPageBuilderState();
+}
 
+class MainPageBuilderState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
-
-    if(renderState == 1) {
-      return photoView(context);
-    }
-    if (renderState == 2){
-      return mapView(context);
-    }
-
-    _saveBool() async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('visibility', nameVisibility);
-    }
-
-    _searchBool() async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('searchVisibility', searchVisibility);
-    }
-    return Scaffold(
-      body: Column(children: [
-        const SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            ElevatedButton(onPressed: () { setState(() {
-              renderState = 1;
-            }); },
-            child: const Text('Photos'),),
-            ElevatedButton(onPressed: () {
-              setState(() {
-                renderState = 2;
-              });
-            },
-              child: const Text('Map'),),
-            ElevatedButton(onPressed: () {
-              setState(() {
-                renderState = 3;
-              });
-            },
-              child: const Text('Albums'),),
-          ],
-        ),
-        const SizedBox(height: 20),
-        Flexible(
-            child: FutureBuilder<List<Album>>(
-              future: albumData(context),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                if (snapshot.hasError) (snapshot.error);
-
-                return (snapshot.hasData)
-                    ? AlbumList(
-                    albums: snapshot.data)
-                    : const Center(child: CircularProgressIndicator());
-              },
-            )),
-      ],
-      ),
-    );
-  }
-
-  Widget photoView (context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-    if (height > width) {
-      return MasonryGridView.count(
-        crossAxisCount: 2,
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 8,
-        itemCount: widget.albums!.first.features.length + 1,
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return headerTile(context, index);
-          } else {
-            return contentTile(context, index);
-          }
-        },
-      );
-    } else {
-      return MasonryGridView.count(
-        crossAxisCount: 4,
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 8,
-        itemCount: widget.albums!.first.features.length + 1,
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return headerTile(context, index);
-          } else {
-            return contentTile(context, index);
-          }
-        },
-      );
-    }
-  }
-
-  Widget headerTile(context, index) {
-    StatelessWidget headerImage;
-
-    if (widget.albums!.first.image != "") {
-      headerImage = CachedNetworkImage(imageUrl: widget.albums!.first.image);
-    } else {
-      headerImage = Container();
-    }
-
-    return Center(
-        child:
-        Column(children: [headerImage, Text(widget.albums!.first.description)]));
-  }
-
-  Widget contentTile(context, index) {
-    // Remove header row from index
-    index = index - 1;
-    return GestureDetector(
-      onTap: () {
-        if (widget.albums!.first.features[index].properties.geojson != null &&
-            widget.albums!.first.features[index].properties.geojson != "") {
-          _moveToGeoJson(context, index);
-        } else {
-          _showphoto(context, index);
-        }
-      },
-      child: Column(children: [
-        CachedNetworkImage(
-            imageUrl:
-            widget.albums!.first.features[index].properties.thumbnail.toString()),
-        Visibility(
-          child: Text(
-            widget.albums!.first.features[index].properties.name.toString(),
-            textAlign: TextAlign.center,
-          ),
-          visible: toggle,
-        ),
-        // Favorites code snippet for icons to favorite pictures
-        // GestureDetector(
-        //   onTap: () {
-        //
-        //   },
-        //   child: const Align(
-        //     alignment: Alignment.topRight,
-        //    child: Icon(Icons.favorite_outlined, color: Colors.white, size: 35),
-        // ))
-      ]),
-    );
-  }
-
-  Widget mapView (context) {
-    getMyZoom() {
-      if (mapController.zoom >= 17) {
-        maxClusterRadius = 5;
-      } else {
-        if (mapController.zoom <= 9) {
-          maxClusterRadius = 200;
-        }
-      }
-    }
-
-    return FlutterMap(
-        mapController: mapController,
-        options: MapOptions(
-          plugins: [
-            MarkerClusterPlugin(),
-          ],
-          center: LatLng(userLatitudeData,
-              userLongitudeData),
-          interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
-          zoom: 17.0,
-          maxZoom: 18,
-        ),
-        layers: [
-          TileLayerOptions(
-            urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            subdomains: ['a', 'b', 'c'],
-            attributionBuilder: (_) {
-              return const Text("© OpenStreetMap contributors");
-            },
-          ),
-          MarkerClusterLayerOptions(
-              maxClusterRadius: maxClusterRadius,
-              size: const Size(30, 30),
-              showPolygon: false,
-              fitBoundsOptions: const FitBoundsOptions(
-                padding: EdgeInsets.all(50),
-              ),
-              markers: getMarkerList(context),
-              builder: (context, markers) {
-                return FloatingActionButton(
-                  child: Text(markers.length.toString()),
-                  onPressed: getMyZoom(),
-                );
-              }),
-          MarkerLayerOptions(markers: [
-            Marker(
-                width: 40.0,
-                height: 40.0,
-                point: LatLng(userLatitudeData, userLongitudeData),
-                builder: (ctx) =>
-                const Icon(Icons.location_pin, color: Colors.blue)),
-          ])
-        ]);
+    // TODO: implement build
+    throw UnimplementedError();
   }
 }
