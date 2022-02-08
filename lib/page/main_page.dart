@@ -36,6 +36,9 @@ class MainPageState extends State<MainPage> {
 
   bool nameVisibility = false;
   bool searchVisibility = false;
+  bool toggle = false;
+  bool open = false;
+  bool busy = false;
   double userLatitudeData = 0;
   double userLongitudeData = 0;
   int renderState = 1;
@@ -43,6 +46,7 @@ class MainPageState extends State<MainPage> {
   String orderBy = "alpha";
   String orderDirection = "desc";
 
+  List<Marker> markerList = [];
   List<Color> _colors = [];
 
   late final MapController mapController;
@@ -50,6 +54,7 @@ class MainPageState extends State<MainPage> {
 
   StreamSubscription<Position>? _positionStream;
 
+  late final List<Album>? albums;
   Future<List<Album>>? _albumData;
 
   Future<List<Album>> albumData(BuildContext context) {
@@ -109,93 +114,6 @@ class MainPageState extends State<MainPage> {
     });
   }
 
-  @override
-  void initState() {
-    listenCurrentLocation();
-    getColorsForIcons();
-    mapController = MapController();
-    refresh();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    _saveBool() async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('visibility', nameVisibility);
-    }
-
-    _searchBool() async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('searchVisibility', searchVisibility);
-    }
-
-    return Scaffold(
-      body: Column(children: [
-        const SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            ElevatedButton(onPressed: () { setState(() {
-              renderState = 1;
-            }); },
-            child: const Text('Photos'),),
-            ElevatedButton(onPressed: () {
-              setState(() {
-                renderState = 2;
-              });
-            },
-              child: const Text('Map'),),
-            ElevatedButton(onPressed: () {
-              setState(() {
-                renderState = 3;
-              });
-            },
-              child: const Text('Albums'),),
-          ],
-        ),
-        const SizedBox(height: 20),
-        Flexible(
-            child: FutureBuilder<List<Album>>(
-              future: albumData(context),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                if (snapshot.hasError) (snapshot.error);
-
-                return (snapshot.hasData)
-                    ? MainPageList(
-                    albums: snapshot.data,
-                    toggle: nameVisibility | searchVisibility,
-                    renderState: renderState,
-                    userLatitudeData: userLatitudeData,
-                    userLongitudeData: userLongitudeData,
-                    maxClusterRadius: maxClusterRadius)
-                    : const Center(child: CircularProgressIndicator());
-              },
-            )),
-      ],
-      ),
-    );
-  }
-}
-
-class MainPageList extends StatelessWidget {
-  final List<Album>? albums;
-  final bool toggle;
-  final int renderState;
-  final int maxClusterRadius;
-  final double userLatitudeData;
-  final double userLongitudeData;
-
-  const MainPageList({Key? key, this.albums, this.toggle = true,
-    required this.renderState, required this.userLatitudeData,
-    required this.userLongitudeData, required this.maxClusterRadius})
-      : super(key: key);
-
   Future<void> _showphoto(context, index) async {
     await Navigator.push(
       context,
@@ -233,15 +151,176 @@ class MainPageList extends StatelessWidget {
     );
   }
 
+  getMarkerList(context) {
+    List list = albums!.first.features;
+    markerList.clear();
+    for (int x = 0; x < list.length; x++) {
+      if (list[x].geometry.coordinates.length > 0) {
+        double latitude = list[x].geometry.coordinates[0];
+        double longitude = list[x].geometry.coordinates[1];
+        var m = Marker(
+            width: 40.0,
+            height: 40.0,
+            point: LatLng(latitude, longitude),
+            builder: (ctx) => IconButton(
+              icon: Icon(Icons.location_pin, color: _colors[x]),
+              onPressed: () {
+                if (busy == true) {
+                  return;
+                } else {
+                  if (open == true) {
+                    Navigator.of(context).pop();
+                    setState(() {
+                      _colors[x] = Colors.red;
+                    });
+                    open = false;
+                  }
+                }
+                if (open == false) {
+                  busy = true;
+                  open = true;
+                  setState(() {
+                    _colors[x] = Colors.white;
+                  });
+                  showBottomSheet(
+                      context: context,
+                      builder: (builder) {
+                        busy = false;
+                        return Row(children: [
+                          Expanded(
+                            child: GestureDetector(
+                                child: Image.network(
+                                    list[x].properties.thumbnail),
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              RephotoScreen(
+                                                historicalPhotoId: list[x]
+                                                    .properties
+                                                    .id
+                                                    .toString(),
+                                                historicalPhotoUri: list[x]
+                                                    .properties
+                                                    .thumbnail
+                                                    .toString(),
+                                                historicalName: list[x]
+                                                    .properties
+                                                    .name
+                                                    .toString(),
+                                                historicalDate: list[x]
+                                                    .properties
+                                                    .date
+                                                    .toString(),
+                                                historicalAuthor: list[x]
+                                                    .properties
+                                                    .author
+                                                    .toString(),
+                                                historicalSurl: list[x]
+                                                    .properties
+                                                    .sourceUrl
+                                                    .toString(),
+                                                historicalLabel: list[x]
+                                                    .properties
+                                                    .sourceLabel
+                                                    .toString(),
+                                                historicalCoordinates:
+                                                list[x].geometry,
+                                              )));
+                                }),
+                          )
+                        ]);
+                      }).closed.then((value) {
+                    if (busy == false) {
+                      open = false;
+                    }
+                    setState(() {
+                      _colors[x] = Colors.red;
+                    });
+                    busy = false;
+                  });
+                }
+              },
+            ));
+        markerList.add(m);
+      }
+    }
+    return markerList;
+  }
+
+  @override
+  void initState() {
+    listenCurrentLocation();
+    getColorsForIcons();
+    mapController = MapController();
+    refresh();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-      if(renderState == 1) {
-        return photoView(context);
-      }
-      if (renderState == 2){
-        return mapView(context);
-      }
-      throw Exception('We couldnt find what you were looking for');
+
+    if(renderState == 1) {
+      return photoView(context);
+    }
+    if (renderState == 2){
+      return mapView(context);
+    }
+
+    _saveBool() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('visibility', nameVisibility);
+    }
+
+    _searchBool() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('searchVisibility', searchVisibility);
+    }
+    return Scaffold(
+      body: Column(children: [
+        const SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            ElevatedButton(onPressed: () { setState(() {
+              renderState = 1;
+            }); },
+            child: const Text('Photos'),),
+            ElevatedButton(onPressed: () {
+              setState(() {
+                renderState = 2;
+              });
+            },
+              child: const Text('Map'),),
+            ElevatedButton(onPressed: () {
+              setState(() {
+                renderState = 3;
+              });
+            },
+              child: const Text('Albums'),),
+          ],
+        ),
+        const SizedBox(height: 20),
+        Flexible(
+            child: FutureBuilder<List<Album>>(
+              future: albumData(context),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (snapshot.hasError) (snapshot.error);
+
+                return (snapshot.hasData)
+                    ? MainPage(
+                    albums: snapshot.data,
+                    : const Center(child: CircularProgressIndicator());
+              },
+            )),
+      ],
+      ),
+    );
   }
 
   Widget photoView (context) {
@@ -382,8 +461,5 @@ class MainPageList extends StatelessWidget {
                 const Icon(Icons.location_pin, color: Colors.blue)),
           ])
         ]);
-}
-
-
-
+  }
 }
