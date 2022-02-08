@@ -13,6 +13,7 @@ import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../albumlist.dart';
 import '../getxnavigation.dart';
 import '../rephoto.dart';
 
@@ -22,10 +23,9 @@ class MainPage extends StatefulWidget {
 
   String pageTitle = "";
   String dataSourceUrl = "";
+  final List<Album>? albums;
 
-  MainPage({Key? key}) : super(key: key);
-
-  MainPage.network(this.pageTitle, this.dataSourceUrl, {Key? key})
+  MainPage.network(this.pageTitle, this.dataSourceUrl, this.albums, {Key? key})
       : super(key: key);
 
   @override
@@ -54,7 +54,6 @@ class MainPageState extends State<MainPage> {
 
   StreamSubscription<Position>? _positionStream;
 
-  late final List<Album>? albums;
   Future<List<Album>>? _albumData;
 
   Future<List<Album>> albumData(BuildContext context) {
@@ -120,23 +119,23 @@ class MainPageState extends State<MainPage> {
       MaterialPageRoute(
           builder: (context) => RephotoScreen(
             historicalPhotoId:
-            albums!.first.features[index].properties.id.toString(),
-            historicalPhotoUri: albums!
+            widget.albums!.first.features[index].properties.id.toString(),
+            historicalPhotoUri: widget.albums!
                 .first.features[index].properties.thumbnail
                 .toString(),
             historicalName:
-            albums!.first.features[index].properties.name.toString(),
+            widget.albums!.first.features[index].properties.name.toString(),
             historicalDate:
-            albums!.first.features[index].properties.date.toString(),
+            widget.albums!.first.features[index].properties.date.toString(),
             historicalAuthor:
-            albums!.first.features[index].properties.author.toString(),
-            historicalSurl: albums!
+            widget.albums!.first.features[index].properties.author.toString(),
+            historicalSurl: widget.albums!
                 .first.features[index].properties.sourceUrl
                 .toString(),
-            historicalLabel: albums!
+            historicalLabel: widget.albums!
                 .first.features[index].properties.sourceLabel
                 .toString(),
-            historicalCoordinates: albums!.first.features[index].geometry,
+            historicalCoordinates: widget.albums!.first.features[index].geometry,
           )),
     );
   }
@@ -146,13 +145,13 @@ class MainPageState extends State<MainPage> {
       context,
       MaterialPageRoute(
           builder: (context) => MainPage.network(
-              albums!.first.features[index].properties.name!,
-              albums!.first.features[index].properties.geojson!)),
+              widget.albums!.first.features[index].properties.name!,
+              widget.albums!.first.features[index].properties.geojson!)),
     );
   }
 
   getMarkerList(context) {
-    List list = albums!.first.features;
+    List list = widget.albums!.first.features;
     markerList.clear();
     for (int x = 0; x < list.length; x++) {
       if (list[x].geometry.coordinates.length > 0) {
@@ -313,8 +312,8 @@ class MainPageState extends State<MainPage> {
                 if (snapshot.hasError) (snapshot.error);
 
                 return (snapshot.hasData)
-                    ? MainPage(
-                    albums: snapshot.data,
+                    ? AlbumList(
+                    albums: snapshot.data)
                     : const Center(child: CircularProgressIndicator());
               },
             )),
@@ -331,7 +330,7 @@ class MainPageState extends State<MainPage> {
         crossAxisCount: 2,
         crossAxisSpacing: 8,
         mainAxisSpacing: 8,
-        itemCount: albums!.first.features.length + 1,
+        itemCount: widget.albums!.first.features.length + 1,
         itemBuilder: (context, index) {
           if (index == 0) {
             return headerTile(context, index);
@@ -345,7 +344,7 @@ class MainPageState extends State<MainPage> {
         crossAxisCount: 4,
         crossAxisSpacing: 8,
         mainAxisSpacing: 8,
-        itemCount: albums!.first.features.length + 1,
+        itemCount: widget.albums!.first.features.length + 1,
         itemBuilder: (context, index) {
           if (index == 0) {
             return headerTile(context, index);
@@ -360,15 +359,15 @@ class MainPageState extends State<MainPage> {
   Widget headerTile(context, index) {
     StatelessWidget headerImage;
 
-    if (albums!.first.image != "") {
-      headerImage = CachedNetworkImage(imageUrl: albums!.first.image);
+    if (widget.albums!.first.image != "") {
+      headerImage = CachedNetworkImage(imageUrl: widget.albums!.first.image);
     } else {
       headerImage = Container();
     }
 
     return Center(
         child:
-        Column(children: [headerImage, Text(albums!.first.description)]));
+        Column(children: [headerImage, Text(widget.albums!.first.description)]));
   }
 
   Widget contentTile(context, index) {
@@ -376,8 +375,8 @@ class MainPageState extends State<MainPage> {
     index = index - 1;
     return GestureDetector(
       onTap: () {
-        if (albums!.first.features[index].properties.geojson != null &&
-            albums!.first.features[index].properties.geojson != "") {
+        if (widget.albums!.first.features[index].properties.geojson != null &&
+            widget.albums!.first.features[index].properties.geojson != "") {
           _moveToGeoJson(context, index);
         } else {
           _showphoto(context, index);
@@ -386,10 +385,10 @@ class MainPageState extends State<MainPage> {
       child: Column(children: [
         CachedNetworkImage(
             imageUrl:
-            albums!.first.features[index].properties.thumbnail.toString()),
+            widget.albums!.first.features[index].properties.thumbnail.toString()),
         Visibility(
           child: Text(
-            albums!.first.features[index].properties.name.toString(),
+            widget.albums!.first.features[index].properties.name.toString(),
             textAlign: TextAlign.center,
           ),
           visible: toggle,
