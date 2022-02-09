@@ -1,28 +1,41 @@
 import 'dart:async';
-
 import 'package:ajapaik_flutter_app/page/main_page.dart';
 import 'package:ajapaik_flutter_app/rephoto.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
-
 import 'data/album.geojson.dart';
 
 class MainPageBuilder extends StatefulWidget {
 
   final List<Album>? albums;
-  bool open = false;
-  bool busy = false;
-  bool toggle = false;
 
   MainPageBuilder({Key? key, this.albums})
       : super(key: key);
+
+  @override
+  MainPageBuilderState createState() =>MainPageBuilderState();
+}
+
+class MainPageBuilderState extends State<MainPageBuilder> {
+
+  bool open = false;
+  bool busy = false;
+  bool toggle = false;
+  double userLatitudeData = 0;
+  double userLongitudeData = 0;
+  int maxClusterRadius = 100;
+  List<Marker> markerList = [];
+  List<Bounds> boundsList = [];
+  List<Color> _colors = [];
+
+  late final MapController mapController;
+
+  StreamSubscription<Position>? _positionStream;
 
   Future<void> _showphoto(context, index) async {
     await Navigator.push(
@@ -30,23 +43,23 @@ class MainPageBuilder extends StatefulWidget {
       MaterialPageRoute(
           builder: (context) => RephotoScreen(
             historicalPhotoId:
-            albums!.first.features[index].properties.id.toString(),
-            historicalPhotoUri: albums!
+            widget.albums!.first.features[index].properties.id.toString(),
+            historicalPhotoUri: widget.albums!
                 .first.features[index].properties.thumbnail
                 .toString(),
             historicalName:
-            albums!.first.features[index].properties.name.toString(),
+            widget.albums!.first.features[index].properties.name.toString(),
             historicalDate:
-            albums!.first.features[index].properties.date.toString(),
+            widget.albums!.first.features[index].properties.date.toString(),
             historicalAuthor:
-            albums!.first.features[index].properties.author.toString(),
-            historicalSurl: albums!
+            widget.albums!.first.features[index].properties.author.toString(),
+            historicalSurl: widget.albums!
                 .first.features[index].properties.sourceUrl
                 .toString(),
-            historicalLabel: albums!
+            historicalLabel: widget.albums!
                 .first.features[index].properties.sourceLabel
                 .toString(),
-            historicalCoordinates: albums!.first.features[index].geometry,
+            historicalCoordinates: widget.albums!.first.features[index].geometry,
           )),
     );
   }
@@ -56,8 +69,8 @@ class MainPageBuilder extends StatefulWidget {
       context,
       MaterialPageRoute(
           builder: (context) => MainPage.network(
-              albums!.first.features[index].properties.name!,
-              albums!.first.features[index].properties.geojson!)),
+              widget.albums!.first.features[index].properties.name!,
+              widget.albums!.first.features[index].properties.geojson!)),
     );
   }
 
@@ -69,7 +82,7 @@ class MainPageBuilder extends StatefulWidget {
         crossAxisCount: 2,
         crossAxisSpacing: 8,
         mainAxisSpacing: 8,
-        itemCount: albums!.first.features.length + 1,
+        itemCount: widget.albums!.first.features.length + 1,
         itemBuilder: (context, index) {
           if (index == 0) {
             return headerTile(context, index);
@@ -83,7 +96,7 @@ class MainPageBuilder extends StatefulWidget {
         crossAxisCount: 4,
         crossAxisSpacing: 8,
         mainAxisSpacing: 8,
-        itemCount: albums!.first.features.length + 1,
+        itemCount: widget.albums!.first.features.length + 1,
         itemBuilder: (context, index) {
           if (index == 0) {
             return headerTile(context, index);
@@ -98,15 +111,15 @@ class MainPageBuilder extends StatefulWidget {
   Widget headerTile(context, index) {
     StatelessWidget headerImage;
 
-    if (albums!.first.image != "") {
-      headerImage = CachedNetworkImage(imageUrl: albums!.first.image);
+    if (widget.albums!.first.image != "") {
+      headerImage = CachedNetworkImage(imageUrl: widget.albums!.first.image);
     } else {
       headerImage = Container();
     }
 
     return Center(
         child:
-        Column(children: [headerImage, Text(albums!.first.description)]));
+        Column(children: [headerImage, Text(widget.albums!.first.description)]));
   }
 
   Widget contentTile(context, index) {
@@ -114,8 +127,8 @@ class MainPageBuilder extends StatefulWidget {
     index = index - 1;
     return GestureDetector(
       onTap: () {
-        if (albums!.first.features[index].properties.geojson != null &&
-            albums!.first.features[index].properties.geojson != "") {
+        if (widget.albums!.first.features[index].properties.geojson != null &&
+            widget.albums!.first.features[index].properties.geojson != "") {
           _moveToGeoJson(context, index);
         } else {
           _showphoto(context, index);
@@ -124,10 +137,10 @@ class MainPageBuilder extends StatefulWidget {
       child: Column(children: [
         CachedNetworkImage(
             imageUrl:
-            albums!.first.features[index].properties.thumbnail.toString()),
+            widget.albums!.first.features[index].properties.thumbnail.toString()),
         Visibility(
           child: Text(
-            albums!.first.features[index].properties.name.toString(),
+            widget.albums!.first.features[index].properties.name.toString(),
             textAlign: TextAlign.center,
           ),
           visible: toggle,
@@ -145,64 +158,8 @@ class MainPageBuilder extends StatefulWidget {
     );
   }
 
-  @override
-  MainPageBuilderState createState() =>MainPageBuilderState();
-}
-
-class MainPageBuilderState extends State<MainPageBuilder> {
-
-  bool open = false;
-  bool busy = false;
-  double userLatitudeData = 0;
-  double userLongitudeData = 0;
-  int maxClusterRadius = 100;
-  List<Marker> markerList = [];
-  List<Bounds> boundsList = [];
-
-  List<Color> _colors = [];
-  late final MapController mapController;
-
-  StreamSubscription<Position>? _positionStream;
-
-  getColorsForIcons() async {
-    _colors =
-        List.generate(10000, (index) => Colors.red); // here 10 is items.length
-  }
-
-  final Future<Position> _location = Future<Position>.delayed(
-    const Duration(seconds: 2),
-        () => Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high),
-  );
-
-  void getCurrentLocation() async {
-    var geoPosition = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-
-    setState(() {
-      userLatitudeData = geoPosition.latitude;
-      userLongitudeData = geoPosition.longitude;
-    });
-  }
-
-  void listenCurrentLocation(){
-
-    LocationSettings locationSettings = const LocationSettings(
-        accuracy: LocationAccuracy.best,
-        distanceFilter: 10,
-        timeLimit: Duration(seconds: 5)
-    );
-    _positionStream = Geolocator.getPositionStream(
-        locationSettings: locationSettings).listen((Position geoPosition)
-    {
-      if (geoPosition.latitude != userLatitudeData &&
-          geoPosition.longitude != userLongitudeData) {
-        return getCurrentLocation();
-      }
-    });
-  }
-
   getMarkerList(context) {
-    List list = albums!.first.features;
+    List list = widget.albums!.first.features;
     markerList.clear();
     for (int x = 0; x < list.length; x++) {
       if (list[x].geometry.coordinates.length > 0) {
@@ -300,7 +257,7 @@ class MainPageBuilderState extends State<MainPageBuilder> {
   }
 
   getBoundsList(context) {
-    List list = albums!.first.features;
+    List list = widget.albums!.first.features;
     boundsList.clear();
     for (int x = 0; x < list.length; x++) {
       if (list[x].geometry.coordinates.length > 0) {
@@ -310,6 +267,43 @@ class MainPageBuilderState extends State<MainPageBuilder> {
         //boundsList.add(b);
       }
     }
+  }
+
+  getColorsForIcons() async {
+    _colors =
+        List.generate(10000, (index) => Colors.red); // here 10 is items.length
+  }
+
+  final Future<Position> _location = Future<Position>.delayed(
+    const Duration(seconds: 2),
+        () => Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high),
+  );
+
+  void getCurrentLocation() async {
+    var geoPosition = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    setState(() {
+      userLatitudeData = geoPosition.latitude;
+      userLongitudeData = geoPosition.longitude;
+    });
+  }
+
+  void listenCurrentLocation(){
+
+    LocationSettings locationSettings = const LocationSettings(
+        accuracy: LocationAccuracy.best,
+        distanceFilter: 10,
+        timeLimit: Duration(seconds: 5)
+    );
+    _positionStream = Geolocator.getPositionStream(
+        locationSettings: locationSettings).listen((Position geoPosition)
+    {
+      if (geoPosition.latitude != userLatitudeData &&
+          geoPosition.longitude != userLongitudeData) {
+        return getCurrentLocation();
+      }
+    });
   }
 
   @override
