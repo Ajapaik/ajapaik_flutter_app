@@ -204,6 +204,21 @@ Future<String> addLocationToUrl(String url) async {
   return url;
 }
 
+Future<String> addLocationToUrlLatLng(String url, double latitude, double longitude) async {
+  Position position = await determinePosition();
+  if (url.contains("__LAT__")) {
+    url = url.replaceFirst("__LAT__", position.latitude.toString());
+  } else {
+    url += "&latitude=" + position.latitude.toString();
+  }
+  if (url.contains("__LON__")) {
+    url = url.replaceFirst("__LON__", position.longitude.toString());
+  } else {
+    url += "&longitude=" + position.longitude.toString();
+  }
+  return url;
+}
+
 Future<List<Album>> fetchAlbum(http.Client client, String url) async {
   url = await addLocationToUrl(url);
   final response = await client.get(Uri.parse(url));

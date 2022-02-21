@@ -246,6 +246,7 @@ class _UserLocationState extends State<MapScreen> {
   }
 
   Widget _buildFlutterMap(BuildContext context) {
+    LatLng lastposition = LatLng(userLatitudeData, userLongitudeData);
     getMyZoom() {
       if (mapController.zoom >= 17) {
         maxClusterRadius = 5;
@@ -259,6 +260,9 @@ class _UserLocationState extends State<MapScreen> {
     return FlutterMap(
         mapController: mapController,
         options: MapOptions(
+          onPositionChanged: (mapPosition, boolValue){
+              lastposition = mapPosition.center!;
+              },
           plugins: [
             MarkerClusterPlugin(),
           ],
@@ -267,6 +271,7 @@ class _UserLocationState extends State<MapScreen> {
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
           zoom: 17.0,
           maxZoom: 18,
+
         ),
         layers: [
           TileLayerOptions(

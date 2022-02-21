@@ -276,12 +276,12 @@ class MainPageBuilderState extends State<MainPageBuilder> {
 
   final Future<Position> _location = Future<Position>.delayed(
     const Duration(seconds: 2),
-        () => Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high),
+        () => Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best),
   );
 
   void getCurrentLocation() async {
     var geoPosition = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+        desiredAccuracy: LocationAccuracy.best);
 
     setState(() {
       userLatitudeData = geoPosition.latitude;
@@ -293,7 +293,7 @@ class MainPageBuilderState extends State<MainPageBuilder> {
 
     LocationSettings locationSettings = const LocationSettings(
         accuracy: LocationAccuracy.best,
-        distanceFilter: 10,
+        // distanceFilter: 10,
         timeLimit: Duration(seconds: 5)
     );
     _positionStream = Geolocator.getPositionStream(
@@ -308,6 +308,7 @@ class MainPageBuilderState extends State<MainPageBuilder> {
 
   @override
   void initState() {
+    getCurrentLocation();
     listenCurrentLocation();
     getColorsForIcons();
     mapController = MapController();
