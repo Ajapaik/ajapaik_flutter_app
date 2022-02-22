@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:http/http.dart' as http;
 import 'package:ajapaik_flutter_app/page/main_page.dart';
 import 'package:ajapaik_flutter_app/rephoto.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:gallery_saver/files.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'data/album.geojson.dart';
@@ -13,6 +15,8 @@ import 'data/album.geojson.dart';
 class MainPageBuilder extends StatefulWidget {
 
   final List<Album>? albums;
+  String pageTitle = "";
+  String dataSourceUrl = "";
 
   MainPageBuilder({Key? key, this.albums})
       : super(key: key);
@@ -29,11 +33,14 @@ class MainPageBuilderState extends State<MainPageBuilder> {
   double userLatitudeData = 0;
   double userLongitudeData = 0;
   int maxClusterRadius = 100;
+  String orderBy = "alpha";
+  String orderDirection = "desc";
   List<Marker> markerList = [];
   List<Bounds> boundsList = [];
   List<Color> _colors = [];
 
   late final MapController mapController;
+  final myController = TextEditingController();
 
   StreamSubscription<Position>? _positionStream;
 
@@ -72,6 +79,29 @@ class MainPageBuilderState extends State<MainPageBuilder> {
               widget.albums!.first.features[index].properties.name!,
               widget.albums!.first.features[index].properties.geojson!)),
     );
+  }
+
+  Future<List<Album>>? _albumData;
+
+  Future<List<Album>> albumData(BuildContext context) {
+    return _albumData!;
+  }
+
+  String getDataSourceUrl() {
+    String url = widget.dataSourceUrl;
+    if (url.contains("?")) {
+      url += "&orderby=" + orderBy + "&orderdirection=" + orderDirection;
+    } else {
+      url += "?orderby=" + orderBy + "&orderdirection=" + orderDirection;
+    }
+    String searchkey=myController.text;
+    url += "&search=" + searchkey;
+    return url;
+  }
+
+  void refresh() async {
+    String url = getDataSourceUrl();
+    await (_albumData = fetchAlbum(http.Client(), url));
   }
 
   Widget photoView (context) {
@@ -363,6 +393,7 @@ class MainPageBuilderState extends State<MainPageBuilder> {
   }
 
   Widget _buildFlutterMap(BuildContext context) {
+    LatLng lastposition = LatLng(userLatitudeData, userLongitudeData);
     getMyZoom() {
       if (mapController.zoom >= 17) {
         maxClusterRadius = 5;
@@ -376,6 +407,11 @@ class MainPageBuilderState extends State<MainPageBuilder> {
     return FlutterMap(
         mapController: mapController,
         options: MapOptions(
+          onPositionChanged: (mapPosition, boolValue){
+            lastposition = mapPosition.center!;
+            refresh();
+            print(lastposition);
+          },
           plugins: [
             MarkerClusterPlugin(),
           ],
