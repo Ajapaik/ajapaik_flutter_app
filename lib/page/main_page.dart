@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:ajapaik_flutter_app/data/album.geojson.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -50,6 +51,40 @@ class MainPageState extends State<MainPage> {
 
   Future<List<Album>> albumData(BuildContext context) {
     return _albumData!;
+  }
+
+  double calculateDistance(lat1, lon1, lat2, lon2){
+    var p = 0.017453292519943295;
+    var c = cos;
+    var a = 0.5 - c((lat2 - lat1) * p)/2 +
+        c(lat1 * p) * c(lat2 * p) *
+            (1 - c((lon2 - lon1) * p))/2;
+    return 12742 * asin(sqrt(a));
+  }
+
+  void hello(MapPosition mapPosition) {
+    print("Hello " + mapPosition.center!.toString());
+
+    if (mapPosition.center != null) {
+      var center = mapPosition.center!;
+      double lat2 = center.latitude;
+      double lon2 = center.longitude;
+      if (mapPosition.center != null) {
+        var center = mapPosition.center!;
+        double lat2 = center.latitude;
+        double lon2 = center.longitude;
+        double distance = calculateDistance(
+            userLatitudeData, userLongitudeData, lat2, lon2);
+        print(distance.toString());
+
+        if (distance > 0.05) {
+          userLatitudeData = lat2;
+          userLongitudeData = lon2;
+          print("refresh");
+          refresh();
+        }
+      }
+    }
   }
 
   String getDataSourceUrl() {
@@ -118,7 +153,7 @@ class MainPageState extends State<MainPage> {
     if (renderState == 1 ) {
       return AlbumList(albums: albums);
     } else if (renderState == 2 ) {
-      return MainPageBuilder(albums: albums);
+      return MainPageBuilder(albums: albums, callbackFunction: hello);
     }
     return const Text("Failed");
   }

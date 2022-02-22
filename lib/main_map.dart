@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:gallery_saver/files.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'data/album.geojson.dart';
@@ -18,7 +17,9 @@ class MainPageBuilder extends StatefulWidget {
   String pageTitle = "";
   String dataSourceUrl = "";
 
-  MainPageBuilder({Key? key, this.albums})
+  Function callbackFunction;
+
+  MainPageBuilder({Key? key, this.albums, required this.callbackFunction})
       : super(key: key);
 
   @override
@@ -79,29 +80,6 @@ class MainPageBuilderState extends State<MainPageBuilder> {
               widget.albums!.first.features[index].properties.name!,
               widget.albums!.first.features[index].properties.geojson!)),
     );
-  }
-
-  Future<List<Album>>? _albumData;
-
-  Future<List<Album>> albumData(BuildContext context) {
-    return _albumData!;
-  }
-
-  String getDataSourceUrl() {
-    String url = widget.dataSourceUrl;
-    if (url.contains("?")) {
-      url += "&orderby=" + orderBy + "&orderdirection=" + orderDirection;
-    } else {
-      url += "?orderby=" + orderBy + "&orderdirection=" + orderDirection;
-    }
-    String searchkey=myController.text;
-    url += "&search=" + searchkey;
-    return url;
-  }
-
-  void refresh() async {
-    String url = getDataSourceUrl();
-    await (_albumData = fetchAlbum(http.Client(), url));
   }
 
   Widget photoView (context) {
@@ -409,8 +387,7 @@ class MainPageBuilderState extends State<MainPageBuilder> {
         options: MapOptions(
           onPositionChanged: (mapPosition, boolValue){
             lastposition = mapPosition.center!;
-            refresh();
-            print(lastposition);
+            widget.callbackFunction(mapPosition);
           },
           plugins: [
             MarkerClusterPlugin(),
