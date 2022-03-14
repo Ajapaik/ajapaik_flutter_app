@@ -189,38 +189,30 @@ class Properties {
   }
 }
 
-Future<String> addLocationToUrl(String url) async {
-  Position position = await determinePosition();
+Future<String> addLocationToUrl(String url,
+    {double? latitude, double? longitude}) async {
+  if (latitude == null && longitude == null ) {
+    Position position = await determinePosition();
+    latitude=position.latitude;
+    longitude=position.longitude;
+  }
   if (url.contains("__LAT__")) {
-    url = url.replaceFirst("__LAT__", position.latitude.toString());
+    url = url.replaceFirst("__LAT__", latitude.toString());
   } else {
-    url += "&latitude=" + position.latitude.toString();
+    url += "&latitude=" + latitude.toString();
   }
   if (url.contains("__LON__")) {
-    url = url.replaceFirst("__LON__", position.longitude.toString());
+    url = url.replaceFirst("__LON__", longitude.toString());
   } else {
-    url += "&longitude=" + position.longitude.toString();
+    url += "&longitude=" + longitude.toString();
   }
+  print(latitude);
   return url;
 }
 
-Future<String> addLocationToUrlLatLng(String url, double latitude, double longitude) async {
-  Position position = await determinePosition();
-  if (url.contains("__LAT__")) {
-    url = url.replaceFirst("__LAT__", position.latitude.toString());
-  } else {
-    url += "&latitude=" + position.latitude.toString();
-  }
-  if (url.contains("__LON__")) {
-    url = url.replaceFirst("__LON__", position.longitude.toString());
-  } else {
-    url += "&longitude=" + position.longitude.toString();
-  }
-  return url;
-}
-
-Future<List<Album>> fetchAlbum(http.Client client, String url) async {
-  url = await addLocationToUrl(url);
+Future<List<Album>> fetchAlbum(http.Client client, String url,
+    {double? latitude, double? longitude}) async {
+  url = await addLocationToUrl(url, latitude: latitude, longitude: longitude);
   final response = await client.get(Uri.parse(url));
   (url);
   // Use the compute function to run parsePhotos in a separate isolate.

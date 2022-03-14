@@ -45,6 +45,10 @@ class MainPageState extends State<MainPage> {
   late final MapController mapController;
   final myController = TextEditingController();
 
+  Timer timer = Timer(const Duration(seconds: 5), () {
+
+  });
+
   StreamSubscription<Position>? _positionStream;
 
   Future<List<Album>>? _albumData;
@@ -62,31 +66,6 @@ class MainPageState extends State<MainPage> {
     return 12742 * asin(sqrt(a));
   }
 
-  void hello(MapPosition mapPosition) {
-    print("Hello " + mapPosition.center!.toString());
-
-    if (mapPosition.center != null) {
-      var center = mapPosition.center!;
-      double lat2 = center.latitude;
-      double lon2 = center.longitude;
-      if (mapPosition.center != null) {
-        var center = mapPosition.center!;
-        double lat2 = center.latitude;
-        double lon2 = center.longitude;
-        double distance = calculateDistance(
-            userLatitudeData, userLongitudeData, lat2, lon2);
-        print(distance.toString());
-
-        if (distance > 0.05) {
-          userLatitudeData = lat2;
-          userLongitudeData = lon2;
-          print("refresh");
-          refresh();
-        }
-      }
-    }
-  }
-
   String getDataSourceUrl() {
     String url = widget.dataSourceUrl;
     if (url.contains("?")) {
@@ -101,7 +80,33 @@ class MainPageState extends State<MainPage> {
 
   void refresh() async {
     String url = getDataSourceUrl();
-    await (_albumData = fetchAlbum(http.Client(), url));
+    await (_albumData = fetchAlbum(http.Client(), url,
+        latitude: userLatitudeData, longitude: userLongitudeData));
+  }
+
+  void hello(MapPosition mapPosition) {
+
+    print("Hello " + mapPosition.center!.toString());
+
+    if (mapPosition.center != null) {
+      var center = mapPosition.center!;
+      double lat2 = center.latitude;
+      double lon2 = center.longitude;
+      if (mapPosition.center != null) {
+        var center = mapPosition.center!;
+        double lat2 = center.latitude;
+        double lon2 = center.longitude;
+        double distance = calculateDistance(
+            userLatitudeData, userLongitudeData, lat2, lon2);
+        print(distance.toString());
+
+        if (distance > 0.5) {
+          userLatitudeData = lat2;
+          userLongitudeData = lon2;
+          refresh();
+        }
+      }
+    }
   }
 
   getColorsForIcons() async {
@@ -171,30 +176,39 @@ class MainPageState extends State<MainPage> {
       await prefs.setBool('searchVisibility', searchVisibility);
     }
     return Scaffold(
-      body: Column(children: [
-        const SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            ElevatedButton(onPressed: () { setState(() {
-              renderState = 1;
-            }); },
-            child: const Text('Photos'),),
-            ElevatedButton(onPressed: () {
-              setState(() {
-                renderState = 2;
-              });
-            },
-              child: const Text('Map'),),
-            ElevatedButton(onPressed: () {
-              setState(() {
-                renderState = 3;
-              });
-            },
-              child: const Text('Albums'),),
-          ],
-        ),
-        const SizedBox(height: 20),
+      body: Column(
+        children: [
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    renderState = 1;
+                  });
+                },
+                child: const Text('Photos'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    renderState = 2;
+                  });
+                },
+                child: const Text('Map'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    renderState = 3;
+                  });
+                },
+                child: const Text('Albums'),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
         Flexible(
             child: FutureBuilder<List<Album>>(
               future: albumData(context),
