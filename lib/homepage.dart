@@ -14,7 +14,7 @@ import 'getxnavigation.dart';
 
 class HomePage extends StatefulWidget {
 
-  String dataSourceUrl = "";
+  String dataSourceUrl = "https://fiwiki-tools.toolforge.org/api/ajapaiknearest.php?latitude=49.84189&longitude=24.0315&search=&limit=100&orderby=alpha&orderdirection=desc&search=Auroran&latitude=60.1952073&longitude=24.9252243";
 
   HomePage({Key? key}) : super(key: key);
 
@@ -36,7 +36,7 @@ class HomePageState extends State<HomePage> {
     const EventsPage(),
     const Text(''),
   ];
-
+/*
   Future<List<Album>>? _albumData;
 
   Future<List<Album>> albumData(BuildContext context) {
@@ -66,26 +66,26 @@ class HomePageState extends State<HomePage> {
     url += "&search=" + searchkey;
     return url;
   }
-
+*/
   onSearchTextChanged(String text) async {
     if (text.isEmpty) {
       setState(() {});
       return;
     }
   }
-
+/*
   void refresh() async {
     String url = getDataSourceUrl();
     await (_albumData = fetchAlbum(http.Client(), url));
   }
-
+*/
   @override
   void initState() {
     controller.loadSession().then((_) => setState(() {
       ("Updating login status to screen. Session " +
           controller.getSession());
     }));
-    refresh();
+//    refresh();
     super.initState();
   }
 
@@ -126,7 +126,7 @@ class HomePageState extends State<HomePage> {
                       textAlign: TextAlign.start,
                       onSubmitted: (value) {
                         setState(() {
-                          refresh();
+//                          refresh();
                         });
                       },
                       onChanged: (value) => onSearchTextChanged(value),
@@ -136,7 +136,7 @@ class HomePageState extends State<HomePage> {
                       prefixIcon: IconButton(
                           onPressed: () {
                               setState(() {
-                                refresh();
+//                                refresh();
                               });
                               onSearchTextChanged('');
                           }, icon: const Icon(Icons.search)),

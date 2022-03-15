@@ -191,19 +191,23 @@ class Properties {
 
 Future<String> addLocationToUrl(String url,
     {double? latitude, double? longitude}) async {
-  if (latitude == null && longitude == null ) {
+  if (latitude == null && longitude == null) {
     Position position = await determinePosition();
-    latitude=position.latitude;
-    longitude=position.longitude;
+    latitude = position.latitude;
+    longitude = position.longitude;
   }
   if (url.contains("__LAT__")) {
     url = url.replaceFirst("__LAT__", latitude.toString());
   } else {
+    url = url.replaceAll(RegExp(r'([?]latitude=)[0-9.]+'),'?');
+    url = url.replaceAll(RegExp(r'([&]latitude=)[0-9.]+'),'');
     url += "&latitude=" + latitude.toString();
   }
   if (url.contains("__LON__")) {
     url = url.replaceFirst("__LON__", longitude.toString());
   } else {
+    url = url.replaceAll(RegExp(r'([?]longitude=)[0-9.]+'),'?');
+    url = url.replaceAll(RegExp(r'([&]longitude=)[0-9.]+'),'');
     url += "&longitude=" + longitude.toString();
   }
   print(latitude);
@@ -212,7 +216,10 @@ Future<String> addLocationToUrl(String url,
 
 Future<List<Album>> fetchAlbum(http.Client client, String url,
     {double? latitude, double? longitude}) async {
+  print("fetchAlbum");
+
   url = await addLocationToUrl(url, latitude: latitude, longitude: longitude);
+  print(url);
   final response = await client.get(Uri.parse(url));
   (url);
   // Use the compute function to run parsePhotos in a separate isolate.

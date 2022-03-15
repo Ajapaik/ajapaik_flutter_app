@@ -79,14 +79,15 @@ class MainPageState extends State<MainPage> {
   }
 
   void refresh() async {
+    print("refresh");
     String url = getDataSourceUrl();
     await (_albumData = fetchAlbum(http.Client(), url,
         latitude: userLatitudeData, longitude: userLongitudeData));
   }
 
-  void hello(MapPosition mapPosition) {
+  int hello(MapPosition mapPosition) {
 
-    print("Hello " + mapPosition.center!.toString());
+  //  print("Hello " + mapPosition.center!.toString());
 
     if (mapPosition.center != null) {
       var center = mapPosition.center!;
@@ -98,15 +99,20 @@ class MainPageState extends State<MainPage> {
         double lon2 = center.longitude;
         double distance = calculateDistance(
             userLatitudeData, userLongitudeData, lat2, lon2);
-        print(distance.toString());
+      //  print(distance.toString());
 
-        if (distance > 0.5) {
+        if (distance > 0.1) {
+          print("foo");
+          Future<List<Album>>? a;
+          _albumData=a;
           userLatitudeData = lat2;
           userLongitudeData = lon2;
           refresh();
+          return 1;
         }
       }
     }
+    return 0;
   }
 
   getColorsForIcons() async {
@@ -211,8 +217,10 @@ class MainPageState extends State<MainPage> {
           const SizedBox(height: 20),
         Flexible(
             child: FutureBuilder<List<Album>>(
-              future: albumData(context),
+              future: _albumData,
               builder: (context, snapshot) {
+
+                print("Future: main_page.dart)");
                 if (snapshot.connectionState != ConnectionState.done) {
                   return const Center(child: CircularProgressIndicator());
                 }
