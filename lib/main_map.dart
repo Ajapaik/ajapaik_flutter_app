@@ -332,6 +332,7 @@ class MainPageBuilderState extends State<MainPageBuilder> {
                 future: _location,
                 builder:
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                      print("Future: main_map.dart)");
                   if (snapshot.hasError) (snapshot.error);
                   return snapshot.hasData
                       ? _buildFlutterMap(context)
@@ -387,7 +388,12 @@ class MainPageBuilderState extends State<MainPageBuilder> {
         options: MapOptions(
           onPositionChanged: (mapPosition, boolValue){
             lastposition = mapPosition.center!;
-            widget.callbackFunction(mapPosition);
+            if (widget.callbackFunction(mapPosition)==1) {
+
+                print("foo bar");
+
+            }
+
           },
           plugins: [
             MarkerClusterPlugin(),
