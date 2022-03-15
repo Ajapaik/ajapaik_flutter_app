@@ -19,7 +19,8 @@ class MainPageBuilder extends StatefulWidget {
 
   Function callbackFunction;
 
-  MainPageBuilder({Key? key, this.albums, required this.callbackFunction})
+  MainPageBuilder({Key? key, this.albums, required this.callbackFunction,
+    required double mapLatitude, required double mapLongitude})
       : super(key: key);
 
   @override
@@ -33,6 +34,8 @@ class MainPageBuilderState extends State<MainPageBuilder> {
   bool toggle = false;
   double userLatitudeData = 0;
   double userLongitudeData = 0;
+  double mapLatitude = 0;
+  double mapLongitude = 0;
   int maxClusterRadius = 100;
   String orderBy = "alpha";
   String orderDirection = "desc";
@@ -372,7 +375,7 @@ class MainPageBuilderState extends State<MainPageBuilder> {
   }
 
   Widget _buildFlutterMap(BuildContext context) {
-    LatLng lastposition = LatLng(userLatitudeData, userLongitudeData);
+    LatLng lastposition = LatLng(mapLatitude, mapLongitude);
     getMyZoom() {
       if (mapController.zoom >= 17) {
         maxClusterRadius = 5;
@@ -398,8 +401,8 @@ class MainPageBuilderState extends State<MainPageBuilder> {
           plugins: [
             MarkerClusterPlugin(),
           ],
-          center: LatLng(userLatitudeData,
-              userLongitudeData),
+          center: LatLng(mapLatitude,
+              mapLongitude),
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
           zoom: 17.0,
           maxZoom: 18,

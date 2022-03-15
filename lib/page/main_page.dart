@@ -34,6 +34,8 @@ class MainPageState extends State<MainPage> {
   bool toggle = false;
   double userLatitudeData = 0;
   double userLongitudeData = 0;
+  double mapLatitude = 0;
+  double mapLongitude = 0;
   int renderState = 1;
   int maxClusterRadius = 100;
   String orderBy = "alpha";
@@ -79,10 +81,13 @@ class MainPageState extends State<MainPage> {
   }
 
   void refresh() async {
+    if (mapLatitude == 0 || mapLongitude == 0) {
+      getCurrentLocation();
+    }
     print("refresh");
     String url = getDataSourceUrl();
     await (_albumData = fetchAlbum(http.Client(), url,
-        latitude: userLatitudeData, longitude: userLongitudeData));
+        latitude: mapLatitude, longitude: mapLongitude));
   }
 
   int hello(MapPosition mapPosition) {
@@ -98,15 +103,15 @@ class MainPageState extends State<MainPage> {
         double lat2 = center.latitude;
         double lon2 = center.longitude;
         double distance = calculateDistance(
-            userLatitudeData, userLongitudeData, lat2, lon2);
+            mapLatitude, mapLongitude, lat2, lon2);
       //  print(distance.toString());
 
         if (distance > 0.1) {
           print("foo");
           Future<List<Album>>? a;
           _albumData=a;
-          userLatitudeData = lat2;
-          userLongitudeData = lon2;
+          mapLatitude = lat2;
+          mapLongitude = lon2;
           refresh();
           return 1;
         }
@@ -121,7 +126,7 @@ class MainPageState extends State<MainPage> {
   }
 
   final Future<Position> _location = Future<Position>.delayed(
-    const Duration(seconds: 2),
+    const Duration(seconds: 1),
         () => Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high),
   );
 
@@ -138,8 +143,7 @@ class MainPageState extends State<MainPage> {
   void listenCurrentLocation(){
     LocationSettings locationSettings = const LocationSettings(
         accuracy: LocationAccuracy.best,
-        distanceFilter: 10,
-        timeLimit: Duration(seconds: 5)
+        distanceFilter: 10
     );
     _positionStream = Geolocator.getPositionStream(
         locationSettings: locationSettings).listen((Position geoPosition)
@@ -164,7 +168,8 @@ class MainPageState extends State<MainPage> {
     if (renderState == 1 ) {
       return AlbumList(albums: albums);
     } else if (renderState == 2 ) {
-      return MainPageBuilder(albums: albums, callbackFunction: hello);
+      return MainPageBuilder(albums: albums, callbackFunction: hello,
+          mapLatitude: mapLatitude, mapLongitude: mapLongitude);
     }
     return const Text("Failed");
   }

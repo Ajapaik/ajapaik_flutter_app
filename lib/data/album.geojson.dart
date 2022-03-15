@@ -191,7 +191,7 @@ class Properties {
 
 Future<String> addLocationToUrl(String url,
     {double? latitude, double? longitude}) async {
-  if (latitude == null && longitude == null) {
+  if (latitude == null || latitude == 0 || longitude == null || longitude == 0) {
     Position position = await determinePosition();
     latitude = position.latitude;
     longitude = position.longitude;
