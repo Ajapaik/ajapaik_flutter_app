@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:ajapaik_flutter_app/page/main_page.dart';
 import 'package:ajapaik_flutter_app/rephoto.dart';
@@ -287,12 +288,6 @@ class MainPageBuilderState extends State<MainPageBuilder> {
         List.generate(10000, (index) => Colors.red); // here 10 is items.length
   }
 
-  final Future<Position> _location = Future<Position>.delayed(
-    const Duration(seconds: 2),
-        () => Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.best),
-  );
-
   void getCurrentLocation() async {
     var geoPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best);
@@ -304,7 +299,6 @@ class MainPageBuilderState extends State<MainPageBuilder> {
   }
 
   void listenCurrentLocation(){
-
     LocationSettings locationSettings = const LocationSettings(
         accuracy: LocationAccuracy.best,
         // distanceFilter: 10,
@@ -329,6 +323,12 @@ class MainPageBuilderState extends State<MainPageBuilder> {
     getColorsForIcons();
     mapController = MapController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _positionStream?.cancel();
+    super.dispose();
   }
 
   @override

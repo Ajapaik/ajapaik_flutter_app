@@ -48,12 +48,6 @@ class MainPageState extends State<MainPage> {
   late final MapController mapController;
   final myController = TextEditingController();
 
-  Timer timer = Timer(const Duration(seconds: 5), () {
-
-  });
-
-  StreamSubscription<Position>? _positionStream;
-
   Future<List<Album>>? _albumData;
 
   Future<List<Album>> albumData(BuildContext context) {
@@ -101,8 +95,6 @@ class MainPageState extends State<MainPage> {
 
   int hello(MapPosition mapPosition) {
 
-  //  print("Hello " + mapPosition.center!.toString());
-
     if (mapPosition.center != null) {
       var center = mapPosition.center!;
       double lat2 = center.latitude;
@@ -113,7 +105,6 @@ class MainPageState extends State<MainPage> {
         double lon2 = center.longitude;
         double distance = calculateDistance(
             mapLatitude, mapLongitude, lat2, lon2);
-      //  print(distance.toString());
 
         if (distance > 0.1) {
           print("foo");
@@ -134,49 +125,12 @@ class MainPageState extends State<MainPage> {
         List.generate(10000, (index) => Colors.red); // here 10 is items.length
   }
 
-  final Future<Position> _location = Future<Position>.delayed(
-    const Duration(seconds: 1),
-        () => Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high),
-  );
-
-  void getCurrentLocation() async {
-    var geoPosition = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-
-    setState(() {
-      userLatitudeData = geoPosition.latitude;
-      userLongitudeData = geoPosition.longitude;
-    });
-  }
-
-  void listenCurrentLocation(){
-    LocationSettings locationSettings = const LocationSettings(
-        accuracy: LocationAccuracy.best,
-        distanceFilter: 10
-    );
-    _positionStream = Geolocator.getPositionStream(
-        locationSettings: locationSettings).listen((Position geoPosition)
-    {
-      if (geoPosition.latitude != userLatitudeData &&
-          geoPosition.longitude != userLongitudeData) {
-        return getCurrentLocation();
-      }
-    });
-  }
-
   @override
   void initState() {
-    listenCurrentLocation();
     getColorsForIcons();
     mapController = MapController();
     refresh();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _positionStream?.cancel();
-    super.dispose();
   }
 
   Widget _switchTab(albums) {
@@ -192,15 +146,16 @@ class MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
 
-    _saveBool() async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('visibility', nameVisibility);
-    }
+    // _saveBool() async {
+    //   SharedPreferences prefs = await SharedPreferences.getInstance();
+    //   await prefs.setBool('visibility', nameVisibility);
+    // }
+    //
+    // _searchBool() async {
+    //   SharedPreferences prefs = await SharedPreferences.getInstance();
+    //   await prefs.setBool('searchVisibility', searchVisibility);
+    // }
 
-    _searchBool() async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('searchVisibility', searchVisibility);
-    }
     return Scaffold(
       body: Column(
         children: [
