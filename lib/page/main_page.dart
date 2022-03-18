@@ -51,7 +51,14 @@ class MainPageState extends State<MainPage> {
   Future<List<Album>>? _albumData;
 
   Future<List<Album>> albumData(BuildContext context) {
-    return _albumData!;
+    if (_albumData==null) {
+      String url = getDataSourceUrl();
+      return _albumData = fetchAlbum(http.Client(), url);
+    }
+    else
+    {
+      return _albumData!;
+    }
   }
 
   double calculateDistance(lat1, lon1, lat2, lon2){
@@ -87,9 +94,12 @@ class MainPageState extends State<MainPage> {
     if (tweenCompleted == true) {
       tweenCompleted = false;
       await (_albumData = fetchAlbum(http.Client(), url,
-          latitude: mapLatitude, longitude: mapLongitude).whenComplete(() => {
-      tweenCompleted = true
-      }));
+              latitude: mapLatitude, longitude: mapLongitude)
+          .whenComplete(() => {
+                setState(() {
+                  tweenCompleted = true;
+                })
+              }));
     }
   }
 
@@ -192,7 +202,7 @@ class MainPageState extends State<MainPage> {
           const SizedBox(height: 20),
         Flexible(
             child: FutureBuilder<List<Album>>(
-              future: _albumData,
+              future: albumData(context),
               builder: (context, snapshot) {
 
                 print("Future: main_page.dart)");
