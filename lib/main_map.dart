@@ -18,9 +18,11 @@ class MainPageBuilder extends StatefulWidget {
   String dataSourceUrl = "";
 
   Function callbackFunction;
+  double mapLatitude;
+  double mapLongitude;
 
   MainPageBuilder({Key? key, this.albums, required this.callbackFunction,
-    required double mapLatitude, required double mapLongitude})
+    required this.mapLatitude, required this.mapLongitude})
       : super(key: key);
 
   @override
@@ -287,7 +289,8 @@ class MainPageBuilderState extends State<MainPageBuilder> {
 
   final Future<Position> _location = Future<Position>.delayed(
     const Duration(seconds: 2),
-        () => Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best),
+        () => Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.best),
   );
 
   void getCurrentLocation() async {
@@ -319,6 +322,8 @@ class MainPageBuilderState extends State<MainPageBuilder> {
 
   @override
   void initState() {
+    mapLatitude=widget.mapLatitude;
+    mapLongitude=widget.mapLongitude;
     getCurrentLocation();
     listenCurrentLocation();
     getColorsForIcons();
@@ -330,46 +335,7 @@ class MainPageBuilderState extends State<MainPageBuilder> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(children: [
-        Expanded(
-            child: FutureBuilder(
-                future: _location,
-                builder:
-                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                      print("Future: main_map.dart)");
-                  if (snapshot.hasError) (snapshot.error);
-                  return snapshot.hasData
-                      ? _buildFlutterMap(context)
-                      : Center(
-                      child: FlutterMap(
-                          options: MapOptions(
-                            center: LatLng(userLatitudeData,
-                                userLongitudeData),
-                            interactiveFlags: InteractiveFlag.pinchZoom |
-                            InteractiveFlag.drag,
-                            zoom: 17.0,
-                          ),
-                          layers: [
-                            TileLayerOptions(
-                              urlTemplate:
-                              "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                              subdomains: ['a', 'b', 'c'],
-                              attributionBuilder: (_) {
-                                return const Text(
-                                    "© OpenStreetMap contributors");
-                              },
-                            ),
-                            MarkerLayerOptions(markers: [
-                              Marker(
-                                  width: 40.0,
-                                  height: 40.0,
-                                  point: LatLng(userLatitudeData,
-                                      userLongitudeData),
-                                  builder: (ctx) => const Icon(
-                                      Icons.location_pin,
-                                      color: Colors.blue)),
-                            ])
-                          ]));
-                })),
+        Expanded(child: _buildFlutterMap(context)),
       ]),
     );
   }

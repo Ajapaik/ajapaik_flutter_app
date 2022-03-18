@@ -32,6 +32,7 @@ class MainPageState extends State<MainPage> {
   bool nameVisibility = false;
   bool searchVisibility = false;
   bool toggle = false;
+  bool tweenCompleted = true;
   double userLatitudeData = 0;
   double userLongitudeData = 0;
   double mapLatitude = 0;
@@ -82,12 +83,20 @@ class MainPageState extends State<MainPage> {
 
   void refresh() async {
     if (mapLatitude == 0 || mapLongitude == 0) {
-      getCurrentLocation();
+      var geoPosition = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      mapLatitude = geoPosition.latitude;
+      mapLongitude = geoPosition.longitude;
     }
     print("refresh");
     String url = getDataSourceUrl();
-    await (_albumData = fetchAlbum(http.Client(), url,
-        latitude: mapLatitude, longitude: mapLongitude));
+    if (tweenCompleted == true) {
+      tweenCompleted = false;
+      await (_albumData = fetchAlbum(http.Client(), url,
+          latitude: mapLatitude, longitude: mapLongitude).whenComplete(() => {
+      tweenCompleted = true
+      }));
+    }
   }
 
   int hello(MapPosition mapPosition) {
@@ -162,6 +171,12 @@ class MainPageState extends State<MainPage> {
     mapController = MapController();
     refresh();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    listenCurrentLocation();
+    super.dispose();
   }
 
   Widget _switchTab(albums) {
