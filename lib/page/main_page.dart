@@ -175,7 +175,7 @@ class MainPageState extends State<MainPage> {
 
   @override
   void dispose() {
-    listenCurrentLocation();
+    _positionStream?.cancel();
     super.dispose();
   }
 
