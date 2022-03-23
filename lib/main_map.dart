@@ -6,7 +6,6 @@ import 'package:ajapaik_flutter_app/rephoto.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/plugin_api.dart';
-import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
@@ -14,7 +13,7 @@ import 'data/album.geojson.dart';
 
 class MainPageBuilder extends StatefulWidget {
 
-  final List<Album>? albums;
+  List<Album>? albums;
   String pageTitle = "";
   String dataSourceUrl = "";
 
@@ -46,6 +45,7 @@ class MainPageBuilderState extends State<MainPageBuilder> {
   List<Bounds> boundsList = [];
   List<Color> _colors = [];
 
+  Timer t = Timer(const Duration(seconds: 3),(){print("timer function");});
   late final MapController mapController;
   final myController = TextEditingController();
 
@@ -298,7 +298,7 @@ class MainPageBuilderState extends State<MainPageBuilder> {
     });
   }
 
-  void listenCurrentLocation(){
+  void listenCurrentLocation() {
     LocationSettings locationSettings = const LocationSettings(
         accuracy: LocationAccuracy.best,
         // distanceFilter: 10,
@@ -341,7 +341,9 @@ class MainPageBuilderState extends State<MainPageBuilder> {
   }
 
   Widget _buildFlutterMap(BuildContext context) {
+
     LatLng lastposition = LatLng(mapLatitude, mapLongitude);
+
     getMyZoom() {
       if (mapController.zoom >= 17) {
         maxClusterRadius = 5;
@@ -352,23 +354,32 @@ class MainPageBuilderState extends State<MainPageBuilder> {
       }
     }
 
+    Future<void> timerFunction(mapPosition) async {
+
+      List<Album>? a = await widget.callbackFunction(lastposition);
+      print("timer album await");
+
+      if (a != null) {
+        print(a.first.features.first.properties.name);
+        if (a.first.features.first.properties.name !=
+            widget.albums!.first.features.first.properties.name) {
+          setState(() {
+            widget.albums = a;
+            print("foo bar 2");
+          });
+        }
+      }
+    }
+
     return FlutterMap(
         mapController: mapController,
         options: MapOptions(
-          onPositionChanged: (mapPosition, boolValue){
+          onPositionChanged: (mapPosition, boolValue) async {
             lastposition = mapPosition.center!;
-            if (widget.callbackFunction(mapPosition)==1) {
-
-                print("foo bar");
-
-            }
-
+            t.cancel();
+            t=Timer(const Duration(seconds: 10), ()=>timerFunction(mapPosition));
           },
-          plugins: [
-            MarkerClusterPlugin(),
-          ],
-          center: LatLng(mapLatitude,
-              mapLongitude),
+          center: LatLng(mapLatitude, mapLongitude),
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
           zoom: 17.0,
           maxZoom: 18,
@@ -381,27 +392,14 @@ class MainPageBuilderState extends State<MainPageBuilder> {
               return const Text("© OpenStreetMap contributors");
             },
           ),
-          MarkerClusterLayerOptions(
-              maxClusterRadius: maxClusterRadius,
-              size: const Size(30, 30),
-              showPolygon: false,
-              fitBoundsOptions: const FitBoundsOptions(
-                padding: EdgeInsets.all(50),
-              ),
-              markers: getMarkerList(context),
-              builder: (context, markers) {
-                return FloatingActionButton(
-                  child: Text(markers.length.toString()),
-                  onPressed: getMyZoom(),
-                );
-              }),
+          MarkerLayerOptions(markers: getMarkerList(context)),
           MarkerLayerOptions(markers: [
             Marker(
                 width: 40.0,
                 height: 40.0,
                 point: LatLng(userLatitudeData, userLongitudeData),
                 builder: (ctx) =>
-                const Icon(Icons.location_pin, color: Colors.blue)),
+                    const Icon(Icons.location_pin, color: Colors.blue)),
           ])
         ]);
   }

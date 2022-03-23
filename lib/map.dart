@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:ajapaik_flutter_app/rephoto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/plugin_api.dart';
-import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'data/album.geojson.dart';
@@ -263,9 +262,6 @@ class _UserLocationState extends State<MapScreen> {
           onPositionChanged: (mapPosition, boolValue){
               lastposition = mapPosition.center!;
               },
-          plugins: [
-            MarkerClusterPlugin(),
-          ],
           center: LatLng(widget.userLatitudeData,
               widget.userLongitudeData),
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
@@ -281,20 +277,6 @@ class _UserLocationState extends State<MapScreen> {
               return const Text("© OpenStreetMap contributors");
             },
           ),
-          MarkerClusterLayerOptions(
-              maxClusterRadius: maxClusterRadius,
-              size: const Size(30, 30),
-              showPolygon: false,
-              fitBoundsOptions: const FitBoundsOptions(
-                padding: EdgeInsets.all(50),
-              ),
-              markers: getMarkerList(context),
-              builder: (context, markers) {
-                return FloatingActionButton(
-                  child: Text(markers.length.toString()),
-                  onPressed: getMyZoom(),
-                );
-              }),
           MarkerLayerOptions(markers: [
             Marker(
                 width: 40.0,

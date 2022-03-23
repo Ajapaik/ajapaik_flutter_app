@@ -89,21 +89,18 @@ class MainPageState extends State<MainPage> {
       mapLatitude = geoPosition.latitude;
       mapLongitude = geoPosition.longitude;
     }
-    print("refresh");
     String url = getDataSourceUrl();
     if (tweenCompleted == true) {
       tweenCompleted = false;
       await (_albumData = fetchAlbum(http.Client(), url,
               latitude: mapLatitude, longitude: mapLongitude)
           .whenComplete(() => {
-                setState(() {
-                  tweenCompleted = true;
-                })
+                  tweenCompleted = true
               }));
     }
   }
 
-  int hello(MapPosition mapPosition) {
+  Future<List<Album>>? hello(MapPosition mapPosition) {
 
     if (mapPosition.center != null) {
       var center = mapPosition.center!;
@@ -123,11 +120,10 @@ class MainPageState extends State<MainPage> {
           mapLatitude = lat2;
           mapLongitude = lon2;
           refresh();
-          return 1;
         }
       }
     }
-    return 0;
+    return _albumData;
   }
 
   getColorsForIcons() async {
