@@ -336,6 +336,7 @@ class MainPageBuilderState extends State<MainPageBuilder> {
     return Scaffold(
       body: Column(children: [
         Expanded(child: _buildFlutterMap(context)),
+        Expanded(child: SingleChildScrollView(child: SizedBox(width: double.infinity, height: 500, child: photoView(context),)))
       ]),
     );
   }
@@ -356,7 +357,7 @@ class MainPageBuilderState extends State<MainPageBuilder> {
 
     Future<void> timerFunction(mapPosition) async {
 
-      List<Album>? a = await widget.callbackFunction(lastposition);
+      List<Album>? a = await widget.callbackFunction(mapPosition);
       print("timer album await");
 
       if (a != null) {
@@ -377,7 +378,7 @@ class MainPageBuilderState extends State<MainPageBuilder> {
           onPositionChanged: (mapPosition, boolValue) async {
             lastposition = mapPosition.center!;
             t.cancel();
-            t=Timer(const Duration(seconds: 10), ()=>timerFunction(mapPosition));
+            t=Timer(const Duration(seconds: 3), ()=>timerFunction(mapPosition));
           },
           center: LatLng(mapLatitude, mapLongitude),
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
