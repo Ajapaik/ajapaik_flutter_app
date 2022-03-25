@@ -204,66 +204,78 @@ class MainPageBuilderState extends State<MainPageBuilder> {
                     _colors[x] = Colors.white;
                   });
                   showBottomSheet(
-                      context: context,
-                      builder: (builder) {
+                          context: context,
+                          builder: (builder) {
+                            busy = false;
+                            return Container(
+                                height: 325,
+                                child: Column(children: [
+                                  const SizedBox(height: 20),
+                                  Row(children: [
+                                    Expanded(
+                                      child: GestureDetector(
+                                          child: Image.network(
+                                              list[x].properties.thumbnail),
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        RephotoScreen(
+                                                          historicalPhotoId:
+                                                              list[x]
+                                                                  .properties
+                                                                  .id
+                                                                  .toString(),
+                                                          historicalPhotoUri:
+                                                              list[x]
+                                                                  .properties
+                                                                  .thumbnail
+                                                                  .toString(),
+                                                          historicalName:
+                                                              list[x]
+                                                                  .properties
+                                                                  .name
+                                                                  .toString(),
+                                                          historicalDate:
+                                                              list[x]
+                                                                  .properties
+                                                                  .date
+                                                                  .toString(),
+                                                          historicalAuthor:
+                                                              list[x]
+                                                                  .properties
+                                                                  .author
+                                                                  .toString(),
+                                                          historicalSurl:
+                                                              list[x]
+                                                                  .properties
+                                                                  .sourceUrl
+                                                                  .toString(),
+                                                          historicalLabel:
+                                                              list[x]
+                                                                  .properties
+                                                                  .sourceLabel
+                                                                  .toString(),
+                                                          historicalCoordinates:
+                                                              list[x].geometry,
+                                                        )));
+                                          }),
+                                    )
+                                  ])
+                                ]));
+                          }).closed.then((value) {
+                        if (busy == false) {
+                          open = false;
+                        }
+                        setState(() {
+                          _colors[x] = Colors.red;
+                        });
                         busy = false;
-                        return Row(children: [
-                          Expanded(
-                            child: GestureDetector(
-                                child: Image.network(
-                                    list[x].properties.thumbnail),
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              RephotoScreen(
-                                                historicalPhotoId: list[x]
-                                                    .properties
-                                                    .id
-                                                    .toString(),
-                                                historicalPhotoUri: list[x]
-                                                    .properties
-                                                    .thumbnail
-                                                    .toString(),
-                                                historicalName: list[x]
-                                                    .properties
-                                                    .name
-                                                    .toString(),
-                                                historicalDate: list[x]
-                                                    .properties
-                                                    .date
-                                                    .toString(),
-                                                historicalAuthor: list[x]
-                                                    .properties
-                                                    .author
-                                                    .toString(),
-                                                historicalSurl: list[x]
-                                                    .properties
-                                                    .sourceUrl
-                                                    .toString(),
-                                                historicalLabel: list[x]
-                                                    .properties
-                                                    .sourceLabel
-                                                    .toString(),
-                                                historicalCoordinates:
-                                                list[x].geometry,
-                                              )));
-                                }),
-                          )
-                        ]);
-                      }).closed.then((value) {
-                    if (busy == false) {
-                      open = false;
+                      });
                     }
-                    setState(() {
-                      _colors[x] = Colors.red;
-                    });
-                    busy = false;
-                  });
-                }
-              },
-            ));
+                  },
+                ));
         markerList.add(m);
       }
     }
@@ -335,16 +347,10 @@ class MainPageBuilderState extends State<MainPageBuilder> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(children: [
-        Expanded(
-            flex: 2,
-            child: SizedBox(height: 450, child: _buildFlutterMap(context))),
-        Expanded(
-            child: SingleChildScrollView(
-                child: SizedBox(
-          width: double.infinity,
-          height: 600,
+        SizedBox(height: 100, child: _buildFlutterMap(context)),
+        Flexible(
           child: photoView(context),
-        )))
+        )
       ]),
     );
   }

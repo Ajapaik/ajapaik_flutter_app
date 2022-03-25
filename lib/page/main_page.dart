@@ -163,7 +163,6 @@ class MainPageState extends State<MainPage> {
     return Scaffold(
       body: Column(
         children: [
-          const SizedBox(height: 20),
         Flexible(
             child: FutureBuilder<List<Album>>(
               future: albumData(context),

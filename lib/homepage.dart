@@ -36,7 +36,7 @@ class HomePageState extends State<HomePage> {
     const EventsPage(),
     const Text(''),
   ];
-/*
+
   Future<List<Album>>? _albumData;
 
   Future<List<Album>> albumData(BuildContext context) {
@@ -66,19 +66,20 @@ class HomePageState extends State<HomePage> {
     url += "&search=" + searchkey;
     return url;
   }
-*/
+
   onSearchTextChanged(String text) async {
     if (text.isEmpty) {
       setState(() {});
       return;
     }
   }
-/*
+
   void refresh() async {
     String url = getDataSourceUrl();
     await (_albumData = fetchAlbum(http.Client(), url));
+    print("kysely");
   }
-*/
+
   @override
   void initState() {
     controller.loadSession().then((_) => setState(() {
@@ -126,7 +127,8 @@ class HomePageState extends State<HomePage> {
                       textAlign: TextAlign.start,
                       onSubmitted: (value) {
                         setState(() {
-//                          refresh();
+                          refresh();
+                          print("valmista");
                         });
                       },
                       onChanged: (value) => onSearchTextChanged(value),
@@ -136,7 +138,7 @@ class HomePageState extends State<HomePage> {
                       prefixIcon: IconButton(
                           onPressed: () {
                               setState(() {
-//                                refresh();
+                                refresh();
                               });
                               onSearchTextChanged('');
                           }, icon: const Icon(Icons.search)),
