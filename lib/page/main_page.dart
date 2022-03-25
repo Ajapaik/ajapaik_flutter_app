@@ -139,10 +139,8 @@ class MainPageState extends State<MainPage> {
     super.initState();
   }
 
-  Widget _switchTab(albums) {
+  Widget _viewTab(albums) {
     if (renderState == 1 ) {
-      return AlbumList(albums: albums);
-    } else if (renderState == 2 ) {
       return MainPageBuilder(albums: albums, callbackFunction: hello,
           mapLatitude: mapLatitude, mapLongitude: mapLongitude);
     }
@@ -166,36 +164,6 @@ class MainPageState extends State<MainPage> {
       body: Column(
         children: [
           const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    renderState = 1;
-                  });
-                },
-                child: const Text('Photos'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    renderState = 2;
-                  });
-                },
-                child: const Text('Map'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    renderState = 3;
-                  });
-                },
-                child: const Text('Albums'),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
         Flexible(
             child: FutureBuilder<List<Album>>(
               future: albumData(context),
@@ -209,7 +177,7 @@ class MainPageState extends State<MainPage> {
                 if (snapshot.hasError) (snapshot.error);
 
                 return (snapshot.hasData)
-                    ? _switchTab(snapshot.data)
+                    ? _viewTab(snapshot.data)
                     : const Center(child: CircularProgressIndicator());
               },
             )),

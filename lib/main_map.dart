@@ -335,8 +335,16 @@ class MainPageBuilderState extends State<MainPageBuilder> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(children: [
-        Expanded(child: _buildFlutterMap(context)),
-        Expanded(child: SingleChildScrollView(child: SizedBox(width: double.infinity, height: 500, child: photoView(context),)))
+        Expanded(
+            flex: 2,
+            child: SizedBox(height: 450, child: _buildFlutterMap(context))),
+        Expanded(
+            child: SingleChildScrollView(
+                child: SizedBox(
+          width: double.infinity,
+          height: 600,
+          child: photoView(context),
+        )))
       ]),
     );
   }
