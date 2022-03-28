@@ -43,43 +43,6 @@ class HomePageState extends State<HomePage> {
     return _albumData!;
   }
 
-  void sorting() async {
-    setState(() {
-      orderBy = (orderBy == "alpha") ? "distance" : "alpha";
-      refresh();
-    });
-    Get.snackbar(
-      "Sorting",
-      "Order by " + orderBy,
-      // duration: Duration(seconds: 3),
-    );
-  }
-
-  String getDataSourceUrl() {
-    String url = widget.dataSourceUrl;
-    if (url.contains("?")) {
-      url += "&orderby=" + orderBy + "&orderdirection=" + orderDirection;
-    } else {
-      url += "?orderby=" + orderBy + "&orderdirection=" + orderDirection;
-    }
-    String searchkey=myController.text;
-    url += "&search=" + searchkey;
-    return url;
-  }
-
-  onSearchTextChanged(String text) async {
-    if (text.isEmpty) {
-      setState(() {});
-      return;
-    }
-  }
-
-  void refresh() async {
-    String url = getDataSourceUrl();
-    await (_albumData = fetchAlbum(http.Client(), url));
-    print("kysely");
-  }
-
   @override
   void initState() {
     controller.loadSession().then((_) => setState(() {
@@ -109,44 +72,6 @@ class HomePageState extends State<HomePage> {
     bool loggedIn = !(controller.getSession() == "");
 
     return Scaffold(
-        appBar: AppBar(
-            title: Container(
-                alignment: Alignment.center,
-                width: 300,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.grey[600],
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(20),
-                  ),
-                ),
-                child: Center(
-                    child: TextField(
-                      controller: myController,
-                      textInputAction: TextInputAction.go,
-                      textAlign: TextAlign.start,
-                      onSubmitted: (value) {
-                        setState(() {
-                          refresh();
-                          print("valmista");
-                        });
-                      },
-                      onChanged: (value) => onSearchTextChanged(value),
-                      decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Search for images',
-                      prefixIcon: IconButton(
-                          onPressed: () {
-                              setState(() {
-                                refresh();
-                              });
-                              onSearchTextChanged('');
-                          }, icon: const Icon(Icons.search)),
-                      suffixIcon: IconButton(
-                          onPressed: () {
-                            myController.clear();
-                          }, icon: const Icon(Icons.clear))),
-                )))),
             body: IndexedStack(
               index: _selectedIndex,
               children: screens,

@@ -131,6 +131,13 @@ class MainPageState extends State<MainPage> {
         List.generate(10000, (index) => Colors.red); // here 10 is items.length
   }
 
+  onSearchTextChanged(String text) async {
+    if (text.isEmpty) {
+      setState(() {});
+      return;
+    }
+  }
+
   @override
   void initState() {
     getColorsForIcons();
@@ -161,6 +168,44 @@ class MainPageState extends State<MainPage> {
     // }
 
     return Scaffold(
+      appBar: AppBar(
+          title: Container(
+              alignment: Alignment.center,
+              width: 300,
+              height: 40,
+              decoration: BoxDecoration(
+                color: Colors.grey[600],
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(20),
+                ),
+              ),
+              child: Center(
+                  child: TextField(
+                    controller: myController,
+                    textInputAction: TextInputAction.go,
+                    textAlign: TextAlign.start,
+                    onSubmitted: (value) {
+                      setState(() {
+                        refresh();
+                        print("valmista");
+                      });
+                    },
+                    onChanged: (value) => onSearchTextChanged(value),
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Search for images',
+                        prefixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                refresh();
+                              });
+                              onSearchTextChanged('');
+                            }, icon: const Icon(Icons.search)),
+                        suffixIcon: IconButton(
+                            onPressed: () {
+                              myController.clear();
+                            }, icon: const Icon(Icons.clear))),
+                  )))),
       body: Column(
         children: [
         Flexible(
