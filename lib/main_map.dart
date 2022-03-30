@@ -345,9 +345,10 @@ class MainPageBuilderState extends State<MainPageBuilder> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Column(children: [
-        SizedBox(height: 100, child: _buildFlutterMap(context)),
+        SizedBox(height: 50, child: _buildFlutterMap(context)),
         Flexible(
           child: photoView(context),
         )
