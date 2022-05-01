@@ -2,6 +2,32 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>NSCameraUsageDescription</key>
+    <string>Your camera is required to take rephotographs.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Your microphone is required to take rephotographs</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>This app requires to access your photo library to select source photos from library and for saving new photos to library</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Your location is required to search the nearest photos and to geolocate photos.</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>ajapaik</string>
+     </array>
+    <key>CFBundleURLTypes</key>
+      <array>
+        <dict>
+          <key>CFBundleTypeRole</key>
+          <string>Viewer</string>
+          <key>CFBundleURLName</key>
+          <string>ee.ajapaik.ajapaik_flutter_app</string>
+          <key>CFBundleURLSchemes</key>
+          <array>
+            <string>ajapaik</string>
+          </array>
+        </dict>
+      </array>
+
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>

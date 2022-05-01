@@ -1,6 +1,7 @@
 import 'package:ajapaik_flutter_app/demolocalization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'projectlist.dart';
 import 'package:app_links/app_links.dart';
 import 'package:get/get.dart';
@@ -29,6 +30,7 @@ class _MyAppState extends State<MyApp> {
     // loadTooltipData();
     // loadVisibilityData();
     // loadInfoVisibilityData();
+    print("initstate");
     initDeepLinks();
     super.initState();
   }
@@ -57,11 +59,14 @@ class _MyAppState extends State<MyApp> {
   void initDeepLinks() async {
     _appLinks = AppLinks(
       onAppLink: (Uri uri, String stringUri) async {
+
         ('onAppLink: $stringUri');
         String provider = uri.queryParameters["provider"].toString();
         String username = "false";
         String token = uri.queryParameters["token"].toString();
         await controller.doApiLogin(provider, username, token);
+        print("onAppLink");
+        await closeInAppWebView();
         Get.back();
       },
     );

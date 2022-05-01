@@ -8,12 +8,11 @@ import 'getxnavigation.dart';
 import 'data/user.json.dart';
 
 class DisplayLoginScreen extends StatelessWidget {
-  final controller = Get.put(Controller());
 
   DisplayLoginScreen({Key? key}) : super(key: key);
 
-  void _launchURL(_url) async => await canLaunch(_url)
-      ? await launch(_url)
+  void _launchURL(_url) async => await canLaunchUrl(_url)
+      ? await launchUrl(_url)
       : throw 'Could not launch $_url';
 
   void doLogin(String provider) {
@@ -23,7 +22,7 @@ class DisplayLoginScreen extends StatelessWidget {
         provider +
         "/login/?next=" +
         Uri.encodeComponent(nextParam);
-    _launchURL(url);
+    _launchURL(Uri.parse(url));
   }
 
   @override
@@ -32,7 +31,6 @@ class DisplayLoginScreen extends StatelessWidget {
         appBar: AppBar(title: Text(AppLocalizations.of(context)!.translate('login-appBarTitle'))),
         body: controller.getSession() == "" ? loginButtons() : logoutButton());
   }
-
   Widget loginButtons() {
     return Center(
         child: Wrap(spacing: 10, runSpacing: 10, children: <Widget>[

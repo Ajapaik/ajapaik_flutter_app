@@ -45,9 +45,9 @@ dependencies:
   app_links: ^2.2.0
   flutter_signin_button: ^2.0.0
   font_awesome_flutter: ^9.2.0
-  url_launcher: ^6.0.18
+  url_launcher: ^6.1.0
   get: ^4.6.1
-  geolocator: ^8.0.3
+  geolocator: ^8.2.0
   flutter_secure_storage: ^5.0.2
   flutter_map: 0.14.0
   flutter_inappwebview: ^5.3.2
