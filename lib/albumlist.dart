@@ -1,3 +1,4 @@
+import 'package:ajapaik_flutter_app/projectlist.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
@@ -7,7 +8,8 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'demolocalization.dart';
 import 'getxnavigation.dart';
 import 'package:get/get.dart';
-import 'map.dart';
+import 'localfileselect.dart';
+import 'login.dart';
 import 'rephoto.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -37,11 +39,53 @@ class AlbumListPageState extends State<AlbumListPage> {
   double userLatitudeData = 0;
   double userLongitudeData = 0;
   final myController = TextEditingController();
+  final searchController = TextEditingController();
+  final controller = Get.put(Controller());
 
   Future<List<Album>>? _albumData;
 
   Future<List<Album>> test(BuildContext context) {
     return _albumData!;
+  }
+
+  Widget titleSearchBar() {
+    return Container(
+        alignment: Alignment.topLeft,
+        width: 500,
+        height: 40,
+        decoration: BoxDecoration(
+          color: Colors.grey[600],
+          borderRadius: const BorderRadius.all(
+            Radius.circular(20),
+          ),
+        ),
+        child: Container(
+            child: TextField(
+              controller: searchController,
+              textInputAction: TextInputAction.go,
+              textAlign: TextAlign.start,
+              onSubmitted: (value) {
+                setState(() {
+                  refresh();
+                  print("valmista");
+                });
+              },
+              onChanged: onSearchTextChanged,
+              decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Search for images',
+                  prefixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          refresh();
+                        });
+                        onSearchTextChanged('');
+                      }, icon: const Icon(Icons.search)),
+                  suffixIcon: IconButton(
+                      onPressed: () {
+                        searchController.clear();
+                      }, icon: const Icon(Icons.clear))),
+            )));
   }
 
   void sorting() async {
@@ -72,7 +116,7 @@ class AlbumListPageState extends State<AlbumListPage> {
     } else {
       url += "?orderby=" + orderBy + "&orderdirection=" + orderDirection;
     }
-    String searchkey=myController.text;
+    String searchkey = searchController.text;
     url += "&search=" + searchkey;
     return url;
   }
@@ -89,6 +133,11 @@ class AlbumListPageState extends State<AlbumListPage> {
 
   @override
   void initState() {
+    controller.loadSession().then((_) =>
+        setState(() {
+          ("Updating login status to screen. Session " +
+              controller.getSession());
+        }));
     getCurrentLocation();
     refresh();
     super.initState();
@@ -96,17 +145,35 @@ class AlbumListPageState extends State<AlbumListPage> {
 
   @override
   void dispose() {
-    myController.dispose();
+    searchController.dispose();
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
-    @override
-    _saveBool() async {
+    _saveNameVisibility() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool('visibility', nameVisibility);
     }
+
+    void bottomNavigationBarOnTap(index) {
+      if (index == 0) {
+        Get.to(DisplayLoginScreen())?.then((_) =>
+            setState(() {
+              ("foo" + controller.getSession());
+            }));
+      } else if (index == 1) {
+        showPicker(context);
+      }
+      else if (index == 2) {
+        setState(() {
+          nameVisibility = !nameVisibility;
+          _saveNameVisibility();
+        });
+      }
+    }
+
 
     _searchBool() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -114,12 +181,25 @@ class AlbumListPageState extends State<AlbumListPage> {
     }
 
     Color visibilityIconColor = searchVisibility
-        ? Theme.of(context).disabledColor
-        : Theme.of(context).primaryColorLight;
+        ? Theme
+        .of(context)
+        .disabledColor
+        : Theme
+        .of(context)
+        .primaryColorLight;
+
+    controller.getSession();
+    bool loggedIn = !(controller.getSession() == "");
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.pageTitle),
+        title: searchVisibility ? titleSearchBar() : Text(widget.pageTitle),
+        leading: IconButton(icon: const BackButtonIcon(), onPressed: () async {
+          await Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const ProjectListPage(title: "Albums")));
+        }),
         actions: <Widget>[
 /*          IconButton(
               icon: Icon(Icons.search),
@@ -135,155 +215,55 @@ class AlbumListPageState extends State<AlbumListPage> {
                   _searchBool();
                 });
               }),
-          IconButton(
+         /* IconButton(
               icon: Icon(((orderBy == "alpha")
                   ? Icons.sort_by_alpha
                   : Icons.sort_sharp)),
               tooltip: "Sort",
-              onPressed: sorting),
+              onPressed: sorting),*/
         ],
       ),
       body: Column(children: [
-        Visibility(
-          visible: searchVisibility,
-          child: Column(children: [
-                Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(
-                      child: Container(
-                        height: 50,
-                        width: 325,
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 15),
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 15),
-                        decoration: BoxDecoration(
-                            color: Colors.grey[600],
-                            borderRadius: BorderRadius.circular(10)),
-                        child: TextField(
-                            controller: myController,
-                            textInputAction: TextInputAction.go,
-                            onSubmitted: (value) {
-                              setState(() {
-                                filterBoxOn = true;
-                                refresh();
-                              });
-                            },
-                            textAlign: TextAlign.start,
-                            onChanged: onSearchTextChanged,
-                            decoration: const InputDecoration
-                                .collapsed(
-                              hintText: 'Search for images',
-                            )),
-                      )
-                  ),
-                  IconButton(
-                      padding: const EdgeInsets.only(right: 10),
-                      onPressed: () {
-                        setState(() {
-                          refresh();
-                          filterBoxOn = true;
-                        });
-                        onSearchTextChanged('');
-                      },
-                      icon: const Icon(Icons.search)),
-                ]),
-            Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(
-                      child: Visibility(
-                          visible: filterBoxOn,
-                          child: SizedBox(
-                          height: 50,
-                          width: 325,
-                              child: TextFormField(
-                                  readOnly: true,
-                                  controller: myController,
-                                  decoration: InputDecoration(
-                                    prefixIcon: IconButton(
-                                      icon: const Icon(Icons.cancel),
-                                      onPressed:() {
-                                        setState(() {
-                                          myController.clear();
-                                          filterBoxOn = false;
-                                          refresh();
-                                        });
-                                      }
-                                    )
-                                  ),
-                                  onChanged: (value) {
-                                    myController.text;
-                                  },
-                                  ),
-                          )))
-                ]),
-          ]),
-        ),
         Flexible(
             child: FutureBuilder<List<Album>>(
-          future: test(context),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) {
-              return const Center(child: CircularProgressIndicator());
-            }
+              future: test(context),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-            if (snapshot.hasError) (snapshot.error);
+                if (snapshot.hasError) (snapshot.error);
 
-            return (snapshot.hasData)
-                ? AlbumList(
+                return (snapshot.hasData)
+                    ? AlbumList(
                     albums: snapshot.data,
                     toggle: nameVisibility | searchVisibility)
-                : const Center(child: CircularProgressIndicator());
-          },
-        )),
+                    : const Center(child: CircularProgressIndicator());
+              },
+            )),
       ]),
       bottomNavigationBar: BottomNavigationBar(
-        onTap: (index) async {
-          if (index == 1) {
-            var a = await _albumData;
-            if (a != null) {
-              await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          MapScreen(
-                            historicalPhotoUri: a
-                                .first.features[index].properties.thumbnail
-                                .toString(),
-                            userLatitudeData: userLatitudeData,
-                            userLongitudeData: userLongitudeData,
-                            markerCoordinates: Geometry.empty(),
-                            markerCoordinatesList: a.first.features,
-                          )));
-            }
-          }
-          if (index == 2) {
-            setState(() {
-              nameVisibility = !nameVisibility;
-              _saveBool();
-            });
-          }
-        },
+        onTap: bottomNavigationBarOnTap,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: const Icon(Icons.photo_library),
-            label: (AppLocalizations.of(context)!.translate('albumList-navItem1')
-          )),
+              icon: Icon((loggedIn ? Icons.person : Icons.login)),
+              label: (loggedIn ? (AppLocalizations.of(context)!.translate(
+                  'projectList-navItem4')
+              ) : (AppLocalizations.of(context)!.translate(
+                  'projectList-navItem3'))
+              )),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.map),
-            label: (AppLocalizations.of(context)!.translate('albumList-navItem2')
-            )),
+              icon: const Icon(Icons.photo_library),
+              label: (AppLocalizations.of(context)!.translate(
+                  'projectList-navItem1')
+              )),
           BottomNavigationBarItem(
-            icon: nameVisibility
-                ? Icon(Icons.visibility_off, color: visibilityIconColor)
-                : Icon(Icons.visibility, color: visibilityIconColor),
-            label: (AppLocalizations.of(context)!.translate('albumList-navItem3')
-            )),
+              icon: nameVisibility
+                  ? Icon(Icons.visibility_off, color: visibilityIconColor)
+                  : Icon(Icons.visibility, color: visibilityIconColor),
+              label: (AppLocalizations.of(context)!.translate(
+                  'albumList-navItem3')
+              )),
         ],
       ),
     );
@@ -308,18 +288,19 @@ class AlbumList extends StatelessWidget {
     await Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => RephotoScreen(
+          builder: (context) =>
+              RephotoScreen(
                 historicalPhotoId:
-                    albums!.first.features[index].properties.id.toString(),
+                albums!.first.features[index].properties.id.toString(),
                 historicalPhotoUri: albums!
                     .first.features[index].properties.thumbnail
                     .toString(),
                 historicalName:
-                    albums!.first.features[index].properties.name.toString(),
+                albums!.first.features[index].properties.name.toString(),
                 historicalDate:
-                    albums!.first.features[index].properties.date.toString(),
+                albums!.first.features[index].properties.date.toString(),
                 historicalAuthor:
-                    albums!.first.features[index].properties.author.toString(),
+                albums!.first.features[index].properties.author.toString(),
                 historicalSurl: albums!
                     .first.features[index].properties.sourceUrl
                     .toString(),
@@ -335,16 +316,23 @@ class AlbumList extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => AlbumListPage.network(
-              albums!.first.features[index].properties.name!,
-              albums!.first.features[index].properties.geojson!)),
+          builder: (context) =>
+              AlbumListPage.network(
+                  albums!.first.features[index].properties.name!,
+                  albums!.first.features[index].properties.geojson!)),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery
+        .of(context)
+        .size
+        .width;
+    double height = MediaQuery
+        .of(context)
+        .size
+        .height;
     if (height > width) {
       return MasonryGridView.count(
         crossAxisCount: 2,
@@ -387,7 +375,7 @@ class AlbumList extends StatelessWidget {
 
     return Center(
         child:
-            Column(children: [headerImage, Text(albums!.first.description)]));
+        Column(children: [headerImage, Text(albums!.first.description)]));
   }
 
   Widget contentTile(context, index) {
@@ -405,7 +393,7 @@ class AlbumList extends StatelessWidget {
       child: Column(children: [
         CachedNetworkImage(
             imageUrl:
-                albums!.first.features[index].properties.thumbnail.toString()),
+            albums!.first.features[index].properties.thumbnail.toString()),
         Visibility(
           child: Text(
             albums!.first.features[index].properties.name.toString(),

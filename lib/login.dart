@@ -8,7 +8,7 @@ import 'getxnavigation.dart';
 import 'data/user.json.dart';
 
 class DisplayLoginScreen extends StatelessWidget {
-
+  final controller = Get.put(Controller());
   DisplayLoginScreen({Key? key}) : super(key: key);
 
   void _launchURL(_url) async => await canLaunchUrl(_url)
@@ -18,7 +18,7 @@ class DisplayLoginScreen extends StatelessWidget {
   void doLogin(String provider) {
     var nextParam =
         "/accounts/launcher/?token=token&route=route&provider=" + provider;
-    var url = "https://staging.ajapaik.ee/accounts/" +
+    var url = "https://ajapaik.ee/accounts/" +
         provider +
         "/login/?next=" +
         Uri.encodeComponent(nextParam);
@@ -46,14 +46,14 @@ class DisplayLoginScreen extends StatelessWidget {
           doLogin("facebook");
         },
       ),
-      SignInButtonBuilder(
+   /*   SignInButtonBuilder(
         text: 'Sign in with Wikimedia',
         icon: FontAwesomeIcons.wikipediaW,
         onPressed: () {
           doLogin("wikimedia-commons");
         },
         backgroundColor: const Color(0xFF3366cc),
-      ),
+      ),*/
       SignInButton(
         Buttons.Email,
         onPressed: () {},
@@ -63,9 +63,14 @@ class DisplayLoginScreen extends StatelessWidget {
 
   Widget logoutButton() {
     return Center(
-        child: Column(children: <Widget>[
+        child:  Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
       const UserInfoBuilder(),
       SignInButtonBuilder(
+        innerPadding: EdgeInsets.all(11.0),
+        fontSize:25,
         text: 'Sign out',
         icon: Icons.logout,
         onPressed: () async {

@@ -2,6 +2,7 @@ import 'package:ajapaik_flutter_app/demolocalization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'albumlist.dart';
 import 'projectlist.dart';
 import 'package:app_links/app_links.dart';
 import 'package:get/get.dart';
@@ -84,7 +85,8 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    const appTitle = 'Rephoto app';
+    const appTitle = 'Nearest';
+    var firstUrl="https://fiwiki-tools.toolforge.org/api/ajapaiknearest.php?search=&limit=100&orderby=alpha&orderdirection=desc";
 
     return GetMaterialApp(
       supportedLocales: const [
@@ -117,7 +119,8 @@ class _MyAppState extends State<MyApp> {
       //     ),
       // scaffoldBackgroundColor: CupertinoColors.inactiveGray,
       ),
-      home: const ProjectListPage(title: appTitle),
+      home: //const ProjectListPage(title: appTitle),
+      AlbumListPage.network(appTitle, firstUrl),
     );
   }
 }

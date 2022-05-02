@@ -229,7 +229,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                 child: Container(
                     decoration: BoxDecoration(
                         border: Border.all(
-                      color: Colors.pink[800]!,
+//                      color: Colors.pink[800]!,
                       width: 1,
                     )), //             <--- BoxDecoration here
 
@@ -255,7 +255,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                     key: historicalPhotoKey,
                     decoration: BoxDecoration(
                         border: Border.all(
-                      color: Colors.red[800]!,
+//                      color: Colors.red[800]!,
                       width: 1,
                     )), //             <--- BoxDecoration here
 

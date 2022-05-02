@@ -25,7 +25,7 @@ class DisplayUploadScreen extends StatelessWidget {
 
     (draft.historicalImageId);
     ("Upload file Start");
-    var postUri = Uri.parse("https://staging.ajapaik.ee/api/v1/photo/upload/");
+    var postUri = Uri.parse("https://ajapaik.ee/api/v1/photo/upload/");
     var request = http.MultipartRequest("POST", postUri);
     request.headers['Cookie'] = 'sessionid=' + controller.getSession();
 //    request.headers['Content-Type']="application/json; charset=UTF-8";
@@ -108,6 +108,9 @@ class DisplayUploadScreen extends StatelessWidget {
         child: Wrap(spacing: 10, runSpacing: 10, children: <Widget>[
       SignInButtonBuilder(
         text: 'Gallery',
+        innerPadding: EdgeInsets.all(11.0),
+        fontSize:25,
+
         icon: Icons.drafts,
         onPressed: () {
           Navigator.pop(context);
@@ -117,6 +120,8 @@ class DisplayUploadScreen extends StatelessWidget {
       if (draft.historicalImagePath.contains("ajapaik.ee"))
         SignInButtonBuilder(
           text: 'Ajapaik',
+          fontSize: 25,
+          innerPadding: EdgeInsets.all(11.0),
           icon: Icons.cloud_upload,
           onPressed: () async {
             if (controller.getSession() == "") {
@@ -128,7 +133,7 @@ class DisplayUploadScreen extends StatelessWidget {
           },
           backgroundColor: const Color(0xFF3366cc),
         ),
-      SignInButtonBuilder(
+/*      SignInButtonBuilder(
         text: 'Wikimedia Commons',
         icon: Icons.cloud_upload,
         onPressed: () {
@@ -139,7 +144,7 @@ class DisplayUploadScreen extends StatelessWidget {
           }
         },
         backgroundColor: const Color(0xFF3366cc),
-      ),
+      ),*/
     ]));
   }
 }

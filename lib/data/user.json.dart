@@ -34,7 +34,7 @@ Future<User> fetchUser() async {
   final controller = Get.put(Controller());
 
   final response = await client.get(
-      Uri.parse('https://staging.ajapaik.ee/api/v1/user/me'),
+      Uri.parse('https://ajapaik.ee/api/v1/user/me'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Cookie': 'sessionid=' + controller.getSession()

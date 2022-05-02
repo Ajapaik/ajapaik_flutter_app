@@ -41,15 +41,15 @@ class ProjectListPageState extends State<ProjectListPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(title!),
-        actions: [
+        leading:
           IconButton(icon: const Icon(Icons.home_rounded), onPressed: () async {
-            await Navigator.push(
+            /*await Navigator.push(
                 context,
                 MaterialPageRoute(
-                builder: (context) => HomePage()));
+                builder: (context) => HomePage()));*/
           },
           )
-        ]
+
 
       ),
       body: const ProjectListBuilder(),

@@ -28,10 +28,7 @@ class ImageMapState extends State<ImageMapScreen> {
   late final MapController mapController;
   StreamSubscription<Position>? _positionStream;
 
-  final Future<Position> _location = Future<Position>.delayed(
-    const Duration(seconds: 2),
-    () => Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high),
-  );
+
 
   void getCurrentLocation() async {
     var geoPosition = await Geolocator.getCurrentPosition(
@@ -68,18 +65,24 @@ class ImageMapState extends State<ImageMapScreen> {
   }
 
   @override
+  void dispose() {
+    _positionStream?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(AppLocalizations.of(context)!.translate('imageMapScreen-appbarTitle'))),
       body: Stack(children: [
         Positioned(
             child: FutureBuilder(
-                future: _location,
+                future: Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high),
                 builder:
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.hasError) (snapshot.error);
                   return snapshot.hasData
-                      ? _buildFlutterMap(context)
+                      ? _buildFlutterMap(context, snapshot)
                       : Center(
                           child: FlutterMap(
                               options: MapOptions(
@@ -138,7 +141,11 @@ class ImageMapState extends State<ImageMapScreen> {
     );
   }
 
-  Widget _buildFlutterMap(BuildContext context) {
+  Widget _buildFlutterMap(BuildContext context, snapshot) {
+    if (snapshot.hasData) {
+      userLatitudeData = snapshot.data.latitude;
+      userLongitudeData = snapshot.data.longitude;
+    }
     return FlutterMap(
         mapController: mapController,
         options: MapOptions(

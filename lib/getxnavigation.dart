@@ -77,7 +77,7 @@ class Controller extends GetxController {
     });
     (body);
 
-    var url = Uri.parse("https://staging.ajapaik.ee/api/v1/login/");
+    var url = Uri.parse("https://ajapaik.ee/api/v1/login/");
     final http.Response response = await http.post(
       url,
       headers: <String, String>{

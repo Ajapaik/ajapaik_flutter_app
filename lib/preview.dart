@@ -59,13 +59,16 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
         // constructor with the given path to display the image.
         body: getImageComparison(context),
         bottomNavigationBar: Row(
+
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               // Go back to cameraview
               const BackButton(),
-
+              SizedBox(
+                height:75,
+                width:75,
               // Take photo button
-              ElevatedButton(
+              child:ElevatedButton(
                 onPressed: () async {
                   await GallerySaver.saveImage(widget.imagePath.toString());
                   DateTime now = DateTime.now();
@@ -98,7 +101,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
                   Navigator.pop(context, draft);
                 },
                 child: const Icon(Icons.check),
-              ),
+              )),
 
               // Go two steps backward so the rephoto camera will be closed
               CloseButton(
@@ -213,8 +216,8 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
                 child: Container(
                     decoration: BoxDecoration(
                         border: Border.all(
-                      color: Colors.pink[600]!,
-                      width: 5,
+//                      color: Colors.pink[600]!,
+                      width: 0,
                     )),
                     child: InteractiveViewer(
                         key: cameraPhotoKey,
@@ -244,8 +247,8 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
                 child: Container(
                     decoration: BoxDecoration(
                         border: Border.all(
-                      color: Colors.pink[600]!,
-                      width: 5,
+//                      color: Colors.pink[600]!,
+                      width: 0,
                     )),
                     child: InteractiveViewer(
                         key: cameraPhotoKey,
