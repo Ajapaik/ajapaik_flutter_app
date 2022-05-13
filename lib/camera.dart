@@ -40,6 +40,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   GlobalKey historicalPhotoKey = GlobalKey();
   bool historicalPhotoFlipped = false;
   double historicalPhotoTransparency = 0.65;
+  int transparencyOnOff=1;
   bool pinchToZoomBusy = false;
   late Size historicalPhotoImageSize;
 
@@ -56,10 +57,10 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
       final context = historicalPhotoKey.currentContext!;
       // If the picture was taken, display it on a new screen.
-      (historicalPhotoController.value.getMaxScaleOnAxis());
+/*      (historicalPhotoController.value.getMaxScaleOnAxis());
       (historicalPhotoImageSize);
       (MediaQuery.of(context).size);
-
+*/
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -138,7 +139,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     if (File(filename).existsSync()) {
       image = Image.file(
         File(filename),
-        color: Color.fromRGBO(255, 255, 255, historicalPhotoTransparency),
+        color: Color.fromRGBO(255, 255, 255, historicalPhotoTransparency*transparencyOnOff),
         colorBlendMode: BlendMode.modulate,
         height: 8000,
         width: 8000,
@@ -146,18 +147,26 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     } else {
       image = Image.network(
         filename,
-        color: Color.fromRGBO(255, 255, 255, historicalPhotoTransparency),
+        color: Color.fromRGBO(255, 255, 255, historicalPhotoTransparency*transparencyOnOff),
         colorBlendMode: BlendMode.modulate,
         height: 8000,
         width: 8000,
       );
     }
 
-    getImageInfo(image).then((info) => {
-          historicalPhotoImageSize =
-              Size(info.height.toDouble(), info.width.toDouble())
-        });
+    getImageInfo(image).then(updateImageInfo);
     return image;
+  }
+
+  void updateImageInfo(info) {
+    historicalPhotoImageSize =
+        Size(info.width.toDouble(), info.height.toDouble());
+    double aspectratio = info.width / info.height;
+    if (aspectratio > 1) {
+      SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeRight]);
+    } else {
+      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    }
   }
 
   /* Update screen elements on orientation change */
@@ -203,7 +212,21 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   void dispose() {
     // Dispose of the controller when the widget is disposed.
     _cameraController.dispose();
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.landscapeRight,
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
+
+
     super.dispose();
+  }
+
+  void toggleTransparency() {
+    setState(() {
+       transparencyOnOff = transparencyOnOff == 1 ? 0 : 1;
+    });
   }
 
   @override
@@ -216,7 +239,10 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         // camera preview. Use a FutureBuilder to display a loading spinner
         // until the controller has finished initializing.
 //      body:
-        body: OrientationBuilder(builder: (context, orientation) {
+        body: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: toggleTransparency ,
+        child:OrientationBuilder(builder: (context, orientation) {
       onOrientationChange(context, orientation);
 
       return Stack(
@@ -243,7 +269,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                           return CameraPreview(_cameraController);
                         } else {
                           // Otherwise, display a loading indicator.
-                          return const Center(child: CircularProgressIndicator());
+                          return const Center(
+                              child: CircularProgressIndicator());
                         }
                       },
                     ))),
@@ -290,13 +317,13 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                                 setState(() {
                                   if (details.delta.dy > 1) {
                                     historicalPhotoTransparency =
-                                        historicalPhotoTransparency + 0.01;
+                                        historicalPhotoTransparency + 0.02;
                                     if (historicalPhotoTransparency > 1) {
                                       historicalPhotoTransparency = 1;
                                     }
                                   } else if (details.delta.dy < -1) {
                                     historicalPhotoTransparency =
-                                        historicalPhotoTransparency - 0.01;
+                                        historicalPhotoTransparency - 0.02;
                                     if (historicalPhotoTransparency < 0) {
                                       historicalPhotoTransparency = 0;
                                     }
@@ -329,9 +356,9 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                         ),
                         margin: const EdgeInsets.all(10),
                         child: ElevatedButton(
-                          child: const Icon(Icons.camera, size: 50),
-                          style:
-                              ElevatedButton.styleFrom(shape: const CircleBorder()),
+                          child: const Icon(Icons.camera, size: 85),
+                          style: ElevatedButton.styleFrom(
+                              shape: const CircleBorder()),
                           onPressed: onTakePicture,
                         )))),
 
@@ -370,6 +397,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                               });
                             })))),
           ]);
-    }));
+    })));
   }
 }

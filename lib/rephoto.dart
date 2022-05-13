@@ -52,8 +52,10 @@ class RephotoScreenState extends State<RephotoScreen> {
   bool boolValue = true;
   bool mapInfoVisibility = false;
   bool newMapInfoValue = true;
-  double userLatitudeData = 0;
-  double userLongitudeData = 0;
+  double userLatitude = 0;
+  double userLongitude = 0;
+  double imageLatitude = 0;
+  double imageLongitude = 0;
   StreamSubscription<Position>? _positionStream;
 
   _getTooltipValue() async {
@@ -66,7 +68,6 @@ class RephotoScreenState extends State<RephotoScreen> {
       return prefsValue;
     }
   }
-
 
   _saveMapInfoBool() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -100,8 +101,8 @@ class RephotoScreenState extends State<RephotoScreen> {
   }
 
   void _launchTIFY() async {
-     Uri url =
-        Uri.parse('https://demo.tify.rocks/demo.html?manifest=https://ajapaik.ee/photo/199152/v2/manifest.json&tify={%22panX%22:0.5,%22panY%22:0.375,%22view%22:%22info%22,%22zoom%22:0.001}');
+    Uri url = Uri.parse(
+        'https://demo.tify.rocks/demo.html?manifest=https://ajapaik.ee/photo/199152/v2/manifest.json&tify={%22panX%22:0.5,%22panY%22:0.375,%22view%22:%22info%22,%22zoom%22:0.001}');
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
     } else {
@@ -123,8 +124,8 @@ class RephotoScreenState extends State<RephotoScreen> {
         desiredAccuracy: LocationAccuracy.high);
 
     setState(() {
-      userLatitudeData = geoPosition.latitude;
-      userLongitudeData = geoPosition.longitude;
+      userLatitude = geoPosition.latitude;
+      userLongitude = geoPosition.longitude;
     });
   }
 
@@ -136,40 +137,42 @@ class RephotoScreenState extends State<RephotoScreen> {
     _positionStream =
         Geolocator.getPositionStream(locationSettings: locationSettings)
             .listen((Position geoPosition) {
-      if (geoPosition.latitude != userLatitudeData &&
-          geoPosition.longitude != userLongitudeData) {
+      if (geoPosition.latitude != userLatitude &&
+          geoPosition.longitude != userLongitude) {
         return getCurrentLocation();
       }
     });
   }
-  @override
-  void dispose() {
-    _positionStream?.cancel();
-    super.dispose();
-  }
+
   @override
   void initState() {
+    if (widget.historicalCoordinates.coordinates.isNotEmpty) {
+
+      imageLatitude = widget.historicalCoordinates.coordinates[0];
+      imageLongitude = widget.historicalCoordinates.coordinates[1];
+
+    }
 //    listenCurrentLocation();
-     getCurrentLocation();
-    mapInfoVisibility=false;
+    getCurrentLocation();
+    mapInfoVisibility = false;
     _saveMapInfoBool();
     getMapInfoValue();
     super.initState();
   }
 
   @override
+  void dispose() {
+    _positionStream?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    double latitude = 0;
-    double longitude = 0;
-    if (widget.historicalCoordinates.coordinates.isNotEmpty) {
-      latitude = widget.historicalCoordinates.coordinates[0];
-      longitude = widget.historicalCoordinates.coordinates[1];
-    }
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-         /* title: Text(
+          /* title: Text(
               AppLocalizations.of(context)!.translate('rePhoto-appbarTitle'),
               style: const TextStyle(
                 fontWeight: FontWeight.w400,
@@ -200,18 +203,11 @@ class RephotoScreenState extends State<RephotoScreen> {
                   if (result == 1) {
                     _launchInfo();
                   }
-                /*  if (result == 2) {
+                  /*  if (result == 2) {
                     _launchTIFY();
                   }*/
                   if (result == 3) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ImageMapScreen(
-                                  imageLatitude: latitude,
-                                  imageLongitude: longitude,
-                                  historicalPhotoUri: widget.historicalPhotoUri,
-                                )));
+                    _openImageMapScreen();
                   }
                   if (result == 4) {
                     Navigator.push(
@@ -238,7 +234,7 @@ class RephotoScreenState extends State<RephotoScreen> {
                               leading: const Icon(Icons.info),
                               title: Text(AppLocalizations.of(context)!
                                   .translate('rePhoto-popupMenu2')))),
-              /*        PopupMenuItem(
+                      /*        PopupMenuItem(
                         value: 2,
                         child: ListTile(
                           leading: const Icon(Icons.enhance_photo_translate),
@@ -253,7 +249,7 @@ class RephotoScreenState extends State<RephotoScreen> {
                             title: Text(AppLocalizations.of(context)!
                                 .translate('rePhoto-popupMenu4')),
                           )),
-               /*       PopupMenuItem(
+                      /*       PopupMenuItem(
                           value: 4,
                           child: ListTile(
                             leading: const Icon(Icons.settings),
@@ -278,23 +274,41 @@ class RephotoScreenState extends State<RephotoScreen> {
     });
   }
 
-  Widget verticalPreview(BuildContext context) {
-    double latitude = 0;
-    double longitude = 0;
-    if (widget.historicalCoordinates.coordinates.isNotEmpty) {
-      latitude = widget.historicalCoordinates.coordinates[0];
-      longitude = widget.historicalCoordinates.coordinates[1];
+  void _openImageMapScreen() async {
+    print(imageLatitude);
+    await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ImageMapScreen(
+              imageLatitude: imageLatitude,
+              imageLongitude: imageLongitude,
+              historicalPhotoUri: widget.historicalPhotoUri,
+            )));
+  }
+
+  String getDistanceToImage() {
+    String distanceToImage = '';
+
+    if (imageLatitude  != 0 &&
+        imageLongitude != 0 &&
+        userLatitude   != 0 &&
+        userLongitude  != 0) {
+      double distance = Geolocator.distanceBetween(
+          userLatitude, userLongitude, imageLatitude, imageLongitude);
+      double calcDistance = distance / 1000;
+
+      if (distance >= 1000) {
+        distanceToImage = calcDistance.toStringAsFixed(2) + ' Km';
+      } else {
+        distanceToImage = distance.toStringAsFixed(2) + ' M';
+      }
     }
 
-    double distance = Geolocator.distanceBetween(
-        userLatitudeData, userLongitudeData, latitude, longitude);
-    double calcDistance = distance / 1000;
-    String distanceToImage = '';
-    if (distance >= 1000) {
-      distanceToImage = calcDistance.toStringAsFixed(2) + ' Km';
-    } else {
-      distanceToImage = distance.toStringAsFixed(2) + ' M';
-    }
+    return distanceToImage;
+  }
+
+  Widget verticalPreview(BuildContext context) {
+    String distanceToImage = getDistanceToImage();
 
     return Column(children: [
       ConstrainedBox(
@@ -345,84 +359,18 @@ class RephotoScreenState extends State<RephotoScreen> {
             child: Align(
                 alignment: Alignment.bottomCenter,
                 child: GestureDetector(
-                    onDoubleTap: () async {
-                      await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ImageMapScreen(
-                                    imageLatitude: latitude,
-                                    imageLongitude: longitude,
-                                    historicalPhotoUri:
-                                        widget.historicalPhotoUri,
-                                  )));
-                    },
-                    child: FutureBuilder(
-                        future: Geolocator.getCurrentPosition(
-                            desiredAccuracy: LocationAccuracy.high),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<dynamic> snapshot) {
-                          if (snapshot.hasError) (snapshot.error);
-                          return _buildFlutterMap(context, snapshot);
-                        })))),
-      ),
+                    onDoubleTap: _openImageMapScreen,
+                    child:_buildFlutterMap()
+                        )))),
       Visibility(
           visible: mapInfoVisibility == false,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10, top: 25),
-            child: Column(children: [
-              Text(widget.historicalAuthor + ', ' + widget.historicalDate,
-                  maxLines: 2),
-              const SizedBox(height: 10),
-              Text(
-                widget.historicalName,
-                maxLines: 5,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 10),
-              RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                    text: widget.historicalLabel,
-                    style: const TextStyle(
-                      color: Colors.blue,
-                      decoration: TextDecoration.underline,
-                    ),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () async {
-                        Uri url=Uri.parse(widget.historicalSurl);
-                        if (await canLaunchUrl(url)) {
-                          await launchUrl(url);
-                        } else {
-                          throw 'Could not launch $widget.historicalSurl';
-                        }
-                      }),
-              ),
-            ]),
-          ))
+          child: _buildInfoText()),
+
     ]);
   }
 
   Widget horizontalPreview(BuildContext context) {
-    double latitude = 0;
-    double longitude = 0;
-    if (widget.historicalCoordinates.coordinates.isNotEmpty) {
-      // https://datatracker.ietf.org/doc/html/rfc7946
-      // GeoJSON longitude = 0, latitude = 1
-      latitude = widget.historicalCoordinates.coordinates[1];
-      longitude = widget.historicalCoordinates.coordinates[0];
-    }
-
-    double distance = Geolocator.distanceBetween(
-        userLatitudeData, userLongitudeData, latitude, longitude);
-    double calcDistance = distance / 1000;
-    String distanceToImage = '';
-    if (distance >= 1000) {
-      distanceToImage = calcDistance.toStringAsFixed(2) + ' Km';
-    } else {
-      distanceToImage = distance.toStringAsFixed(2) + ' M';
-    }
-
-
+    String distanceToImage = getDistanceToImage();
 
     return Row(
       children: [
@@ -446,68 +394,12 @@ class RephotoScreenState extends State<RephotoScreen> {
                 child: Align(
                     alignment: Alignment.bottomCenter,
                     child: GestureDetector(
-                        onDoubleTap: () async {
-                          await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ImageMapScreen(
-                                        imageLatitude: latitude,
-                                        imageLongitude: longitude,
-                                        historicalPhotoUri:
-                                            widget.historicalPhotoUri,
-                                      )));
-                        },
-                        child: FutureBuilder(
-                            future: Geolocator.getCurrentPosition(
-                                desiredAccuracy: LocationAccuracy.high),
-                            builder: (BuildContext context,
-                                AsyncSnapshot<dynamic> snapshot) {
-                              if (snapshot.hasError) (snapshot.error);
-                              return _buildFlutterMap(
-                                  context, snapshot);
-                            }))))),
+                        onDoubleTap: _openImageMapScreen,
+                        child:_buildFlutterMap()
+                            )))),
         Visibility(
             visible: mapInfoVisibility == false,
-            child: Expanded(
-              child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          widget.historicalAuthor +
-                              ', ' +
-                              widget.historicalDate,
-                          maxLines: 9,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          widget.historicalName,
-                          maxLines: 5,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(height: 10),
-                        RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                              text: widget.historicalLabel,
-                              style: const TextStyle(
-                                color: Colors.blue,
-                                decoration: TextDecoration.underline,
-                              ),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () async {
-                                  if (await canLaunch(widget.historicalSurl)) {
-                                    await launch(widget.historicalSurl);
-                                  } else {
-                                    throw 'Could not launch $widget.historicalSurl';
-                                  }
-                                }),
-                        ),
-                      ])),
-            )),
+            child: _buildInfoText()),
         Padding(
           padding: const EdgeInsets.only(
             right: 30,
@@ -540,42 +432,75 @@ class RephotoScreenState extends State<RephotoScreen> {
       ],
     );
   }
+  Widget _buildInfoText() {
+    return Expanded(
+      child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  widget.historicalAuthor +
+                      ', ' +
+                      widget.historicalDate,
+                  maxLines: 9,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  widget.historicalName,
+                  maxLines: 5,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 10),
+                RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                      text: widget.historicalLabel,
+                      style: const TextStyle(
+                        color: Colors.blue,
+                        decoration: TextDecoration.underline,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () async {
+                          Uri url = Uri.parse(widget.historicalSurl);
+                          if (await canLaunchUrl(url)) {
+                            await launchUrl(url);
+                          } else {
+                            throw 'Could not launch $widget.historicalSurl';
+                          }
+                        }),
+                ),
+              ])),
+    );
+  }
 
-  Widget _buildFlutterMap(BuildContext context, userLocationReady) {
+  Widget _buildFlutterMap() {
     List<Marker> markerList = [];
-    double longitude = 0;
-    double latitude = 0;
 
-    if (userLocationReady.hasData) {
-      userLatitudeData=userLocationReady.data.latitude;
-      userLongitudeData=userLocationReady.data.longitude;
-    }
-
-    if (userLatitudeData!=0 && userLongitudeData!=0) {
+    if (userLatitude != 0 && userLongitude != 0) {
       Marker userMarker = Marker(
           width: 80.0,
           height: 80.0,
-          point: LatLng(userLatitudeData, userLongitudeData),
+          point: LatLng(userLatitude, userLongitude),
           builder: (ctx) => const Icon(Icons.location_pin, color: Colors.blue));
       markerList.add(userMarker);
     }
 
-    if (widget.historicalCoordinates.coordinates.isNotEmpty) {
-      longitude = widget.historicalCoordinates.coordinates[1];
-      latitude = widget.historicalCoordinates.coordinates[0];
-
+    if (imageLatitude != 0 && imageLongitude != 0) {
       Marker imageMarker = Marker(
           width: 80.0,
           height: 80.0,
-          point: LatLng(latitude, longitude),
+          point: LatLng(imageLatitude, imageLongitude),
           builder: (ctx) => const Icon(Icons.location_pin, color: Colors.red));
       markerList.add(imageMarker);
     }
 
     return FlutterMap(
         options: MapOptions(
-          bounds: LatLngBounds(LatLng(latitude, longitude),
-              LatLng(userLatitudeData, userLongitudeData)),
+          bounds: LatLngBounds(
+              LatLng(imageLatitude, imageLongitude), LatLng(userLatitude, userLongitude)),
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
           zoom: 17.0,
           boundsOptions: const FitBoundsOptions(

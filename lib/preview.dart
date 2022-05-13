@@ -2,7 +2,10 @@ import 'dart:async';
 import 'dart:ui' as ui;
 import 'dart:math' as math;
 
+import 'package:flutter/gestures.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:path_provider/path_provider.dart';
 import 'services/geolocation.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -10,6 +13,7 @@ import 'package:gallery_saver/gallery_saver.dart';
 import 'package:get/get.dart';
 import 'getxnavigation.dart';
 import 'data/draft.json.dart';
+import 'package:image/image.dart' as img;
 
 // A widget that displays the picture taken by the user.
 
@@ -50,7 +54,19 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
   double oldCenterY = 0;
   final TransformationController _transformationController =
       TransformationController();
+/*
+  @override
+  void initState() {
 
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    super.initState();
+  }
+*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,49 +75,48 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
         // constructor with the given path to display the image.
         body: getImageComparison(context),
         bottomNavigationBar: Row(
-
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               // Go back to cameraview
               const BackButton(),
               SizedBox(
-                height:75,
-                width:75,
-              // Take photo button
-              child:ElevatedButton(
-                onPressed: () async {
-                  await GallerySaver.saveImage(widget.imagePath.toString());
-                  DateTime now = DateTime.now();
-                  String convertedDateTime =
-                      now.day.toString().padLeft(2, '0') +
-                          "-" +
-                          now.month.toString().padLeft(2, '0') +
-                          "-" +
-                          now.year.toString();
-                  Position position = await determinePosition();
-                  ("Flipped");
-                  (widget.historicalPhotoFlipped);
-                  Draft draft = Draft(
-                    "",
-                    widget.imagePath,
-                    widget.historicalImagePath,
-                    widget.historicalImageId,
-                    widget.historicalPhotoFlipped! == true,
-                    convertedDateTime,
-                    widget.historicalPhotoScale ?? 1,
-                    position.longitude,
-                    position.latitude,
-                    -1,
-                    -1,
-                    false,
-                  );
+                  height: 75,
+                  width: 75,
+                  // Take photo button
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      await GallerySaver.saveImage(widget.imagePath.toString());
+                      DateTime now = DateTime.now();
+                      String convertedDateTime =
+                          now.day.toString().padLeft(2, '0') +
+                              "-" +
+                              now.month.toString().padLeft(2, '0') +
+                              "-" +
+                              now.year.toString();
+                      Position position = await determinePosition();
+                      ("Flipped");
+                      (widget.historicalPhotoFlipped);
+                      Draft draft = Draft(
+                        "",
+                        widget.imagePath,
+                        widget.historicalImagePath,
+                        widget.historicalImageId,
+                        widget.historicalPhotoFlipped! == true,
+                        convertedDateTime,
+                        widget.historicalPhotoScale ?? 1,
+                        position.longitude,
+                        position.latitude,
+                        -1,
+                        -1,
+                        false,
+                      );
 
-                  // Close preview and cameraview by going two steps back
-                  Navigator.pop(context);
-                  Navigator.pop(context, draft);
-                },
-                child: const Icon(Icons.check),
-              )),
+                      // Close preview and cameraview by going two steps back
+                      Navigator.pop(context);
+                      Navigator.pop(context, draft);
+                    },
+                    child: const Icon(Icons.check),
+                  )),
 
               // Go two steps backward so the rephoto camera will be closed
               CloseButton(
@@ -133,58 +148,76 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
     }
   }
 
-  Image getImage2(String filename, BuildContext context) {
-    ("getImage2");
-    Image image;
+  bool needsHeightScaling(cameraImageWidth, cameraImageHeight) {
+    double heightScale = cameraImageHeight/widget.historicalPhotoSize!.height;
+    double widthScale = cameraImageWidth/widget.historicalPhotoSize!.width;
+    return widthScale<heightScale;
+  }
+
+  Widget getImage4(filename, context) {
+    Image image=Image.network(
+      "https://upload.wikimedia.org/wikipedia/commons/a/a9/Example.jpg",
+    );
     bool validURL = Uri.parse(filename).host == '' ? false : true;
 
     if (validURL) {
       image = Image.network(filename, fit: BoxFit.cover);
     } else if (File(filename).existsSync()) {
-      image = Image.file(
-        File(filename),
-      );
-    } else {
-      image = Image.network(
-        "https://upload.wikimedia.org/wikipedia/commons/a/a9/Example.jpg",
-      );
+
+      img.Image? sourceImage =
+          img.decodeImage(File(filename).readAsBytesSync());
+      if (sourceImage != null) {
+        double heightScale=1.0;
+        double widthScale=1.0;
+        double historicaPhotoScale=widget.historicalPhotoScale!/heightScale;
+
+        if (needsHeightScaling(sourceImage.width, sourceImage.height)) {
+          print("needsHeightScale");
+
+          double scale=sourceImage.width / widget.historicalPhotoSize!.width;
+          heightScale=(widget.historicalPhotoSize!.height*scale) / sourceImage.height;
+
+          double aspectratio=widget.historicalPhotoSize!.height/widget.historicalPhotoSize!.width;
+          if (aspectratio>1) {
+            historicaPhotoScale=historicaPhotoScale/aspectratio;
+          }
+        }
+        else
+        {
+          print("needsWidthScale");
+
+          double scale=sourceImage.height / widget.historicalPhotoSize!.height;
+          widthScale=(widget.historicalPhotoSize!.width*scale) / sourceImage.width;
+
+          double aspectratio=widget.historicalPhotoSize!.width/widget.historicalPhotoSize!.height;
+          if (aspectratio>1) {
+            historicaPhotoScale=historicaPhotoScale/aspectratio;
+          }
+        }
+
+        int scaledImageWidth = (sourceImage.width*widthScale*historicaPhotoScale).toInt();
+        int scaledImageHeight = (sourceImage.height*heightScale*historicaPhotoScale).toInt();
+
+        int left = ((sourceImage.width - scaledImageWidth) / 2).toInt();
+        int top = ((sourceImage.height - scaledImageHeight) / 2).toInt();
+
+        img.Image croppedImage =
+            img.copyCrop(sourceImage, left, top, scaledImageWidth, scaledImageHeight);
+
+        String croppedFilename=filename.replaceFirst(".jpg", ".cropped.jpg");
+        File(croppedFilename).writeAsBytesSync(img.encodePng(croppedImage), flush:true);
+
+        if (File(croppedFilename).existsSync()) {
+          File croppedFileNew=File(croppedFilename);
+          return Image.file(croppedFileNew);
+        }
+        else {
+          Image.network(
+            "https://upload.wikimedia.org/wikipedia/commons/a/a9/Example.jpg",
+          );
+        }
+      }
     }
-
-    getImageInfo(image).then((info) {
-      final box = context.findRenderObject() as RenderBox;
-
-      //       final double w = MediaQuery.of(context).size.width;
-      //       final double h = MediaQuery.of(context).size.height;
-
-      final double w = box.size.width;
-      final double h = box.size.height;
-
-      double scale = widget.historicalPhotoScale ?? 1.0;
-      double centerX = 0;
-      double centerY = 0;
-
-      if (h > w) {
-        ("h>w");
-        scale = (h / w) / (widget.historicalPhotoScale ?? 1.0);
-        centerX = (w - w * scale) / 2;
-        centerY = (h - h * scale) / 4;
-      } else {
-        ("h<w+");
-        scale = (w / h) / (widget.historicalPhotoScale ?? 1.0);
-        centerX = (w - w * scale) / 4;
-        centerY = (h - h * scale) / 2;
-      }
-
-      if (oldCenterX != centerX || oldCenterY != centerY) {
-        oldCenterX = centerX;
-        oldCenterY = centerY;
-        setState(() {
-          _transformationController.value = Matrix4.identity()
-            ..translate(centerX, centerY)
-            ..scale(scale);
-        });
-      }
-    });
 
     return image;
   }
@@ -219,14 +252,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
 //                      color: Colors.pink[600]!,
                       width: 0,
                     )),
-                    child: InteractiveViewer(
-                        key: cameraPhotoKey,
-                        scaleEnabled: false,
-                        panEnabled: false,
-                        transformationController: _transformationController,
-                        maxScale: 20,
-                        minScale: 0.1,
-                        child: getImage2(widget.imagePath, context)))))
+                    child: getImage4( widget.imagePath, context))))
       ],
     );
   }
@@ -250,14 +276,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
 //                      color: Colors.pink[600]!,
                       width: 0,
                     )),
-                    child: InteractiveViewer(
-                        key: cameraPhotoKey,
-                        scaleEnabled: false,
-                        panEnabled: false,
-                        transformationController: _transformationController,
-                        maxScale: 20,
-                        minScale: 0.1,
-                        child: getImage2(widget.imagePath, context)))))
+                    child: getImage4( widget.imagePath, context))))
       ],
     );
   }

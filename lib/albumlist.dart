@@ -36,6 +36,7 @@ class AlbumListPageState extends State<AlbumListPage> {
   bool searchVisibility = false;
   bool searchDialogVisible = false;
   bool filterBoxOn = false;
+  bool pullDownRefreshDone=true;
   double userLatitudeData = 0;
   double userLongitudeData = 0;
   final myController = TextEditingController();
@@ -98,6 +99,13 @@ class AlbumListPageState extends State<AlbumListPage> {
       "Order by " + orderBy,
       // duration: Duration(seconds: 3),
     );
+  }
+  Future<void> RefreshIndicatorOnRefresh() async {
+    pullDownRefreshDone=false;
+    setState(() {
+      refresh();
+    });
+    pullDownRefreshDone=true;
   }
 
   void refresh() async {
@@ -225,10 +233,12 @@ class AlbumListPageState extends State<AlbumListPage> {
       ),
       body: Column(children: [
         Flexible(
+      child:RefreshIndicator(
+        onRefresh:RefreshIndicatorOnRefresh ,
             child: FutureBuilder<List<Album>>(
               future: test(context),
               builder: (context, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
+                if (snapshot.connectionState != ConnectionState.done && pullDownRefreshDone) {
                   return const Center(child: CircularProgressIndicator());
                 }
 
@@ -238,9 +248,10 @@ class AlbumListPageState extends State<AlbumListPage> {
                     ? AlbumList(
                     albums: snapshot.data,
                     toggle: nameVisibility | searchVisibility)
-                    : const Center(child: CircularProgressIndicator());
+                              : const Text("Loading");
+      //              : const Center(child: CircularProgressIndicator());
               },
-            )),
+            ))),
       ]),
       bottomNavigationBar: BottomNavigationBar(
         onTap: bottomNavigationBarOnTap,
