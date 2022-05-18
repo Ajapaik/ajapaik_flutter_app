@@ -74,6 +74,7 @@ class MainPageBuilderState extends State<MainPageBuilder> {
                 .first.features[index].properties.sourceLabel
                 .toString(),
             historicalCoordinates: widget.albums!.first.features[index].geometry,
+            numberOfRephotos:0
           )),
     );
   }
@@ -259,6 +260,7 @@ class MainPageBuilderState extends State<MainPageBuilder> {
                                                                   .toString(),
                                                           historicalCoordinates:
                                                               list[x].geometry,
+                                                          numberOfRephotos: 0
                                                         )));
                                           }),
                                     )

@@ -211,14 +211,15 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   @override
   void dispose() {
     // Dispose of the controller when the widget is disposed.
+    print("Dispose");
     _cameraController.dispose();
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.landscapeRight,
-        DeviceOrientation.landscapeLeft,
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-      ]);
 
+    SystemChrome.setPreferredOrientations([
+      //  DeviceOrientation.landscapeRight,
+      //  DeviceOrientation.landscapeLeft,
+        DeviceOrientation.portraitUp,
+      //  DeviceOrientation.portraitDown,
+      ]);
 
     super.dispose();
   }

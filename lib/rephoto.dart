@@ -29,20 +29,22 @@ class RephotoScreen extends StatefulWidget {
   final String historicalAuthor;
   final String historicalLabel;
   final String historicalSurl;
+  final int numberOfRephotos;
 
   final Geometry historicalCoordinates;
 
-  const RephotoScreen({
-    Key? key,
-    required this.historicalPhotoId,
-    required this.historicalPhotoUri,
-    required this.historicalName,
-    required this.historicalDate,
-    required this.historicalAuthor,
-    required this.historicalLabel,
-    required this.historicalSurl,
-    required this.historicalCoordinates,
-  }) : super(key: key);
+  const RephotoScreen(
+      {Key? key,
+      required this.historicalPhotoId,
+      required this.historicalPhotoUri,
+      required this.historicalName,
+      required this.historicalDate,
+      required this.historicalAuthor,
+      required this.historicalLabel,
+      required this.historicalSurl,
+      required this.historicalCoordinates,
+      required this.numberOfRephotos})
+      : super(key: key);
 
   @override
   RephotoScreenState createState() => RephotoScreenState();
@@ -147,10 +149,8 @@ class RephotoScreenState extends State<RephotoScreen> {
   @override
   void initState() {
     if (widget.historicalCoordinates.coordinates.isNotEmpty) {
-
       imageLatitude = widget.historicalCoordinates.coordinates[0];
       imageLongitude = widget.historicalCoordinates.coordinates[1];
-
     }
 //    listenCurrentLocation();
     getCurrentLocation();
@@ -168,7 +168,6 @@ class RephotoScreenState extends State<RephotoScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -280,19 +279,19 @@ class RephotoScreenState extends State<RephotoScreen> {
         context,
         MaterialPageRoute(
             builder: (context) => ImageMapScreen(
-              imageLatitude: imageLatitude,
-              imageLongitude: imageLongitude,
-              historicalPhotoUri: widget.historicalPhotoUri,
-            )));
+                  imageLatitude: imageLatitude,
+                  imageLongitude: imageLongitude,
+                  historicalPhotoUri: widget.historicalPhotoUri,
+                )));
   }
 
   String getDistanceToImage() {
     String distanceToImage = '';
 
-    if (imageLatitude  != 0 &&
+    if (imageLatitude != 0 &&
         imageLongitude != 0 &&
-        userLatitude   != 0 &&
-        userLongitude  != 0) {
+        userLatitude != 0 &&
+        userLongitude != 0) {
       double distance = Geolocator.distanceBetween(
           userLatitude, userLongitude, imageLatitude, imageLongitude);
       double calcDistance = distance / 1000;
@@ -307,6 +306,32 @@ class RephotoScreenState extends State<RephotoScreen> {
     return distanceToImage;
   }
 
+  Widget  _getRephotoNumberIconBottomLeft(numberOfRephotos) {
+    IconData numberOfRephotosIcon;
+
+    switch(numberOfRephotos) {
+      case 1: numberOfRephotosIcon=Icons.filter_1; break;
+      case 2: numberOfRephotosIcon=Icons.filter_2; break;
+      case 3: numberOfRephotosIcon=Icons.filter_3; break;
+      case 4: numberOfRephotosIcon=Icons.filter_4; break;
+      case 5: numberOfRephotosIcon=Icons.filter_5; break;
+      case 6: numberOfRephotosIcon=Icons.filter_6; break;
+      case 7: numberOfRephotosIcon=Icons.filter_7; break;
+      case 8: numberOfRephotosIcon=Icons.filter_8; break;
+      case 9: numberOfRephotosIcon=Icons.filter_9; break;
+      default: numberOfRephotosIcon=Icons.filter_9_plus; break;
+    }
+
+    return
+      Visibility(
+        visible:false,
+        child:Positioned(
+      right: 10.0,
+      bottom: 20.0,
+      child: new Icon(numberOfRephotosIcon),
+    ));
+  }
+
   Widget verticalPreview(BuildContext context) {
     String distanceToImage = getDistanceToImage();
 
@@ -316,17 +341,18 @@ class RephotoScreenState extends State<RephotoScreen> {
             maxHeight: 350,
           ),
           child: GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ManiPhoto(
-                            historicalPhotoUri: widget.historicalPhotoUri,
-                          )));
-            },
-            child:
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ManiPhoto(
+                              historicalPhotoUri: widget.historicalPhotoUri,
+                            )));
+              },
+              child: Stack(children: [
                 Image.network(widget.historicalPhotoUri, fit: BoxFit.contain),
-          )),
+                _getRephotoNumberIconBottomLeft(widget.numberOfRephotos)
+              ]))),
       Padding(
           padding: const EdgeInsets.only(top: 20, bottom: 20),
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -354,18 +380,14 @@ class RephotoScreenState extends State<RephotoScreen> {
                 }),
           ])),
       Visibility(
-        visible: mapInfoVisibility == true,
-        child: Expanded(
-            child: Align(
-                alignment: Alignment.bottomCenter,
-                child: GestureDetector(
-                    onDoubleTap: _openImageMapScreen,
-                    child:_buildFlutterMap()
-                        )))),
-      Visibility(
-          visible: mapInfoVisibility == false,
-          child: _buildInfoText()),
-
+          visible: mapInfoVisibility == true,
+          child: Expanded(
+              child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: GestureDetector(
+                      onDoubleTap: _openImageMapScreen,
+                      child: _buildFlutterMap())))),
+      Visibility(visible: mapInfoVisibility == false, child: _buildInfoText()),
     ]);
   }
 
@@ -395,11 +417,9 @@ class RephotoScreenState extends State<RephotoScreen> {
                     alignment: Alignment.bottomCenter,
                     child: GestureDetector(
                         onDoubleTap: _openImageMapScreen,
-                        child:_buildFlutterMap()
-                            )))),
+                        child: _buildFlutterMap())))),
         Visibility(
-            visible: mapInfoVisibility == false,
-            child: _buildInfoText()),
+            visible: mapInfoVisibility == false, child: _buildInfoText()),
         Padding(
           padding: const EdgeInsets.only(
             right: 30,
@@ -432,6 +452,7 @@ class RephotoScreenState extends State<RephotoScreen> {
       ],
     );
   }
+
   Widget _buildInfoText() {
     return Expanded(
       child: Padding(
@@ -441,9 +462,7 @@ class RephotoScreenState extends State<RephotoScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  widget.historicalAuthor +
-                      ', ' +
-                      widget.historicalDate,
+                  widget.historicalAuthor + ', ' + widget.historicalDate,
                   maxLines: 9,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -499,8 +518,8 @@ class RephotoScreenState extends State<RephotoScreen> {
 
     return FlutterMap(
         options: MapOptions(
-          bounds: LatLngBounds(
-              LatLng(imageLatitude, imageLongitude), LatLng(userLatitude, userLongitude)),
+          bounds: LatLngBounds(LatLng(imageLatitude, imageLongitude),
+              LatLng(userLatitude, userLongitude)),
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
           zoom: 17.0,
           boundsOptions: const FitBoundsOptions(

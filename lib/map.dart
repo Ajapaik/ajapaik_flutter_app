@@ -153,6 +153,7 @@ class _UserLocationState extends State<MapScreen> {
                                                         .toString(),
                                                     historicalCoordinates:
                                                         list[x].geometry,
+                                                    numberOfRephotos: 0,
                                                   )));
                                     }),
                               )

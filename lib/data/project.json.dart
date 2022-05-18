@@ -49,7 +49,7 @@ class Project {
 
 Future<List<Project>> fetchProjects(http.Client client) async {
   final response = await client
-      .get(Uri.parse('https://fiwiki-tools.toolforge.org/api/projects.php'));
+      .get(Uri.parse('https://ajapaik.toolforge.org/api/projects.php'));
 
   // Use the compute function to run parsePhotos in a separate isolate.
   return compute(parsePhotos, response.body);

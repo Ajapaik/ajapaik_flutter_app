@@ -14,7 +14,7 @@ import 'getxnavigation.dart';
 
 class HomePage extends StatefulWidget {
 
-  String dataSourceUrl = "https://fiwiki-tools.toolforge.org/api/ajapaiknearest.php?latitude=49.84189&longitude=24.0315&search=&limit=100&orderby=alpha&orderdirection=desc&search=Auroran&latitude=60.1952073&longitude=24.9252243";
+  String dataSourceUrl = "https://ajapaik.toolforge.org/api/ajapaiknearest.php?latitude=49.84189&longitude=24.0315&search=&limit=100&orderby=alpha&orderdirection=desc&search=Auroran&latitude=60.1952073&longitude=24.9252243";
 
   HomePage({Key? key}) : super(key: key);
 
@@ -30,7 +30,7 @@ class HomePageState extends State<HomePage> {
   final myController = TextEditingController();
 
   final screens = [
-    MainPage.network("", "https://fiwiki-tools.toolforge.org/api/ajapaiknearest.php?latitude=49.84189&longitude=24.0315&search=&limit=100&orderby=alpha&orderdirection=desc&search=Auroran&latitude=60.1952073&longitude=24.9252243"),
+    MainPage.network("", "https://ajapaik.toolforge.org/api/ajapaiknearest.php?latitude=49.84189&longitude=24.0315&search=&limit=100&orderby=alpha&orderdirection=desc&search=Auroran&latitude=60.1952073&longitude=24.9252243"),
     const LikedPage(),
     const Text(''),
     const EventsPage(),

@@ -86,7 +86,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     const appTitle = 'Nearest';
-    var firstUrl="https://fiwiki-tools.toolforge.org/api/ajapaiknearest.php?search=&limit=100&orderby=alpha&orderdirection=desc";
+    var firstUrl="https://ajapaik.toolforge.org/api/ajapaiknearest.php?search=&limit=100&orderby=alpha&orderdirection=desc";
 
     return GetMaterialApp(
       supportedLocales: const [

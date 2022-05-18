@@ -319,6 +319,7 @@ class AlbumList extends StatelessWidget {
                     .first.features[index].properties.sourceLabel
                     .toString(),
                 historicalCoordinates: albums!.first.features[index].geometry,
+                numberOfRephotos: albums!.first.features[index].properties.rephotos!.toInt(),
               )),
     );
   }
