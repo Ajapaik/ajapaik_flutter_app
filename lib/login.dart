@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sign_in_button/sign_in_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
 import 'demolocalization.dart';
@@ -35,13 +35,13 @@ class DisplayLoginScreen extends StatelessWidget {
     return Center(
         child: Wrap(spacing: 10, runSpacing: 10, children: <Widget>[
       SignInButton(
-        Buttons.Google,
+        Buttons.google,
         onPressed: () {
           doLogin("google");
         },
       ),
       SignInButton(
-        Buttons.Facebook,
+        Buttons.facebook,
         onPressed: () {
           doLogin("facebook");
         },
@@ -55,7 +55,7 @@ class DisplayLoginScreen extends StatelessWidget {
         backgroundColor: const Color(0xFF3366cc),
       ),*/
       SignInButton(
-        Buttons.Email,
+        Buttons.email,
         onPressed: () {},
       ),
     ]));
