@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ajapaik_flutter_app/demolocalization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -24,6 +26,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   late AppLinks _appLinks;
+  StreamSubscription<Uri>? _linkSubscription;
   final controller = Get.put(Controller());
 
   @override
@@ -36,51 +39,30 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
-  // loadTooltipData() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   setState(() {
-  //     tooltip = prefs.getBool("tooltip")!;
-  //   });
-  // }
-
-  // loadVisibilityData() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   setState(() {
-  //     nameVisibility = prefs.getBool("visibility")!;
-  //   });
-  // }
-
-  // loadInfoVisibilityData() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   setState(() {
-  //     nameVisibility = prefs.getBool("mapInfoVisibility")!;
-  //   });
-  // }
-
-  void initDeepLinks() async {
-    _appLinks = AppLinks(
-      onAppLink: (Uri uri, String stringUri) async {
-
-        ('onAppLink: $stringUri');
-        String provider = uri.queryParameters["provider"].toString();
-        String username = "false";
-        String token = uri.queryParameters["token"].toString();
-        await controller.doApiLogin(provider, username, token);
-        print("onAppLink");
-        await closeInAppWebView();
-        Get.back();
-      },
-    );
-
-/*    final appLink = await _appLinks.getInitialAppLink();
-    print("Applink: " + appLink.toString());
-    if (appLink != null) {
-      print('getInitialAppLink: ${appLink.queryParameters.toString()}');
-      //     openAppLink(appLink);
-    }*/
+  @override
+  void dispose() {
+    _linkSubscription?.cancel();
+    super.dispose();
   }
 
+  Future<void> openAppLink(Uri uri) async {
+    String provider = uri.queryParameters["provider"].toString();
+    String username = "false";
+    String token = uri.queryParameters["token"].toString();
+    await controller.doApiLogin(provider, username, token);
+    print("onAppLink");
+    await closeInAppWebView();
+    Get.back();
+  }
 
+  void initDeepLinks() async {
+    _appLinks = AppLinks();
+    // Handle link when app is in warm state (front or background)
+    _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
+      print('onAppLink: $uri');
+      openAppLink(uri);
+    });
+  }
 
   // This widget is the root of your application.
   @override
