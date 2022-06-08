@@ -64,8 +64,8 @@ class DisplayUploadScreen extends StatelessWidget {
         .then((result) async {
           http.Response.fromStream(result).then((response) {
             if (response.statusCode == 200) {
-              ("Uploaded! ");
-              ('response.body ' + response.body);
+              print("Uploaded! ");
+              print('response.body ' + response.body);
               Get.showSnackbar(
                 const GetSnackBar(
                   title: "Uploading file to Ajapaik",

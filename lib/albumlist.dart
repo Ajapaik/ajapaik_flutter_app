@@ -143,7 +143,7 @@ class AlbumListPageState extends State<AlbumListPage> {
   void initState() {
     controller.loadSession().then((_) =>
         setState(() {
-          ("Updating login status to screen. Session " +
+          print("Updating login status to screen. Session " +
               controller.getSession());
         }));
     getCurrentLocation();

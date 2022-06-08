@@ -31,7 +31,13 @@ class Controller extends GetxController {
     String? s = await storage.read(key: 'session');
     if (s != null) {
       _session = s;
-      await fetchUser();
+      var user=await fetchUser();
+      print("LoadSession");
+      print(user.name);
+      if (user.name=="anonymous") {
+        _session="";
+        setSession(_session);
+      }
     } else if (_session != "") {
       await logout();
     }

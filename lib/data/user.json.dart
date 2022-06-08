@@ -41,7 +41,7 @@ Future<User> fetchUser() async {
       });
   ("Session:" + controller.getSession());
   // Use the compute function to run parsePhotos in a separate isolate.
+  print(response.body);
   Map<String, dynamic> json = jsonDecode(response.body);
-  (response.body);
   return User.fromJson(json);
 }
