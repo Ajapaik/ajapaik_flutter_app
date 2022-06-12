@@ -151,7 +151,7 @@ class Properties {
     sourceUrl = json['source_url'];
     sourceLabel = json['source_label'];
     favorites = json['favorites'].toString();
-    rephotos = json['rephotos'];
+    rephotos = (json['rephotos']=="") ? 0 : json['rephotos'];
     geojson = json['geojson'];
     thumbnail =
         json['thumbnail'].toString().replaceFirst("http://", "https://");

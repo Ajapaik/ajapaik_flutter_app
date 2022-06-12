@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:ajapaik_flutter_app/demolocalization.dart';
+import 'package:ajapaik_flutter_app/rephotocompare.dart';
 import 'package:ajapaik_flutter_app/settings.dart';
 import 'package:ajapaik_flutter_app/upload.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -306,30 +307,61 @@ class RephotoScreenState extends State<RephotoScreen> {
     return distanceToImage;
   }
 
-  Widget  _getRephotoNumberIconBottomLeft(numberOfRephotos) {
+  Widget _getRephotoNumberIconBottomLeft(numberOfRephotos) {
     IconData numberOfRephotosIcon;
 
-    switch(numberOfRephotos) {
-      case 1: numberOfRephotosIcon=Icons.filter_1; break;
-      case 2: numberOfRephotosIcon=Icons.filter_2; break;
-      case 3: numberOfRephotosIcon=Icons.filter_3; break;
-      case 4: numberOfRephotosIcon=Icons.filter_4; break;
-      case 5: numberOfRephotosIcon=Icons.filter_5; break;
-      case 6: numberOfRephotosIcon=Icons.filter_6; break;
-      case 7: numberOfRephotosIcon=Icons.filter_7; break;
-      case 8: numberOfRephotosIcon=Icons.filter_8; break;
-      case 9: numberOfRephotosIcon=Icons.filter_9; break;
-      default: numberOfRephotosIcon=Icons.filter_9_plus; break;
+    switch (numberOfRephotos) {
+      case 1:
+        numberOfRephotosIcon = Icons.filter_1;
+        break;
+      case 2:
+        numberOfRephotosIcon = Icons.filter_2;
+        break;
+      case 3:
+        numberOfRephotosIcon = Icons.filter_3;
+        break;
+      case 4:
+        numberOfRephotosIcon = Icons.filter_4;
+        break;
+      case 5:
+        numberOfRephotosIcon = Icons.filter_5;
+        break;
+      case 6:
+        numberOfRephotosIcon = Icons.filter_6;
+        break;
+      case 7:
+        numberOfRephotosIcon = Icons.filter_7;
+        break;
+      case 8:
+        numberOfRephotosIcon = Icons.filter_8;
+        break;
+      case 9:
+        numberOfRephotosIcon = Icons.filter_9;
+        break;
+      default:
+        numberOfRephotosIcon = Icons.filter_9_plus;
+        break;
     }
 
-    return
-      Visibility(
-        visible:false,
-        child:Positioned(
-      right: 10.0,
-      bottom: 20.0,
-      child: new Icon(numberOfRephotosIcon),
-    ));
+    return Visibility(
+        visible: numberOfRephotos > 0,
+        child: Positioned(
+            right: 5.0,
+            bottom: 10.0,
+            child: IconButton(
+                icon: new Icon(numberOfRephotosIcon),
+                onPressed: () async {
+                  var url =
+                      "https://ajapaik.toolforge.org/api/ajapaikimageinfo.php?id=" +
+                          widget.historicalPhotoId.toString();
+                  List<Album> _rephotoAlbumData =
+                      await fetchAlbum(http.Client(), url);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              RephotoCompare(album: _rephotoAlbumData)));
+                })));
   }
 
   Widget verticalPreview(BuildContext context) {
@@ -399,16 +431,18 @@ class RephotoScreenState extends State<RephotoScreen> {
         Expanded(
           flex: 1,
           child: GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ManiPhoto(
-                            historicalPhotoUri: widget.historicalPhotoUri,
-                          )));
-            },
-            child: CachedNetworkImage(imageUrl: widget.historicalPhotoUri),
-          ),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ManiPhoto(
+                              historicalPhotoUri: widget.historicalPhotoUri,
+                            )));
+              },
+              child: Stack(children: [
+                CachedNetworkImage(imageUrl: widget.historicalPhotoUri),
+                _getRephotoNumberIconBottomLeft(widget.numberOfRephotos)
+              ])),
         ),
         Visibility(
             visible: mapInfoVisibility == true,
