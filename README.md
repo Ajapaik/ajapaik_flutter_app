@@ -8,6 +8,6 @@ GeoJSON album documentation
 * [GeoJSON-toolforge proxy source code](https://github.com/Ajapaik/ajapaik-toolforge)
 
 App dependecies
-* [Platform dependency Matrix](https://github.com/Ajapaik/ajapaik_flutter_app/wiki/Platform-dependency-matrix)
+* [Platform dependency matrix](https://github.com/Ajapaik/ajapaik_flutter_app/wiki/Platform-dependency-matrix)
 
 
