@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
-import 'demolocalization.dart';
+import 'localization.dart';
 
-class ManiPhoto extends StatelessWidget {
-  const ManiPhoto({
+class FullScreenImageView extends StatelessWidget {
+  const FullScreenImageView({
     Key? key,
     required this.historicalPhotoUri,
   }) : super(key: key);

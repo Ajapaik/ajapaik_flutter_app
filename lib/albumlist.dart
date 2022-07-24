@@ -5,12 +5,12 @@ import 'package:http/http.dart' as http;
 import 'package:ajapaik_flutter_app/data/album.geojson.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'demolocalization.dart';
+import 'localization.dart';
 import 'getxnavigation.dart';
 import 'package:get/get.dart';
 import 'localfileselect.dart';
 import 'login.dart';
-import 'rephoto.dart';
+import 'photoview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
@@ -169,7 +169,7 @@ class AlbumListPageState extends State<AlbumListPage> {
       if (index == 0) {
         Get.to(DisplayLoginScreen())?.then((_) =>
             setState(() {
-              ("foo" + controller.getSession());
+              ("session: " + controller.getSession());
             }));
       } else if (index == 1) {
         showPicker(context);
@@ -300,7 +300,7 @@ class AlbumList extends StatelessWidget {
       context,
       MaterialPageRoute(
           builder: (context) =>
-              RephotoScreen(
+              Photoview(
                 historicalPhotoId:
                 albums!.first.features[index].properties.id.toString(),
                 historicalPhotoUri: albums!
@@ -413,15 +413,6 @@ class AlbumList extends StatelessWidget {
           ),
           visible: toggle,
         ),
-        // Favorites code snippet for icons to favorite pictures
-        // GestureDetector(
-        //   onTap: () {
-        //
-        //   },
-        //   child: const Align(
-        //     alignment: Alignment.topRight,
-        //    child: Icon(Icons.favorite_outlined, color: Colors.white, size: 35),
-        // ))
       ]),
     );
   }

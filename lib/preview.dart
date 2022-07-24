@@ -2,10 +2,7 @@ import 'dart:async';
 import 'dart:ui' as ui;
 import 'dart:math' as math;
 
-import 'package:flutter/gestures.dart';
-import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:path_provider/path_provider.dart';
 import 'services/geolocation.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';

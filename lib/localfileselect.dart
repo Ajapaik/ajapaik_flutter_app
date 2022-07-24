@@ -5,7 +5,7 @@ import 'package:gallery_saver/gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'camera.dart';
-import 'demolocalization.dart';
+import 'localization.dart';
 
 final picker = ImagePicker();
 

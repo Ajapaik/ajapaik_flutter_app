@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
-import 'demolocalization.dart';
+import 'localization.dart';
 import 'getxnavigation.dart';
 import 'data/user.json.dart';
 

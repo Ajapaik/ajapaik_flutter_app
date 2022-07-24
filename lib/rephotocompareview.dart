@@ -7,12 +7,12 @@ import 'getxnavigation.dart';
 import 'package:get/get.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-class RephotoCompare extends StatelessWidget {
+class RephotoCompareView extends StatelessWidget {
   final controller = Get.put(Controller());
   late List<Album> album;
   String historicalImageUrl = "";
 
-  RephotoCompare({Key? key, required List<Album> album}) : super(key: key) {
+  RephotoCompareView({Key? key, required List<Album> album}) : super(key: key) {
     this.album = album;
     this.historicalImageUrl = album.first.features[0].properties.thumbnail!;
   }

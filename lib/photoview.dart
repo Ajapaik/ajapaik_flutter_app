@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:ajapaik_flutter_app/demolocalization.dart';
-import 'package:ajapaik_flutter_app/rephotocompare.dart';
+import 'package:ajapaik_flutter_app/localization.dart';
+import 'package:ajapaik_flutter_app/rephotocompareview.dart';
 import 'package:ajapaik_flutter_app/settings.dart';
 import 'package:ajapaik_flutter_app/upload.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -16,13 +16,13 @@ import 'package:url_launcher/url_launcher.dart';
 import 'camera.dart';
 import 'data/draft.json.dart';
 import 'data/album.geojson.dart';
-import 'imagemapscreen.dart';
-import 'photomanipulation.dart';
+import 'map.dart';
+import 'fullscreenimageview.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class RephotoScreen extends StatefulWidget {
+class Photoview extends StatefulWidget {
   final String historicalPhotoId;
   final String historicalPhotoUri;
   final String historicalName;
@@ -34,7 +34,7 @@ class RephotoScreen extends StatefulWidget {
 
   final Geometry historicalCoordinates;
 
-  const RephotoScreen(
+  const Photoview(
       {Key? key,
       required this.historicalPhotoId,
       required this.historicalPhotoUri,
@@ -48,10 +48,10 @@ class RephotoScreen extends StatefulWidget {
       : super(key: key);
 
   @override
-  RephotoScreenState createState() => RephotoScreenState();
+  PhotoviewState createState() => PhotoviewState();
 }
 
-class RephotoScreenState extends State<RephotoScreen> {
+class PhotoviewState extends State<Photoview> {
   bool boolValue = true;
   bool mapInfoVisibility = false;
   bool newMapInfoValue = true;
@@ -279,7 +279,7 @@ class RephotoScreenState extends State<RephotoScreen> {
     await Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => ImageMapScreen(
+            builder: (context) => Map(
                   imageLatitude: imageLatitude,
                   imageLongitude: imageLongitude,
                   historicalPhotoUri: widget.historicalPhotoUri,
@@ -360,7 +360,7 @@ class RephotoScreenState extends State<RephotoScreen> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              RephotoCompare(album: _rephotoAlbumData)));
+                              RephotoCompareView(album: _rephotoAlbumData)));
                 })));
   }
 
@@ -377,7 +377,7 @@ class RephotoScreenState extends State<RephotoScreen> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ManiPhoto(
+                        builder: (context) => FullScreenImageView(
                               historicalPhotoUri: widget.historicalPhotoUri,
                             )));
               },
@@ -435,7 +435,7 @@ class RephotoScreenState extends State<RephotoScreen> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ManiPhoto(
+                        builder: (context) => FullScreenImageView(
                               historicalPhotoUri: widget.historicalPhotoUri,
                             )));
               },
