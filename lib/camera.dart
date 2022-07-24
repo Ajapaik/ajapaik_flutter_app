@@ -181,7 +181,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     else if (lastKnownOrientation != currentDeviceOrientation) {
       lastKnownOrientation = currentDeviceOrientation;
       setCameraOrientation(currentDeviceOrientation);
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         // Re-render the page with new orientation
         setState(() {
           movehistoricalPhotoToCenter();

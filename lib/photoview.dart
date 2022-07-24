@@ -563,10 +563,7 @@ class PhotoviewState extends State<Photoview> {
         layers: [
           TileLayerOptions(
             urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            subdomains: ['a', 'b', 'c'],
-            attributionBuilder: (_) {
-              return const Text("© OpenStreetMap contributors");
-            },
+            subdomains: ['a', 'b', 'c']
           ),
           MarkerLayerOptions(
             markers: markerList,

@@ -97,10 +97,6 @@ class MapState extends State<Map> {
                                 urlTemplate:
                                     "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                                 subdomains: ['a', 'b', 'c'],
-                                attributionBuilder: (_) {
-                                  return const Text(
-                                      "© OpenStreetMap contributors");
-                                },
                               ),
                               MarkerLayerOptions(markers: [
                                 Marker(
@@ -161,9 +157,6 @@ class MapState extends State<Map> {
           TileLayerOptions(
             urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
             subdomains: ['a', 'b', 'c'],
-            attributionBuilder: (_) {
-              return const Text("© OpenStreetMap contributors");
-            },
           ),
           MarkerLayerOptions(markers: [
             Marker(
