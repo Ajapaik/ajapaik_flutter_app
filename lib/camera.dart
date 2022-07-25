@@ -5,6 +5,7 @@ import 'dart:math' as math;
 import 'dart:ui' as ui;
 
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -136,7 +137,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     //"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Grundsteinlegung_MiQua-7004_%28cropped%29.jpg/690px-Grundsteinlegung_MiQua-7004_%28cropped%29.jpg",
     //                          "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Katarina_Taikon_1953.jpg/596px-Katarina_Taikon_1953.jpg",
 
-    if (File(filename).existsSync()) {
+    if (kIsWeb==false && File(filename).existsSync()) {
       image = Image.file(
         File(filename),
         color: Color.fromRGBO(255, 255, 255, historicalPhotoTransparency*transparencyOnOff),

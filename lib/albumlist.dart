@@ -1,4 +1,5 @@
 import 'package:ajapaik_flutter_app/projectlist.dart';
+import 'package:ajapaik_flutter_app/services/geolocation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
@@ -130,8 +131,7 @@ class AlbumListPageState extends State<AlbumListPage> {
   }
 
   void getCurrentLocation() async {
-    var geoPosition = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+    Position geoPosition =  await determinePosition();
 
     setState(() {
       userLatitudeData = geoPosition.latitude;

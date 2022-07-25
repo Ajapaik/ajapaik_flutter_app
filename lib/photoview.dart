@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:ajapaik_flutter_app/localization.dart';
 import 'package:ajapaik_flutter_app/rephotocompareview.dart';
+import 'package:ajapaik_flutter_app/services/geolocation.dart';
 import 'package:ajapaik_flutter_app/settings.dart';
 import 'package:ajapaik_flutter_app/upload.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -123,8 +124,7 @@ class PhotoviewState extends State<Photoview> {
   }
 
   void getCurrentLocation() async {
-    var geoPosition = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+    Position geoPosition = await determinePosition();
 
     setState(() {
       userLatitude = geoPosition.latitude;

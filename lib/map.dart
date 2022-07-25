@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:ajapaik_flutter_app/services/geolocation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
@@ -31,8 +32,7 @@ class MapState extends State<Map> {
 
 
   void getCurrentLocation() async {
-    var geoPosition = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+    var geoPosition = await determinePosition();
 
     setState(() {
       userLatitudeData = geoPosition.latitude;
@@ -77,7 +77,7 @@ class MapState extends State<Map> {
       body: Stack(children: [
         Positioned(
             child: FutureBuilder(
-                future: Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high),
+                future: determinePosition(),
                 builder:
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.hasError) (snapshot.error);

@@ -1,4 +1,16 @@
 import 'package:geolocator/geolocator.dart';
+import 'dart:async';
+
+
+Future<Position> errorOrFailbackPosition(String error_message) async {
+    if (true) {
+      Position position=Position.fromMap({'latitude': 60, 'longitude': 24});
+      return Future.value(position);
+    } else {
+      return Future.error(error_message);
+    }
+}
+
 
 /// Determine the current position of the device.
 ///
@@ -14,7 +26,7 @@ Future<Position> determinePosition() async {
     // Location services are not enabled don't continue
     // accessing the position and request users of the
     // App to enable the location services.
-    return Future.error('Location services are disabled.');
+    return errorOrFailbackPosition('Location services are disabled.');
   }
 
   permission = await Geolocator.checkPermission();
@@ -26,13 +38,13 @@ Future<Position> determinePosition() async {
       // Android's shouldShowRequestPermissionRationale
       // returned true. According to Android guidelines
       // your App should show an explanatory UI now.
-      return Future.error('Location permissions are denied');
+      return errorOrFailbackPosition('Location permissions are denied');
     }
   }
 
   if (permission == LocationPermission.deniedForever) {
     // Permissions are denied forever, handle appropriately.
-    return Future.error(
+    return errorOrFailbackPosition(
         'Location permissions are permanently denied, we cannot request permissions.');
   }
 
