@@ -1,0 +1,37 @@
+{
+	"@metadata": {
+		"authors": [
+			"Verdy p"
+		]
+	},
+	"albumList-navItem1": "Du plus proche",
+	"albumList-navItem2": "Carte",
+	"albumList-navItem3": "Visibilité",
+	"homePage-NavItem1": "Accueil",
+	"homePage-NavItem2": "Apprécié",
+	"homePage-NavItem3": "Prendre une photo",
+	"homePage-NavItem4": "Événements",
+	"homePage-NavItem5": "Se connecter",
+	"homePage-NavItem6": "Se déconnecter",
+	"imageMapScreen-appbarTitle": "Carte",
+	"localFileSelect-option1": "Bibliothèque de photos",
+	"localFileSelect-option2": "Appareil photo",
+	"login-appBarTitle": "Se connecter",
+	"map-appbarTitle": "Carte",
+	"projectList-navItem1": "Bibliothèque",
+	"projectList-navItem2": "Prendre une photo",
+	"projectList-navItem3": "Se connecter",
+	"projectList-navItem4": "Se déconnecter",
+	"photoManipulation-appbarTitle": "Application de rephotographie",
+	"rePhoto-appbarTitle": "Application de rephotographie",
+	"rePhoto-popupMenu1": "Partager",
+	"rePhoto-popupMenu2": "Informations",
+	"rePhoto-popupMenu3": "Démo TIFY",
+	"rePhoto-popupMenu4": "Carte",
+	"rePhoto-popupMenu5": "Paramètres",
+	"settings-appbarTitle": "Paramètres",
+	"settings-cardItem1": "Changer de langue",
+	"settings-cardItem2": "Changer d’environnement",
+	"settings-helperText": "Paramètres avancés",
+	"settings-showMapTile": "Afficher la carte"
+}

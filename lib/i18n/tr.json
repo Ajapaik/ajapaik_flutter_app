@@ -1,0 +1,37 @@
+{
+	"@metadata": {
+		"authors": [
+			"Hedda"
+		]
+	},
+	"albumList-navItem1": "En yakın",
+	"albumList-navItem2": "Harita",
+	"albumList-navItem3": "Görünürlük",
+	"homePage-NavItem1": "Anasayfa",
+	"homePage-NavItem2": "Beğenildi",
+	"homePage-NavItem3": "Fotoğraf çek",
+	"homePage-NavItem4": "Etkinlikler",
+	"homePage-NavItem5": "Oturum aç",
+	"homePage-NavItem6": "Oturumu kapat",
+	"imageMapScreen-appbarTitle": "Harita",
+	"localFileSelect-option1": "Fotoğraf kütüphanesi",
+	"localFileSelect-option2": "Kamera",
+	"login-appBarTitle": "Oturum aç",
+	"map-appbarTitle": "Harita",
+	"projectList-navItem1": "Kütüphane",
+	"projectList-navItem2": "Fotoğraf çek",
+	"projectList-navItem3": "Oturum aç",
+	"projectList-navItem4": "Oturumu kapat",
+	"photoManipulation-appbarTitle": "Refoto Uygulaması",
+	"rePhoto-appbarTitle": "Refoto Uygulaması",
+	"rePhoto-popupMenu1": "Paylaş",
+	"rePhoto-popupMenu2": "Bilgi",
+	"rePhoto-popupMenu3": "TIFY-demo",
+	"rePhoto-popupMenu4": "Harita",
+	"rePhoto-popupMenu5": "Ayarlar",
+	"settings-appbarTitle": "Ayarlar",
+	"settings-cardItem1": "Dili değiştir",
+	"settings-cardItem2": "Ortamı değiştir",
+	"settings-helperText": "Gelişmiş ayarlar",
+	"settings-showMapTile": "Haritayı göster"
+}

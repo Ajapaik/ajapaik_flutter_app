@@ -1,0 +1,37 @@
+{
+	"@metadata": {
+		"authors": [
+			"Borichèt"
+		]
+	},
+	"albumList-navItem1": "Dal pi davzin",
+	"albumList-navItem2": "Carta",
+	"albumList-navItem3": "Visibilità",
+	"homePage-NavItem1": "Pàgina d'intrada",
+	"homePage-NavItem2": "Apressià",
+	"homePage-NavItem3": "Fé na fòto",
+	"homePage-NavItem4": "Eveniment",
+	"homePage-NavItem5": "Rintré ant ël sistema",
+	"homePage-NavItem6": "Seurte dal sistema",
+	"imageMapScreen-appbarTitle": "Carta",
+	"localFileSelect-option1": "Biblioteca ëd fòto",
+	"localFileSelect-option2": "Màchina fòto",
+	"login-appBarTitle": "Rintré ant ël sistema",
+	"map-appbarTitle": "Carta",
+	"projectList-navItem1": "Biblioteca",
+	"projectList-navItem2": "Fé na fòto",
+	"projectList-navItem3": "Rintré ant ël sistema",
+	"projectList-navItem4": "Seurte dal sistema",
+	"photoManipulation-appbarTitle": "Aplicassion ëd neuva fòto",
+	"rePhoto-appbarTitle": "Aplicassion ëd neuva fòto",
+	"rePhoto-popupMenu1": "Partagé",
+	"rePhoto-popupMenu2": "Anformassion",
+	"rePhoto-popupMenu3": "Dimostrassion TIFY",
+	"rePhoto-popupMenu4": "Carta",
+	"rePhoto-popupMenu5": "Paràmeter",
+	"settings-appbarTitle": "Paràmeter",
+	"settings-cardItem1": "Cangé 'd lenga",
+	"settings-cardItem2": "Cangé d'ambient",
+	"settings-helperText": "Paràmeter avansà",
+	"settings-showMapTile": "Smon-e la carta"
+}

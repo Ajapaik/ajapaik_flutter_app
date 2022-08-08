@@ -1,0 +1,19 @@
+{
+	"@metadata": {
+		"authors": [
+			"Kareyac"
+		]
+	},
+	"albumList-navItem1": "Бліжэйшы",
+	"albumList-navItem2": "Карта",
+	"imageMapScreen-appbarTitle": "Карта",
+	"localFileSelect-option1": "Бібліятэка фатаграфій",
+	"localFileSelect-option2": "Камера",
+	"map-appbarTitle": "Карта",
+	"projectList-navItem1": "Бібліятэка",
+	"rePhoto-popupMenu2": "Інфармацыя",
+	"rePhoto-popupMenu4": "Карта",
+	"rePhoto-popupMenu5": "Налады",
+	"settings-appbarTitle": "Налады",
+	"settings-showMapTile": "Паказаць карту"
+}
