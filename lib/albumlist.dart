@@ -295,7 +295,7 @@ class AlbumList extends StatelessWidget {
   const AlbumList({Key? key, this.albums, this.toggle = true})
       : super(key: key);
 
-  Future<void> _showphoto(context, index) async {
+  Future<void> showphoto(context, index) async {
     MaterialPageRoute mpr = MaterialPageRoute(
         builder: (context) =>
             Photoview(
@@ -323,7 +323,7 @@ class AlbumList extends StatelessWidget {
     await Navigator.push(context, mpr);
   }
 
-  void _moveToGeoJson(context, index) {
+  void moveToGeoJson(context, index) {
     MaterialPageRoute mpr = MaterialPageRoute(
         builder: (context) =>
             AlbumListPage.network(
@@ -342,6 +342,7 @@ class AlbumList extends StatelessWidget {
         .of(context)
         .size
         .height;
+
     if (height > width) {
       return MasonryGridView.count(
         crossAxisCount: 2,
@@ -394,9 +395,9 @@ class AlbumList extends StatelessWidget {
       onTap: () {
         if (albums!.first.features[index].properties.geojson != null &&
             albums!.first.features[index].properties.geojson != "") {
-          _moveToGeoJson(context, index);
+          moveToGeoJson(context, index);
         } else {
-          _showphoto(context, index);
+          showphoto(context, index);
         }
       },
       child: Column(children: [
