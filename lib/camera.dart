@@ -75,6 +75,10 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             historicalPhotoSize: historicalPhotoImageSize,
             historicalPhotoScale:
             historicalPhotoController.value.getMaxScaleOnAxis()));
+
+      // suggestion: use in gap with async action
+      if (!mounted) return;
+
       Navigator.push(context, mpr);
     } catch (e) {
       // If an error occurs, log the error to the console.
