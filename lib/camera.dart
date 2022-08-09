@@ -62,23 +62,20 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       (historicalPhotoImageSize);
       (MediaQuery.of(context).size);
 */
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => DisplayPictureScreen(
-              // Pass the automatically generated path to
-              // the DisplayPictureScreen widget.
-              imagePath: image.path.toString(),
-              historicalImagePath: widget.historicalPhotoUri,
-              historicalImageId: widget.historicalPhotoId,
-              cameraPhotoOrientation: lastKnownOrientation,
-              historicalPhotoRotation: false,
-              historicalPhotoFlipped: historicalPhotoFlipped,
-              historicalPhotoSize: historicalPhotoImageSize,
-              historicalPhotoScale:
-                  historicalPhotoController.value.getMaxScaleOnAxis()),
-        ),
-      );
+      MaterialPageRoute mpr = MaterialPageRoute(
+        builder: (context) => DisplayPictureScreen(
+          // Pass the automatically generated path to
+          // the DisplayPictureScreen widget.
+            imagePath: image.path.toString(),
+            historicalImagePath: widget.historicalPhotoUri,
+            historicalImageId: widget.historicalPhotoId,
+            cameraPhotoOrientation: lastKnownOrientation,
+            historicalPhotoRotation: false,
+            historicalPhotoFlipped: historicalPhotoFlipped,
+            historicalPhotoSize: historicalPhotoImageSize,
+            historicalPhotoScale:
+            historicalPhotoController.value.getMaxScaleOnAxis()));
+      Navigator.push(context, mpr);
     } catch (e) {
       // If an error occurs, log the error to the console.
       (e);

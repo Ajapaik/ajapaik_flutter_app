@@ -296,43 +296,40 @@ class AlbumList extends StatelessWidget {
       : super(key: key);
 
   Future<void> _showphoto(context, index) async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) =>
-              Photoview(
-                historicalPhotoId:
-                albums!.first.features[index].properties.id.toString(),
-                historicalPhotoUri: albums!
-                    .first.features[index].properties.thumbnail
-                    .toString(),
-                historicalName:
-                albums!.first.features[index].properties.name.toString(),
-                historicalDate:
-                albums!.first.features[index].properties.date.toString(),
-                historicalAuthor:
-                albums!.first.features[index].properties.author.toString(),
-                historicalSurl: albums!
-                    .first.features[index].properties.sourceUrl
-                    .toString(),
-                historicalLabel: albums!
-                    .first.features[index].properties.sourceLabel
-                    .toString(),
-                historicalCoordinates: albums!.first.features[index].geometry,
-                numberOfRephotos: albums!.first.features[index].properties.rephotos!.toInt(),
-              )),
-    );
+    MaterialPageRoute mpr = MaterialPageRoute(
+        builder: (context) =>
+            Photoview(
+              historicalPhotoId:
+              albums!.first.features[index].properties.id.toString(),
+              historicalPhotoUri: albums!
+                  .first.features[index].properties.thumbnail
+                  .toString(),
+              historicalName:
+              albums!.first.features[index].properties.name.toString(),
+              historicalDate:
+              albums!.first.features[index].properties.date.toString(),
+              historicalAuthor:
+              albums!.first.features[index].properties.author.toString(),
+              historicalSurl: albums!
+                  .first.features[index].properties.sourceUrl
+                  .toString(),
+              historicalLabel: albums!
+                  .first.features[index].properties.sourceLabel
+                  .toString(),
+              historicalCoordinates: albums!.first.features[index].geometry,
+              numberOfRephotos: albums!.first.features[index].properties.rephotos!.toInt(),
+            ));
+
+    await Navigator.push(context, mpr);
   }
 
   void _moveToGeoJson(context, index) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) =>
-              AlbumListPage.network(
-                  albums!.first.features[index].properties.name!,
-                  albums!.first.features[index].properties.geojson!)),
-    );
+    MaterialPageRoute mpr = MaterialPageRoute(
+        builder: (context) =>
+            AlbumListPage.network(
+                albums!.first.features[index].properties.name!,
+                albums!.first.features[index].properties.geojson!));
+    Navigator.push(context, mpr);
   }
 
   @override
