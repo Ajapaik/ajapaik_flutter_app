@@ -65,7 +65,7 @@ class _MyAppState extends State<MyApp> {
     const appTitle = 'Nearest';
     var firstUrl="https://ajapaik.toolforge.org/api/ajapaiknearest.php?search=&limit=100&orderby=alpha&orderdirection=desc";
 
-    return GetMaterialApp(
+    GetMaterialApp gma = GetMaterialApp(
       supportedLocales: const [
         Locale('en', 'US'),
         Locale('fi', 'FI'),
@@ -92,5 +92,6 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData.dark(),
       home: AlbumListPage.network(appTitle, firstUrl),
     );
+    return gma;
   }
 }
