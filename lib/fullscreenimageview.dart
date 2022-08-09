@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+//import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import 'localization.dart';
 
@@ -13,7 +13,14 @@ class FullScreenImageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    /*
+    Expanded e = Expanded(
+        child: InAppWebView(
+            initialUrlRequest:
+            URLRequest(url: Uri.parse(historicalPhotoUri))));
+     */
+
+    Scaffold s = Scaffold(
         appBar: AppBar(
             title: Text(AppLocalizations.of(context)!.translate('photoManipulation-appbarTitle'),
                 style: const TextStyle(
@@ -24,11 +31,8 @@ class FullScreenImageView extends StatelessWidget {
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-              Expanded(
-                  child: InAppWebView(
-                      initialUrlRequest:
-                          URLRequest(url: Uri.parse(historicalPhotoUri)))),
-            ])));
+                //children: [e]
+            )));
+    return s;
   }
 }
