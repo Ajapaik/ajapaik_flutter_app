@@ -3,12 +3,8 @@ import 'dart:async';
 
 
 Future<Position> errorOrFailbackPosition(String error_message) async {
-    if (true) {
-      Position position=Position.fromMap({'latitude': 60, 'longitude': 24});
-      return Future.value(position);
-    } else {
-      return Future.error(error_message);
-    }
+    Position position=Position.fromMap({'latitude': 60, 'longitude': 24});
+    return Future.value(position);
 }
 
 
