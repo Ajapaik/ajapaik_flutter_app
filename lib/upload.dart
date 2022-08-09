@@ -104,36 +104,41 @@ class DisplayUploadScreen extends StatelessWidget {
   Widget saveToButtons(context) {
     ("saveButtons()");
     (draft.historicalImageId);
-    return Center(
-        child: Wrap(spacing: 10, runSpacing: 10, children: <Widget>[
-      SignInButtonBuilder(
-        text: 'Gallery',
-        innerPadding: EdgeInsets.all(11.0),
-        fontSize:25,
 
-        icon: Icons.drafts,
-        onPressed: () {
-          Navigator.pop(context);
+    const EdgeInsets padding = EdgeInsets.all(11.0);
+    List<Widget> buttons = [];
+    SignInButtonBuilder sibGallery = SignInButtonBuilder(
+      text: 'Gallery',
+      innerPadding: padding,
+      fontSize: 25,
+
+      icon: Icons.drafts,
+      onPressed: () {
+        Navigator.pop(context);
+      },
+      backgroundColor: const Color(0xFF3366cc),
+    );
+    buttons.add(sibGallery);
+
+    if (draft.historicalImagePath.contains("ajapaik.ee")) {
+      SignInButtonBuilder sibAjapaik = SignInButtonBuilder(
+        text: 'Ajapaik',
+        fontSize: 25,
+        innerPadding: padding,
+        icon: Icons.cloud_upload,
+        onPressed: () async {
+          if (controller.getSession() == "") {
+            Get.to(DisplayLoginScreen());
+          } else {
+            uploadFile(context);
+            Navigator.pop(context);
+          }
         },
         backgroundColor: const Color(0xFF3366cc),
-      ),
-      if (draft.historicalImagePath.contains("ajapaik.ee"))
-        SignInButtonBuilder(
-          text: 'Ajapaik',
-          fontSize: 25,
-          innerPadding: EdgeInsets.all(11.0),
-          icon: Icons.cloud_upload,
-          onPressed: () async {
-            if (controller.getSession() == "") {
-              Get.to(DisplayLoginScreen());
-            } else {
-              uploadFile(context);
-              Navigator.pop(context);
-            }
-          },
-          backgroundColor: const Color(0xFF3366cc),
-        ),
-/*      SignInButtonBuilder(
+      );
+      buttons.add(sibAjapaik);
+    }
+/*      SignInButtonBuilder sibWiki = SignInButtonBuilder(
         text: 'Wikimedia Commons',
         icon: Icons.cloud_upload,
         onPressed: () {
@@ -144,7 +149,12 @@ class DisplayUploadScreen extends StatelessWidget {
           }
         },
         backgroundColor: const Color(0xFF3366cc),
-      ),*/
-    ]));
+      );
+      buttons.add(sibWiki)
+ */
+
+    Center c = Center(
+        child: Wrap(spacing: 10, runSpacing: 10, children: buttons));
+    return c;
   }
 }
