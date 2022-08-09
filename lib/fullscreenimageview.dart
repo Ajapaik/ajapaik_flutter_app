@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'localization.dart';
 
 class FullScreenImageView extends StatelessWidget {
@@ -11,11 +12,22 @@ class FullScreenImageView extends StatelessWidget {
 
   final String historicalPhotoUri;
 
+  Image getImage(String filename) {
+    Image image;
+    if (kIsWeb == false && File(filename).existsSync()) {
+      image = Image.file(File(filename));
+    } else {
+      image = Image.network(filename);
+    }
+    return image;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text(AppLocalizations.of(context)!.translate('photoManipulation-appbarTitle'),
+            title: Text(AppLocalizations.of(context)!.translate(
+                'photoManipulation-appbarTitle'),
                 style: const TextStyle(
                   fontWeight: FontWeight.w400,
                   fontFamily: 'Roboto',
@@ -25,10 +37,11 @@ class FullScreenImageView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-              Expanded(
-                  child: InAppWebView(
-                      initialUrlRequest:
-                          URLRequest(url: Uri.parse(historicalPhotoUri)))),
-            ])));
+                  Expanded(
+                      child: InteractiveViewer(
+                          child: getImage(historicalPhotoUri)))
+                ])));
   }
 }
+
+
