@@ -20,13 +20,13 @@ class DisplayUploadScreen extends StatelessWidget {
         body: saveToButtons(context));
   }
 
-  generateAjapaikUploadRequest() {
+  generateAjapaikUploadRequest(String sessionid) {
     // TODO: switch to commons upload as requested or by login
     String uploadUri = "https://ajapaik.ee/api/v1/photo/upload/";
 
     var postUri = Uri.parse(uploadUri);
     var request = http.MultipartRequest("POST", postUri);
-    request.headers['Cookie'] = 'sessionid=' + controller.getSession();
+    request.headers['Cookie'] = 'sessionid=' + sessionid;
   //    request.headers['Content-Type']="application/json; charset=UTF-8";
     request.fields['id'] =
     draft.historicalImageId; // Historical photo id in Ajapaik or Finna_url
@@ -44,6 +44,47 @@ class DisplayUploadScreen extends StatelessWidget {
     /* (draft.historicalPhotoFlipped == true)
           ? '1'
           : '0'; // is rephoto flipped, optional*/
+    return request;
+  }
+
+  // TODO: must have proper login to commons so there is sensible session..
+  generateCommonsUploadRequest(String sessionid) {
+    // TODO: check complete url
+    String uploadUri = "https://wikimedia.. ";
+
+    //
+    var postUri = Uri.parse(uploadUri);
+    var request = http.MultipartRequest("POST", postUri);
+    request.headers['Cookie'] = 'sessionid=' + sessionid;
+    /*
+    // does not apply to commons?
+    request.fields['id'] =
+        draft.historicalImageId; // Historical photo id in Ajapaik or Finna_url
+
+     */
+    // TODO: does filename include path or just the name?
+    File f = File(draft.imagePath).;
+    request.fields['filename'] = draft.imagePath;
+    request.fields['filesize'] = f.length().toString();
+
+    //comment, see also text
+    //text
+    //tags
+    //watchlist
+    //watchlistexpiry
+    //ignorewarnings
+    //filekey: previously stashed file
+    //stash: set for temporary storage
+    //file -> actual file data
+    //offset
+    //chunk
+    //async
+    //checkstatus
+    //token
+
+    // TODO: generate other metadata or description from other available information:
+    // check how location and date could be added with the file
+
     return request;
   }
 
@@ -67,7 +108,7 @@ class DisplayUploadScreen extends StatelessWidget {
     // AND user might want to upload to multiple destinations
     // including social media etc. -> may have multiple uploads needed depending on destination
     // or just sharing a link at minimum?
-    var request = generateAjapaikUploadRequest();
+    var request = generateAjapaikUploadRequest(controller.getSession());
 
     var multipart = await http.MultipartFile.fromPath(
         'original', File(draft.imagePath).path);

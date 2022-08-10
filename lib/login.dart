@@ -79,6 +79,8 @@ class DisplayLoginScreen extends StatelessWidget {
   }
 
   Widget logoutButton() {
+    // if (controller.isExpired())
+
     return Center(
         child:  Column(
             mainAxisAlignment: MainAxisAlignment.center,

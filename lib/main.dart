@@ -33,7 +33,6 @@ class MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    print("initstate");
     initDeepLinks();
     super.initState();
   }
@@ -49,7 +48,6 @@ class MyAppState extends State<MyApp> {
     String username = "false";
     String token = uri.queryParameters["token"].toString();
     await controller.doApiLogin(provider, username, token);
-    print("onAppLink");
     await closeInAppWebView();
     Get.back();
   }
