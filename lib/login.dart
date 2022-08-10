@@ -29,7 +29,7 @@ class DisplayLoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text(AppLocalizations.of(context)!.translate('login-appBarTitle'))),
-        body: controller.getSession() == "" ? loginButtons() : logoutButton());
+        body: controller.isExpired() == true ? loginButtons() : logoutButton());
   }
 
   Widget loginButtons() {

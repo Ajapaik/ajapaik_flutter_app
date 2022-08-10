@@ -35,7 +35,7 @@ class ProjectListPageState extends State<ProjectListPage> {
   @override
   Widget build(BuildContext context) {
     (controller.getSession());
-    bool loggedIn = !(controller.getSession() == "");
+    bool loggedIn = !(controller.isExpired());
 
     return Scaffold(
       appBar: AppBar(

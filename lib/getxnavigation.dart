@@ -26,6 +26,15 @@ class Controller extends GetxController {
     return _session;
   }
 
+  // is the session active or not?
+  // TODO: timeout check
+  bool isExpired() {
+    if (getSession() == "") {
+      return true;
+    }
+    return false;
+  }
+
   Future<String> loadSession() async {
     FlutterSecureStorage storage = const FlutterSecureStorage();
     String? s = await storage.read(key: 'session');

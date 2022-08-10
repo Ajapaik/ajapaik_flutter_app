@@ -196,8 +196,7 @@ class AlbumListPageState extends State<AlbumListPage> {
         .of(context)
         .primaryColorLight;
 
-    controller.getSession();
-    bool loggedIn = !(controller.getSession() == "");
+    bool loggedIn = !(controller.isExpired());
 
     return Scaffold(
       appBar: AppBar(

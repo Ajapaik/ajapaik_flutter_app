@@ -21,7 +21,18 @@ class DisplayUploadScreen extends StatelessWidget {
   }
 
   uploadFile(BuildContext context) async {
+    // before uploading, check if user has logged in,
+    // relogin if expired
+
     final controller = Get.put(Controller());
+
+    /* if there is no session user could try to relogin
+    or save data for later when near better connection
+    -> check saving data in caller
+    if (controller.getSession() == "")
+      return;
+
+     */
 
     (draft.historicalImageId);
     ("Upload file Start");
@@ -104,6 +115,10 @@ class DisplayUploadScreen extends StatelessWidget {
   Widget saveToButtons(context) {
     ("saveButtons()");
     (draft.historicalImageId);
+
+    // TODO: saving should be first, only proceed to upload if there is session active
+    // (user near network), otherwise just save the data for later:
+    // also uploading from saved data later..
 
     const EdgeInsets padding = EdgeInsets.all(11.0);
     List<Widget> buttons = [];
