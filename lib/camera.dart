@@ -29,8 +29,8 @@ class TakePictureScreen extends StatefulWidget {
 
 class TakePictureScreenState extends State<TakePictureScreen> {
   // Camera
-  late CameraController _cameraController;
-  Future<void>? _initializeCameraControllerFuture;
+  late CameraController cameraController;
+  Future<void>? initializeCameraControllerFuture;
 
   // Orientation tracking value
   Orientation? lastKnownOrientation;
@@ -51,10 +51,10 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     // catch the error.
     try {
       // Ensure that the camera is initialized.
-      await _initializeCameraControllerFuture;
+      await initializeCameraControllerFuture;
       // Attempt to take a picture and get the file `image`
       // where it was saved.
-      final image = await _cameraController.takePicture();
+      final image = await cameraController.takePicture();
 
       final context = historicalPhotoKey.currentContext!;
       // If the picture was taken, display it on a new screen.
@@ -113,11 +113,11 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
   // Force-sync the camera orientation to the device orientation
   Future<void> setCameraOrientation(orientation) async {
-    await _initializeCameraControllerFuture;
+    await initializeCameraControllerFuture;
     if (orientation == Orientation.portrait) {
-      _cameraController.lockCaptureOrientation(DeviceOrientation.portraitUp);
+      cameraController.lockCaptureOrientation(DeviceOrientation.portraitUp);
     } else {
-      _cameraController
+      cameraController
           .lockCaptureOrientation(DeviceOrientation.landscapeRight);
     }
   }
@@ -197,7 +197,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     super.initState();
     // To display the current output from the Camera,
     // create a CameraController.
-    _cameraController = CameraController(
+    cameraController = CameraController(
         // Get a specific camera from the list of available cameras.
         widget.camera,
 
@@ -207,14 +207,14 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         // Do not ask permission for the audio
         enableAudio: false);
     // Next, initialize the controller. This returns a Future.
-    _initializeCameraControllerFuture = _cameraController.initialize();
+    initializeCameraControllerFuture = cameraController.initialize();
   }
 
   @override
   void dispose() {
     // Dispose of the controller when the widget is disposed.
     print("Dispose");
-    _cameraController.dispose();
+    cameraController.dispose();
 
     SystemChrome.setPreferredOrientations([
       //  DeviceOrientation.landscapeRight,
@@ -264,12 +264,12 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
                     // Camera preview window
                     child: FutureBuilder<void>(
-                      future: _initializeCameraControllerFuture,
+                      future: initializeCameraControllerFuture,
                       builder: (context, snapshot) {
                         /* Initialize camera */
                         if (snapshot.connectionState == ConnectionState.done) {
                           // If the Future is complete, display the preview.
-                          return CameraPreview(_cameraController);
+                          return CameraPreview(cameraController);
                         } else {
                           // Otherwise, display a loading indicator.
                           return const Center(
