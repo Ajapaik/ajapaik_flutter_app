@@ -20,6 +20,33 @@ class DisplayUploadScreen extends StatelessWidget {
         body: saveToButtons(context));
   }
 
+  generateAjapaikUploadRequest() {
+    // TODO: switch to commons upload as requested or by login
+    String uploadUri = "https://ajapaik.ee/api/v1/photo/upload/";
+
+    var postUri = Uri.parse(uploadUri);
+    var request = http.MultipartRequest("POST", postUri);
+    request.headers['Cookie'] = 'sessionid=' + controller.getSession();
+  //    request.headers['Content-Type']="application/json; charset=UTF-8";
+    request.fields['id'] =
+    draft.historicalImageId; // Historical photo id in Ajapaik or Finna_url
+    request.fields['latitude'] = draft.lat.toString(); // optional
+    request.fields['longitude'] = draft.lon.toString(); // optional
+  //    request.fields['accuracy'] = 'blah'; //optional
+  //    request.fields['age'] = 'blah'; // optional, coordinates_age
+    request.fields['date'] =
+    draft.date; //'01-01-1999'; // optional, coordinate_accuracy
+    request.fields['scale'] = draft.scale.toString();
+    request.fields['yaw'] = '0'; // device_yaw
+    request.fields['pitch'] = '0'; // device_pitch
+    request.fields['roll'] = '0'; // device_roll
+    request.fields['flip'] = '0';
+    /* (draft.historicalPhotoFlipped == true)
+          ? '1'
+          : '0'; // is rephoto flipped, optional*/
+    return request;
+  }
+
   uploadFile(BuildContext context) async {
     // before uploading, check if user has logged in,
     // relogin if expired
@@ -28,34 +55,17 @@ class DisplayUploadScreen extends StatelessWidget {
 
     /* if there is no session user could try to relogin
     or save data for later when near better connection
-    -> check saving data in caller
-    if (controller.getSession() == "")
-      return;
-
-     */
+    -> check saving data in caller */
+    if (controller.isExpired()) {
+      return false; // what do we want respond with here?
+    }
 
     (draft.historicalImageId);
     ("Upload file Start");
-    var postUri = Uri.parse("https://ajapaik.ee/api/v1/photo/upload/");
-    var request = http.MultipartRequest("POST", postUri);
-    request.headers['Cookie'] = 'sessionid=' + controller.getSession();
-//    request.headers['Content-Type']="application/json; charset=UTF-8";
-    request.fields['id'] =
-        draft.historicalImageId; // Historical photo id in Ajapaik or Finna_url
-    request.fields['latitude'] = draft.lat.toString(); // optional
-    request.fields['longitude'] = draft.lon.toString(); // optional
-//    request.fields['accuracy'] = 'blah'; //optional
-//    request.fields['age'] = 'blah'; // optional, coordinates_age
-    request.fields['date'] =
-        draft.date; //'01-01-1999'; // optional, coordinate_accuracy
-    request.fields['scale'] = draft.scale.toString();
-    request.fields['yaw'] = '0'; // device_yaw
-    request.fields['pitch'] = '0'; // device_pitch
-    request.fields['roll'] = '0'; // device_roll
-    request.fields['flip'] = '0';
-    /* (draft.historicalPhotoFlipped == true)
-        ? '1'
-        : '0'; // is rephoto flipped, optional*/
+
+    //
+    var request = generateAjapaikUploadRequest();
+
     var multipart = await http.MultipartFile.fromPath(
         'original', File(draft.imagePath).path);
     request.files.add(multipart);
@@ -96,6 +106,8 @@ class DisplayUploadScreen extends StatelessWidget {
               );
             }
 
+            // TODO: parse response to something that we can show to user,
+            // don't use it directly: especially if commons differs from ajapaik
             return response.body;
           });
         })
@@ -142,7 +154,7 @@ class DisplayUploadScreen extends StatelessWidget {
         innerPadding: padding,
         icon: Icons.cloud_upload,
         onPressed: () async {
-          if (controller.getSession() == "") {
+          if (controller.isExpired()) {
             Get.to(DisplayLoginScreen());
           } else {
             uploadFile(context);
@@ -157,7 +169,7 @@ class DisplayUploadScreen extends StatelessWidget {
         text: 'Wikimedia Commons',
         icon: Icons.cloud_upload,
         onPressed: () {
-          if (controller.getSession() == "") {
+          if (controller.isExpired()) {
             Get.to(DisplayLoginScreen());
           } else {
             ("Logged in");
