@@ -12,7 +12,7 @@ class DisplayLoginScreen extends StatelessWidget {
   DisplayLoginScreen({Key? key}) : super(key: key);
 
   void _launchURL(_url) async => await canLaunchUrl(_url)
-      ? await launchUrl(_url)
+      ? await launchUrl(_url, mode: LaunchMode.externalApplication,)
       : throw 'Could not launch $_url';
 
   void doLogin(String provider) {
@@ -46,18 +46,18 @@ class DisplayLoginScreen extends StatelessWidget {
           doLogin("facebook");
         },
       ),
-   /*   SignInButtonBuilder(
+      SignInButtonBuilder(
         text: 'Sign in with Wikimedia',
         icon: FontAwesomeIcons.wikipediaW,
         onPressed: () {
           doLogin("wikimedia-commons");
         },
         backgroundColor: const Color(0xFF3366cc),
-      ),*/
-      SignInButton(
+      ),
+/*      SignInButton(
         Buttons.email,
         onPressed: () {},
-      ),
+      ),*/
     ]));
   }
 
