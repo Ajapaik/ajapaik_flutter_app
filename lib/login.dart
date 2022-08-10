@@ -7,6 +7,9 @@ import 'localization.dart';
 import 'getxnavigation.dart';
 import 'data/user.json.dart';
 
+// TOOD: cleaner handling of logins
+enum LoginProviders { loginGoogle, loginFacebook, loginWikimedia }
+
 class DisplayLoginScreen extends StatelessWidget {
   final controller = Get.put(Controller());
   DisplayLoginScreen({Key? key}) : super(key: key);
@@ -16,6 +19,10 @@ class DisplayLoginScreen extends StatelessWidget {
       : throw 'Could not launch $_url';
 
   void doLogin(String provider) {
+    // TODO: handle different logins without depending on ajapaik-server
+    // when user wants to upload to commons and/or social media
+    // -> don't depend on external server
+
     var nextParam =
         "/accounts/launcher/?token=token&route=route&provider=" + provider;
     var url = "https://ajapaik.ee/accounts/" +
