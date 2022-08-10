@@ -18,6 +18,8 @@ class DisplayLoginScreen extends StatelessWidget {
       ? await launchUrl(_url, mode: LaunchMode.externalApplication,)
       : throw 'Could not launch $_url';
 
+  // note: there is another doApiLogin() in Controller
+  // -> sort out these so there aren't multiple cases..
   void doLogin(String provider) {
     // TODO: handle different logins without depending on ajapaik-server
     // when user wants to upload to commons and/or social media

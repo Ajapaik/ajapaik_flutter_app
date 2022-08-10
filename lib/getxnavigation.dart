@@ -78,6 +78,8 @@ class Controller extends GetxController {
     return _wiki;
   }
 
+  // note: there is another doLogin() in DisplayLoginScreen,
+  // sort these out in a single sensible way so there aren't multiple locations of handling same thing
   Future<bool> doApiLogin(String type, String username, String password) async {
     if (type == 'facebook') {
       type = 'fb';
@@ -113,4 +115,5 @@ class Controller extends GetxController {
       throw Exception('Failed to create album.');
     }
   }
+
 }
