@@ -61,6 +61,8 @@ class DisplayLoginScreen extends StatelessWidget {
         onPressed: () {},
       ),*/
 
+    // TODO: if user wants to upload to social media, possibly other different auth methods as well?
+
     return Center(
         child: Wrap(spacing: 10, runSpacing: 10, children: buttons
     ));

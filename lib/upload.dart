@@ -63,7 +63,10 @@ class DisplayUploadScreen extends StatelessWidget {
     (draft.historicalImageId);
     ("Upload file Start");
 
-    //
+    // TODO: user might want to change destination (ajapaik/commons)
+    // AND user might want to upload to multiple destinations
+    // including social media etc. -> may have multiple uploads needed depending on destination
+    // or just sharing a link at minimum?
     var request = generateAjapaikUploadRequest();
 
     var multipart = await http.MultipartFile.fromPath(
@@ -131,6 +134,9 @@ class DisplayUploadScreen extends StatelessWidget {
     // TODO: saving should be first, only proceed to upload if there is session active
     // (user near network), otherwise just save the data for later:
     // also uploading from saved data later..
+    // -> save first, upload decide where to upload after
+    // -> user might want to upload to social media AND commons or ajapaik
+    // -> not just one destination
 
     const EdgeInsets padding = EdgeInsets.all(11.0);
     List<Widget> buttons = [];
