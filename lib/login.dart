@@ -31,34 +31,37 @@ class DisplayLoginScreen extends StatelessWidget {
         appBar: AppBar(title: Text(AppLocalizations.of(context)!.translate('login-appBarTitle'))),
         body: controller.getSession() == "" ? loginButtons() : logoutButton());
   }
+
   Widget loginButtons() {
-    return Center(
-        child: Wrap(spacing: 10, runSpacing: 10, children: <Widget>[
-      SignInButton(
-        Buttons.google,
-        onPressed: () {
-          doLogin("google");
-        },
-      ),
-      SignInButton(
-        Buttons.facebook,
-        onPressed: () {
-          doLogin("facebook");
-        },
-      ),
-      SignInButtonBuilder(
-        text: 'Sign in with Wikimedia',
-        icon: FontAwesomeIcons.wikipediaW,
-        onPressed: () {
-          doLogin("wikimedia-commons");
-        },
-        backgroundColor: const Color(0xFF3366cc),
-      ),
+    List<Widget> buttons = [];
+    buttons.add(SignInButton(
+      Buttons.google,
+      onPressed: () {
+        doLogin("google");
+      },
+    ));
+    buttons.add(SignInButton(
+      Buttons.facebook,
+      onPressed: () {
+        doLogin("facebook");
+      },
+    ));
+    buttons.add(SignInButtonBuilder(
+      text: 'Sign in with Wikimedia',
+      icon: FontAwesomeIcons.wikipediaW,
+      onPressed: () {
+        doLogin("wikimedia-commons");
+      },
+      backgroundColor: const Color(0xFF3366cc),
+    ));
 /*      SignInButton(
         Buttons.email,
         onPressed: () {},
       ),*/
-    ]));
+
+    return Center(
+        child: Wrap(spacing: 10, runSpacing: 10, children: buttons
+    ));
   }
 
   Widget logoutButton() {
