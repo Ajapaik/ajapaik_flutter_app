@@ -7,7 +7,8 @@ import 'data/user.json.dart';
 // TOOD: cleaner handling of logins
 enum LoginProviders { loginGoogle, loginFacebook, loginWikimedia }
 
-enum ServerType { serverAjapaik, serverAjapaikStaging, serverWikimedia }
+// note: may work in standalone until user decides to login -> keep none until known
+enum ServerType { serverNone, serverAjapaik, serverAjapaikStaging, serverWikimedia }
 
 class Controller extends GetxController {
   String _session = "";
@@ -15,7 +16,7 @@ class Controller extends GetxController {
   bool _wiki = false;
 
   // TODO: we need to determine somehow where user wants to login & upload..
-  //ServerType? server;
+  ServerType server = ServerType.serverNone;
 
   var count = 0;
 
@@ -86,28 +87,34 @@ class Controller extends GetxController {
     return _wiki;
   }
 
-  String getLoginUri(ServerType type) {
-    if (type == ServerType.serverAjapaik) {
+  // TODO: determine where user wants to login or upload first
+  //
+  void setServer(ServerType type) {
+    server = type;
+  }
+
+  String getLoginUri() {
+    if (server == ServerType.serverAjapaik) {
       return "https://ajapaik.ee/api/v1/login/";
     }
-    else if (type == ServerType.serverAjapaikStaging) {
+    else if (server == ServerType.serverAjapaikStaging) {
       return "https://staging.ajapaik.ee/api/v1/login/";
     }
-    else if (type == ServerType.serverWikimedia) {
+    else if (server == ServerType.serverWikimedia) {
       return "https://commons.wikimedia..";
     }
     // or throw "not yet implemented"
     return "";
   }
   // we need to have session for the same place we are expected to be uploading to but uri can be different..
-  String getUploadUri(ServerType type) {
-    if (type == ServerType.serverAjapaik) {
+  String getUploadUri() {
+    if (server == ServerType.serverAjapaik) {
       return "https://ajapaik.ee/api/v1/photo/upload/";
     }
-    else if (type == ServerType.serverAjapaikStaging) {
+    else if (server == ServerType.serverAjapaikStaging) {
       return "https://staging.ajapaik.ee/api/v1";
     }
-    else if (type == ServerType.serverWikimedia) {
+    else if (server == ServerType.serverWikimedia) {
       return "https://commons.wikimedia..";
     }
     // or throw "not yet implemented"
@@ -131,7 +138,7 @@ class Controller extends GetxController {
     });
     (body);
 
-    var url = Uri.parse(getLoginUri(ServerType.serverAjapaik));
+    var url = Uri.parse(getLoginUri());
     final http.Response response = await http.post(
       url,
       headers: <String, String>{

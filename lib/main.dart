@@ -47,6 +47,14 @@ class MyAppState extends State<MyApp> {
     String provider = uri.queryParameters["provider"].toString();
     String username = "false";
     String token = uri.queryParameters["token"].toString();
+
+    // TODO: determine from user somehow what is wanted..
+    // we may need different instances at same time if user wants
+    // to upload to social media and commons at same time
+    // -> need to improve handling of sessions for that
+    //
+    // for now, expect this: change later
+    controller.setServer(ServerType.serverAjapaik);
     await controller.doApiLogin(provider, username, token);
     await closeInAppWebView();
     Get.back();
