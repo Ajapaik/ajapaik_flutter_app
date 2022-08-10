@@ -7,10 +7,15 @@ import 'data/user.json.dart';
 // TOOD: cleaner handling of logins
 enum LoginProviders { loginGoogle, loginFacebook, loginWikimedia }
 
+enum ServerType { serverAjapaik, serverAjapaikStaging, serverWikimedia }
+
 class Controller extends GetxController {
   String _session = "";
   String _username = "";
   bool _wiki = false;
+
+  // TODO: we need to determine somehow where user wants to login & upload..
+  //ServerType? server;
 
   var count = 0;
 
@@ -81,6 +86,35 @@ class Controller extends GetxController {
     return _wiki;
   }
 
+  String getLoginUri(ServerType type) {
+    if (type == ServerType.serverAjapaik) {
+      return "https://ajapaik.ee/api/v1/login/";
+    }
+    else if (type == ServerType.serverAjapaikStaging) {
+      return "https://staging.ajapaik.ee/api/v1/login/";
+    }
+    else if (type == ServerType.serverWikimedia) {
+      return "https://commons.wikimedia..";
+    }
+    // or throw "not yet implemented"
+    return "";
+  }
+  // we need to have session for the same place we are expected to be uploading to but uri can be different..
+  String getUploadUri(ServerType type) {
+    if (type == ServerType.serverAjapaik) {
+      return "https://ajapaik.ee/api/v1/photo/upload/";
+    }
+    else if (type == ServerType.serverAjapaikStaging) {
+      return "https://staging.ajapaik.ee/api/v1";
+    }
+    else if (type == ServerType.serverWikimedia) {
+      return "https://commons.wikimedia..";
+    }
+    // or throw "not yet implemented"
+    return "";
+  }
+
+  // TODO: handle different types in caller too somehow
   // note: there is another doLogin() in DisplayLoginScreen,
   // sort these out in a single sensible way so there aren't multiple locations of handling same thing
   Future<bool> doApiLogin(String type, String username, String password) async {
@@ -97,7 +131,7 @@ class Controller extends GetxController {
     });
     (body);
 
-    var url = Uri.parse("https://ajapaik.ee/api/v1/login/");
+    var url = Uri.parse(getLoginUri(ServerType.serverAjapaik));
     final http.Response response = await http.post(
       url,
       headers: <String, String>{

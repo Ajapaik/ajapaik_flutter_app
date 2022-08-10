@@ -20,9 +20,9 @@ class DisplayUploadScreen extends StatelessWidget {
         body: saveToButtons(context));
   }
 
-  generateAjapaikUploadRequest(String sessionid) {
+  generateAjapaikUploadRequest(String sessionid, String uploadUri) {
     // TODO: switch to commons upload as requested or by login
-    String uploadUri = "https://ajapaik.ee/api/v1/photo/upload/";
+    //String uploadUri = "https://ajapaik.ee/api/v1/photo/upload/";
 
     var postUri = Uri.parse(uploadUri);
     var request = http.MultipartRequest("POST", postUri);
@@ -48,9 +48,10 @@ class DisplayUploadScreen extends StatelessWidget {
   }
 
   // TODO: must have proper login to commons so there is sensible session..
-  generateCommonsUploadRequest(String sessionid) {
+  generateCommonsUploadRequest(String sessionid, String uploadUri) {
     // TODO: check complete url
-    String uploadUri = "https://wikimedia.. ";
+    //String uploadUri = "https://wikimedia.. ";
+    //String uploadUri = "https://staging.ajapaik.ee/api/v1";
 
     //
     var postUri = Uri.parse(uploadUri);
@@ -63,7 +64,7 @@ class DisplayUploadScreen extends StatelessWidget {
 
      */
     // TODO: does filename include path or just the name?
-    File f = File(draft.imagePath).;
+    File f = File(draft.imagePath);
     request.fields['filename'] = draft.imagePath;
     request.fields['filesize'] = f.length().toString();
 
@@ -108,7 +109,8 @@ class DisplayUploadScreen extends StatelessWidget {
     // AND user might want to upload to multiple destinations
     // including social media etc. -> may have multiple uploads needed depending on destination
     // or just sharing a link at minimum?
-    var request = generateAjapaikUploadRequest(controller.getSession());
+    var request = generateAjapaikUploadRequest(controller.getSession(),
+                      controller.getUploadUri(ServerType.serverAjapaik));
 
     var multipart = await http.MultipartFile.fromPath(
         'original', File(draft.imagePath).path);
