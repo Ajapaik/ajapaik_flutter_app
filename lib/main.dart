@@ -27,6 +27,10 @@ class MyAppState extends State<MyApp> {
   StreamSubscription<Uri>? _linkSubscription;
   final controller = Get.put(Controller());
 
+  // TODO: first url would be different when using commons?
+  // -> what is the default in future versions?
+  var firstUrl="https://ajapaik.toolforge.org/api/ajapaiknearest.php?search=&limit=100&orderby=alpha&orderdirection=desc";
+
   @override
   void initState() {
     print("initstate");
@@ -63,7 +67,6 @@ class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     const appTitle = 'Nearest';
-    var firstUrl="https://ajapaik.toolforge.org/api/ajapaiknearest.php?search=&limit=100&orderby=alpha&orderdirection=desc";
 
     GetMaterialApp gma = GetMaterialApp(
       supportedLocales: const [

@@ -4,6 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'data/user.json.dart';
 
+// TOOD: cleaner handling of logins
+enum LoginProviders { loginGoogle, loginFacebook, loginWikimedia }
+
 class Controller extends GetxController {
   String _session = "";
   String _username = "";
@@ -47,7 +50,7 @@ class Controller extends GetxController {
         _session="";
         setSession(_session);
       }
-    } else if (_session != "") {
+    } else if (isExpired() == false) {
       await logout();
     }
     ("session: " + _session);
