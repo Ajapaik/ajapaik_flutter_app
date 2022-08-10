@@ -33,6 +33,8 @@ class DisplayLoginScreen extends StatelessWidget {
   }
 
   Widget loginButtons() {
+    // buttons could be constants built in constructor, there is nothing here that changes?
+    // also OAuth and other options -> needs to handle more cases than just these
     List<Widget> buttons = [];
     buttons.add(SignInButton(
       Buttons.google,
