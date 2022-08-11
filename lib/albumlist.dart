@@ -38,7 +38,6 @@ class AlbumListPageState extends State<AlbumListPage> {
   bool searchDialogVisible = false;
   bool filterBoxOn = false;
   bool pullDownRefreshDone=true;
-  final myController = TextEditingController();
   final searchController = TextEditingController();
   final controller = Get.put(SessionController());
 
