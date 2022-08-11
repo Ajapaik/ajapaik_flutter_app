@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:get/get.dart';
 
 import 'localization.dart';
 
@@ -24,26 +25,9 @@ class Map extends StatefulWidget {
 }
 
 class MapState extends State<Map> {
-  double userLatitudeData = 0;
-  double userLongitudeData = 0;
   late final MapController mapController;
   StreamSubscription<Position>? _positionStream;
-
-
-
-  void getCurrentLocation() async {
-    bool isEnabled = await AppLocator().verifyService();
-    if (isEnabled == false) {
-      return;
-    }
-
-    var geoPosition = await AppLocator().determinePosition();
-
-    setState(() {
-      userLatitudeData = geoPosition.latitude;
-      userLongitudeData = geoPosition.longitude;
-    });
-  }
+  final locator = Get.put(AppLocator());
 
   void listenCurrentLocation(){
 
@@ -55,9 +39,9 @@ class MapState extends State<Map> {
     _positionStream = Geolocator.getPositionStream(
         locationSettings: locationSettings).listen((Position geoPosition)
     {
-      if (geoPosition.latitude != userLatitudeData &&
-          geoPosition.longitude != userLongitudeData) {
-        return getCurrentLocation();
+      if (geoPosition.latitude != locator.getLatitude() &&
+          geoPosition.longitude != locator.getLongitude()) {
+        locator.updatePosition();
       }
     });
   }
@@ -108,7 +92,7 @@ class MapState extends State<Map> {
                                     width: 80.0,
                                     height: 80.0,
                                     point: LatLng(
-                                        userLatitudeData, userLongitudeData),
+                                        locator.getLatitude(), locator.getLongitude()),
                                     builder: (ctx) => const Icon(
                                         Icons.location_pin,
                                         color: Colors.blue)),
@@ -143,14 +127,18 @@ class MapState extends State<Map> {
   }
 
   Widget _buildFlutterMap(BuildContext context, snapshot) {
+    double imageLatitude = locator.getLatitude();
+    double imageLongitude = locator.getLongitude();
     if (snapshot.hasData) {
-      userLatitudeData = snapshot.data.latitude;
-      userLongitudeData = snapshot.data.longitude;
+      imageLatitude = snapshot.data.latitude;
+      imageLongitude = snapshot.data.longitude;
     }
+    LatLng imgLatLng = LatLng(imageLatitude, imageLongitude);
+    LatLng wdgLatLong = LatLng(widget.imageLatitude, widget.imageLongitude);
     return FlutterMap(
         mapController: mapController,
         options: MapOptions(
-          bounds: LatLngBounds(LatLng(widget.imageLatitude, widget.imageLongitude), LatLng(userLatitudeData, userLongitudeData)),
+          bounds: LatLngBounds(wdgLatLong, imgLatLng),
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
           zoom: 17.0,
           minZoom: 2.5,
@@ -167,7 +155,7 @@ class MapState extends State<Map> {
             Marker(
                 width: 80.0,
                 height: 80.0,
-                point: LatLng(userLatitudeData, userLongitudeData),
+                point: imgLatLng,
                 builder: (ctx) =>
                     const Icon(Icons.location_pin, color: Colors.blue)),
           ]),
@@ -175,7 +163,7 @@ class MapState extends State<Map> {
             Marker(
                 width: 80.0,
                 height: 80.0,
-                point: LatLng(widget.imageLatitude, widget.imageLongitude),
+                point: wdgLatLong,
                 builder: (ctx) =>
                     const Icon(Icons.location_pin, color: Colors.red)),
           ])
