@@ -104,16 +104,6 @@ class PhotoviewState extends State<Photoview> {
     });
   }
 
-  void _launchTIFY() async {
-    Uri url = Uri.parse(
-        'https://demo.tify.rocks/demo.html?manifest=https://ajapaik.ee/photo/199152/v2/manifest.json&tify={%22panX%22:0.5,%22panY%22:0.375,%22view%22:%22info%22,%22zoom%22:0.001}');
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
   void _launchInfo() async {
     Uri url = Uri.parse(widget.historicalSurl);
     if (await canLaunchUrl(url)) {
@@ -208,9 +198,6 @@ class PhotoviewState extends State<Photoview> {
                   if (result == 1) {
                     _launchInfo();
                   }
-                  /*  if (result == 2) {
-                    _launchTIFY();
-                  }*/
                   if (result == 3) {
                     _openImageMapScreen();
                   }
