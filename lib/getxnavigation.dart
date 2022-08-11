@@ -104,7 +104,8 @@ class Controller extends GetxController {
       return "https://staging.ajapaik.ee/api/v1/login/";
     }
     else if (server == ServerType.serverWikimedia) {
-      return "https://commons.wikimedia..";
+      // TODO: get right url for login (also see provider handling)
+      return "https://commons.wikimedia.beta.wmflabs.org";
     }
     // or throw "not yet implemented"
     return "";
@@ -118,7 +119,8 @@ class Controller extends GetxController {
       return "https://staging.ajapaik.ee/api/v1";
     }
     else if (server == ServerType.serverWikimedia) {
-      return "https://commons.wikimedia..";
+      // TODO: get right url for upload
+      return "https://commons.wikimedia.beta.wmflabs.org";
     }
     // or throw "not yet implemented"
     return "";
