@@ -192,9 +192,12 @@ class Properties {
 Future<String> addLocationToUrl(String url,
     {double? latitude, double? longitude}) async {
   if (latitude == null || latitude == 0 || longitude == null || longitude == 0) {
-    Position position = await determinePosition();
-    latitude = position.latitude;
-    longitude = position.longitude;
+    bool isEnabled = await AppLocator().verifyService();
+    if (isEnabled == true) {
+      Position position = await AppLocator().determinePosition();
+      latitude = position.latitude;
+      longitude = position.longitude;
+    }
   }
   if (url.contains("__LAT__")) {
     url = url.replaceFirst("__LAT__", latitude.toString());
