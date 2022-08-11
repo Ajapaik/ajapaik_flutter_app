@@ -46,6 +46,7 @@ class DisplayPictureScreen extends StatefulWidget {
 class DisplayPictureScreenState extends State<DisplayPictureScreen>
     with TickerProviderStateMixin {
   final controller = Get.put(SessionController());
+  final locator = Get.put(AppLocator());
   GlobalKey cameraPhotoKey = GlobalKey();
   double oldCenterX = 0;
   double oldCenterY = 0;
@@ -106,6 +107,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
       }
        */
     await GallerySaver.saveImage(widget.imagePath.toString());
+
     DateTime now = DateTime.now();
     String convertedDateTime =
         now.day.toString().padLeft(2, '0') +
@@ -115,13 +117,8 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
             now.year.toString();
 
     // location may be disallowed but save photo still
-    bool isEnabled = await AppLocator().verifyService();
-    Position pos;
-    if (isEnabled == true) {
-      pos = await AppLocator().determinePosition();
-    } else {
-      pos = await AppLocator().getFallbackPosition();
-    }
+    await locator.updatePosition();
+
     ("Flipped");
     (widget.historicalPhotoFlipped);
     Draft draft = Draft(
@@ -132,8 +129,8 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
       widget.historicalPhotoFlipped! == true,
       convertedDateTime,
       widget.historicalPhotoScale ?? 1,
-      pos.longitude,
-      pos.latitude,
+      locator.getLongitude(),
+      locator.getLatitude(),
       -1,
       -1,
       false,

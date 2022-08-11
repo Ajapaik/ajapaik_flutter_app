@@ -8,6 +8,9 @@ class AppLocator extends Geolocator  {
   double latitudePos = 0;
   double longitudePos = 0;
 
+  //TODO: also keep accuracy
+  //LocationAccuracyStatus accuracy;
+
   double getLatitude() {
     return latitudePos;
   }
@@ -27,6 +30,20 @@ class AppLocator extends Geolocator  {
     return serviceEnabled;
   }
    */
+
+  Future<bool> updatePosition() async {
+    bool isEnabled = await verifyService();
+    if (isEnabled == true) {
+      Position pos = await determinePosition();
+      latitudePos = pos.latitude;
+      longitudePos = pos.longitude;
+
+      // also keep accuracy
+      //LocationAccuracyStatus las = await determineAccuracy();
+      return true;
+    }
+    return false;
+  }
 
   Future<bool> verifyService() async {
     LocationPermission permission;

@@ -22,6 +22,7 @@ import 'fullscreenimageview.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
 
 class Photoview extends StatefulWidget {
   final String historicalPhotoId;
@@ -56,11 +57,10 @@ class PhotoviewState extends State<Photoview> {
   bool boolValue = true;
   bool mapInfoVisibility = false;
   bool newMapInfoValue = true;
-  double userLatitude = 0;
-  double userLongitude = 0;
   double imageLatitude = 0;
   double imageLongitude = 0;
   StreamSubscription<Position>? _positionStream;
+  final locator = Get.put(AppLocator());
 
   _getTooltipValue() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -113,6 +113,7 @@ class PhotoviewState extends State<Photoview> {
     }
   }
 
+  /*
   void getCurrentLocation() async {
     bool isEnabled = await AppLocator().verifyService();
     if (isEnabled == false) {
@@ -126,7 +127,9 @@ class PhotoviewState extends State<Photoview> {
       userLongitude = geoPosition.longitude;
     });
   }
+  */
 
+  /*
   void listenCurrentLocation() {
     LocationSettings locationSettings = const LocationSettings(
         accuracy: LocationAccuracy.best,
@@ -135,12 +138,13 @@ class PhotoviewState extends State<Photoview> {
     _positionStream =
         Geolocator.getPositionStream(locationSettings: locationSettings)
             .listen((Position geoPosition) {
-      if (geoPosition.latitude != userLatitude &&
-          geoPosition.longitude != userLongitude) {
-        return getCurrentLocation();
+      if (geoPosition.latitude != locator.getLatitude() &&
+          geoPosition.longitude != locator.getLongitude()) {
+        locator.updatePosition();
       }
     });
   }
+  */
 
   @override
   void initState() {
@@ -148,8 +152,7 @@ class PhotoviewState extends State<Photoview> {
       imageLatitude = widget.historicalCoordinates.coordinates[0];
       imageLongitude = widget.historicalCoordinates.coordinates[1];
     }
-//    listenCurrentLocation();
-    getCurrentLocation();
+    locator.updatePosition();
     mapInfoVisibility = false;
     _saveMapInfoBool();
     getMapInfoValue();
@@ -283,10 +286,10 @@ class PhotoviewState extends State<Photoview> {
 
     if (imageLatitude != 0 &&
         imageLongitude != 0 &&
-        userLatitude != 0 &&
-        userLongitude != 0) {
+        locator.getLatitude() != 0 &&
+        locator.getLongitude() != 0) {
       double distance = Geolocator.distanceBetween(
-          userLatitude, userLongitude, imageLatitude, imageLongitude);
+          locator.getLatitude(), locator.getLongitude(), imageLatitude, imageLongitude);
       double calcDistance = distance / 1000;
 
       if (distance >= 1000) {
@@ -524,11 +527,11 @@ class PhotoviewState extends State<Photoview> {
   Widget _buildFlutterMap() {
     List<Marker> markerList = [];
 
-    if (userLatitude != 0 && userLongitude != 0) {
+    if (locator.getLatitude() != 0 && locator.getLongitude() != 0) {
       Marker userMarker = Marker(
           width: 80.0,
           height: 80.0,
-          point: LatLng(userLatitude, userLongitude),
+          point: LatLng(locator.getLatitude(), locator.getLongitude()),
           builder: (ctx) => const Icon(Icons.location_pin, color: Colors.blue));
       markerList.add(userMarker);
     }
@@ -545,7 +548,7 @@ class PhotoviewState extends State<Photoview> {
     return FlutterMap(
         options: MapOptions(
           bounds: LatLngBounds(LatLng(imageLatitude, imageLongitude),
-              LatLng(userLatitude, userLongitude)),
+              LatLng(locator.getLatitude(), locator.getLongitude())),
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
           zoom: 17.0,
           boundsOptions: const FitBoundsOptions(
