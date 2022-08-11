@@ -84,6 +84,21 @@ class DisplayUploadScreen extends StatelessWidget {
     return request;
   }
 
+  generateUploadRequest(Controller controller) {
+    if (controller.getServer() == ServerType.serverAjapaik) {
+      return generateAjapaikUploadRequest(controller.getSession(),
+          controller.getUploadUri());
+    }/*
+    else if (controller.getServer() == ServerType.serverAjapaikStaging) {
+
+    }*/
+    else if (controller.getServer() == ServerType.serverWikimedia) {
+      return generateCommonsUploadRequest(controller.getSession(),
+          controller.getUploadUri());
+    }
+    return null;
+  }
+
   uploadFile(BuildContext context) async {
     // before uploading, check if user has logged in,
     // relogin if expired
@@ -92,7 +107,9 @@ class DisplayUploadScreen extends StatelessWidget {
 
     /* if there is no session user could try to relogin
     or save data for later when near better connection
-    -> check saving data in caller */
+       -> check saving data in caller
+    TODO: ask for login (in caller) ?
+    */
     if (controller.isExpired()) {
       return false; // what do we want respond with here?
     }
@@ -108,8 +125,11 @@ class DisplayUploadScreen extends StatelessWidget {
     // -> may need to login now if was in standalone before
     // -> may need multiple session for different uploads
     // etc.
-    var request = generateAjapaikUploadRequest(controller.getSession(),
-                      controller.getUploadUri());
+    var request = GenerateUploadRequest(controller);
+    if (request == null) {
+      // destination not yet implemented
+      return false;
+    }
 
     var multipart = await http.MultipartFile.fromPath(
         'original', File(draft.imagePath).path);

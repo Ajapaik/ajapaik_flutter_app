@@ -92,6 +92,9 @@ class Controller extends GetxController {
   void setServer(ServerType type) {
     server = type;
   }
+  ServerType getServer() {
+    return server;
+  }
 
   String getLoginUri() {
     if (server == ServerType.serverAjapaik) {
