@@ -7,6 +7,7 @@ class AppLocator extends Geolocator  {
   // note: should use Position directly instead of "unpacking" to separate variables..
   double latitudePos = 0;
   double longitudePos = 0;
+  bool isInitialized = false;
 
   //TODO: also keep accuracy
   //LocationAccuracyStatus accuracy;
@@ -18,18 +19,15 @@ class AppLocator extends Geolocator  {
     return longitudePos;
   }
 
+  // just make sure we hav other values apart from initial position?
+  void init() {
+    updatePosition();
+    isInitialized = true;
+  }
+
+
   // TODO: if we want to track position automatically, add something like timer
   // so that we don't flood everything with requests by mistake..
-
-  /*
-
-  bool serviceEnabled = false;
-
-  // if we decide to cache the result..
-  bool isEnabled() {
-    return serviceEnabled;
-  }
-   */
 
   Future<bool> updatePosition() async {
     bool isEnabled = await verifyService();
@@ -42,6 +40,7 @@ class AppLocator extends Geolocator  {
       //LocationAccuracyStatus las = await determineAccuracy();
       return true;
     }
+    print("location service not enabled");
     return false;
   }
 

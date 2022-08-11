@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:ajapaik_flutter_app/localization.dart';
+import 'package:ajapaik_flutter_app/services/geolocation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -26,6 +27,7 @@ class MyAppState extends State<MyApp> {
   late AppLinks _appLinks;
   StreamSubscription<Uri>? _linkSubscription;
   final controller = Get.put(SessionController());
+  final locator = Get.put(AppLocator());
 
   // TODO: first url would be different when using commons?
   // -> what is the default in future versions?
@@ -34,6 +36,7 @@ class MyAppState extends State<MyApp> {
   @override
   void initState() {
     initDeepLinks();
+    locator.init();
     super.initState();
   }
 
