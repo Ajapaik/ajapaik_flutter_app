@@ -12,6 +12,9 @@ class AppLocator extends Geolocator  {
   //TODO: also keep accuracy
   //LocationAccuracyStatus accuracy;
 
+  // TODO: force user-selected position when not available otherwise?
+  // -> prevent overwriting by repeated calls later
+
   double getLatitude() {
     return latitudePos;
   }
