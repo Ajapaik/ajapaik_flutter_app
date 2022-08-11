@@ -8,7 +8,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:get/get.dart';
-import 'getxnavigation.dart';
+import 'sessioncontroller.dart';
 import 'data/draft.json.dart';
 import 'package:image/image.dart' as img;
 

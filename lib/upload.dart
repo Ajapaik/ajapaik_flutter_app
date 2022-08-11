@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sign_in_button/sign_in_button.dart';
-import 'getxnavigation.dart';
+import 'sessioncontroller.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'data/draft.json.dart';

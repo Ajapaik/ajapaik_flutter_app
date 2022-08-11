@@ -4,7 +4,7 @@ import 'package:sign_in_button/sign_in_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
 import 'localization.dart';
-import 'getxnavigation.dart';
+import 'sessioncontroller.dart';
 import 'data/user.json.dart';
 
 // TOOD: cleaner handling of logins

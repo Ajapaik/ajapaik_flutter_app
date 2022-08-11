@@ -6,7 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'albumlist.dart';
 import 'package:app_links/app_links.dart';
 import 'package:get/get.dart';
-import 'getxnavigation.dart';
+import 'sessioncontroller.dart';
 import 'localization.dart';
 
 void main()  {

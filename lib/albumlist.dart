@@ -7,7 +7,7 @@ import 'package:ajapaik_flutter_app/data/album.geojson.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'localization.dart';
-import 'getxnavigation.dart';
+import 'sessioncontroller.dart';
 import 'package:get/get.dart';
 import 'localfileselect.dart';
 import 'login.dart';

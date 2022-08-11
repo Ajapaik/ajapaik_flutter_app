@@ -7,7 +7,7 @@ import 'localization.dart';
 import 'localfileselect.dart';
 import 'login.dart';
 import 'package:get/get.dart';
-import 'getxnavigation.dart';
+import 'sessioncontroller.dart';
 
 class ProjectListPage extends StatefulWidget {
   final String? title;
