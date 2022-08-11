@@ -14,7 +14,7 @@ void main()  {
 }
 
 class MyApp extends StatefulWidget {
-  final controller = Get.put(Controller());
+  final controller = Get.put(SessionController());
 
   MyApp({Key? key}) : super(key: key);
 
@@ -25,7 +25,7 @@ class MyApp extends StatefulWidget {
 class MyAppState extends State<MyApp> {
   late AppLinks _appLinks;
   StreamSubscription<Uri>? _linkSubscription;
-  final controller = Get.put(Controller());
+  final controller = Get.put(SessionController());
 
   // TODO: first url would be different when using commons?
   // -> what is the default in future versions?

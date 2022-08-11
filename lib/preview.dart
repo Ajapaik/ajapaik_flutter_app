@@ -45,7 +45,7 @@ class DisplayPictureScreen extends StatefulWidget {
 
 class DisplayPictureScreenState extends State<DisplayPictureScreen>
     with TickerProviderStateMixin {
-  final controller = Get.put(Controller());
+  final controller = Get.put(SessionController());
   GlobalKey cameraPhotoKey = GlobalKey();
   double oldCenterX = 0;
   double oldCenterY = 0;

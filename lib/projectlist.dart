@@ -20,7 +20,7 @@ class ProjectListPage extends StatefulWidget {
 
 class ProjectListPageState extends State<ProjectListPage> {
   final String? title = "Rephoto projects";
-  final controller = Get.put(Controller());
+  final controller = Get.put(SessionController());
 
   @override
   void initState() {

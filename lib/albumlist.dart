@@ -16,7 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class AlbumListPage extends StatefulWidget {
-  final controller = Get.put(Controller());
+  final controller = Get.put(SessionController());
 
   String pageTitle = "";
   String dataSourceUrl = "";
@@ -42,7 +42,7 @@ class AlbumListPageState extends State<AlbumListPage> {
   double userLongitudeData = 0;
   final myController = TextEditingController();
   final searchController = TextEditingController();
-  final controller = Get.put(Controller());
+  final controller = Get.put(SessionController());
 
   Future<List<Album>>? _albumData;
 

@@ -10,7 +10,7 @@ enum LoginProviders { loginGoogle, loginFacebook, loginWikimedia }
 // note: may work in standalone until user decides to login -> keep none until known
 enum ServerType { serverNone, serverAjapaik, serverAjapaikStaging, serverWikimedia }
 
-class Controller extends GetxController {
+class SessionController extends GetxController {
   String _session = "";
   String _username = "";
   bool _wiki = false;

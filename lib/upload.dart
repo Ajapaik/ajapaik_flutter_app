@@ -8,7 +8,7 @@ import 'data/draft.json.dart';
 import 'login.dart';
 
 class DisplayUploadScreen extends StatelessWidget {
-  final controller = Get.put(Controller());
+  final controller = Get.put(SessionController());
   final Draft draft;
 
   DisplayUploadScreen({Key? key, required this.draft}) : super(key: key);
@@ -84,7 +84,7 @@ class DisplayUploadScreen extends StatelessWidget {
     return request;
   }
 
-  generateUploadRequest(Controller controller) {
+  generateUploadRequest(SessionController controller) {
     if (controller.getServer() == ServerType.serverAjapaik) {
       return generateAjapaikUploadRequest(controller.getSession(),
           controller.getUploadUri());
@@ -103,7 +103,7 @@ class DisplayUploadScreen extends StatelessWidget {
     // before uploading, check if user has logged in,
     // relogin if expired
 
-    final controller = Get.put(Controller());
+    final controller = Get.put(SessionController());
 
     /* if there is no session user could try to relogin
     or save data for later when near better connection
