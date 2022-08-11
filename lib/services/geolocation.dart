@@ -50,6 +50,17 @@ class AppLocator extends Geolocator  {
     return true;
   }
 
+  // get real position (if enabled) or fall back to alternate:
+  // determine callers how situation really should be handled
+  Future<Position> getPositionOrFallback() async {
+    bool isEnabled = await verifyService();
+    if (isEnabled == true) {
+      return determinePosition();
+    }
+    return getFallbackPosition();
+  }
+
+
   Future<Position> getFallbackPosition() async {
     Position position=Position.fromMap({'latitude': 60, 'longitude': 24});
     return Future.value(position);
