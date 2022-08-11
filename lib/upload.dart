@@ -125,7 +125,7 @@ class DisplayUploadScreen extends StatelessWidget {
     // -> may need to login now if was in standalone before
     // -> may need multiple session for different uploads
     // etc.
-    var request = GenerateUploadRequest(controller);
+    var request = generateUploadRequest(controller);
     if (request == null) {
       // destination not yet implemented
       return false;
@@ -233,20 +233,21 @@ class DisplayUploadScreen extends StatelessWidget {
       );
       buttons.add(sibAjapaik);
     }
-/*      SignInButtonBuilder sibWiki = SignInButtonBuilder(
-        text: 'Wikimedia Commons',
-        icon: Icons.cloud_upload,
-        onPressed: () {
-          if (controller.isExpired()) {
-            Get.to(DisplayLoginScreen());
-          } else {
-            ("Logged in");
-          }
-        },
-        backgroundColor: const Color(0xFF3366cc),
-      );
-      buttons.add(sibWiki)
- */
+    SignInButtonBuilder sibWiki = SignInButtonBuilder(
+      text: 'Wikimedia Commons',
+      icon: Icons.cloud_upload,
+      onPressed: () {
+        if (controller.isExpired()) {
+          Get.to(DisplayLoginScreen());
+        } else {
+          ("Logged in");
+          uploadFile(context);
+          Navigator.pop(context);
+        }
+      },
+      backgroundColor: const Color(0xFF3366cc),
+    );
+    buttons.add(sibWiki);
 
     Center c = Center(
         child: Wrap(spacing: 10, runSpacing: 10, children: buttons));
