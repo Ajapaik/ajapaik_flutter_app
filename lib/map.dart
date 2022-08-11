@@ -32,7 +32,12 @@ class MapState extends State<Map> {
 
 
   void getCurrentLocation() async {
-    var geoPosition = await determinePosition();
+    bool isEnabled = await AppLocator().verifyService();
+    if (isEnabled == false) {
+      return;
+    }
+
+    var geoPosition = await AppLocator().determinePosition();
 
     setState(() {
       userLatitudeData = geoPosition.latitude;
@@ -77,7 +82,7 @@ class MapState extends State<Map> {
       body: Stack(children: [
         Positioned(
             child: FutureBuilder(
-                future: determinePosition(),
+                future: AppLocator().determinePosition(),
                 builder:
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.hasError) (snapshot.error);

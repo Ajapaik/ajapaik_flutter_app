@@ -64,6 +64,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
     super.initState();
   }
 */
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,35 +83,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
                   // Take photo button
                   child: ElevatedButton(
                     onPressed: () async {
-                      await GallerySaver.saveImage(widget.imagePath.toString());
-                      DateTime now = DateTime.now();
-                      String convertedDateTime =
-                          now.day.toString().padLeft(2, '0') +
-                              "-" +
-                              now.month.toString().padLeft(2, '0') +
-                              "-" +
-                              now.year.toString();
-                      Position position = await determinePosition();
-                      ("Flipped");
-                      (widget.historicalPhotoFlipped);
-                      Draft draft = Draft(
-                        "",
-                        widget.imagePath,
-                        widget.historicalImagePath,
-                        widget.historicalImageId,
-                        widget.historicalPhotoFlipped! == true,
-                        convertedDateTime,
-                        widget.historicalPhotoScale ?? 1,
-                        position.longitude,
-                        position.latitude,
-                        -1,
-                        -1,
-                        false,
-                      );
-
-                      // Close preview and cameraview by going two steps back
-                      Navigator.pop(context);
-                      Navigator.pop(context, draft);
+                      onTakePhotoButton();
                     },
                     child: const Icon(Icons.check),
                   )),
@@ -123,6 +96,55 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
                 },
               )
             ]));
+  }
+
+  void onTakePhotoButton() async {
+    /*
+      bool isEnabled = await AppLocator().verifyService();
+      if (isEnabled == false) {
+        return;
+      }
+       */
+    await GallerySaver.saveImage(widget.imagePath.toString());
+    DateTime now = DateTime.now();
+    String convertedDateTime =
+        now.day.toString().padLeft(2, '0') +
+            "-" +
+            now.month.toString().padLeft(2, '0') +
+            "-" +
+            now.year.toString();
+
+    // location may be disallowed but save photo still
+    bool isEnabled = await AppLocator().verifyService();
+    Position pos;
+    if (isEnabled == true) {
+      pos = await AppLocator().determinePosition();
+    } else {
+      pos = await AppLocator().getFallbackPosition();
+    }
+    ("Flipped");
+    (widget.historicalPhotoFlipped);
+    Draft draft = Draft(
+      "",
+      widget.imagePath,
+      widget.historicalImagePath,
+      widget.historicalImageId,
+      widget.historicalPhotoFlipped! == true,
+      convertedDateTime,
+      widget.historicalPhotoScale ?? 1,
+      pos.longitude,
+      pos.latitude,
+      -1,
+      -1,
+      false,
+    );
+
+    // async gap
+    if (!mounted) return;
+
+    // Close preview and cameraview by going two steps back
+    Navigator.pop(context);
+    Navigator.pop(context, draft);
   }
 
   Widget getImageComparison(BuildContext context) {

@@ -131,7 +131,11 @@ class AlbumListPageState extends State<AlbumListPage> {
   }
 
   void getCurrentLocation() async {
-    Position geoPosition =  await determinePosition();
+    bool isEnabled = await AppLocator().verifyService();
+    if (isEnabled == false) {
+      return;
+    }
+    Position geoPosition =  await AppLocator().determinePosition();
 
     setState(() {
       userLatitudeData = geoPosition.latitude;
