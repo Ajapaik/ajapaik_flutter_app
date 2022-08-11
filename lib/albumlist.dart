@@ -38,8 +38,6 @@ class AlbumListPageState extends State<AlbumListPage> {
   bool searchDialogVisible = false;
   bool filterBoxOn = false;
   bool pullDownRefreshDone=true;
-  double userLatitudeData = 0;
-  double userLongitudeData = 0;
   final myController = TextEditingController();
   final searchController = TextEditingController();
   final controller = Get.put(SessionController());
@@ -130,19 +128,6 @@ class AlbumListPageState extends State<AlbumListPage> {
     return url;
   }
 
-  void getCurrentLocation() async {
-    bool isEnabled = await AppLocator().verifyService();
-    if (isEnabled == false) {
-      return;
-    }
-    Position geoPosition =  await AppLocator().determinePosition();
-
-    setState(() {
-      userLatitudeData = geoPosition.latitude;
-      userLongitudeData = geoPosition.longitude;
-    });
-  }
-
   @override
   void initState() {
     controller.loadSession().then((_) =>
@@ -150,7 +135,6 @@ class AlbumListPageState extends State<AlbumListPage> {
           print("Updating login status to screen. Session " +
               controller.getSession());
         }));
-    getCurrentLocation();
     refresh();
     super.initState();
   }

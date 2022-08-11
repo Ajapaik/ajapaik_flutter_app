@@ -1,10 +1,25 @@
 import 'package:geolocator/geolocator.dart';
 import 'dart:async';
 
-//
+// could use something like Singleton<> ..
 class AppLocator extends Geolocator  {
+  // don't repeat same in every place..
+  // note: should use Position directly instead of "unpacking" to separate variables..
+  double latitudePos = 0;
+  double longitudePos = 0;
+
+  double getLatitude() {
+    return latitudePos;
+  }
+  double getLongitude() {
+    return longitudePos;
+  }
+
+  // TODO: if we want to track position automatically, add something like timer
+  // so that we don't flood everything with requests by mistake..
 
   /*
+
   bool serviceEnabled = false;
 
   // if we decide to cache the result..
