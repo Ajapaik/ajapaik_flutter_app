@@ -2,13 +2,11 @@ import 'dart:async';
 import 'dart:ui' as ui;
 import 'dart:math' as math;
 
-import 'package:geolocator/geolocator.dart';
 import 'services/geolocation.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:get/get.dart';
-import 'sessioncontroller.dart';
 import 'data/draft.json.dart';
 import 'package:image/image.dart' as img;
 
@@ -45,7 +43,6 @@ class DisplayPictureScreen extends StatefulWidget {
 
 class DisplayPictureScreenState extends State<DisplayPictureScreen>
     with TickerProviderStateMixin {
-  final controller = Get.put(SessionController());
   final locator = Get.put(AppLocator());
   GlobalKey cameraPhotoKey = GlobalKey();
   double oldCenterX = 0;
@@ -100,15 +97,11 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
   }
 
   void onTakePhotoButton() async {
-    /*
-      bool isEnabled = await AppLocator().verifyService();
-      if (isEnabled == false) {
-        return;
-      }
-       */
     await GallerySaver.saveImage(widget.imagePath.toString());
 
     DateTime now = DateTime.now();
+
+    // why this dateformat? could just use .toIso8601String() and be done with it..
     String convertedDateTime =
         now.day.toString().padLeft(2, '0') +
             "-" +

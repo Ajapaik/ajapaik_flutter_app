@@ -9,9 +9,11 @@ class AppLocator extends Geolocator  {
   double longitudePos = 0;
   bool isInitialized = false;
   bool isFixed = false; // user-selected position in use, don't overwrite
+  //DateTime timestamp = DateTime.now(); // time of position
 
   //TODO: also keep accuracy
   //LocationAccuracyStatus accuracy;
+  //double accuracy = -1; // absolutely bogus location by default
 
   /* TODO: check if this is still needed..
   StreamSubscription<Position>? _positionStream;
@@ -78,6 +80,8 @@ class AppLocator extends Geolocator  {
       latitudePos = pos.latitude;
       longitudePos = pos.longitude;
 
+      // also keep timestamp
+      //timestamp = DateTime.now();
       // also keep accuracy
       //LocationAccuracyStatus las = await determineAccuracy();
       return true;
@@ -128,12 +132,12 @@ class AppLocator extends Geolocator  {
   }
 
   getPosition() {
+    // timestamp: DateTime.now()
     return Position.fromMap({'latitude': latitudePos, 'longitude': longitudePos});
   }
 
   Future<LocationAccuracyStatus> determineAccuracy() async {
-    var accuracy = await Geolocator.getLocationAccuracy();
-    return accuracy;
+    return await Geolocator.getLocationAccuracy();
   }
 
 }
