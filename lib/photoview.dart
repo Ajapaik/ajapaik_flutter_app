@@ -22,6 +22,7 @@ import 'fullscreenimageview.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
 
 class Photoview extends StatefulWidget {
   final String historicalPhotoId;
@@ -56,11 +57,9 @@ class PhotoviewState extends State<Photoview> {
   bool boolValue = true;
   bool mapInfoVisibility = false;
   bool newMapInfoValue = true;
-  double userLatitude = 0;
-  double userLongitude = 0;
-  double imageLatitude = 0;
+  double imageLatitude = 0; // image being viewed, not the one just taken?
   double imageLongitude = 0;
-  StreamSubscription<Position>? _positionStream;
+  final locator = Get.put(AppLocator());
 
   _getTooltipValue() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -73,16 +72,22 @@ class PhotoviewState extends State<Photoview> {
     }
   }
 
-  _saveMapInfoBool() async {
+  /* there is no point to this:
+  only place the stored value is retrieved is when initializing
+  right after resetting and saving it first
+  -> just remove it
+
+  saveMapInfoVisibility() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('MapInfoVisibility', mapInfoVisibility);
   }
 
-  void getMapInfoValue() async {
+  void getMapInfoVisibility() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     mapInfoVisibility = prefs.getBool("MapInfoVisibility")!;
     setState(() {});
   }
+  */
 
   void _takeRephoto(context) {
     availableCameras().then((availableCameras) async {
@@ -104,16 +109,6 @@ class PhotoviewState extends State<Photoview> {
     });
   }
 
-  void _launchTIFY() async {
-    Uri url = Uri.parse(
-        'https://demo.tify.rocks/demo.html?manifest=https://ajapaik.ee/photo/199152/v2/manifest.json&tify={%22panX%22:0.5,%22panY%22:0.375,%22view%22:%22info%22,%22zoom%22:0.001}');
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
   void _launchInfo() async {
     Uri url = Uri.parse(widget.historicalSurl);
     if (await canLaunchUrl(url)) {
@@ -123,47 +118,25 @@ class PhotoviewState extends State<Photoview> {
     }
   }
 
-  void getCurrentLocation() async {
-    Position geoPosition = await determinePosition();
-
-    setState(() {
-      userLatitude = geoPosition.latitude;
-      userLongitude = geoPosition.longitude;
-    });
-  }
-
-  void listenCurrentLocation() {
-    LocationSettings locationSettings = const LocationSettings(
-        accuracy: LocationAccuracy.best,
-        distanceFilter: 10,
-        timeLimit: Duration(seconds: 10));
-    _positionStream =
-        Geolocator.getPositionStream(locationSettings: locationSettings)
-            .listen((Position geoPosition) {
-      if (geoPosition.latitude != userLatitude &&
-          geoPosition.longitude != userLongitude) {
-        return getCurrentLocation();
-      }
-    });
-  }
-
   @override
   void initState() {
     if (widget.historicalCoordinates.coordinates.isNotEmpty) {
       imageLatitude = widget.historicalCoordinates.coordinates[0];
       imageLongitude = widget.historicalCoordinates.coordinates[1];
     }
-//    listenCurrentLocation();
-    getCurrentLocation();
+    locator.init();
+
+    // this same thing is first set, saved and then retrieved again?
+    // -> just remove storing since this is only place where it is retrieved
+    // .. right after resetting it..
     mapInfoVisibility = false;
-    _saveMapInfoBool();
-    getMapInfoValue();
+    //saveMapInfoVisibility();
+    //getMapInfoVisibility();
     super.initState();
   }
 
   @override
   void dispose() {
-    _positionStream?.cancel();
     super.dispose();
   }
 
@@ -203,9 +176,6 @@ class PhotoviewState extends State<Photoview> {
                   if (result == 1) {
                     _launchInfo();
                   }
-                  /*  if (result == 2) {
-                    _launchTIFY();
-                  }*/
                   if (result == 3) {
                     _openImageMapScreen();
                   }
@@ -291,10 +261,10 @@ class PhotoviewState extends State<Photoview> {
 
     if (imageLatitude != 0 &&
         imageLongitude != 0 &&
-        userLatitude != 0 &&
-        userLongitude != 0) {
+        locator.getLatitude() != 0 &&
+        locator.getLongitude() != 0) {
       double distance = Geolocator.distanceBetween(
-          userLatitude, userLongitude, imageLatitude, imageLongitude);
+          locator.getLatitude(), locator.getLongitude(), imageLatitude, imageLongitude);
       double calcDistance = distance / 1000;
 
       if (distance >= 1000) {
@@ -351,17 +321,19 @@ class PhotoviewState extends State<Photoview> {
             child: IconButton(
                 icon: new Icon(numberOfRephotosIcon),
                 onPressed: () async {
-                  var url =
-                      "https://ajapaik.toolforge.org/api/ajapaikimageinfo.php?id=" +
-                          widget.historicalPhotoId.toString();
-                  List<Album> _rephotoAlbumData =
-                      await fetchAlbum(http.Client(), url);
+                  List<Album> _rephotoAlbumData = await onFetchAlbum();
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
                               RephotoCompareView(album: _rephotoAlbumData)));
                 })));
+  }
+  onFetchAlbum() async {
+    // TODO: another hard-coded url that needs changing if server changes..
+    var url = "https://ajapaik.toolforge.org/api/ajapaikimageinfo.php?id=" +
+            widget.historicalPhotoId.toString();
+    return fetchAlbum(http.Client(), url, locator.getLatitude(), locator.getLongitude());
   }
 
   Widget verticalPreview(BuildContext context) {
@@ -405,7 +377,7 @@ class PhotoviewState extends State<Photoview> {
                     ? const Icon(Icons.info_outline)
                     : const Icon(Icons.map),
                 onPressed: () {
-                  _saveMapInfoBool();
+                  //saveMapInfoVisibility();
                   setState(() {
                     mapInfoVisibility = !mapInfoVisibility;
                   });
@@ -476,7 +448,7 @@ class PhotoviewState extends State<Photoview> {
                         ? const Icon(Icons.info_outline)
                         : const Icon(Icons.map),
                     onPressed: () {
-                      _saveMapInfoBool();
+                      //saveMapInfoVisibility();
                       setState(() {
                         mapInfoVisibility = !mapInfoVisibility;
                       });
@@ -532,11 +504,11 @@ class PhotoviewState extends State<Photoview> {
   Widget _buildFlutterMap() {
     List<Marker> markerList = [];
 
-    if (userLatitude != 0 && userLongitude != 0) {
+    if (locator.getLatitude() != 0 && locator.getLongitude() != 0) {
       Marker userMarker = Marker(
           width: 80.0,
           height: 80.0,
-          point: LatLng(userLatitude, userLongitude),
+          point: LatLng(locator.getLatitude(), locator.getLongitude()),
           builder: (ctx) => const Icon(Icons.location_pin, color: Colors.blue));
       markerList.add(userMarker);
     }
@@ -553,7 +525,7 @@ class PhotoviewState extends State<Photoview> {
     return FlutterMap(
         options: MapOptions(
           bounds: LatLngBounds(LatLng(imageLatitude, imageLongitude),
-              LatLng(userLatitude, userLongitude)),
+              LatLng(locator.getLatitude(), locator.getLongitude())),
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
           zoom: 17.0,
           boundsOptions: const FitBoundsOptions(

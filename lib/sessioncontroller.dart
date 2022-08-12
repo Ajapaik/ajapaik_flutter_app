@@ -4,10 +4,19 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'data/user.json.dart';
 
-class Controller extends GetxController {
+// TOOD: cleaner handling of logins
+enum LoginProviders { loginGoogle, loginFacebook, loginWikimedia }
+
+// note: may work in standalone until user decides to login -> keep none until known
+enum ServerType { serverNone, serverAjapaik, serverAjapaikStaging, serverWikimedia }
+
+class SessionController extends GetxController {
   String _session = "";
   String _username = "";
   bool _wiki = false;
+
+  // TODO: we need to determine somehow where user wants to login & upload..
+  ServerType server = ServerType.serverNone;
 
   var count = 0;
 
@@ -26,6 +35,15 @@ class Controller extends GetxController {
     return _session;
   }
 
+  // is the session active or not?
+  // TODO: timeout check
+  bool isExpired() {
+    if (getSession() == "") {
+      return true;
+    }
+    return false;
+  }
+
   Future<String> loadSession() async {
     FlutterSecureStorage storage = const FlutterSecureStorage();
     String? s = await storage.read(key: 'session');
@@ -38,7 +56,7 @@ class Controller extends GetxController {
         _session="";
         setSession(_session);
       }
-    } else if (_session != "") {
+    } else if (isExpired() == false) {
       await logout();
     }
     ("session: " + _session);
@@ -69,6 +87,48 @@ class Controller extends GetxController {
     return _wiki;
   }
 
+  // TODO: determine where user wants to login or upload first
+  //
+  void setServer(ServerType type) {
+    server = type;
+  }
+  ServerType getServer() {
+    return server;
+  }
+
+  String getLoginUri() {
+    if (server == ServerType.serverAjapaik) {
+      return "https://ajapaik.ee/api/v1/login/";
+    }
+    else if (server == ServerType.serverAjapaikStaging) {
+      return "https://staging.ajapaik.ee/api/v1/login/";
+    }
+    else if (server == ServerType.serverWikimedia) {
+      // TODO: get right url for login (also see provider handling)
+      return "https://commons.wikimedia.beta.wmflabs.org";
+    }
+    // or throw "not yet implemented"
+    return "";
+  }
+  // we need to have session for the same place we are expected to be uploading to but uri can be different..
+  String getUploadUri() {
+    if (server == ServerType.serverAjapaik) {
+      return "https://ajapaik.ee/api/v1/photo/upload/";
+    }
+    else if (server == ServerType.serverAjapaikStaging) {
+      return "https://staging.ajapaik.ee/api/v1";
+    }
+    else if (server == ServerType.serverWikimedia) {
+      // TODO: get right url for upload
+      return "https://commons.wikimedia.beta.wmflabs.org";
+    }
+    // or throw "not yet implemented"
+    return "";
+  }
+
+  // TODO: handle different types in caller too somehow
+  // note: there is another doLogin() in DisplayLoginScreen,
+  // sort these out in a single sensible way so there aren't multiple locations of handling same thing
   Future<bool> doApiLogin(String type, String username, String password) async {
     if (type == 'facebook') {
       type = 'fb';
@@ -83,7 +143,7 @@ class Controller extends GetxController {
     });
     (body);
 
-    var url = Uri.parse("https://ajapaik.ee/api/v1/login/");
+    var url = Uri.parse(getLoginUri());
     final http.Response response = await http.post(
       url,
       headers: <String, String>{
@@ -104,4 +164,5 @@ class Controller extends GetxController {
       throw Exception('Failed to create album.');
     }
   }
+
 }

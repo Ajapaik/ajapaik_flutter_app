@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sign_in_button/sign_in_button.dart';
-import 'getxnavigation.dart';
+import 'sessioncontroller.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'data/draft.json.dart';
 import 'login.dart';
 
 class DisplayUploadScreen extends StatelessWidget {
-  final controller = Get.put(Controller());
+  final controller = Get.put(SessionController());
   final Draft draft;
 
   DisplayUploadScreen({Key? key, required this.draft}) : super(key: key);
@@ -20,31 +20,117 @@ class DisplayUploadScreen extends StatelessWidget {
         body: saveToButtons(context));
   }
 
-  uploadFile(BuildContext context) async {
-    final controller = Get.put(Controller());
+  generateAjapaikUploadRequest(String sessionid, String uploadUri) {
 
-    (draft.historicalImageId);
-    ("Upload file Start");
-    var postUri = Uri.parse("https://ajapaik.ee/api/v1/photo/upload/");
+    var postUri = Uri.parse(uploadUri);
     var request = http.MultipartRequest("POST", postUri);
-    request.headers['Cookie'] = 'sessionid=' + controller.getSession();
-//    request.headers['Content-Type']="application/json; charset=UTF-8";
+    request.headers['Cookie'] = 'sessionid=' + sessionid;
+  //    request.headers['Content-Type']="application/json; charset=UTF-8";
     request.fields['id'] =
-        draft.historicalImageId; // Historical photo id in Ajapaik or Finna_url
+    draft.historicalImageId; // Historical photo id in Ajapaik or Finna_url
     request.fields['latitude'] = draft.lat.toString(); // optional
     request.fields['longitude'] = draft.lon.toString(); // optional
-//    request.fields['accuracy'] = 'blah'; //optional
-//    request.fields['age'] = 'blah'; // optional, coordinates_age
+  //    request.fields['accuracy'] = 'blah'; //optional
+  //    request.fields['age'] = 'blah'; // optional, coordinates_age
     request.fields['date'] =
-        draft.date; //'01-01-1999'; // optional, coordinate_accuracy
+    draft.date; //'01-01-1999'; // optional, coordinate_accuracy
     request.fields['scale'] = draft.scale.toString();
     request.fields['yaw'] = '0'; // device_yaw
     request.fields['pitch'] = '0'; // device_pitch
     request.fields['roll'] = '0'; // device_roll
     request.fields['flip'] = '0';
     /* (draft.historicalPhotoFlipped == true)
-        ? '1'
-        : '0'; // is rephoto flipped, optional*/
+          ? '1'
+          : '0'; // is rephoto flipped, optional*/
+    return request;
+  }
+
+  // TODO: must have proper login to commons so there is sensible session..
+  generateCommonsUploadRequest(String sessionid, String uploadUri) {
+
+    //
+    var postUri = Uri.parse(uploadUri);
+    var request = http.MultipartRequest("POST", postUri);
+    request.headers['Cookie'] = 'sessionid=' + sessionid;
+    /*
+    // does not apply to commons?
+    request.fields['id'] =
+        draft.historicalImageId; // Historical photo id in Ajapaik or Finna_url
+
+     */
+    // TODO: does filename include path or just the name?
+    File f = File(draft.imagePath);
+    request.fields['filename'] = draft.imagePath;
+    request.fields['filesize'] = f.length().toString();
+
+    //comment, see also text
+    //text
+    //tags
+    //watchlist
+    //watchlistexpiry
+    //ignorewarnings
+    //filekey: previously stashed file
+    //stash: set for temporary storage
+    //file -> actual file data
+    //offset
+    //chunk
+    //async
+    //checkstatus
+    //token
+
+    // TODO: generate other metadata or description from other available information:
+    // check how location and date could be added with the file
+
+    return request;
+  }
+
+  generateUploadRequest(SessionController controller) {
+    if (controller.getServer() == ServerType.serverAjapaik) {
+      return generateAjapaikUploadRequest(controller.getSession(),
+          controller.getUploadUri());
+    }/*
+    else if (controller.getServer() == ServerType.serverAjapaikStaging) {
+
+    }*/
+    else if (controller.getServer() == ServerType.serverWikimedia) {
+      return generateCommonsUploadRequest(controller.getSession(),
+          controller.getUploadUri());
+    }
+    return null;
+  }
+
+  uploadFile(BuildContext context) async {
+    // before uploading, check if user has logged in,
+    // relogin if expired
+
+    final controller = Get.put(SessionController());
+
+    /* if there is no session user could try to relogin
+    or save data for later when near better connection
+       -> check saving data in caller
+    TODO: ask for login (in caller) ?
+    */
+    if (controller.isExpired()) {
+      return false; // what do we want respond with here?
+    }
+
+    (draft.historicalImageId);
+    ("Upload file Start");
+
+    // TODO: user might want to change destination (ajapaik/commons)
+    // AND user might want to upload to multiple destinations
+    // including social media etc. -> may have multiple uploads needed depending on destination
+    // or just sharing a link at minimum?
+    // -> must have session to appropriate server
+    // -> may need to login now if was in standalone before
+    // -> may need multiple session for different uploads
+    // etc.
+    var request = generateUploadRequest(controller);
+    if (request == null) {
+      // destination not yet implemented
+      return false;
+    }
+
     var multipart = await http.MultipartFile.fromPath(
         'original', File(draft.imagePath).path);
     request.files.add(multipart);
@@ -85,6 +171,8 @@ class DisplayUploadScreen extends StatelessWidget {
               );
             }
 
+            // TODO: parse response to something that we can show to user,
+            // don't use it directly: especially if commons differs from ajapaik
             return response.body;
           });
         })
@@ -104,47 +192,65 @@ class DisplayUploadScreen extends StatelessWidget {
   Widget saveToButtons(context) {
     ("saveButtons()");
     (draft.historicalImageId);
-    return Center(
-        child: Wrap(spacing: 10, runSpacing: 10, children: <Widget>[
-      SignInButtonBuilder(
-        text: 'Gallery',
-        innerPadding: EdgeInsets.all(11.0),
-        fontSize:25,
 
-        icon: Icons.drafts,
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        backgroundColor: const Color(0xFF3366cc),
-      ),
-      if (draft.historicalImagePath.contains("ajapaik.ee"))
-        SignInButtonBuilder(
-          text: 'Ajapaik',
-          fontSize: 25,
-          innerPadding: EdgeInsets.all(11.0),
-          icon: Icons.cloud_upload,
-          onPressed: () async {
-            if (controller.getSession() == "") {
-              Get.to(DisplayLoginScreen());
-            } else {
-              uploadFile(context);
-              Navigator.pop(context);
-            }
-          },
-          backgroundColor: const Color(0xFF3366cc),
-        ),
-/*      SignInButtonBuilder(
-        text: 'Wikimedia Commons',
+    // TODO: saving should be first, only proceed to upload if there is session active
+    // (user near network), otherwise just save the data for later:
+    // also uploading from saved data later..
+    // -> save first, upload decide where to upload after
+    // -> user might want to upload to social media AND commons or ajapaik
+    // -> not just one destination
+
+    const EdgeInsets padding = EdgeInsets.all(11.0);
+    List<Widget> buttons = [];
+    SignInButtonBuilder sibGallery = SignInButtonBuilder(
+      text: 'Gallery',
+      innerPadding: padding,
+      fontSize: 25,
+
+      icon: Icons.drafts,
+      onPressed: () {
+        Navigator.pop(context);
+      },
+      backgroundColor: const Color(0xFF3366cc),
+    );
+    buttons.add(sibGallery);
+
+    if (draft.historicalImagePath.contains("ajapaik.ee")) {
+      SignInButtonBuilder sibAjapaik = SignInButtonBuilder(
+        text: 'Ajapaik',
+        fontSize: 25,
+        innerPadding: padding,
         icon: Icons.cloud_upload,
-        onPressed: () {
-          if (controller.getSession() == "") {
+        onPressed: () async {
+          if (controller.isExpired()) {
             Get.to(DisplayLoginScreen());
           } else {
-            ("Logged in");
+            uploadFile(context);
+            Navigator.pop(context);
           }
         },
         backgroundColor: const Color(0xFF3366cc),
-      ),*/
-    ]));
+      );
+      buttons.add(sibAjapaik);
+    }
+    SignInButtonBuilder sibWiki = SignInButtonBuilder(
+      text: 'Wikimedia Commons',
+      icon: Icons.cloud_upload,
+      onPressed: () {
+        if (controller.isExpired()) {
+          Get.to(DisplayLoginScreen());
+        } else {
+          ("Logged in");
+          uploadFile(context);
+          Navigator.pop(context);
+        }
+      },
+      backgroundColor: const Color(0xFF3366cc),
+    );
+    buttons.add(sibWiki);
+
+    Center c = Center(
+        child: Wrap(spacing: 10, runSpacing: 10, children: buttons));
+    return c;
   }
 }

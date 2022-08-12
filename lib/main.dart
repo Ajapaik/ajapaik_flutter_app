@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'package:ajapaik_flutter_app/localization.dart';
+import 'package:ajapaik_flutter_app/services/geolocation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'albumlist.dart';
 import 'package:app_links/app_links.dart';
 import 'package:get/get.dart';
-import 'getxnavigation.dart';
+import 'sessioncontroller.dart';
 import 'localization.dart';
 
 void main()  {
@@ -14,23 +15,28 @@ void main()  {
 }
 
 class MyApp extends StatefulWidget {
-  final controller = Get.put(Controller());
+  final controller = Get.put(SessionController());
 
   MyApp({Key? key}) : super(key: key);
 
   @override
-  _MyAppState createState() => _MyAppState();
+  MyAppState createState() => MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class MyAppState extends State<MyApp> {
   late AppLinks _appLinks;
   StreamSubscription<Uri>? _linkSubscription;
-  final controller = Get.put(Controller());
+  final controller = Get.put(SessionController());
+  final locator = Get.put(AppLocator());
+
+  // TODO: first url would be different when using commons?
+  // -> what is the default in future versions?
+  var firstUrl="https://ajapaik.toolforge.org/api/ajapaiknearest.php?search=&limit=100&orderby=alpha&orderdirection=desc";
 
   @override
   void initState() {
-    print("initstate");
     initDeepLinks();
+    locator.init();
     super.initState();
   }
 
@@ -44,8 +50,15 @@ class _MyAppState extends State<MyApp> {
     String provider = uri.queryParameters["provider"].toString();
     String username = "false";
     String token = uri.queryParameters["token"].toString();
+
+    // TODO: determine from user somehow what is wanted..
+    // we may need different instances at same time if user wants
+    // to upload to social media and commons at same time
+    // -> need to improve handling of sessions for that
+    //
+    // for now, expect this: change later
+    controller.setServer(ServerType.serverAjapaik);
     await controller.doApiLogin(provider, username, token);
-    print("onAppLink");
     await closeInAppWebView();
     Get.back();
   }
@@ -63,9 +76,8 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     const appTitle = 'Nearest';
-    var firstUrl="https://ajapaik.toolforge.org/api/ajapaiknearest.php?search=&limit=100&orderby=alpha&orderdirection=desc";
 
-    return GetMaterialApp(
+    GetMaterialApp gma = GetMaterialApp(
       supportedLocales: const [
         Locale('en', 'US'),
         Locale('fi', 'FI'),
@@ -92,5 +104,6 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData.dark(),
       home: AlbumListPage.network(appTitle, firstUrl),
     );
+    return gma;
   }
 }

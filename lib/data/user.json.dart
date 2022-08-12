@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
-import '../getxnavigation.dart';
+import '../sessioncontroller.dart';
 
 class User {
   String name = "anonymous";
@@ -31,7 +31,7 @@ class User {
 
 Future<User> fetchUser() async {
   http.Client client = http.Client();
-  final controller = Get.put(Controller());
+  final controller = Get.put(SessionController());
 
   final response = await client.get(
       Uri.parse('https://ajapaik.ee/api/v1/user/me'),

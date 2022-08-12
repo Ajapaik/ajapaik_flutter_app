@@ -2,13 +2,11 @@ import 'dart:async';
 import 'dart:ui' as ui;
 import 'dart:math' as math;
 
-import 'package:geolocator/geolocator.dart';
 import 'services/geolocation.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:get/get.dart';
-import 'getxnavigation.dart';
 import 'data/draft.json.dart';
 import 'package:image/image.dart' as img;
 
@@ -45,7 +43,7 @@ class DisplayPictureScreen extends StatefulWidget {
 
 class DisplayPictureScreenState extends State<DisplayPictureScreen>
     with TickerProviderStateMixin {
-  final controller = Get.put(Controller());
+  final locator = Get.put(AppLocator());
   GlobalKey cameraPhotoKey = GlobalKey();
   double oldCenterX = 0;
   double oldCenterY = 0;
@@ -64,6 +62,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
     super.initState();
   }
 */
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,35 +81,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
                   // Take photo button
                   child: ElevatedButton(
                     onPressed: () async {
-                      await GallerySaver.saveImage(widget.imagePath.toString());
-                      DateTime now = DateTime.now();
-                      String convertedDateTime =
-                          now.day.toString().padLeft(2, '0') +
-                              "-" +
-                              now.month.toString().padLeft(2, '0') +
-                              "-" +
-                              now.year.toString();
-                      Position position = await determinePosition();
-                      ("Flipped");
-                      (widget.historicalPhotoFlipped);
-                      Draft draft = Draft(
-                        "",
-                        widget.imagePath,
-                        widget.historicalImagePath,
-                        widget.historicalImageId,
-                        widget.historicalPhotoFlipped! == true,
-                        convertedDateTime,
-                        widget.historicalPhotoScale ?? 1,
-                        position.longitude,
-                        position.latitude,
-                        -1,
-                        -1,
-                        false,
-                      );
-
-                      // Close preview and cameraview by going two steps back
-                      Navigator.pop(context);
-                      Navigator.pop(context, draft);
+                      onTakePhotoButton();
                     },
                     child: const Icon(Icons.check),
                   )),
@@ -123,6 +94,47 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
                 },
               )
             ]));
+  }
+
+  void onTakePhotoButton() async {
+    await GallerySaver.saveImage(widget.imagePath.toString());
+
+    DateTime now = DateTime.now();
+
+    // why this dateformat? could just use .toIso8601String() and be done with it..
+    String convertedDateTime =
+        now.day.toString().padLeft(2, '0') +
+            "-" +
+            now.month.toString().padLeft(2, '0') +
+            "-" +
+            now.year.toString();
+
+    // location may be disallowed but save photo still
+    await locator.updatePosition();
+
+    ("Flipped");
+    (widget.historicalPhotoFlipped);
+    Draft draft = Draft(
+      "",
+      widget.imagePath,
+      widget.historicalImagePath,
+      widget.historicalImageId,
+      widget.historicalPhotoFlipped! == true,
+      convertedDateTime,
+      widget.historicalPhotoScale ?? 1,
+      locator.getLongitude(),
+      locator.getLatitude(),
+      -1,
+      -1,
+      false,
+    );
+
+    // async gap
+    if (!mounted) return;
+
+    // Close preview and cameraview by going two steps back
+    Navigator.pop(context);
+    Navigator.pop(context, draft);
   }
 
   Widget getImageComparison(BuildContext context) {

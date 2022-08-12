@@ -7,7 +7,7 @@ import 'package:ajapaik_flutter_app/data/album.geojson.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'localization.dart';
-import 'getxnavigation.dart';
+import 'sessioncontroller.dart';
 import 'package:get/get.dart';
 import 'localfileselect.dart';
 import 'login.dart';
@@ -16,7 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class AlbumListPage extends StatefulWidget {
-  final controller = Get.put(Controller());
+  final controller = Get.put(SessionController());
 
   String pageTitle = "";
   String dataSourceUrl = "";
@@ -38,11 +38,9 @@ class AlbumListPageState extends State<AlbumListPage> {
   bool searchDialogVisible = false;
   bool filterBoxOn = false;
   bool pullDownRefreshDone=true;
-  double userLatitudeData = 0;
-  double userLongitudeData = 0;
-  final myController = TextEditingController();
   final searchController = TextEditingController();
-  final controller = Get.put(Controller());
+  final controller = Get.put(SessionController());
+  final locator = Get.put(AppLocator());
 
   Future<List<Album>>? _albumData;
 
@@ -111,7 +109,7 @@ class AlbumListPageState extends State<AlbumListPage> {
 
   void refresh() async {
     String url = getDataSourceUrl();
-    await (_albumData = fetchAlbum(http.Client(), url));
+    await (_albumData = fetchAlbum(http.Client(), url, locator.getLatitude(), locator.getLongitude()));
   }
 
   void toggleSearchDialog() {
@@ -130,15 +128,6 @@ class AlbumListPageState extends State<AlbumListPage> {
     return url;
   }
 
-  void getCurrentLocation() async {
-    Position geoPosition =  await determinePosition();
-
-    setState(() {
-      userLatitudeData = geoPosition.latitude;
-      userLongitudeData = geoPosition.longitude;
-    });
-  }
-
   @override
   void initState() {
     controller.loadSession().then((_) =>
@@ -146,7 +135,6 @@ class AlbumListPageState extends State<AlbumListPage> {
           print("Updating login status to screen. Session " +
               controller.getSession());
         }));
-    getCurrentLocation();
     refresh();
     super.initState();
   }
@@ -196,8 +184,7 @@ class AlbumListPageState extends State<AlbumListPage> {
         .of(context)
         .primaryColorLight;
 
-    controller.getSession();
-    bool loggedIn = !(controller.getSession() == "");
+    bool loggedIn = !(controller.isExpired());
 
     return Scaffold(
       appBar: AppBar(
@@ -295,44 +282,41 @@ class AlbumList extends StatelessWidget {
   const AlbumList({Key? key, this.albums, this.toggle = true})
       : super(key: key);
 
-  Future<void> _showphoto(context, index) async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) =>
-              Photoview(
-                historicalPhotoId:
-                albums!.first.features[index].properties.id.toString(),
-                historicalPhotoUri: albums!
-                    .first.features[index].properties.thumbnail
-                    .toString(),
-                historicalName:
-                albums!.first.features[index].properties.name.toString(),
-                historicalDate:
-                albums!.first.features[index].properties.date.toString(),
-                historicalAuthor:
-                albums!.first.features[index].properties.author.toString(),
-                historicalSurl: albums!
-                    .first.features[index].properties.sourceUrl
-                    .toString(),
-                historicalLabel: albums!
-                    .first.features[index].properties.sourceLabel
-                    .toString(),
-                historicalCoordinates: albums!.first.features[index].geometry,
-                numberOfRephotos: albums!.first.features[index].properties.rephotos!.toInt(),
-              )),
-    );
+  Future<void> showphoto(context, index) async {
+    MaterialPageRoute mpr = MaterialPageRoute(
+        builder: (context) =>
+            Photoview(
+              historicalPhotoId:
+              albums!.first.features[index].properties.id.toString(),
+              historicalPhotoUri: albums!
+                  .first.features[index].properties.thumbnail
+                  .toString(),
+              historicalName:
+              albums!.first.features[index].properties.name.toString(),
+              historicalDate:
+              albums!.first.features[index].properties.date.toString(),
+              historicalAuthor:
+              albums!.first.features[index].properties.author.toString(),
+              historicalSurl: albums!
+                  .first.features[index].properties.sourceUrl
+                  .toString(),
+              historicalLabel: albums!
+                  .first.features[index].properties.sourceLabel
+                  .toString(),
+              historicalCoordinates: albums!.first.features[index].geometry,
+              numberOfRephotos: albums!.first.features[index].properties.rephotos!.toInt(),
+            ));
+
+    await Navigator.push(context, mpr);
   }
 
-  void _moveToGeoJson(context, index) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) =>
-              AlbumListPage.network(
-                  albums!.first.features[index].properties.name!,
-                  albums!.first.features[index].properties.geojson!)),
-    );
+  void moveToGeoJson(context, index) {
+    MaterialPageRoute mpr = MaterialPageRoute(
+        builder: (context) =>
+            AlbumListPage.network(
+                albums!.first.features[index].properties.name!,
+                albums!.first.features[index].properties.geojson!));
+    Navigator.push(context, mpr);
   }
 
   @override
@@ -345,6 +329,7 @@ class AlbumList extends StatelessWidget {
         .of(context)
         .size
         .height;
+
     if (height > width) {
       return MasonryGridView.count(
         crossAxisCount: 2,
@@ -397,9 +382,9 @@ class AlbumList extends StatelessWidget {
       onTap: () {
         if (albums!.first.features[index].properties.geojson != null &&
             albums!.first.features[index].properties.geojson != "") {
-          _moveToGeoJson(context, index);
+          moveToGeoJson(context, index);
         } else {
-          _showphoto(context, index);
+          showphoto(context, index);
         }
       },
       child: Column(children: [

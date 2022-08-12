@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'package:ajapaik_flutter_app/services/geolocation.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 
@@ -190,12 +188,7 @@ class Properties {
 }
 
 Future<String> addLocationToUrl(String url,
-    {double? latitude, double? longitude}) async {
-  if (latitude == null || latitude == 0 || longitude == null || longitude == 0) {
-    Position position = await determinePosition();
-    latitude = position.latitude;
-    longitude = position.longitude;
-  }
+    double latitude, double longitude) async {
   if (url.contains("__LAT__")) {
     url = url.replaceFirst("__LAT__", latitude.toString());
   } else {
@@ -215,13 +208,12 @@ Future<String> addLocationToUrl(String url,
 }
 
 Future<List<Album>> fetchAlbum(http.Client client, String url,
-    {double? latitude, double? longitude}) async {
+    double latitude, double longitude) async {
   print("fetchAlbum");
 
-  url = await addLocationToUrl(url, latitude: latitude, longitude: longitude);
+  url = await addLocationToUrl(url, latitude, longitude);
   print(url);
   final response = await client.get(Uri.parse(url));
-  (url);
   // Use the compute function to run parsePhotos in a separate isolate.
   return compute(parseAlbums, response.body);
 }

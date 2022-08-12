@@ -3,12 +3,12 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'data/album.geojson.dart';
-import 'getxnavigation.dart';
+import 'sessioncontroller.dart';
 import 'package:get/get.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class RephotoCompareView extends StatelessWidget {
-  final controller = Get.put(Controller());
+  final controller = Get.put(SessionController());
   late List<Album> album;
   String historicalImageUrl = "";
 
@@ -85,7 +85,9 @@ class RephotoCompareView extends StatelessWidget {
       labels.add(feature.properties.date!);
     }
     return Stack(children:[getImage(filename, context),
-      Align(alignment: Alignment.bottomCenter, child:Text(labels.join(" "),style: TextStyle(fontSize: 20,height:7, color:Colors.white, decoration: TextDecoration.none, fontWeight: FontWeight.normal)))
+      Align(alignment: Alignment.bottomCenter,
+          child:Text(labels.join(" "),
+              style: TextStyle(fontSize: 20,height:7, color:Colors.white, decoration: TextDecoration.none, fontWeight: FontWeight.normal)))
     ]);
   }
   _getCarouselSlider(context) {
@@ -109,7 +111,9 @@ class RephotoCompareView extends StatelessWidget {
       var image = Stack(children: [
       Image.network(feature.properties.thumbnail!,
             fit: BoxFit.contain, height: 8000, width: 8000),
-    Align(alignment: Alignment.bottomCenter, child:Text(labels.join(" "),style: TextStyle(fontSize: 20,height:7, color:Colors.white, decoration: TextDecoration.none, fontWeight: FontWeight.normal)))
+    Align(alignment: Alignment.bottomCenter,
+        child:Text(labels.join(" "),
+            style: TextStyle(fontSize: 20,height:7, color:Colors.white, decoration: TextDecoration.none, fontWeight: FontWeight.normal)))
       ]);
       items.add(image);
     }

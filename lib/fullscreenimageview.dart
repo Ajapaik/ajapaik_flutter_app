@@ -24,7 +24,11 @@ class FullScreenImageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    Expanded e = Expanded(
+                      child: InteractiveViewer(
+                          child: getImage(historicalPhotoUri)));
+
+    Scaffold s = Scaffold(
         appBar: AppBar(
             title: Text(AppLocalizations.of(context)!.translate(
                 'photoManipulation-appbarTitle'),
@@ -36,11 +40,9 @@ class FullScreenImageView extends StatelessWidget {
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(
-                      child: InteractiveViewer(
-                          child: getImage(historicalPhotoUri)))
-                ])));
+                children: [e]
+            )));
+    return s;
   }
 }
 

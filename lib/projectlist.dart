@@ -7,7 +7,7 @@ import 'localization.dart';
 import 'localfileselect.dart';
 import 'login.dart';
 import 'package:get/get.dart';
-import 'getxnavigation.dart';
+import 'sessioncontroller.dart';
 
 class ProjectListPage extends StatefulWidget {
   final String? title;
@@ -20,7 +20,7 @@ class ProjectListPage extends StatefulWidget {
 
 class ProjectListPageState extends State<ProjectListPage> {
   final String? title = "Rephoto projects";
-  final controller = Get.put(Controller());
+  final controller = Get.put(SessionController());
 
   @override
   void initState() {
@@ -35,7 +35,7 @@ class ProjectListPageState extends State<ProjectListPage> {
   @override
   Widget build(BuildContext context) {
     (controller.getSession());
-    bool loggedIn = !(controller.getSession() == "");
+    bool loggedIn = !(controller.isExpired());
 
     return Scaffold(
       appBar: AppBar(
