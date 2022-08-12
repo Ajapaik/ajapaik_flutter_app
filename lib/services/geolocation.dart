@@ -74,7 +74,7 @@ class AppLocator extends Geolocator  {
   Future<bool> updatePosition() async {
     bool isEnabled = await verifyService();
     if (isEnabled == true) {
-      Position pos = await determinePosition();
+      Position pos = await Geolocator.getCurrentPosition();
       latitudePos = pos.latitude;
       longitudePos = pos.longitude;
 
@@ -82,7 +82,11 @@ class AppLocator extends Geolocator  {
       //LocationAccuracyStatus las = await determineAccuracy();
       return true;
     }
+    // we should be called at least once in init(), which is called when app starts first..
+    // but we could set defaults in constructor too
     print("location service not enabled");
+    latitudePos = 60;
+    longitudePos = 24;
     return false;
   }
 
@@ -123,31 +127,8 @@ class AppLocator extends Geolocator  {
     return true;
   }
 
-  // get real position (if enabled) or fall back to alternate:
-  // determine callers how situation really should be handled
-  Future<Position> getPositionOrFallback() async {
-    bool isEnabled = await verifyService();
-    if (isEnabled == true) {
-      return determinePosition();
-    }
-    return getFallbackPosition();
-  }
-
-
-  Future<Position> getFallbackPosition() async {
-    Position position=Position.fromMap({'latitude': 60, 'longitude': 24});
-    return Future.value(position);
-  }
-
-  /// Determine the current position of the device.
-  ///
-  /// When the location services are not enabled or permissions
-  /// are denied the `Future` will return an error.
-  Future<Position> determinePosition() async {
-
-    // When we reach here, permissions are granted and we can
-    // continue accessing the position of the device.
-    return await Geolocator.getCurrentPosition();
+  getPosition() {
+    return Position.fromMap({'latitude': latitudePos, 'longitude': longitudePos});
   }
 
   Future<LocationAccuracyStatus> determineAccuracy() async {

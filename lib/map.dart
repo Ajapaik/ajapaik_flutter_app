@@ -46,7 +46,7 @@ class MapState extends State<Map> {
       body: Stack(children: [
         Positioned(
             child: FutureBuilder(
-                future: AppLocator().getPositionOrFallback(),
+                future: AppLocator().getPosition(),
                 builder:
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.hasError) (snapshot.error);
