@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:ajapaik_flutter_app/services/geolocation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:get/get.dart';
 
@@ -26,36 +25,17 @@ class Map extends StatefulWidget {
 
 class MapState extends State<Map> {
   late final MapController mapController;
-  StreamSubscription<Position>? _positionStream;
   final locator = Get.put(AppLocator());
-
-  void listenCurrentLocation(){
-
-    LocationSettings locationSettings = const LocationSettings(
-        accuracy: LocationAccuracy.best,
-        distanceFilter: 10,
-        timeLimit: Duration(seconds: 5)
-    );
-    _positionStream = Geolocator.getPositionStream(
-        locationSettings: locationSettings).listen((Position geoPosition)
-    {
-      if (geoPosition.latitude != locator.getLatitude() &&
-          geoPosition.longitude != locator.getLongitude()) {
-        locator.updatePosition();
-      }
-    });
-  }
 
   @override
   void initState() {
-    listenCurrentLocation();
     super.initState();
+    locator.init();
     mapController = MapController();
   }
 
   @override
   void dispose() {
-    _positionStream?.cancel();
     super.dispose();
   }
 

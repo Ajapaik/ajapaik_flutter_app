@@ -15,6 +15,36 @@ class AppLocator extends Geolocator  {
   // TODO: force user-selected position when not available otherwise?
   // -> prevent overwriting by repeated calls later
 
+  /* TODO: check if this is still needed..
+  StreamSubscription<Position>? _positionStream;
+  void listenCurrentLocation() {
+    LocationSettings locationSettings = const LocationSettings(
+        accuracy: LocationAccuracy.best,
+        distanceFilter: 10,
+        timeLimit: Duration(seconds: 5)
+    );
+    _positionStream = Geolocator.getPositionStream(
+        locationSettings: locationSettings).listen((Position geoPosition)
+    {
+      if (geoPosition.latitude != getLatitude() &&
+          geoPosition.longitude != getLongitude()) {
+        updatePosition();
+      }
+    });
+  }
+  @override
+  void initState() {
+    listenCurrentLocation();
+    //super.initState();
+  }
+
+  @override
+  void dispose() {
+    _positionStream?.cancel();
+    //super.dispose();
+  }
+  */
+
   double getLatitude() {
     return latitudePos;
   }
@@ -24,7 +54,9 @@ class AppLocator extends Geolocator  {
 
   // just make sure we hav other values apart from initial position?
   void init() {
-    updatePosition();
+    if (isInitialized == false) {
+      updatePosition();
+    }
     isInitialized = true;
   }
 

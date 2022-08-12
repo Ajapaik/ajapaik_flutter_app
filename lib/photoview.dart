@@ -59,7 +59,6 @@ class PhotoviewState extends State<Photoview> {
   bool newMapInfoValue = true;
   double imageLatitude = 0; // image being viewed, not the one just taken?
   double imageLongitude = 0;
-  StreamSubscription<Position>? _positionStream;
   final locator = Get.put(AppLocator());
 
   _getTooltipValue() async {
@@ -113,47 +112,14 @@ class PhotoviewState extends State<Photoview> {
     }
   }
 
-  /*
-  void getCurrentLocation() async {
-    bool isEnabled = await AppLocator().verifyService();
-    if (isEnabled == false) {
-      return;
-    }
-
-    Position geoPosition = await AppLocator().determinePosition();
-
-    setState(() {
-      userLatitude = geoPosition.latitude;
-      userLongitude = geoPosition.longitude;
-    });
-  }
-  */
-
-  /*
-  void listenCurrentLocation() {
-    LocationSettings locationSettings = const LocationSettings(
-        accuracy: LocationAccuracy.best,
-        distanceFilter: 10,
-        timeLimit: Duration(seconds: 10));
-    _positionStream =
-        Geolocator.getPositionStream(locationSettings: locationSettings)
-            .listen((Position geoPosition) {
-      if (geoPosition.latitude != locator.getLatitude() &&
-          geoPosition.longitude != locator.getLongitude()) {
-        locator.updatePosition();
-      }
-    });
-  }
-  */
-
   @override
   void initState() {
     if (widget.historicalCoordinates.coordinates.isNotEmpty) {
       imageLatitude = widget.historicalCoordinates.coordinates[0];
       imageLongitude = widget.historicalCoordinates.coordinates[1];
     }
-    locator.updatePosition();
     mapInfoVisibility = false;
+    locator.init();
     _saveMapInfoBool();
     getMapInfoValue();
     super.initState();
@@ -161,7 +127,6 @@ class PhotoviewState extends State<Photoview> {
 
   @override
   void dispose() {
-    _positionStream?.cancel();
     super.dispose();
   }
 
