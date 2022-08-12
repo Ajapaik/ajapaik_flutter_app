@@ -358,7 +358,7 @@ class PhotoviewState extends State<Photoview> {
     // TODO: another hard-coded url that needs changing if server changes..
     var url = "https://ajapaik.toolforge.org/api/ajapaikimageinfo.php?id=" +
             widget.historicalPhotoId.toString();
-    return fetchAlbum(http.Client(), url, latitude: locator.getLatitude(), longitude: locator.getLongitude());
+    return fetchAlbum(http.Client(), url, locator.getLatitude(), locator.getLongitude());
   }
 
   Widget verticalPreview(BuildContext context) {

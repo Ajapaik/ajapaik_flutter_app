@@ -40,6 +40,7 @@ class AlbumListPageState extends State<AlbumListPage> {
   bool pullDownRefreshDone=true;
   final searchController = TextEditingController();
   final controller = Get.put(SessionController());
+  final locator = Get.put(AppLocator());
 
   Future<List<Album>>? _albumData;
 
@@ -108,7 +109,7 @@ class AlbumListPageState extends State<AlbumListPage> {
 
   void refresh() async {
     String url = getDataSourceUrl();
-    await (_albumData = fetchAlbum(http.Client(), url));
+    await (_albumData = fetchAlbum(http.Client(), url, locator.getLatitude(), locator.getLongitude()));
   }
 
   void toggleSearchDialog() {
