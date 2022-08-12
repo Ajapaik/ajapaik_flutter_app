@@ -214,7 +214,6 @@ Future<List<Album>> fetchAlbum(http.Client client, String url,
   url = await addLocationToUrl(url, latitude, longitude);
   print(url);
   final response = await client.get(Uri.parse(url));
-  (url);
   // Use the compute function to run parsePhotos in a separate isolate.
   return compute(parseAlbums, response.body);
 }
