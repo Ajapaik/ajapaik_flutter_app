@@ -346,17 +346,19 @@ class PhotoviewState extends State<Photoview> {
             child: IconButton(
                 icon: new Icon(numberOfRephotosIcon),
                 onPressed: () async {
-                  var url =
-                      "https://ajapaik.toolforge.org/api/ajapaikimageinfo.php?id=" +
-                          widget.historicalPhotoId.toString();
-                  List<Album> _rephotoAlbumData =
-                      await fetchAlbum(http.Client(), url, latitude: locator.getLatitude(), longitude: locator.getLongitude());
+                  List<Album> _rephotoAlbumData = await onFetchAlbum();
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
                               RephotoCompareView(album: _rephotoAlbumData)));
                 })));
+  }
+  onFetchAlbum() async {
+    // TODO: another hard-coded url that needs changing if server changes..
+    var url = "https://ajapaik.toolforge.org/api/ajapaikimageinfo.php?id=" +
+            widget.historicalPhotoId.toString();
+    return fetchAlbum(http.Client(), url, latitude: locator.getLatitude(), longitude: locator.getLongitude());
   }
 
   Widget verticalPreview(BuildContext context) {
