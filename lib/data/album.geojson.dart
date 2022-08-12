@@ -190,15 +190,7 @@ class Properties {
 }
 
 Future<String> addLocationToUrl(String url,
-    {double? latitude, double? longitude}) async {
-  if (latitude == null || latitude == 0 || longitude == null || longitude == 0) {
-    bool isEnabled = await AppLocator().verifyService();
-    if (isEnabled == true) {
-      Position position = await AppLocator().determinePosition();
-      latitude = position.latitude;
-      longitude = position.longitude;
-    }
-  }
+    double latitude, double longitude) async {
   if (url.contains("__LAT__")) {
     url = url.replaceFirst("__LAT__", latitude.toString());
   } else {
@@ -221,7 +213,21 @@ Future<List<Album>> fetchAlbum(http.Client client, String url,
     {double? latitude, double? longitude}) async {
   print("fetchAlbum");
 
-  url = await addLocationToUrl(url, latitude: latitude, longitude: longitude);
+  double tmpLatitude = 0, tmpLongitude = 0;
+  if (latitude == null || latitude == 0 || longitude == null || longitude == 0) {
+    bool isEnabled = await AppLocator().verifyService();
+    if (isEnabled == true) {
+      Position position = await AppLocator().determinePosition();
+      latitude = position.latitude;
+      longitude = position.longitude;
+    }
+  }
+  else {
+    tmpLatitude = latitude;
+    tmpLongitude = longitude;
+  }
+
+  url = await addLocationToUrl(url, tmpLatitude, tmpLongitude);
   print(url);
   final response = await client.get(Uri.parse(url));
   (url);
