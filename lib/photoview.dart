@@ -72,12 +72,12 @@ class PhotoviewState extends State<Photoview> {
     }
   }
 
-  _saveMapInfoBool() async {
+  saveMapInfoVisibility() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('MapInfoVisibility', mapInfoVisibility);
   }
 
-  void getMapInfoValue() async {
+  void getMapInfoVisibility() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     mapInfoVisibility = prefs.getBool("MapInfoVisibility")!;
     setState(() {});
@@ -120,8 +120,8 @@ class PhotoviewState extends State<Photoview> {
     }
     mapInfoVisibility = false;
     locator.init();
-    _saveMapInfoBool();
-    getMapInfoValue();
+    saveMapInfoVisibility();
+    getMapInfoVisibility();
     super.initState();
   }
 
@@ -367,7 +367,7 @@ class PhotoviewState extends State<Photoview> {
                     ? const Icon(Icons.info_outline)
                     : const Icon(Icons.map),
                 onPressed: () {
-                  _saveMapInfoBool();
+                  saveMapInfoVisibility();
                   setState(() {
                     mapInfoVisibility = !mapInfoVisibility;
                   });
@@ -438,7 +438,7 @@ class PhotoviewState extends State<Photoview> {
                         ? const Icon(Icons.info_outline)
                         : const Icon(Icons.map),
                     onPressed: () {
-                      _saveMapInfoBool();
+                      saveMapInfoVisibility();
                       setState(() {
                         mapInfoVisibility = !mapInfoVisibility;
                       });

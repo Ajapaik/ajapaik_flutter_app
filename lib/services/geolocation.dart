@@ -8,12 +8,10 @@ class AppLocator extends Geolocator  {
   double latitudePos = 0;
   double longitudePos = 0;
   bool isInitialized = false;
+  bool isFixed = false; // user-selected position in use, don't overwrite
 
   //TODO: also keep accuracy
   //LocationAccuracyStatus accuracy;
-
-  // TODO: force user-selected position when not available otherwise?
-  // -> prevent overwriting by repeated calls later
 
   /* TODO: check if this is still needed..
   StreamSubscription<Position>? _positionStream;
@@ -56,8 +54,17 @@ class AppLocator extends Geolocator  {
   void init() {
     if (isInitialized == false) {
       updatePosition();
+      isInitialized = true;
     }
-    isInitialized = true;
+  }
+
+  // in case user will force selected position:
+  // when not available otherwise or there is significant error otherwise?
+  // -> prevent overwriting by repeated calls later
+  void setFixedPosition(double longitude, double latitude) {
+    longitudePos = longitude;
+    latitudePos = latitude;
+    isFixed = true;
   }
 
 
