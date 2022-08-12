@@ -57,7 +57,7 @@ class PhotoviewState extends State<Photoview> {
   bool boolValue = true;
   bool mapInfoVisibility = false;
   bool newMapInfoValue = true;
-  double imageLatitude = 0;
+  double imageLatitude = 0; // image being viewed, not the one just taken?
   double imageLongitude = 0;
   StreamSubscription<Position>? _positionStream;
   final locator = Get.put(AppLocator());
@@ -350,7 +350,7 @@ class PhotoviewState extends State<Photoview> {
                       "https://ajapaik.toolforge.org/api/ajapaikimageinfo.php?id=" +
                           widget.historicalPhotoId.toString();
                   List<Album> _rephotoAlbumData =
-                      await fetchAlbum(http.Client(), url);
+                      await fetchAlbum(http.Client(), url, latitude: locator.getLatitude(), longitude: locator.getLongitude());
                   Navigator.push(
                       context,
                       MaterialPageRoute(
