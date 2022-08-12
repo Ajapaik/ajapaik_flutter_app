@@ -74,6 +74,9 @@ class AppLocator extends Geolocator  {
   // so that we don't flood everything with requests by mistake..
 
   Future<bool> updatePosition() async {
+    if (isFixed == true) {
+      return true; // user fixed -> no change
+    }
     bool isEnabled = await verifyService();
     if (isEnabled == true) {
       Position pos = await Geolocator.getCurrentPosition();
