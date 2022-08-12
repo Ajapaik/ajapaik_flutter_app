@@ -72,6 +72,11 @@ class PhotoviewState extends State<Photoview> {
     }
   }
 
+  /* there is no point to this:
+  only place the stored value is retrieved is when initializing
+  right after resetting and saving it first
+  -> just remove it
+
   saveMapInfoVisibility() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('MapInfoVisibility', mapInfoVisibility);
@@ -82,6 +87,7 @@ class PhotoviewState extends State<Photoview> {
     mapInfoVisibility = prefs.getBool("MapInfoVisibility")!;
     setState(() {});
   }
+  */
 
   void _takeRephoto(context) {
     availableCameras().then((availableCameras) async {
@@ -118,10 +124,14 @@ class PhotoviewState extends State<Photoview> {
       imageLatitude = widget.historicalCoordinates.coordinates[0];
       imageLongitude = widget.historicalCoordinates.coordinates[1];
     }
-    mapInfoVisibility = false;
     locator.init();
-    saveMapInfoVisibility();
-    getMapInfoVisibility();
+
+    // this same thing is first set, saved and then retrieved again?
+    // -> just remove storing since this is only place where it is retrieved
+    // .. right after resetting it..
+    mapInfoVisibility = false;
+    //saveMapInfoVisibility();
+    //getMapInfoVisibility();
     super.initState();
   }
 
@@ -367,7 +377,7 @@ class PhotoviewState extends State<Photoview> {
                     ? const Icon(Icons.info_outline)
                     : const Icon(Icons.map),
                 onPressed: () {
-                  saveMapInfoVisibility();
+                  //saveMapInfoVisibility();
                   setState(() {
                     mapInfoVisibility = !mapInfoVisibility;
                   });
@@ -438,7 +448,7 @@ class PhotoviewState extends State<Photoview> {
                         ? const Icon(Icons.info_outline)
                         : const Icon(Icons.map),
                     onPressed: () {
-                      saveMapInfoVisibility();
+                      //saveMapInfoVisibility();
                       setState(() {
                         mapInfoVisibility = !mapInfoVisibility;
                       });
