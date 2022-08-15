@@ -165,4 +165,23 @@ class SessionController extends GetxController {
     }
   }
 
+  // TODO: other server possibilities,
+  // commons etc.
+  Future<User> fetchUser() async {
+    http.Client client = http.Client();
+    var serverUri = 'https://ajapaik.ee/api/v1/user/me';
+
+    final response = await client.get(
+        Uri.parse(serverUri),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Cookie': 'sessionid=' + getSession()
+        });
+    ("Session:" + getSession());
+    // Use the compute function to run parsePhotos in a separate isolate.
+    print(response.body);
+    Map<String, dynamic> json = jsonDecode(response.body);
+    return User.fromJson(json);
+  }
+
 }
