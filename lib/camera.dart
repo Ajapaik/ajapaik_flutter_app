@@ -62,6 +62,11 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       (historicalPhotoImageSize);
       (MediaQuery.of(context).size);
 */
+      // TODO: following uses historicalPhotoImageSize
+      // but it isn't updated here (updateImageInfo() isn't called before)
+      // -> either set it to something or don't use
+      // ->
+
       MaterialPageRoute mpr = MaterialPageRoute(
         builder: (context) => DisplayPictureScreen(
           // Pass the automatically generated path to

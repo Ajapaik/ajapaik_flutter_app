@@ -8,7 +8,7 @@ import 'data/draft.json.dart';
 import 'login.dart';
 
 class DisplayUploadScreen extends StatelessWidget {
-  final controller = Get.put(SessionController());
+  final sessionController = Get.put(SessionController());
   final Draft draft;
 
   DisplayUploadScreen({Key? key, required this.draft}) : super(key: key);
@@ -222,7 +222,7 @@ class DisplayUploadScreen extends StatelessWidget {
         innerPadding: padding,
         icon: Icons.cloud_upload,
         onPressed: () async {
-          if (controller.isExpired()) {
+          if (sessionController.isExpired()) {
             Get.to(DisplayLoginScreen());
           } else {
             uploadFile(context);
@@ -237,7 +237,7 @@ class DisplayUploadScreen extends StatelessWidget {
       text: 'Wikimedia Commons',
       icon: Icons.cloud_upload,
       onPressed: () {
-        if (controller.isExpired()) {
+        if (sessionController.isExpired()) {
           Get.to(DisplayLoginScreen());
         } else {
           ("Logged in");

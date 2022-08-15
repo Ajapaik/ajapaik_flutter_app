@@ -26,7 +26,7 @@ class MyApp extends StatefulWidget {
 class MyAppState extends State<MyApp> {
   late AppLinks _appLinks;
   StreamSubscription<Uri>? _linkSubscription;
-  final controller = Get.put(SessionController());
+  final sessionController = Get.put(SessionController());
   final locator = Get.put(AppLocator());
 
   // TODO: first url would be different when using commons?
@@ -57,8 +57,8 @@ class MyAppState extends State<MyApp> {
     // -> need to improve handling of sessions for that
     //
     // for now, expect this: change later
-    controller.setServer(ServerType.serverAjapaik);
-    await controller.doApiLogin(provider, username, token);
+    sessionController.setServer(ServerType.serverAjapaik);
+    await sessionController.doApiLogin(provider, username, token);
     await closeInAppWebView();
     Get.back();
   }

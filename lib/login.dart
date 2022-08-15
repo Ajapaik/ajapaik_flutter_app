@@ -11,7 +11,7 @@ import 'data/user.json.dart';
 enum LoginProviders { loginGoogle, loginFacebook, loginWikimedia }
 
 class DisplayLoginScreen extends StatelessWidget {
-  final controller = Get.put(SessionController());
+  final sessionController = Get.put(SessionController());
   DisplayLoginScreen({Key? key}) : super(key: key);
 
   void _launchURL(_url) async => await canLaunchUrl(_url)
@@ -38,7 +38,7 @@ class DisplayLoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text(AppLocalizations.of(context)!.translate('login-appBarTitle'))),
-        body: controller.isExpired() == true ? loginButtons() : logoutButton());
+        body: sessionController.isExpired() == true ? loginButtons() : logoutButton());
   }
 
   Widget loginButtons() {
@@ -93,7 +93,7 @@ class DisplayLoginScreen extends StatelessWidget {
         text: 'Sign out',
         icon: Icons.logout,
         onPressed: () async {
-          await controller.logout();
+          await sessionController.logout();
           Get.back();
         },
         backgroundColor: const Color(0xFF3366cc),

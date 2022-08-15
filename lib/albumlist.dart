@@ -16,7 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class AlbumListPage extends StatefulWidget {
-  final controller = Get.put(SessionController());
+  final sessionController = Get.put(SessionController());
 
   String pageTitle = "";
   String dataSourceUrl = "";
@@ -39,7 +39,7 @@ class AlbumListPageState extends State<AlbumListPage> {
   bool filterBoxOn = false;
   bool pullDownRefreshDone=true;
   final searchController = TextEditingController();
-  final controller = Get.put(SessionController());
+  final sessionController = Get.put(SessionController());
   final locator = Get.put(AppLocator());
 
   Future<List<Album>>? _albumData;
@@ -109,6 +109,9 @@ class AlbumListPageState extends State<AlbumListPage> {
 
   void refresh() async {
     String url = getDataSourceUrl();
+
+    // TODO: check if there are permissions to use network and/or session is active
+
     await (_albumData = fetchAlbum(http.Client(), url, locator.getLatitude(), locator.getLongitude()));
   }
 
@@ -130,10 +133,13 @@ class AlbumListPageState extends State<AlbumListPage> {
 
   @override
   void initState() {
-    controller.loadSession().then((_) =>
+    // TODO: check if there are no permissions or no network connection
+    //  -> try to work without connection
+
+    sessionController.loadSession().then((_) =>
         setState(() {
           print("Updating login status to screen. Session " +
-              controller.getSession());
+              sessionController.getSession());
         }));
     refresh();
     super.initState();
@@ -157,7 +163,7 @@ class AlbumListPageState extends State<AlbumListPage> {
       if (index == 0) {
         Get.to(DisplayLoginScreen())?.then((_) =>
             setState(() {
-              ("session: " + controller.getSession());
+              ("session: " + sessionController.getSession());
             }));
       } else if (index == 1) {
         showPicker(context);
@@ -184,7 +190,7 @@ class AlbumListPageState extends State<AlbumListPage> {
         .of(context)
         .primaryColorLight;
 
-    bool loggedIn = !(controller.isExpired());
+    bool loggedIn = !(sessionController.isExpired());
 
     return Scaffold(
       appBar: AppBar(

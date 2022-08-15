@@ -333,6 +333,10 @@ class PhotoviewState extends State<Photoview> {
     // TODO: another hard-coded url that needs changing if server changes..
     var url = "https://ajapaik.toolforge.org/api/ajapaikimageinfo.php?id=" +
             widget.historicalPhotoId.toString();
+
+    // TODO: check if there are permissions to use network and/or session is active
+    // can this be activated if there isn't connection?
+
     return fetchAlbum(http.Client(), url, locator.getLatitude(), locator.getLongitude());
   }
 

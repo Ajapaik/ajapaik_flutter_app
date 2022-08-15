@@ -20,13 +20,16 @@ class ProjectListPage extends StatefulWidget {
 
 class ProjectListPageState extends State<ProjectListPage> {
   final String? title = "Rephoto projects";
-  final controller = Get.put(SessionController());
+  final sessionController = Get.put(SessionController());
 
   @override
   void initState() {
-    controller.loadSession().then((_) => setState(() {
+    // TODO: if there are no network permissions or no connectivity for another reason
+    // -> working without connection
+
+    sessionController.loadSession().then((_) => setState(() {
           ("Updating login status to screen. Session " +
-              controller.getSession());
+              sessionController.getSession());
         }));
     // TODO: implement initState
     super.initState();
@@ -34,8 +37,8 @@ class ProjectListPageState extends State<ProjectListPage> {
 
   @override
   Widget build(BuildContext context) {
-    (controller.getSession());
-    bool loggedIn = !(controller.isExpired());
+    (sessionController.getSession());
+    bool loggedIn = !(sessionController.isExpired());
 
     return Scaffold(
       appBar: AppBar(
@@ -57,7 +60,7 @@ class ProjectListPageState extends State<ProjectListPage> {
           (index);
           if (index == 2) {
             Get.to(DisplayLoginScreen())?.then((_) => setState(() {
-                  ("foo" + controller.getSession());
+                  ("foo" + sessionController.getSession());
                 }));
           } else {
             showPicker(context);
