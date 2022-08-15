@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:async';
 
@@ -77,17 +78,23 @@ class AppLocator extends Geolocator  {
     if (isFixed == true) {
       return true; // user fixed -> no change
     }
-    bool isEnabled = await verifyService();
-    if (isEnabled == true) {
-      Position pos = await Geolocator.getCurrentPosition();
-      latitudePos = pos.latitude;
-      longitudePos = pos.longitude;
+    try {
+      bool isEnabled = await verifyService();
+      if (isEnabled == true) {
+        Position pos = await Geolocator.getCurrentPosition();
+        latitudePos = pos.latitude;
+        longitudePos = pos.longitude;
 
-      // also keep timestamp
-      //timestamp = DateTime.now();
-      // also keep accuracy
-      //LocationAccuracyStatus las = await determineAccuracy();
-      return true;
+        // also keep timestamp
+        //timestamp = DateTime.now();
+        // also keep accuracy
+        //LocationAccuracyStatus las = await determineAccuracy();
+        return true;
+      }
+    }
+    on MissingPluginException catch (e) {
+      // mac doesn't have plugin for geolocation
+      print(e.toString());
     }
     // we should be called at least once in init(), which is called when app starts first..
     // but we could set defaults in constructor too
