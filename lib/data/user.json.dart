@@ -31,15 +31,15 @@ class User {
 
 Future<User> fetchUser() async {
   http.Client client = http.Client();
-  final controller = Get.put(SessionController());
+  final sessionController = Get.put(SessionController());
 
   final response = await client.get(
       Uri.parse('https://ajapaik.ee/api/v1/user/me'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Cookie': 'sessionid=' + controller.getSession()
+        'Cookie': 'sessionid=' + sessionController.getSession()
       });
-  ("Session:" + controller.getSession());
+  ("Session:" + sessionController.getSession());
   // Use the compute function to run parsePhotos in a separate isolate.
   print(response.body);
   Map<String, dynamic> json = jsonDecode(response.body);
