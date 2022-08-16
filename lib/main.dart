@@ -78,10 +78,7 @@ class MyAppState extends State<MyApp> {
     const appTitle = 'Nearest';
 
     GetMaterialApp gma = GetMaterialApp(
-      supportedLocales: const [
-        Locale('en', 'US'),
-        Locale('fi', 'FI'),
-      ],
+        supportedLocales: AppLocalizations.getSupportedLocales(),
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,

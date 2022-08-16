@@ -47,6 +47,16 @@ class AppLocalizations {
     return true;
   }
 
+  // for now, just hard-coded list until we have proper
+  // lookup implemented for what has been translated
+  static List<Locale> getSupportedLocales()  {
+    List<Locale> locales = [
+    Locale('en', 'US'),
+    Locale('fi', 'FI'),
+    ];
+    return locales;
+  }
+
   Future<void> setLocale(Locale locale) async {
     final SharedPreferences _prefs = await SharedPreferences.getInstance();
     final _languageCode = locale.languageCode;
