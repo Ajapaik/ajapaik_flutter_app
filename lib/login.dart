@@ -32,6 +32,10 @@ class DisplayLoginScreen extends StatelessWidget {
         "/login/?next=" +
         Uri.encodeComponent(nextParam);
     _launchURL(Uri.parse(url));
+
+    // should get user information now,
+    // but this whole method should be moved anyway..
+    //sessionController.fetchUser();
   }
 
   @override

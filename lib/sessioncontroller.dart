@@ -147,7 +147,12 @@ class SessionController extends GetxController {
       (response.body.toString());
       Map<String, dynamic> json = jsonDecode(response.body);
       await storeSession(json["session"]);
-      await fetchUser();
+
+      var user = await fetchUser();
+      if (user.isValid() == true) {
+        // should have something sensible now so keep user information
+        currentUser = user;
+      }
       update();
       return true;
     } else {
