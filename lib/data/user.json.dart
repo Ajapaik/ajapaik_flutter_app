@@ -5,11 +5,18 @@ class User {
   String state = "";
   bool wiki = false;
 
+  User() {
+
+  }
+
+
+  /*
   User({
     required this.name,
     required this.state,
     required this.wiki,
   });
+   */
 
   User.fromJson(Map<String, dynamic> json) {
     name = (json['name'] != null) ? json['name'] : "anonymous";
@@ -23,6 +30,23 @@ class User {
     data['state'] = state.toString();
     data['wiki'] = wiki.toString();
     return data;
+  }
+
+  bool isAnon() {
+    if (name=="anonymous") {
+      return true;
+    }
+    return false;
+  }
+  bool isValid() {
+    if (name == "" || name=="anonymous") {
+      return false;
+    }
+    return true;
+  }
+  void resetUser() {
+    name = "anonymous";
+    wiki = false;
   }
 }
 

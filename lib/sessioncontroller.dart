@@ -12,8 +12,7 @@ enum ServerType { serverNone, serverAjapaik, serverAjapaikStaging, serverWikimed
 
 class SessionController extends GetxController {
   String _session = "";
-  String _username = "";
-  bool _wiki = false;
+  User currentUser = User();
 
   // TODO: we need to determine somehow where user wants to login & upload..
   ServerType server = ServerType.serverNone;
@@ -52,10 +51,11 @@ class SessionController extends GetxController {
       var user=await fetchUser();
       print("LoadSession");
       print(user.name);
-      if (user.name=="anonymous") {
+      if (user.isAnon()) {
         _session="";
         storeSession(_session);
       }
+      currentUser = user;
     } else if (isExpired() == false) {
       await logout();
     }
@@ -67,24 +67,15 @@ class SessionController extends GetxController {
     FlutterSecureStorage storage = const FlutterSecureStorage();
     await storage.delete(key: 'session');
     _session = "";
-    _username = "anonymous";
-    _wiki = false;
+    currentUser.resetUser();
   }
 
-  void setUsername(String username) {
-    _username = username;
-  }
-
-  String getUsername() {
-    return _username;
+  User getUser() {
+    return currentUser;
   }
 
   void setWiki(bool wiki) {
-    _wiki = wiki;
-  }
-
-  bool getWiki() {
-    return _wiki;
+    currentUser.wiki = wiki;
   }
 
   // TODO: determine where user wants to login or upload first
