@@ -1,7 +1,4 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:get/get.dart';
-import '../sessioncontroller.dart';
 
 class User {
   String name = "anonymous";
