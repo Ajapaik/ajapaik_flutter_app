@@ -25,7 +25,7 @@ class SessionController extends GetxController {
     update();
   }
 
-  Future<void> setSession(String session) async {
+  Future<void> storeSession(String session) async {
     _session = session;
     FlutterSecureStorage storage = const FlutterSecureStorage();
     await storage.write(key: 'session', value: session);
@@ -54,7 +54,7 @@ class SessionController extends GetxController {
       print(user.name);
       if (user.name=="anonymous") {
         _session="";
-        setSession(_session);
+        storeSession(_session);
       }
     } else if (isExpired() == false) {
       await logout();
@@ -155,7 +155,7 @@ class SessionController extends GetxController {
     if (response.statusCode == 200) {
       (response.body.toString());
       Map<String, dynamic> json = jsonDecode(response.body);
-      await setSession(json["session"]);
+      await storeSession(json["session"]);
       await fetchUser();
       update();
       return true;
