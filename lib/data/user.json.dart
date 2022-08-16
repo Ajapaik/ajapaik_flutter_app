@@ -29,8 +29,3 @@ class User {
   }
 }
 
-Future<User> fetchUser() async {
-  final sessionController = Get.put(SessionController());
-
-  return sessionController.fetchUser();
-}

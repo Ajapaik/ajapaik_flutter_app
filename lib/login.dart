@@ -86,7 +86,7 @@ class DisplayLoginScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-      const UserInfoBuilder(),
+      UserInfoBuilder(),
       SignInButtonBuilder(
         innerPadding: EdgeInsets.all(11.0),
         fontSize:25,
@@ -103,12 +103,13 @@ class DisplayLoginScreen extends StatelessWidget {
 }
 
 class UserInfoBuilder extends StatelessWidget {
-  const UserInfoBuilder({Key? key}) : super(key: key);
+  UserInfoBuilder({Key? key}) : super(key: key);
+  final sessionController = Get.put(SessionController());
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<User>(
-      future: fetchUser(),
+      future: sessionController.fetchUser(),
       builder: (context, snapshot) {
         if (snapshot.hasError) (snapshot.error);
 
