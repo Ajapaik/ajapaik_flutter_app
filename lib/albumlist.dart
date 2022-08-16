@@ -1,7 +1,6 @@
 import 'package:ajapaik_flutter_app/projectlist.dart';
 import 'package:ajapaik_flutter_app/services/geolocation.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:ajapaik_flutter_app/data/album.geojson.dart';
 import 'package:cached_network_image/cached_network_image.dart';
