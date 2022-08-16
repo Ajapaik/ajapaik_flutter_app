@@ -79,7 +79,8 @@ class DisplayLoginScreen extends StatelessWidget {
   }
 
   Widget logoutButton() {
-    // if (controller.isExpired())
+    // if there is no session we should not be here..
+    //if (sessionController.isExpired())
 
     return Center(
         child:  Column(
@@ -90,7 +91,7 @@ class DisplayLoginScreen extends StatelessWidget {
       SignInButtonBuilder(
         innerPadding: EdgeInsets.all(11.0),
         fontSize:25,
-        text: 'Sign out',
+        text: 'Sign out', //Text(AppLocalizations.of(context)!.translate('logout-buttonText'))
         icon: Icons.logout,
         onPressed: () async {
           await sessionController.logout();
