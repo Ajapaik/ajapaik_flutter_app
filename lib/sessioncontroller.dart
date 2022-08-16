@@ -30,14 +30,14 @@ class SessionController extends GetxController {
     await storage.write(key: 'session', value: session);
   }
 
-  String getSession() {
+  String getSessionId() {
     return _session;
   }
 
   // is the session active or not?
   // TODO: timeout check
   bool isExpired() {
-    if (getSession() == "") {
+    if (getSessionId() == "") {
       return true;
     }
     return false;
@@ -166,9 +166,9 @@ class SessionController extends GetxController {
         Uri.parse(serverUri),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Cookie': 'sessionid=' + getSession()
+          'Cookie': 'sessionid=' + getSessionId()
         });
-    ("Session:" + getSession());
+    ("Session:" + getSessionId());
     // Use the compute function to run parsePhotos in a separate isolate.
     print(response.body);
     Map<String, dynamic> json = jsonDecode(response.body);

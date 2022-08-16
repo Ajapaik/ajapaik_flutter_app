@@ -139,7 +139,7 @@ class AlbumListPageState extends State<AlbumListPage> {
     sessionController.loadSession().then((_) =>
         setState(() {
           print("Updating login status to screen. Session " +
-              sessionController.getSession());
+              sessionController.getSessionId());
         }));
     refresh();
     super.initState();
@@ -163,7 +163,7 @@ class AlbumListPageState extends State<AlbumListPage> {
       if (index == 0) {
         Get.to(DisplayLoginScreen())?.then((_) =>
             setState(() {
-              ("session: " + sessionController.getSession());
+              ("session: " + sessionController.getSessionId());
             }));
       } else if (index == 1) {
         showPicker(context);

@@ -86,14 +86,14 @@ class DisplayUploadScreen extends StatelessWidget {
 
   generateUploadRequest(SessionController controller) {
     if (controller.getServer() == ServerType.serverAjapaik) {
-      return generateAjapaikUploadRequest(controller.getSession(),
+      return generateAjapaikUploadRequest(controller.getSessionId(),
           controller.getUploadUri());
     }/*
     else if (controller.getServer() == ServerType.serverAjapaikStaging) {
 
     }*/
     else if (controller.getServer() == ServerType.serverWikimedia) {
-      return generateCommonsUploadRequest(controller.getSession(),
+      return generateCommonsUploadRequest(controller.getSessionId(),
           controller.getUploadUri());
     }
     return null;

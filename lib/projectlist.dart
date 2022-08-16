@@ -29,7 +29,7 @@ class ProjectListPageState extends State<ProjectListPage> {
 
     sessionController.loadSession().then((_) => setState(() {
           ("Updating login status to screen. Session " +
-              sessionController.getSession());
+              sessionController.getSessionId());
         }));
     // TODO: implement initState
     super.initState();
@@ -37,7 +37,7 @@ class ProjectListPageState extends State<ProjectListPage> {
 
   @override
   Widget build(BuildContext context) {
-    (sessionController.getSession());
+    (sessionController.getSessionId());
     bool loggedIn = !(sessionController.isExpired());
 
     return Scaffold(
@@ -60,7 +60,7 @@ class ProjectListPageState extends State<ProjectListPage> {
           (index);
           if (index == 2) {
             Get.to(DisplayLoginScreen())?.then((_) => setState(() {
-                  ("foo" + sessionController.getSession());
+                  ("foo" + sessionController.getSessionId());
                 }));
           } else {
             showPicker(context);
