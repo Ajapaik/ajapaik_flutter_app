@@ -168,8 +168,6 @@ class SessionController extends GetxController {
           'Content-Type': 'application/json; charset=UTF-8',
           'Cookie': 'sessionid=' + getSessionId()
         });
-    ("Session:" + getSessionId());
-    // Use the compute function to run parsePhotos in a separate isolate.
     print(response.body);
     Map<String, dynamic> json = jsonDecode(response.body);
     return User.fromJson(json);

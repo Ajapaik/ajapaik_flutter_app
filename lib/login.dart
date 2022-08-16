@@ -86,7 +86,7 @@ class DisplayLoginScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-      UserInfoBuilder(),
+      UserInfoView(user: sessionController.getUser()),
       SignInButtonBuilder(
         innerPadding: EdgeInsets.all(11.0),
         fontSize:25,
@@ -99,25 +99,6 @@ class DisplayLoginScreen extends StatelessWidget {
         backgroundColor: const Color(0xFF3366cc),
       )
     ]));
-  }
-}
-
-class UserInfoBuilder extends StatelessWidget {
-  UserInfoBuilder({Key? key}) : super(key: key);
-  final sessionController = Get.put(SessionController());
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<User>(
-      future: sessionController.fetchUser(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) (snapshot.error);
-
-        return snapshot.hasData
-            ? UserInfoView(user: snapshot.data)
-            : const Center(child: CircularProgressIndicator());
-      },
-    );
   }
 }
 
