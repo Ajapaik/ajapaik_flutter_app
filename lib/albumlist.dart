@@ -72,7 +72,7 @@ class AlbumListPageState extends State<AlbumListPage> {
               onChanged: onSearchTextChanged,
               decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: 'Search for images',
+                  hintText: 'Search for images', // <- also needs to be localized
                   prefixIcon: IconButton(
                       onPressed: () {
                         setState(() {

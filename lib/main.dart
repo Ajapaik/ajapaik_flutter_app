@@ -75,7 +75,7 @@ class MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    const appTitle = 'Nearest';
+    const appTitle = 'Nearest'; // <- also should be localized..
 
     GetMaterialApp gma = GetMaterialApp(
         supportedLocales: AppLocalizations.getSupportedLocales(),
