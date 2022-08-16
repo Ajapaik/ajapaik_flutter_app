@@ -1,0 +1,21 @@
+{
+	"@metadata": {
+		"authors": [
+			"Kareyac"
+		]
+	},
+	"albumList-navItem2": "Карта",
+	"homePage-NavItem1": "Начало",
+	"homePage-NavItem4": "Събития",
+	"homePage-NavItem5": "Влизане",
+	"homePage-NavItem6": "Излизане",
+	"imageMapScreen-appbarTitle": "Карта",
+	"login-appBarTitle": "Влизане",
+	"map-appbarTitle": "Карта",
+	"projectList-navItem1": "Библиотека",
+	"projectList-navItem3": "Влизане",
+	"rePhoto-popupMenu2": "Информация",
+	"rePhoto-popupMenu4": "Карта",
+	"rePhoto-popupMenu5": "Настройки",
+	"settings-appbarTitle": "Настройки"
+}
