@@ -16,7 +16,7 @@ class AppLocalizations {
 
   // Static member to have a simple access to the delegate from the MaterialApp
   static const LocalizationsDelegate<AppLocalizations> delegate =
-  _AppLocalizationsDelegate();
+  AppLocalizationsDelegate();
 
   Map<String, String> _localizationStrings = {};
   Map<String, String> _defaultLocalizationStrings = {};
@@ -72,11 +72,11 @@ class AppLocalizations {
   }
 }
 
-class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations>
+class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations>
   {
   // This delegate instance will never change (it doesn't even have fields!)
   // It can provide a constant constructor.
-  const _AppLocalizationsDelegate();
+  const AppLocalizationsDelegate();
 
   @override
   bool isSupported(Locale locale) {
@@ -95,5 +95,5 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations>
   }
 
   @override
-  bool shouldReload(_AppLocalizationsDelegate old) => false;
+  bool shouldReload(AppLocalizationsDelegate old) => false;
 }
