@@ -176,11 +176,12 @@ class AlbumListPageState extends State<AlbumListPage> {
       }
     }
 
-
+    /*
     setSearchVisibility() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool('searchVisibility', searchVisibility);
     }
+     */
 
     Color visibilityIconColor = searchVisibility
         ? Theme
@@ -213,7 +214,7 @@ class AlbumListPageState extends State<AlbumListPage> {
               onPressed: () {
                 setState(() {
                   searchVisibility = !searchVisibility;
-                  setSearchVisibility();
+                  //setSearchVisibility();
                 });
               }),
          /* IconButton(
