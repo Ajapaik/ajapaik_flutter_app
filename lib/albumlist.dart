@@ -177,7 +177,7 @@ class AlbumListPageState extends State<AlbumListPage> {
     }
 
 
-    getSearchVisibility() async {
+    setSearchVisibility() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool('searchVisibility', searchVisibility);
     }
@@ -213,7 +213,7 @@ class AlbumListPageState extends State<AlbumListPage> {
               onPressed: () {
                 setState(() {
                   searchVisibility = !searchVisibility;
-                  getSearchVisibility();
+                  setSearchVisibility();
                 });
               }),
          /* IconButton(
