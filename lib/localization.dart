@@ -43,9 +43,8 @@ class AppLocalizations {
     return AppLocalizations.of(context)!.translate(key);
   }
 
-  // Static member to have a simple access to the delegate from the MaterialApp
-  static const LocalizationsDelegate<AppLocalizations> delegate =
-  AppLocalizationsDelegate();
+  // Static instance for access to the delegate from the MaterialApp
+  static const LocalizationsDelegate<AppLocalizations> delegate = AppLocalizationsDelegate();
 
   Map<String, String> localizationStrings = {};
   Map<String, String> defaultLocalizationStrings = {};
