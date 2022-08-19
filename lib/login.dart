@@ -62,7 +62,7 @@ class DisplayLoginScreen extends StatelessWidget {
       },
     ));
     buttons.add(SignInButtonBuilder(
-      text: 'Sign in with Wikimedia', // <- another one to localize
+      text: AppLocalizations.getText(context, 'login-signinWikimedia'), //'Sign in with Wikimedia'
       icon: FontAwesomeIcons.wikipediaW,
       onPressed: () {
         doLogin("wikimedia-commons");
@@ -95,7 +95,7 @@ class DisplayLoginScreen extends StatelessWidget {
       SignInButtonBuilder(
         innerPadding: EdgeInsets.all(11.0),
         fontSize:25,
-        text: 'Sign out', //Text(AppLocalizations.of(context)!.translate('logout-buttonText'))
+        text: AppLocalizations.getText(context, 'logout-signOut'), //'Sign out'
         icon: Icons.logout,
         onPressed: () async {
           await sessionController.logout();

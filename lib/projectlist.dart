@@ -19,7 +19,6 @@ class ProjectListPage extends StatefulWidget {
 }
 
 class ProjectListPageState extends State<ProjectListPage> {
-  final String? title = "Rephoto projects";
   final sessionController = Get.put(SessionController());
 
   @override
@@ -37,12 +36,12 @@ class ProjectListPageState extends State<ProjectListPage> {
 
   @override
   Widget build(BuildContext context) {
-    (sessionController.getSessionId());
     bool loggedIn = !(sessionController.isExpired());
+    String title = AppLocalizations.getText(context, 'projectList-rephotoProjects');
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(title!),
+        title: Text(title),
         leading:
           IconButton(icon: const Icon(Icons.home_rounded), onPressed: () async {
             /*await Navigator.push(
@@ -60,7 +59,6 @@ class ProjectListPageState extends State<ProjectListPage> {
           (index);
           if (index == 2) {
             Get.to(DisplayLoginScreen())?.then((_) => setState(() {
-                  ("foo" + sessionController.getSessionId());
                 }));
           } else {
             showPicker(context);
@@ -69,17 +67,17 @@ class ProjectListPageState extends State<ProjectListPage> {
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: const Icon(Icons.photo_library),
-            label: (AppLocalizations.getText(context, 'projectList-navItem1')
-            )),
+            label: AppLocalizations.getText(context, 'projectList-navItem1')
+            ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.camera),
-            label: (AppLocalizations.getText(context, 'projectList-navItem2')
-            )),
+            label: AppLocalizations.getText(context, 'projectList-navItem2')
+            ),
           BottomNavigationBarItem(
             icon: Icon((loggedIn ? Icons.person : Icons.login)),
-            label: (loggedIn ? (AppLocalizations.getText(context, 'projectList-navItem4')
-            ) : (AppLocalizations.getText(context, 'projectList-navItem3')
-            )),
+            label: (loggedIn ? AppLocalizations.getText(context, 'projectList-navItem4')
+             : AppLocalizations.getText(context, 'projectList-navItem3')
+            ),
           ),
         ],
       ),

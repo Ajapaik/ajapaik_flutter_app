@@ -25,13 +25,12 @@ class FullScreenImageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Expanded e = Expanded(
-                      child: InteractiveViewer(
-                          child: getImage(historicalPhotoUri)));
+                    child: InteractiveViewer(
+                        child: getImage(historicalPhotoUri)));
 
     Scaffold s = Scaffold(
         appBar: AppBar(
-            title: Text(AppLocalizations.getText(context,
-                'photoManipulation-appbarTitle'),
+            title: Text(AppLocalizations.getText(context, 'photoManipulation-appbarTitle'),
                 style: const TextStyle(
                   fontWeight: FontWeight.w400,
                   fontFamily: 'Roboto',
