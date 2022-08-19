@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 
 // these should be loaded as what are actually supported (files that exist),
 // but maybe some human check can be useful..
+// note: each supported asset should be in pubspec.yaml as well as stated in asset_bundle.dart
+// -> needs human intervention in any case..
 List<Locale> appSupportedLocales = [
   const Locale('en', 'US'),
   const Locale('fi'),
