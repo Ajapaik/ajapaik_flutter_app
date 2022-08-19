@@ -3,10 +3,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
+// these should be loaded as what are actually supported (files that exist),
+// but maybe some human check can be useful..
 List<Locale> appSupportedLocales = [
   const Locale('en', 'US'),
-  const Locale('fi', 'FI'),
-  const Locale('it')
+  const Locale('fi'),
+  const Locale('it'),
+  const Locale('pt', 'BR'),
+  const Locale('sv'),
 ];
 Locale? getLocale(String? languageCode) {
   if (languageCode == null) {
