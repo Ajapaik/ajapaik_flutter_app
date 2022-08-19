@@ -196,14 +196,12 @@ class PhotoviewState extends State<Photoview> {
                           value: 0,
                           child: ListTile(
                               leading: const Icon(Icons.share),
-                              title: Text(AppLocalizations.of(context)!
-                                  .translate('rePhoto-popupMenu1')))),
+                              title: Text(AppLocalizations.getText(context, 'rePhoto-popupMenu1')))),
                       PopupMenuItem(
                           value: 1,
                           child: ListTile(
                               leading: const Icon(Icons.info),
-                              title: Text(AppLocalizations.of(context)!
-                                  .translate('rePhoto-popupMenu2')))),
+                              title: Text(AppLocalizations.getText(context, 'rePhoto-popupMenu2')))),
                       /*        PopupMenuItem(
                         value: 2,
                         child: ListTile(
@@ -216,8 +214,7 @@ class PhotoviewState extends State<Photoview> {
                           value: 3,
                           child: ListTile(
                             leading: const Icon(Icons.map),
-                            title: Text(AppLocalizations.of(context)!
-                                .translate('rePhoto-popupMenu4')),
+                            title: Text(AppLocalizations.getText(context, 'rePhoto-popupMenu4')),
                           )),
                       /*       PopupMenuItem(
                           value: 4,

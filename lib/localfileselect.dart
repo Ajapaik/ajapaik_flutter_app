@@ -48,14 +48,14 @@ void showPicker(context) {
             children: <Widget>[
               ListTile(
                   leading: const Icon(Icons.photo_library),
-                  title: Text(AppLocalizations.of(context)!.translate('localFileSelect-option1')),
+                  title: Text(AppLocalizations.getText(context, 'localFileSelect-option1')),
                   onTap: () {
                     getImageFromGallery(context);
                     Navigator.of(context).pop();
                   }),
               ListTile(
                 leading: const Icon(Icons.photo_camera),
-                title: Text(AppLocalizations.of(context)!.translate('localFileSelect-option2')),
+                title: Text(AppLocalizations.getText(context, 'localFileSelect-option2')),
                 onTap: () {
                   saveImageFromCamera();
                   Navigator.of(context).pop();

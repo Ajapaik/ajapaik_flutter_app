@@ -69,16 +69,16 @@ class ProjectListPageState extends State<ProjectListPage> {
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: const Icon(Icons.photo_library),
-            label: (AppLocalizations.of(context)!.translate('projectList-navItem1')
+            label: (AppLocalizations.getText(context, 'projectList-navItem1')
             )),
           BottomNavigationBarItem(
             icon: const Icon(Icons.camera),
-            label: (AppLocalizations.of(context)!.translate('projectList-navItem2')
+            label: (AppLocalizations.getText(context, 'projectList-navItem2')
             )),
           BottomNavigationBarItem(
             icon: Icon((loggedIn ? Icons.person : Icons.login)),
-            label: (loggedIn ? (AppLocalizations.of(context)!.translate('projectList-navItem4')
-            ) : (AppLocalizations.of(context)!.translate('projectList-navItem3')
+            label: (loggedIn ? (AppLocalizations.getText(context, 'projectList-navItem4')
+            ) : (AppLocalizations.getText(context, 'projectList-navItem3')
             )),
           ),
         ],

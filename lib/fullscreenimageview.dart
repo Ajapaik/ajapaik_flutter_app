@@ -30,7 +30,7 @@ class FullScreenImageView extends StatelessWidget {
 
     Scaffold s = Scaffold(
         appBar: AppBar(
-            title: Text(AppLocalizations.of(context)!.translate(
+            title: Text(AppLocalizations.getText(context,
                 'photoManipulation-appbarTitle'),
                 style: const TextStyle(
                   fontWeight: FontWeight.w400,

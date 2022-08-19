@@ -251,21 +251,21 @@ class AlbumListPageState extends State<AlbumListPage> {
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
               icon: Icon((loggedIn ? Icons.person : Icons.login)),
-              label: (loggedIn ? (AppLocalizations.of(context)!.translate(
+              label: (loggedIn ? (AppLocalizations.getText(context,
                   'projectList-navItem4')
-              ) : (AppLocalizations.of(context)!.translate(
+              ) : (AppLocalizations.getText(context,
                   'projectList-navItem3'))
               )),
           BottomNavigationBarItem(
               icon: const Icon(Icons.photo_library),
-              label: (AppLocalizations.of(context)!.translate(
+              label: (AppLocalizations.getText(context,
                   'projectList-navItem1')
               )),
           BottomNavigationBarItem(
               icon: nameVisibility
                   ? Icon(Icons.visibility_off, color: visibilityIconColor)
                   : Icon(Icons.visibility, color: visibilityIconColor),
-              label: (AppLocalizations.of(context)!.translate(
+              label: (AppLocalizations.getText(context,
                   'albumList-navItem3')
               )),
         ],

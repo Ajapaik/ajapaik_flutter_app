@@ -41,11 +41,11 @@ class DisplayLoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(AppLocalizations.of(context)!.translate('login-appBarTitle'))),
-        body: sessionController.isExpired() == true ? loginButtons() : logoutButton());
+        appBar: AppBar(title: Text(AppLocalizations.getText(context, 'login-appBarTitle'))),
+        body: sessionController.isExpired() == true ? loginButtons(context) : logoutButton(context));
   }
 
-  Widget loginButtons() {
+  Widget loginButtons(BuildContext context) {
     // buttons could be constants built in constructor, there is nothing here that changes?
     // also OAuth and other options -> needs to handle more cases than just these
     List<Widget> buttons = [];
@@ -62,7 +62,7 @@ class DisplayLoginScreen extends StatelessWidget {
       },
     ));
     buttons.add(SignInButtonBuilder(
-      text: 'Sign in with Wikimedia',
+      text: 'Sign in with Wikimedia', // <- another one to localize
       icon: FontAwesomeIcons.wikipediaW,
       onPressed: () {
         doLogin("wikimedia-commons");
@@ -82,7 +82,7 @@ class DisplayLoginScreen extends StatelessWidget {
     ));
   }
 
-  Widget logoutButton() {
+  Widget logoutButton(BuildContext context) {
     // if there is no session we should not be here..
     //if (sessionController.isExpired())
 

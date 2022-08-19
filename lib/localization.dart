@@ -38,6 +38,11 @@ class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
+  // reduce calls to something sensible
+  static String getText(BuildContext context, String key) {
+    return AppLocalizations.of(context)!.translate(key);
+  }
+
   // Static member to have a simple access to the delegate from the MaterialApp
   static const LocalizationsDelegate<AppLocalizations> delegate =
   AppLocalizationsDelegate();

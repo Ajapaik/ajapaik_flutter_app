@@ -42,7 +42,7 @@ class MapState extends State<Map> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.translate('imageMapScreen-appbarTitle'))),
+      appBar: AppBar(title: Text(AppLocalizations.getText(context, 'imageMapScreen-appbarTitle'))),
       body: Stack(children: [
         Positioned(
             child: FutureBuilder(

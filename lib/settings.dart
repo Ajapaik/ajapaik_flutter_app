@@ -24,7 +24,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.translate('settings-appbarTitle'),
+        title: Text(AppLocalizations.getText(context, 'settings-appbarTitle'),
             style: const TextStyle(
               fontWeight: FontWeight.w400,
               fontFamily: 'Roboto',
@@ -39,24 +39,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: Column(children: [
             ListTile(
               leading: const Icon(Icons.public, color: Colors.white),
-              title: Text(AppLocalizations.of(context)!.translate('settings-cardItem1')),
+              title: Text(AppLocalizations.getText(context, 'settings-cardItem1')),
               trailing: const Icon(Icons.keyboard_arrow_right),
               onTap: () {},
             ),
             ListTile(
               leading: const Icon(Icons.menu_book, color: Colors.white),
-              title: Text(AppLocalizations.of(context)!.translate('settings-cardItem2')),
+              title: Text(AppLocalizations.getText(context, 'settings-cardItem2')),
               trailing: const Icon(Icons.keyboard_arrow_right),
               onTap: () {},
             )
           ]),
         ),
         const SizedBox(height: 10.0),
-                Text(AppLocalizations.of(context)!.translate('settings-helperText')),
+                Text(AppLocalizations.getText(context, 'settings-helperText')),
         SwitchListTile(
           activeColor: Colors.blue,
           value: tooltip,
-          title: Text(AppLocalizations.of(context)!.translate('settings-showMapTile')),
+          title: Text(AppLocalizations.getText(context, 'settings-showMapTile')),
           onChanged: (bool newValue) {
             setState(() => tooltip = newValue);
             _saveBool();
