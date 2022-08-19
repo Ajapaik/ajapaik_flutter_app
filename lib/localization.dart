@@ -3,10 +3,28 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
-class AppLocalizations {
-  final Locale locale;
+List<Locale> appSupportedLocales = [
+  const Locale('en', 'US'),
+  const Locale('fi', 'FI'),
+  const Locale('it')
+];
+Locale? getLocale(String? languageCode) {
+  if (languageCode == null) {
+    return null;
+  }
 
-  AppLocalizations(this.locale);
+  for (int i = 0; i < appSupportedLocales.length; i++) {
+    if (appSupportedLocales[i].languageCode == languageCode) {
+      return appSupportedLocales[i];
+    }
+  }
+  return null;
+}
+
+class AppLocalizations {
+  final Locale currentLocale;
+
+  AppLocalizations(this.currentLocale);
 
   // Helper method to keep the code in the widgets concise
   // Localizations are accessed using an InheritedWidget "of" syntax
@@ -18,66 +36,46 @@ class AppLocalizations {
   static const LocalizationsDelegate<AppLocalizations> delegate =
   AppLocalizationsDelegate();
 
-  Map<String, String> _localizationStrings = {};
-  Map<String, String> _defaultLocalizationStrings = {};
+  Map<String, String> localizationStrings = {};
+  Map<String, String> defaultLocalizationStrings = {};
 
-  Future<bool> load() async {
+  Future<bool> loadStrings(String languageCode, { bool isDefaults = false }) async {
     // Load the language JSON file from the "lang" folder
-    String jsonString =
-    await rootBundle.loadString('lib/i18n/${locale.languageCode}.json');
+    String jsonString = await rootBundle.loadString('lib/i18n/$languageCode.json');
 
     Map<String, dynamic> jsonMap = json.decode(jsonString);
-
-    _localizationStrings = jsonMap.map((key, value) {
+    Map<String, String> strings = jsonMap.map((key, value) {
       return MapEntry(key, value.toString());
     });
+
+    if (isDefaults == false) {
+      localizationStrings = strings;
+    } else {
+      defaultLocalizationStrings = strings;
+    }
     return true;
   }
 
-  Future<bool> loadDefault() async {
-    // Load the language JSON file from the "lang" folder
-    String jsonString =
-    await rootBundle.loadString('lib/i18n/en.json');
-
-    Map<String, dynamic> jsonMap = json.decode(jsonString);
-
-    _defaultLocalizationStrings = jsonMap.map((key, value) {
-      return MapEntry(key, value.toString());
-    });
-    return true;
+  // this is stored for later, not just set:
+  // what is the point of this? user can change language of the OS
+  // or it could be selected from menu -> no need for persistent storage
+  Future<void> storeLanguageCode(Locale locale) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('locale', locale.languageCode);
   }
 
-  // for now, just hard-coded list until we have proper
-  // lookup implemented for what has been translated
-  static List<Locale> getSupportedLocales()  {
-    List<Locale> locales = [
-    Locale('en', 'US'),
-    Locale('fi', 'FI'),
-    ];
-    return locales;
+  Future<String?> loadLanguageCode() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('locale');
   }
 
-  Future<void> setLocale(Locale locale) async {
-    final SharedPreferences _prefs = await SharedPreferences.getInstance();
-    final _languageCode = locale.languageCode;
-    await _prefs.setString('locale', _languageCode);
-  }
-
-  static Future<Locale?> getLocale() async {
-    final SharedPreferences _prefs = await SharedPreferences.getInstance();
-    final String? _languageCode = _prefs.getString('locale');
-    if (_languageCode == null) return null;
-
-    Locale _locale;
-    _languageCode == 'en'
-        ? _locale = const Locale('en', 'US')
-        : _locale = const Locale('fi', 'FI');
-    return _locale;
+  static List<Locale> getSupportedLocales() {
+    return appSupportedLocales;
   }
 
   // This method will be called from every widget which needs a localized text
   String translate(String key) {
-    String? translation = _localizationStrings[key] ?? _defaultLocalizationStrings[key];
+    String? translation = localizationStrings[key] ?? defaultLocalizationStrings[key];
     return translation ?? key;
   }
 }
@@ -90,17 +88,28 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations>
 
   @override
   bool isSupported(Locale locale) {
-    // Include all of your supported language codes here
-    return ['en', 'fi'].contains(locale.languageCode);
+    if (getLocale(locale.languageCode) != null) {
+      return true;
+    }
+    return false;
   }
 
   @override
   Future<AppLocalizations> load(Locale locale) async {
     // AppLocalizations class is where the JSON loading actually runs
     AppLocalizations localizations = AppLocalizations(locale);
-    await localizations.load();
-    await localizations.loadDefault();
 
+    // note: loading can throw exceptions,
+    // at least try to catch and handle if language isn't supported
+    try {
+      await localizations.loadStrings(locale.languageCode);
+    }
+    catch (e) {
+      print("failed loading localizations for ${locale.languageCode}");
+      //rethrow;
+    }
+
+    await localizations.loadStrings('en', isDefaults: true);
     return localizations;
   }
 
