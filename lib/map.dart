@@ -25,6 +25,8 @@ class Map extends StatefulWidget {
 
 class MapState extends State<Map> {
   late final MapController mapController;
+
+  final String streetmapUrlTemplate = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
   final locator = Get.put(AppLocator());
 
   @override
@@ -55,16 +57,14 @@ class MapState extends State<Map> {
                       : Center(
                           child: FlutterMap(
                               options: MapOptions(
-                                center: LatLng(widget.imageLatitude,
-                                    widget.imageLongitude),
+                                center: LatLng(widget.imageLatitude, widget.imageLongitude),
                                 interactiveFlags: InteractiveFlag.pinchZoom |
                                     InteractiveFlag.drag,
                                 zoom: 17.0,
                               ),
                               layers: [
                               TileLayerOptions(
-                                urlTemplate:
-                                    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                                urlTemplate: streetmapUrlTemplate,
                                 subdomains: ['a', 'b', 'c'],
                               ),
                               MarkerLayerOptions(markers: [
@@ -128,7 +128,7 @@ class MapState extends State<Map> {
         ),
         layers: [
           TileLayerOptions(
-            urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            urlTemplate: streetmapUrlTemplate,
             subdomains: ['a', 'b', 'c'],
           ),
           MarkerLayerOptions(markers: [
