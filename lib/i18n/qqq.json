@@ -1,0 +1,28 @@
+{
+	"@metadata": {
+		"authors": []
+	},
+	"albumList-navItem1": "Upon user viewing images, under icon displaying nearest items, upon clicking shows the user nearest items in albums in order from closest to farthest",
+	"albumList-navItem2": "Upon user viewing images, under icon displaying a map, upon clicking takes user to a map screen to view the albums items",
+	"albumList-navItem3": "Upon user viewing images, under icon displaying visibility, upon clicking displays or hides the names of the images",
+	"imageMapScreen-appbarTitle": "The title of the page where the user sees a map with a miniature picture of image in question",
+	"localFileSelect-option1": "Prompted after user clicks to take a photo, one of the two options but has a folder icon",
+	"localFileSelect-option2": "Prompted after user clicks to take a photo, one of the two options but has a camera icon",
+	"login-appBarTitle": "The title of the login page",
+	"map-appbarTitle": "The title of the page that has a map with album's items pinned on it",
+	"projectList-navItem1": "Upon user viewing albums, under icon displaying a folder, has the user to make a choice between photo library and camera",
+	"projectList-navItem2": "Upon user viewing albums, under icon displaying a camera lens, has the user to make a choice between photo library and camera",
+	"projectList-navItem3": "Upon user viewing albums, under icon displaying login icon, takes the user to login screen with option to login with multiple choices",
+	"projectList-navItem4": "When the user is logged in and is viewing albums, under icon displaying logout icon, logs the user out from the service",
+	"photoManipulation-appbarTitle": "The title of the page showing the photo that the user wants to view in full size",
+	"rePhoto-appbarTitle": "The title of the page when the user chooses a specific photo they want to look at with map and info",
+	"rePhoto-popupMenu1": "Under a popup menu where there's a share icon next to it, takes the user to a screen where they can share the image to social media or send it via email or message",
+	"rePhoto-popupMenu2": "Under a popup menu where there's a info icon next to it, takes the user to wikimedia commons to view the image with all the information attached to the image",
+	"rePhoto-popupMenu3": "Under a popup menu where there's a camera filter icon next to it, takes the user to a filter-site where they can see an old picture enhanced to a better resolution",
+	"rePhoto-popupMenu4": "Under a popup menu where there's a map icon next to it, takes the user the map screen where they can view the image on a pin in the map",
+	"rePhoto-popupMenu5": "Under a popup menu where there's a settings icon next to it, takes the user to the settings screen",
+	"settings-cardItem1": "In the settings screen, next to a globe icon, upon clicked the user can change application's language",
+	"settings-cardItem2": "In the settings screen, next to a open book icon, upon clicked the user can change the albums that are viewed",
+	"settings-helperText": "The title in the settings screen for advanced settings",
+	"settings-showMapTile": "In the settings screen, next to switch tile that's purpose is to hide or show map option for the user in the image viewing screen"
+}

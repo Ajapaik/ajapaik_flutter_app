@@ -1,0 +1,37 @@
+{
+	"@metadata": {
+		"authors": [
+			"Sabelöga"
+		]
+	},
+	"albumList-navItem1": "Närmast",
+	"albumList-navItem2": "Karta",
+	"albumList-navItem3": "Synlighet",
+	"homePage-NavItem1": "Hem",
+	"homePage-NavItem2": "Gillat",
+	"homePage-NavItem3": "Fotografera",
+	"homePage-NavItem4": "Händelser",
+	"homePage-NavItem5": "Logga in",
+	"homePage-NavItem6": "Logga ut",
+	"imageMapScreen-appbarTitle": "Karta",
+	"localFileSelect-option1": "Fotobibliotek",
+	"localFileSelect-option2": "Kamera",
+	"login-appBarTitle": "Logga in",
+	"map-appbarTitle": "Karta",
+	"projectList-navItem1": "Bibliotek",
+	"projectList-navItem2": "Fotografera",
+	"projectList-navItem3": "Logga in",
+	"projectList-navItem4": "Logga ut",
+	"photoManipulation-appbarTitle": "Applikation för återbilder",
+	"rePhoto-appbarTitle": "Applikation för återbilder",
+	"rePhoto-popupMenu1": "Dela",
+	"rePhoto-popupMenu2": "Information",
+	"rePhoto-popupMenu3": "TIFY-demo",
+	"rePhoto-popupMenu4": "Karta",
+	"rePhoto-popupMenu5": "Inställningar",
+	"settings-appbarTitle": "Inställningar",
+	"settings-cardItem1": "Byt språk",
+	"settings-cardItem2": "Byt miljö",
+	"settings-helperText": "Avancerade inställningar",
+	"settings-showMapTile": "Visa karta"
+}

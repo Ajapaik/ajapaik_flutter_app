@@ -1,0 +1,37 @@
+{
+	"@metadata": {
+		"authors": [
+			"Ice bulldog"
+		]
+	},
+	"albumList-navItem1": "Найближчий",
+	"albumList-navItem2": "Мапа",
+	"albumList-navItem3": "Видимість",
+	"homePage-NavItem1": "Головна",
+	"homePage-NavItem2": "Лайк",
+	"homePage-NavItem3": "Зробити фото",
+	"homePage-NavItem4": "Події",
+	"homePage-NavItem5": "Увійти",
+	"homePage-NavItem6": "Вийти",
+	"imageMapScreen-appbarTitle": "Мапа",
+	"localFileSelect-option1": "Бібліотека фотографій",
+	"localFileSelect-option2": "Камера",
+	"login-appBarTitle": "Увійти",
+	"map-appbarTitle": "Мапа",
+	"projectList-navItem1": "Бібліотека",
+	"projectList-navItem2": "Зробити фото",
+	"projectList-navItem3": "Увійти",
+	"projectList-navItem4": "Вийти",
+	"photoManipulation-appbarTitle": "Додаток для рефото",
+	"rePhoto-appbarTitle": "Додаток для рефото",
+	"rePhoto-popupMenu1": "Поділитися",
+	"rePhoto-popupMenu2": "Інформація",
+	"rePhoto-popupMenu3": "TIFY-демо",
+	"rePhoto-popupMenu4": "Мапа",
+	"rePhoto-popupMenu5": "Налаштування",
+	"settings-appbarTitle": "Налаштування",
+	"settings-cardItem1": "Змінити мову",
+	"settings-cardItem2": "Змінити середовище",
+	"settings-helperText": "Додаткові налаштування",
+	"settings-showMapTile": "Показати мапу"
+}
