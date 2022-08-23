@@ -11,7 +11,7 @@ enum LoginProviders { loginGoogle, loginFacebook, loginWikimedia }
 enum ServerType { serverNone, serverAjapaik, serverAjapaikStaging, serverWikimedia }
 
 class SessionController extends GetxController {
-  String _session = "";
+  String currentSessionId = "";
   User currentUser = User();
 
   // TODO: we need to determine somehow where user wants to login & upload..
@@ -25,13 +25,13 @@ class SessionController extends GetxController {
   }
 
   Future<void> storeSession(String session) async {
-    _session = session;
+    currentSessionId = session;
     FlutterSecureStorage storage = const FlutterSecureStorage();
     await storage.write(key: 'session', value: session);
   }
 
   String getSessionId() {
-    return _session;
+    return currentSessionId;
   }
 
   // is the session active or not?
@@ -47,26 +47,25 @@ class SessionController extends GetxController {
     FlutterSecureStorage storage = const FlutterSecureStorage();
     String? s = await storage.read(key: 'session');
     if (s != null) {
-      _session = s;
+      currentSessionId = s;
       var user=await fetchUser();
       print("LoadSession");
       print(user.name);
       if (user.isAnon()) {
-        _session="";
-        storeSession(_session);
+        storeSession("");
       }
       currentUser = user;
     } else if (isExpired() == false) {
       await logout();
     }
-    ("session: " + _session);
-    return _session;
+    ("session: " + currentSessionId);
+    return currentSessionId;
   }
 
   Future<void> logout() async {
     FlutterSecureStorage storage = const FlutterSecureStorage();
     await storage.delete(key: 'session');
-    _session = "";
+    currentSessionId = "";
     currentUser.resetUser();
   }
 
