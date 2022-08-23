@@ -75,9 +75,9 @@ class UploadController  {
     return request;
   }
 
-  generateUploadRequest(SessionController controller, Draft draft) {
+  generateUploadRequest(Draft draft) {
     var request;
-    if (controller.getServer() == ServerType.serverAjapaik) {
+    if (sessionController.getServer() == ServerType.serverAjapaik) {
       request = generateAjapaikUploadRequest(sessionController.getSessionId(),
           sessionController.getUploadUri(),
           draft);
@@ -85,12 +85,13 @@ class UploadController  {
     else if (controller.getServer() == ServerType.serverAjapaikStaging) {
 
     }*/
-    else if (controller.getServer() == ServerType.serverWikimedia) {
+    else if (sessionController.getServer() == ServerType.serverWikimedia) {
       request = generateCommonsUploadRequest(sessionController.getSessionId(),
           sessionController.getUploadUri(),
           draft);
     }
     if (request == null) {
+      // not yet implemented others
       return null;
     }
     var multipart = http.MultipartFile.fromPath(

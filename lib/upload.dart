@@ -29,14 +29,12 @@ class DisplayUploadScreen extends StatelessWidget {
     // before uploading, check if user has logged in,
     // relogin if expired
 
-    final controller = Get.put(SessionController());
-
     /* if there is no session user could try to relogin
     or save data for later when near better connection
        -> check saving data in caller
     TODO: ask for login (in caller) ?
     */
-    if (controller.isExpired()) {
+    if (sessionController.isExpired()) {
       return false; // what do we want respond with here?
     }
 
@@ -51,7 +49,7 @@ class DisplayUploadScreen extends StatelessWidget {
     // -> may need to login now if was in standalone before
     // -> may need multiple session for different uploads
     // etc.
-    var request = uploadController.generateUploadRequest(controller, draft);
+    var request = uploadController.generateUploadRequest(draft);
     if (request == null) {
       // destination not yet implemented
       return false;
