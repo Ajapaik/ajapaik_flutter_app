@@ -19,6 +19,13 @@ class DisplayUploadScreen extends StatelessWidget {
     // TOOD: see about handling session/login here
     // to simplify save/upload things later
     // -> might need some major refactoring..?
+
+    /*
+    if (sessionController.isExpired()) {
+      Get.to(DisplayLoginScreen());
+    }
+    */
+
     return Scaffold(
         appBar: AppBar(title: const Text('Save to')),
         body: saveToButtons(context));
