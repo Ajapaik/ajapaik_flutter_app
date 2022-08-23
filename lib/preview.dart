@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:get/get.dart';
 import 'data/draft.json.dart';
+import 'draftstorage.dart';
 import 'package:image/image.dart' as img;
 
 // A widget that displays the picture taken by the user.
@@ -50,6 +51,10 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
   double oldCenterY = 0;
   final TransformationController _transformationController =
       TransformationController();
+
+  // TODO: keep shared
+  DraftStorage draftStorage = DraftStorage();
+
 /*
   @override
   void initState() {
@@ -128,6 +133,8 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
       -1,
       false,
     );
+    // keep for later if we can't upload right away
+    draftStorage.store(draft);
 
     // async gap
     if (!mounted) return;

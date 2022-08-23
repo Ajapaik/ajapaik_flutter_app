@@ -9,9 +9,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'camera.dart';
@@ -22,7 +22,7 @@ import 'fullscreenimageview.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:get/get.dart';
+import 'draftstorage.dart';
 
 class Photoview extends StatefulWidget {
   final String historicalPhotoId;
@@ -60,6 +60,9 @@ class PhotoviewState extends State<Photoview> {
   double imageLatitude = 0; // image being viewed, not the one just taken?
   double imageLongitude = 0;
   String dataSourceUrl = "https://ajapaik.toolforge.org/api/ajapaikimageinfo.php?id=";
+
+  // TODO: keep shared
+  DraftStorage draftStorage = DraftStorage();
 
   final locator = Get.put(AppLocator());
 
@@ -102,6 +105,9 @@ class PhotoviewState extends State<Photoview> {
                     historicalPhotoId: widget.historicalPhotoId,
                     historicalPhotoUri: widget.historicalPhotoUri,
                   )));
+      // TODO: if user has no network connectivity or is in standalone mode
+      // -> just keep draft and let user upload later
+      //draftStorage.
       if (rephoto.runtimeType == Draft) {
         Navigator.push(
             context,

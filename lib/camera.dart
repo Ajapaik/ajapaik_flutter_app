@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:ajapaik_flutter_app/preview.dart';
+import 'draftstorage.dart';
 
 class TakePictureScreen extends StatefulWidget {
   final CameraDescription camera;
@@ -44,6 +45,9 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   int transparencyOnOff=1;
   bool pinchToZoomBusy = false;
   late Size historicalPhotoImageSize;
+
+  // TODO: keep shared
+  DraftStorage draftStorage = DraftStorage();
 
   /* TAKE PHOTO */
   void onTakePicture() async {
