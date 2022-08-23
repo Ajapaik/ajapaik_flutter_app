@@ -162,7 +162,6 @@ class AlbumListPageState extends State<AlbumListPage> {
       if (index == 0) {
         Get.to(DisplayLoginScreen())?.then((_) =>
             setState(() {
-              ("session: " + sessionController.getSessionId());
             }));
       } else if (index == 1) {
         showPicker(context);
@@ -251,22 +250,18 @@ class AlbumListPageState extends State<AlbumListPage> {
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
               icon: Icon((loggedIn ? Icons.person : Icons.login)),
-              label: (loggedIn ? (AppLocalizations.getText(context,
-                  'projectList-navItem4')
-              ) : (AppLocalizations.getText(context,
-                  'projectList-navItem3'))
+              label: (loggedIn ? (AppLocalizations.getText(context, 'projectList-navItem4')
+              ) : (AppLocalizations.getText(context, 'projectList-navItem3'))
               )),
           BottomNavigationBarItem(
               icon: const Icon(Icons.photo_library),
-              label: (AppLocalizations.getText(context,
-                  'projectList-navItem1')
+              label: (AppLocalizations.getText(context, 'projectList-navItem1')
               )),
           BottomNavigationBarItem(
               icon: nameVisibility
                   ? Icon(Icons.visibility_off, color: visibilityIconColor)
                   : Icon(Icons.visibility, color: visibilityIconColor),
-              label: (AppLocalizations.getText(context,
-                  'albumList-navItem3')
+              label: (AppLocalizations.getText(context, 'albumList-navItem3')
               )),
         ],
       ),
@@ -288,21 +283,25 @@ class AlbumList extends StatelessWidget {
   const AlbumList({Key? key, this.albums, this.toggle = true})
       : super(key: key);
 
+  Photoview getPhotoView(Feature feat) {
+    Photoview p = Photoview(
+      historicalPhotoId: feat.properties.id.toString(),
+      historicalPhotoUri: feat.properties.thumbnail.toString(),
+      historicalName: feat.properties.name.toString(),
+      historicalDate: feat.properties.date.toString(),
+      historicalAuthor: feat.properties.author.toString(),
+      historicalSurl: feat.properties.sourceUrl.toString(),
+      historicalLabel: feat.properties.sourceLabel.toString(),
+      historicalCoordinates: feat.geometry,
+      numberOfRephotos: feat.properties.rephotos!.toInt(),
+    );
+    return p;
+  }
+
   Future<void> showphoto(context, index) async {
     Feature feat = albums!.first.features[index];
     MaterialPageRoute mpr = MaterialPageRoute(
-        builder: (context) =>
-            Photoview(
-              historicalPhotoId: feat.properties.id.toString(),
-              historicalPhotoUri: feat.properties.thumbnail.toString(),
-              historicalName: feat.properties.name.toString(),
-              historicalDate: feat.properties.date.toString(),
-              historicalAuthor: feat.properties.author.toString(),
-              historicalSurl: feat.properties.sourceUrl.toString(),
-              historicalLabel: feat.properties.sourceLabel.toString(),
-              historicalCoordinates: feat.geometry,
-              numberOfRephotos: feat.properties.rephotos!.toInt(),
-            ));
+        builder: (context) => getPhotoView(feat));
 
     await Navigator.push(context, mpr);
   }
