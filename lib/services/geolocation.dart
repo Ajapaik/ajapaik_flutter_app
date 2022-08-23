@@ -47,12 +47,14 @@ class AppLocator extends Geolocator  {
   }
   */
 
+  /*
   double getLatitude() {
     return latitudePos;
   }
   double getLongitude() {
     return longitudePos;
   }
+  */
   LatLng getLatLong() {
     return LatLng(latitudePos, longitudePos);
   }
