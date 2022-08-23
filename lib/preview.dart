@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 import 'dart:math' as math;
 
 import 'services/geolocation.dart';
+import 'package:latlong2/latlong.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
@@ -111,9 +112,8 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
 
     // location may be disallowed but save photo still
     await locator.updatePosition();
+    LatLng pos = locator.getLatLong();
 
-    ("Flipped");
-    (widget.historicalPhotoFlipped);
     Draft draft = Draft(
       "",
       widget.imagePath,
@@ -122,8 +122,8 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
       widget.historicalPhotoFlipped! == true,
       convertedDateTime,
       widget.historicalPhotoScale ?? 1,
-      locator.getLongitude(),
-      locator.getLatitude(),
+      pos.latitude,
+      pos.longitude,
       -1,
       -1,
       false,
@@ -164,6 +164,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
   }
 
   Widget getImage4(filename, context) {
+    // TOdO: another hard-coded url to move..
     Image image=Image.network(
       "https://upload.wikimedia.org/wikipedia/commons/a/a9/Example.jpg",
     );
@@ -221,6 +222,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
           return Image.file(croppedFileNew);
         }
         else {
+          // TOOD: another hard-coded URL to move..
           Image.network(
             "https://upload.wikimedia.org/wikipedia/commons/a/a9/Example.jpg",
           );

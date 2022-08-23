@@ -106,18 +106,15 @@ class MapState extends State<Map> {
   }
 
   Widget _buildFlutterMap(BuildContext context, snapshot) {
-    double imageLatitude = locator.getLatitude();
-    double imageLongitude = locator.getLongitude();
+    LatLng imgPos = locator.getLatLong();
     if (snapshot.hasData) {
-      imageLatitude = snapshot.data.latitude;
-      imageLongitude = snapshot.data.longitude;
+      imgPos = LatLng(snapshot.data.latitude, snapshot.data.longitude);
     }
-    LatLng imgLatLng = LatLng(imageLatitude, imageLongitude);
     LatLng wdgLatLong = LatLng(widget.imageLatitude, widget.imageLongitude);
     return FlutterMap(
         mapController: mapController,
         options: MapOptions(
-          bounds: LatLngBounds(wdgLatLong, imgLatLng),
+          bounds: LatLngBounds(wdgLatLong, imgPos),
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
           zoom: 17.0,
           minZoom: 2.5,
@@ -134,7 +131,7 @@ class MapState extends State<Map> {
             Marker(
                 width: 80.0,
                 height: 80.0,
-                point: imgLatLng,
+                point: imgPos,
                 builder: (ctx) =>
                     const Icon(Icons.location_pin, color: Colors.blue)),
           ]),
