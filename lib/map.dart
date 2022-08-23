@@ -71,8 +71,7 @@ class MapState extends State<Map> {
                                 Marker(
                                     width: 80.0,
                                     height: 80.0,
-                                    point: LatLng(
-                                        locator.getLatitude(), locator.getLongitude()),
+                                    point: locator.getLatLong(),
                                     builder: (ctx) => const Icon(
                                         Icons.location_pin,
                                         color: Colors.blue)),
