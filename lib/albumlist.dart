@@ -326,35 +326,23 @@ class AlbumList extends StatelessWidget {
         .size
         .height;
 
+    int caxcount = 4;
     if (height > width) {
-      return MasonryGridView.count(
-        crossAxisCount: 2,
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 8,
-        itemCount: albums!.first.features.length + 1,
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return headerTile(context, index);
-          } else {
-            return contentTile(context, index);
-          }
-        },
-      );
-    } else {
-      return MasonryGridView.count(
-        crossAxisCount: 4,
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 8,
-        itemCount: albums!.first.features.length + 1,
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return headerTile(context, index);
-          } else {
-            return contentTile(context, index);
-          }
-        },
-      );
+      caxcount = 2;
     }
+    return MasonryGridView.count(
+      crossAxisCount: caxcount,
+      crossAxisSpacing: 8,
+      mainAxisSpacing: 8,
+      itemCount: albums!.first.features.length + 1,
+      itemBuilder: (context, index) {
+        if (index == 0) {
+          return headerTile(context, index);
+        } else {
+          return contentTile(context, index);
+        }
+      },
+    );
   }
 
   Widget headerTile(context, index) {
