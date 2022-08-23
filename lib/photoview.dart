@@ -59,6 +59,8 @@ class PhotoviewState extends State<Photoview> {
   bool newMapInfoValue = true;
   double imageLatitude = 0; // image being viewed, not the one just taken?
   double imageLongitude = 0;
+  String dataSourceUrl = "https://ajapaik.toolforge.org/api/ajapaikimageinfo.php?id=";
+
   final locator = Get.put(AppLocator());
 
   _getTooltipValue() async {
@@ -328,8 +330,7 @@ class PhotoviewState extends State<Photoview> {
                 })));
   }
   onFetchAlbum() async {
-    // TODO: another hard-coded url that needs changing if server changes..
-    var url = "https://ajapaik.toolforge.org/api/ajapaikimageinfo.php?id=" +
+    var url = dataSourceUrl +
             widget.historicalPhotoId.toString();
 
     url = addLocationToUrl(url, locator.getLatLong());
