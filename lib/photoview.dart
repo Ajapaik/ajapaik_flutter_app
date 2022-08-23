@@ -507,45 +507,6 @@ class PhotoviewState extends State<Photoview> {
   // because we show markers with the map lets call it marked map, not "toolkitmap"
   // TODO: compare with the one in map.dart, duplication?
   Widget buildMarkedMap() {
-    List<Marker> markerList = [];
-
-    LatLng location = locator.getLatLong();
-    if (location.latitude != 0 && location.longitude != 0) {
-      Marker userMarker = Marker(
-          width: 80.0,
-          height: 80.0,
-          point: location,
-          builder: (ctx) => const Icon(Icons.location_pin, color: Colors.blue));
-      markerList.add(userMarker);
-    }
-
-    LatLng imgPos = LatLng(imageLatitude, imageLongitude);
-    if (imgPos.latitude != 0 && imgPos.longitude != 0) {
-      Marker imageMarker = Marker(
-          width: 80.0,
-          height: 80.0,
-          point: imgPos,
-          builder: (ctx) => const Icon(Icons.location_pin, color: Colors.red));
-      markerList.add(imageMarker);
-    }
-
-    return FlutterMap(
-        options: MapOptions(
-          bounds: LatLngBounds(imgPos, location),
-          interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
-          zoom: 17.0,
-          boundsOptions: const FitBoundsOptions(
-            padding: EdgeInsets.all(50),
-          ),
-        ),
-        layers: [
-          TileLayerOptions(
-            urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            subdomains: ['a', 'b', 'c']
-          ),
-          MarkerLayerOptions(
-            markers: markerList,
-          ),
-        ]);
+    return MapState.buildMarkedMap(locator.getLatLong(), LatLng(imageLatitude, imageLongitude));
   }
 }

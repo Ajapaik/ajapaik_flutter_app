@@ -23,10 +23,11 @@ class Map extends StatefulWidget {
   MapState createState() => MapState();
 }
 
+const String streetmapUrlTemplate = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+
 class MapState extends State<Map> {
   late final MapController mapController;
 
-  final String streetmapUrlTemplate = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
   final locator = Get.put(AppLocator());
 
   @override
@@ -145,4 +146,47 @@ class MapState extends State<Map> {
           ])
         ]);
   }
+
+  // currently doesn't use any members, just moved out of the way
+  static Widget buildMarkedMap(LatLng locPos, LatLng imgPos) {
+    List<Marker> markerList = [];
+
+    if (locPos.latitude != 0 && locPos.longitude != 0) {
+      Marker userMarker = Marker(
+          width: 80.0,
+          height: 80.0,
+          point: locPos,
+          builder: (ctx) => const Icon(Icons.location_pin, color: Colors.blue));
+      markerList.add(userMarker);
+    }
+
+    if (imgPos.latitude != 0 && imgPos.longitude != 0) {
+      Marker imageMarker = Marker(
+          width: 80.0,
+          height: 80.0,
+          point: imgPos,
+          builder: (ctx) => const Icon(Icons.location_pin, color: Colors.red));
+      markerList.add(imageMarker);
+    }
+
+    return FlutterMap(
+        options: MapOptions(
+          bounds: LatLngBounds(imgPos, locPos),
+          interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
+          zoom: 17.0,
+          boundsOptions: const FitBoundsOptions(
+            padding: EdgeInsets.all(50),
+          ),
+        ),
+        layers: [
+          TileLayerOptions(
+              urlTemplate: streetmapUrlTemplate,
+              subdomains: ['a', 'b', 'c']
+          ),
+          MarkerLayerOptions(
+            markers: markerList,
+          ),
+        ]);
+  }
+
 }
