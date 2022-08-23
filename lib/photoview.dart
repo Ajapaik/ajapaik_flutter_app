@@ -393,7 +393,7 @@ class PhotoviewState extends State<Photoview> {
                   alignment: Alignment.bottomCenter,
                   child: GestureDetector(
                       onDoubleTap: _openImageMapScreen,
-                      child: _buildFlutterMap())))),
+                      child: buildMarkedMap())))),
       Visibility(visible: mapInfoVisibility == false, child: _buildInfoText()),
     ]);
   }
@@ -426,7 +426,7 @@ class PhotoviewState extends State<Photoview> {
                     alignment: Alignment.bottomCenter,
                     child: GestureDetector(
                         onDoubleTap: _openImageMapScreen,
-                        child: _buildFlutterMap())))),
+                        child: buildMarkedMap())))),
         Visibility(
             visible: mapInfoVisibility == false, child: _buildInfoText()),
         Padding(
@@ -504,7 +504,9 @@ class PhotoviewState extends State<Photoview> {
     );
   }
 
-  Widget _buildFlutterMap() {
+  // because we show markers with the map lets call it marked map, not "toolkitmap"
+  // TODO: compare with the one in map.dart, duplication?
+  Widget buildMarkedMap() {
     List<Marker> markerList = [];
 
     LatLng location = locator.getLatLong();

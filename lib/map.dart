@@ -43,6 +43,7 @@ class MapState extends State<Map> {
 
   @override
   Widget build(BuildContext context) {
+    LatLng widgetPos = LatLng(widget.imageLatitude, widget.imageLongitude);
     return Scaffold(
       appBar: AppBar(title: Text(AppLocalizations.getText(context, 'imageMapScreen-appbarTitle'))),
       body: Stack(children: [
@@ -53,11 +54,11 @@ class MapState extends State<Map> {
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.hasError) (snapshot.error);
                   return snapshot.hasData
-                      ? _buildFlutterMap(context, snapshot)
+                      ? buildMapWidget(context, snapshot)
                       : Center(
                           child: FlutterMap(
                               options: MapOptions(
-                                center: LatLng(widget.imageLatitude, widget.imageLongitude),
+                                center: widgetPos,
                                 interactiveFlags: InteractiveFlag.pinchZoom |
                                     InteractiveFlag.drag,
                                 zoom: 17.0,
@@ -80,8 +81,7 @@ class MapState extends State<Map> {
                                 Marker(
                                     width: 80.0,
                                     height: 80.0,
-                                    point: LatLng(widget.imageLatitude,
-                                        widget.imageLongitude),
+                                    point: widgetPos,
                                     builder: (ctx) => const Icon(
                                         Icons.location_pin,
                                         color: Colors.red)),
@@ -105,7 +105,7 @@ class MapState extends State<Map> {
     );
   }
 
-  Widget _buildFlutterMap(BuildContext context, snapshot) {
+  Widget buildMapWidget(BuildContext context, snapshot) {
     LatLng imgPos = locator.getLatLong();
     if (snapshot.hasData) {
       imgPos = LatLng(snapshot.data.latitude, snapshot.data.longitude);
