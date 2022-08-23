@@ -35,6 +35,10 @@ class MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    // TODO: should load localizations before starting to build the UI
+    // so that localized strings are actually available
+    //AppLocalizations.load()
+
     initDeepLinks();
     locator.init();
     super.initState();
@@ -75,7 +79,12 @@ class MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final appTitle = AppLocalizations.getText(context, 'albumList-navItem1');
+    // Note: later parts want to use localized string instead,
+    // but here we haven't loaded localized strings yet..
+    //
+    // -> should load localizations first before starting to build UI
+    //
+    const String appTitle = "Nearest";
 
     GetMaterialApp gma = GetMaterialApp(
         supportedLocales: AppLocalizations.getSupportedLocales(),

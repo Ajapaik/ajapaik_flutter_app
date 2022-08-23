@@ -29,6 +29,7 @@ Locale? getLocale(String? languageCode) {
 
 class AppLocalizations {
   final Locale currentLocale;
+  //bool isLoaded = false; // localizations loaded yet?
 
   AppLocalizations(this.currentLocale);
 
@@ -63,6 +64,7 @@ class AppLocalizations {
     } else {
       defaultLocalizationStrings = strings;
     }
+    //isLoaded = true;
     return true;
   }
 
