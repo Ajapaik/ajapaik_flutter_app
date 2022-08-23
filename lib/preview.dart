@@ -165,6 +165,8 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
 
   Widget getImage4(filename, context) {
     // TOdO: another hard-coded url to move..
+    // TODO: try to avoid these, flutter does not like cross-domain files..
+    // -> include file with app or seek alternative?
     String wikiExample = "https://upload.wikimedia.org/wikipedia/commons/a/a9/Example.jpg";
     Image image=Image.network(wikiExample);
     bool validURL = Uri.parse(filename).host == '' ? false : true;
