@@ -11,6 +11,7 @@ class Draft {
   final String date;
   final double scale;
   final bool rephotoIsFlipped;
+  bool isUploaded = false;
 
   Draft(
     this.id,
@@ -39,7 +40,8 @@ class Draft {
         'scale': scale,
         'rephotoIsFlipped': rephotoIsFlipped,
         'filename': imagePath,
-        'historicalImagePath': historicalImagePath
+        'historicalImagePath': historicalImagePath,
+        'isUploaded': isUploaded
       };
 
 /*  Draft.fromJson(Map json)

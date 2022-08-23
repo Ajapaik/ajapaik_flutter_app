@@ -102,6 +102,10 @@ class DisplayUploadScreen extends StatelessWidget {
 
             // TODO: parse response to something that we can show to user,
             // don't use it directly: especially if commons differs from ajapaik
+
+            // also: check response so we know if the draft can be removed
+            //draft.isUploaded = true;
+            //drafStorage.remove..
             return response.body;
           });
         })
