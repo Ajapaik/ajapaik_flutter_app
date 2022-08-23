@@ -256,12 +256,13 @@ class PhotoviewState extends State<Photoview> {
   String getDistanceToImage() {
     String distanceToImage = '';
 
+    LatLng pos = locator.getLatLong();
     if (imageLatitude != 0 &&
         imageLongitude != 0 &&
-        locator.getLatitude() != 0 &&
-        locator.getLongitude() != 0) {
+        pos.latitude != 0 &&
+        pos.longitude != 0) {
       double distance = Geolocator.distanceBetween(
-          locator.getLatitude(), locator.getLongitude(), imageLatitude, imageLongitude);
+          pos.latitude, pos.longitude, imageLatitude, imageLongitude);
       double calcDistance = distance / 1000;
 
       if (distance >= 1000) {
@@ -331,10 +332,12 @@ class PhotoviewState extends State<Photoview> {
     var url = "https://ajapaik.toolforge.org/api/ajapaikimageinfo.php?id=" +
             widget.historicalPhotoId.toString();
 
+    url = addLocationToUrl(url, locator.getLatLong());
+    //print("fetchAlbum location: $position.toString()");
+
     // TODO: check if there are permissions to use network and/or session is active
     // can this be activated if there isn't connection?
-
-    return fetchAlbum(http.Client(), url, locator.getLatitude(), locator.getLongitude());
+    return fetchAlbum(http.Client(), url);
   }
 
   Widget verticalPreview(BuildContext context) {
@@ -505,11 +508,11 @@ class PhotoviewState extends State<Photoview> {
   Widget _buildFlutterMap() {
     List<Marker> markerList = [];
 
-    if (locator.getLatitude() != 0 && locator.getLongitude() != 0) {
+    if (locator.isNonzeroPos()) {
       Marker userMarker = Marker(
           width: 80.0,
           height: 80.0,
-          point: LatLng(locator.getLatitude(), locator.getLongitude()),
+          point: locator.getLatLong(),
           builder: (ctx) => const Icon(Icons.location_pin, color: Colors.blue));
       markerList.add(userMarker);
     }
@@ -526,7 +529,7 @@ class PhotoviewState extends State<Photoview> {
     return FlutterMap(
         options: MapOptions(
           bounds: LatLngBounds(LatLng(imageLatitude, imageLongitude),
-              LatLng(locator.getLatitude(), locator.getLongitude())),
+              locator.getLatLong()),
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
           zoom: 17.0,
           boundsOptions: const FitBoundsOptions(

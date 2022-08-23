@@ -111,7 +111,10 @@ class AlbumListPageState extends State<AlbumListPage> {
 
     // TODO: check if there are permissions to use network and/or session is active
 
-    await (_albumData = fetchAlbum(http.Client(), url, locator.getLatitude(), locator.getLongitude()));
+    url = addLocationToUrl(url, locator.getLatLong());
+    //print("fetchAlbum location: $position.toString()");
+
+    await (_albumData = fetchAlbum(http.Client(), url));
   }
 
   void toggleSearchDialog() {
@@ -150,13 +153,13 @@ class AlbumListPageState extends State<AlbumListPage> {
     super.dispose();
   }
 
+  void saveNameVisibility(bool visibility) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('visibility', visibility);
+  }
 
   @override
   Widget build(BuildContext context) {
-    _saveNameVisibility() async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('visibility', nameVisibility);
-    }
 
     void bottomNavigationBarOnTap(index) {
       if (index == 0) {
@@ -169,7 +172,7 @@ class AlbumListPageState extends State<AlbumListPage> {
       else if (index == 2) {
         setState(() {
           nameVisibility = !nameVisibility;
-          _saveNameVisibility();
+          saveNameVisibility(nameVisibility);
         });
       }
     }

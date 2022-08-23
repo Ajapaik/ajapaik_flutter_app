@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
+import 'package:latlong2/latlong.dart';
 
 class Album {
   List<Feature> features;
@@ -187,31 +188,25 @@ class Properties {
   }
 }
 
-Future<String> addLocationToUrl(String url,
-    double latitude, double longitude) async {
+String addLocationToUrl(String url, LatLng position) {
   if (url.contains("__LAT__")) {
-    url = url.replaceFirst("__LAT__", latitude.toString());
+    url = url.replaceFirst("__LAT__", position.latitude.toString());
   } else {
     url = url.replaceAll(RegExp(r'([?]latitude=)[0-9.]+'),'?');
     url = url.replaceAll(RegExp(r'([&]latitude=)[0-9.]+'),'');
-    url += "&latitude=" + latitude.toString();
+    url += "&latitude=" + position.latitude.toString();
   }
   if (url.contains("__LON__")) {
-    url = url.replaceFirst("__LON__", longitude.toString());
+    url = url.replaceFirst("__LON__", position.longitude.toString());
   } else {
     url = url.replaceAll(RegExp(r'([?]longitude=)[0-9.]+'),'?');
     url = url.replaceAll(RegExp(r'([&]longitude=)[0-9.]+'),'');
-    url += "&longitude=" + longitude.toString();
+    url += "&longitude=" + position.longitude.toString();
   }
-  print(latitude);
   return url;
 }
 
-Future<List<Album>> fetchAlbum(http.Client client, String url,
-    double latitude, double longitude) async {
-  print("fetchAlbum");
-
-  url = await addLocationToUrl(url, latitude, longitude);
+Future<List<Album>> fetchAlbum(http.Client client, String url) async {
   print(url);
   final response = await client.get(Uri.parse(url));
   // Use the compute function to run parsePhotos in a separate isolate.

@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:latlong2/latlong.dart';
 import 'dart:async';
 
 // could use something like Singleton<> ..
@@ -51,6 +52,15 @@ class AppLocator extends Geolocator  {
   }
   double getLongitude() {
     return longitudePos;
+  }
+  LatLng getLatLong() {
+    return LatLng(latitudePos, longitudePos);
+  }
+  bool isNonzeroPos() {
+    if (latitudePos != 0 && longitudePos != 0) {
+      return true;
+    }
+    return false;
   }
 
   // just make sure we hav other values apart from initial position?
