@@ -105,7 +105,7 @@ class DisplayUploadScreen extends StatelessWidget {
 
             // also: check response so we know if the draft can be removed
             //draft.isUploaded = true;
-            //drafStorage.remove..
+            //drafStorage.remove(draft)
             return response.body;
           });
         })
