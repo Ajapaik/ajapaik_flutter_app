@@ -289,28 +289,19 @@ class AlbumList extends StatelessWidget {
       : super(key: key);
 
   Future<void> showphoto(context, index) async {
+    Feature feat = albums!.first.features[index];
     MaterialPageRoute mpr = MaterialPageRoute(
         builder: (context) =>
             Photoview(
-              historicalPhotoId:
-              albums!.first.features[index].properties.id.toString(),
-              historicalPhotoUri: albums!
-                  .first.features[index].properties.thumbnail
-                  .toString(),
-              historicalName:
-              albums!.first.features[index].properties.name.toString(),
-              historicalDate:
-              albums!.first.features[index].properties.date.toString(),
-              historicalAuthor:
-              albums!.first.features[index].properties.author.toString(),
-              historicalSurl: albums!
-                  .first.features[index].properties.sourceUrl
-                  .toString(),
-              historicalLabel: albums!
-                  .first.features[index].properties.sourceLabel
-                  .toString(),
-              historicalCoordinates: albums!.first.features[index].geometry,
-              numberOfRephotos: albums!.first.features[index].properties.rephotos!.toInt(),
+              historicalPhotoId: feat.properties.id.toString(),
+              historicalPhotoUri: feat.properties.thumbnail.toString(),
+              historicalName: feat.properties.name.toString(),
+              historicalDate: feat.properties.date.toString(),
+              historicalAuthor: feat.properties.author.toString(),
+              historicalSurl: feat.properties.sourceUrl.toString(),
+              historicalLabel: feat.properties.sourceLabel.toString(),
+              historicalCoordinates: feat.geometry,
+              numberOfRephotos: feat.properties.rephotos!.toInt(),
             ));
 
     await Navigator.push(context, mpr);
