@@ -365,10 +365,12 @@ class AlbumList extends StatelessWidget {
   Widget contentTile(context, index) {
     // Remove header row from index
     index = index - 1;
+    Feature feat = albums!.first.features[index];
+
     return GestureDetector(
       onTap: () {
-        if (albums!.first.features[index].properties.geojson != null &&
-            albums!.first.features[index].properties.geojson != "") {
+        if (feat.properties.geojson != null &&
+            feat.properties.geojson != "") {
           moveToGeoJson(context, index);
         } else {
           showphoto(context, index);
@@ -377,10 +379,10 @@ class AlbumList extends StatelessWidget {
       child: Column(children: [
         CachedNetworkImage(
             imageUrl:
-            albums!.first.features[index].properties.thumbnail.toString()),
+            feat.properties.thumbnail.toString()),
         Visibility(
           child: Text(
-            albums!.first.features[index].properties.name.toString(),
+            feat.properties.name.toString(),
             textAlign: TextAlign.center,
           ),
           visible: toggle,
