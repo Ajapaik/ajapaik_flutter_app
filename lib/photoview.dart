@@ -158,14 +158,12 @@ class PhotoviewState extends State<Photoview> {
                 icon: const Icon(Icons.menu, color: Colors.white),
                 onSelected: (result) async {
                   if (result == 0) {
-                    final urlImage = widget.historicalPhotoUri;
-                    final url = Uri.parse(urlImage);
+                    final url = Uri.parse(widget.historicalPhotoUri);
                     final response = await http.get(url);
-                    final bytes = response.bodyBytes;
 
                     final temp = await getTemporaryDirectory();
                     final path = '${temp.path}/image.jpg';
-                    File(path).writeAsBytesSync(bytes);
+                    File(path).writeAsBytesSync(response.bodyBytes);
 
                     await Share.shareFiles([path], text: widget.historicalName);
                     void _main() {
