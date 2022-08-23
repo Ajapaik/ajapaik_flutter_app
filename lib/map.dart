@@ -55,39 +55,9 @@ class MapState extends State<Map> {
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.hasError) (snapshot.error);
                   return snapshot.hasData
-                      ? buildMapWidget(context, snapshot)
+                      ? buildMapWidgetSnapshot(context, widgetPos, snapshot)
                       : Center(
-                          child: FlutterMap(
-                              options: MapOptions(
-                                center: widgetPos,
-                                interactiveFlags: InteractiveFlag.pinchZoom |
-                                    InteractiveFlag.drag,
-                                zoom: 17.0,
-                              ),
-                              layers: [
-                              TileLayerOptions(
-                                urlTemplate: streetmapUrlTemplate,
-                                subdomains: ['a', 'b', 'c'],
-                              ),
-                              MarkerLayerOptions(markers: [
-                                Marker(
-                                    width: 80.0,
-                                    height: 80.0,
-                                    point: locator.getLatLong(),
-                                    builder: (ctx) => const Icon(
-                                        Icons.location_pin,
-                                        color: Colors.blue)),
-                              ]),
-                              MarkerLayerOptions(markers: [
-                                Marker(
-                                    width: 80.0,
-                                    height: 80.0,
-                                    point: widgetPos,
-                                    builder: (ctx) => const Icon(
-                                        Icons.location_pin,
-                                        color: Colors.red)),
-                              ])
-                            ]));
+                          child: buildMapWidget(context, widgetPos));
                 })),
          GestureDetector(
             onTap: () {
@@ -106,16 +76,46 @@ class MapState extends State<Map> {
     );
   }
 
-  Widget buildMapWidget(BuildContext context, snapshot) {
+  static Marker getMarker(LatLng point, builder) {
+    return Marker(
+        width: 80.0,
+        height: 80.0,
+        point: point,
+        builder: builder);
+  }
+
+  Widget buildMapWidget(BuildContext context, LatLng widgetPos) {
+    LatLng imgPos = locator.getLatLong();
+    return FlutterMap(
+        options: MapOptions(
+          center: widgetPos,
+          interactiveFlags: InteractiveFlag.pinchZoom |
+          InteractiveFlag.drag,
+          zoom: 17.0,
+        ),
+        layers: [
+          TileLayerOptions(
+            urlTemplate: streetmapUrlTemplate,
+            subdomains: ['a', 'b', 'c'],
+          ),
+          MarkerLayerOptions(markers: [
+            getMarker(imgPos, (ctx) => const Icon(Icons.location_pin, color: Colors.blue)),
+          ]),
+          MarkerLayerOptions(markers: [
+            getMarker(widgetPos, (ctx) => const Icon(Icons.location_pin, color: Colors.red)),
+          ])
+        ]);
+  }
+
+  Widget buildMapWidgetSnapshot(BuildContext context, LatLng widgetPos, snapshot) {
     LatLng imgPos = locator.getLatLong();
     if (snapshot.hasData) {
       imgPos = LatLng(snapshot.data.latitude, snapshot.data.longitude);
     }
-    LatLng wdgLatLong = LatLng(widget.imageLatitude, widget.imageLongitude);
     return FlutterMap(
         mapController: mapController,
         options: MapOptions(
-          bounds: LatLngBounds(wdgLatLong, imgPos),
+          bounds: LatLngBounds(widgetPos, imgPos),
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
           zoom: 17.0,
           minZoom: 2.5,
@@ -129,43 +129,25 @@ class MapState extends State<Map> {
             subdomains: ['a', 'b', 'c'],
           ),
           MarkerLayerOptions(markers: [
-            Marker(
-                width: 80.0,
-                height: 80.0,
-                point: imgPos,
-                builder: (ctx) =>
-                    const Icon(Icons.location_pin, color: Colors.blue)),
+            getMarker(imgPos, (ctx) => const Icon(Icons.location_pin, color: Colors.blue)),
           ]),
           MarkerLayerOptions(markers: [
-            Marker(
-                width: 80.0,
-                height: 80.0,
-                point: wdgLatLong,
-                builder: (ctx) =>
-                    const Icon(Icons.location_pin, color: Colors.red)),
+            getMarker(widgetPos, (ctx) => const Icon(Icons.location_pin, color: Colors.red)),
           ])
         ]);
   }
 
   // currently doesn't use any members, just moved out of the way
-  static Widget buildMarkedMap(LatLng locPos, LatLng imgPos) {
+  static Widget buildMarkedMap(BuildContext context, LatLng locPos, LatLng imgPos) {
     List<Marker> markerList = [];
 
     if (locPos.latitude != 0 && locPos.longitude != 0) {
-      Marker userMarker = Marker(
-          width: 80.0,
-          height: 80.0,
-          point: locPos,
-          builder: (ctx) => const Icon(Icons.location_pin, color: Colors.blue));
+      Marker userMarker = getMarker(locPos, (ctx) => const Icon(Icons.location_pin, color: Colors.blue));
       markerList.add(userMarker);
     }
 
     if (imgPos.latitude != 0 && imgPos.longitude != 0) {
-      Marker imageMarker = Marker(
-          width: 80.0,
-          height: 80.0,
-          point: imgPos,
-          builder: (ctx) => const Icon(Icons.location_pin, color: Colors.red));
+      Marker imageMarker = getMarker(imgPos, (ctx) => const Icon(Icons.location_pin, color: Colors.red));
       markerList.add(imageMarker);
     }
 

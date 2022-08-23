@@ -393,7 +393,7 @@ class PhotoviewState extends State<Photoview> {
                   alignment: Alignment.bottomCenter,
                   child: GestureDetector(
                       onDoubleTap: _openImageMapScreen,
-                      child: buildMarkedMap())))),
+                      child: buildMarkedMap(context))))),
       Visibility(visible: mapInfoVisibility == false, child: _buildInfoText()),
     ]);
   }
@@ -426,7 +426,7 @@ class PhotoviewState extends State<Photoview> {
                     alignment: Alignment.bottomCenter,
                     child: GestureDetector(
                         onDoubleTap: _openImageMapScreen,
-                        child: buildMarkedMap())))),
+                        child: buildMarkedMap(context))))),
         Visibility(
             visible: mapInfoVisibility == false, child: _buildInfoText()),
         Padding(
@@ -506,7 +506,7 @@ class PhotoviewState extends State<Photoview> {
 
   // because we show markers with the map lets call it marked map, not "toolkitmap"
   // TODO: compare with the one in map.dart, duplication?
-  Widget buildMarkedMap() {
-    return MapState.buildMarkedMap(locator.getLatLong(), LatLng(imageLatitude, imageLongitude));
+  Widget buildMarkedMap(BuildContext context) {
+    return MapState.buildMarkedMap(context, locator.getLatLong(), LatLng(imageLatitude, imageLongitude));
   }
 }
