@@ -47,22 +47,8 @@ class AppLocator extends Geolocator  {
   }
   */
 
-  /*
-  double getLatitude() {
-    return latitudePos;
-  }
-  double getLongitude() {
-    return longitudePos;
-  }
-  */
   LatLng getLatLong() {
     return LatLng(latitudePos, longitudePos);
-  }
-  bool isNonzeroPos() {
-    if (latitudePos != 0 && longitudePos != 0) {
-      return true;
-    }
-    return false;
   }
 
   // just make sure we hav other values apart from initial position?

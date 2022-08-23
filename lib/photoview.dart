@@ -509,28 +509,29 @@ class PhotoviewState extends State<Photoview> {
   Widget _buildFlutterMap() {
     List<Marker> markerList = [];
 
-    if (locator.isNonzeroPos()) {
+    LatLng location = locator.getLatLong();
+    if (location.latitude != 0 && location.longitude != 0) {
       Marker userMarker = Marker(
           width: 80.0,
           height: 80.0,
-          point: locator.getLatLong(),
+          point: location,
           builder: (ctx) => const Icon(Icons.location_pin, color: Colors.blue));
       markerList.add(userMarker);
     }
 
-    if (imageLatitude != 0 && imageLongitude != 0) {
+    LatLng imgPos = LatLng(imageLatitude, imageLongitude);
+    if (imgPos.latitude != 0 && imgPos.longitude != 0) {
       Marker imageMarker = Marker(
           width: 80.0,
           height: 80.0,
-          point: LatLng(imageLatitude, imageLongitude),
+          point: imgPos,
           builder: (ctx) => const Icon(Icons.location_pin, color: Colors.red));
       markerList.add(imageMarker);
     }
 
     return FlutterMap(
         options: MapOptions(
-          bounds: LatLngBounds(LatLng(imageLatitude, imageLongitude),
-              locator.getLatLong()),
+          bounds: LatLngBounds(imgPos, location),
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
           zoom: 17.0,
           boundsOptions: const FitBoundsOptions(
