@@ -15,6 +15,9 @@ class DisplayUploadScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TOOD: see about handling session/login here
+    // to simplify save/upload things later
+    // -> might need some major refactoring..?
     return Scaffold(
         appBar: AppBar(title: const Text('Save to')),
         body: saveToButtons(context));
