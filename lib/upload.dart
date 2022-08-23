@@ -4,7 +4,6 @@ import 'package:sign_in_button/sign_in_button.dart';
 import 'sessioncontroller.dart';
 import 'uploadcontroller.dart';
 import 'package:http/http.dart' as http;
-import 'dart:io';
 import 'data/draft.json.dart';
 import 'login.dart';
 
