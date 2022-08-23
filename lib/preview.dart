@@ -165,9 +165,8 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
 
   Widget getImage4(filename, context) {
     // TOdO: another hard-coded url to move..
-    Image image=Image.network(
-      "https://upload.wikimedia.org/wikipedia/commons/a/a9/Example.jpg",
-    );
+    String wikiExample = "https://upload.wikimedia.org/wikipedia/commons/a/a9/Example.jpg";
+    Image image=Image.network(wikiExample);
     bool validURL = Uri.parse(filename).host == '' ? false : true;
 
     if (validURL) {
@@ -222,10 +221,8 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
           return Image.file(croppedFileNew);
         }
         else {
-          // TOOD: another hard-coded URL to move..
-          Image.network(
-            "https://upload.wikimedia.org/wikipedia/commons/a/a9/Example.jpg",
-          );
+          // so, why is this really here now?
+          Image.network(wikiExample);
         }
       }
     }
