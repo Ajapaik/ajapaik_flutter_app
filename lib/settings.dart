@@ -13,14 +13,13 @@ class SettingsScreen extends StatefulWidget {
 bool tooltip = true;
 
 class SettingsScreenState extends State<SettingsScreen> {
+  saveTooltipPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('tooltip', tooltip);
+  }
+
   @override
   Widget build(BuildContext context) {
-
-    @override
-    _saveBool() async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('tooltip', tooltip);
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -59,7 +58,7 @@ class SettingsScreenState extends State<SettingsScreen> {
           title: Text(AppLocalizations.getText(context, 'settings-showMapTile')),
           onChanged: (bool newValue) {
             setState(() => tooltip = newValue);
-            _saveBool();
+            saveTooltipPrefs();
           },
         )
       ])),
