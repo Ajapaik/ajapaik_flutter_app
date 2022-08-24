@@ -107,14 +107,6 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
 
     DateTime now = DateTime.now();
 
-    // why this dateformat? could just use .toIso8601String() and be done with it..
-    String convertedDateTime =
-        now.day.toString().padLeft(2, '0') +
-            "-" +
-            now.month.toString().padLeft(2, '0') +
-            "-" +
-            now.year.toString();
-
     // location may be disallowed but save photo still
     await locator.updatePosition();
     LatLng pos = locator.getLatLong();
@@ -125,13 +117,12 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
       widget.historicalImagePath,
       widget.historicalImageId,
       widget.historicalPhotoFlipped! == true,
-      convertedDateTime,
+      now,
       widget.historicalPhotoScale ?? 1,
       pos.latitude,
       pos.longitude,
       -1,
-      -1,
-      false,
+      false
     );
     // keep for later if we can't upload right away
     draftStorage.store(draft);

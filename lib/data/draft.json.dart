@@ -4,14 +4,15 @@ class Draft {
   final String historicalImagePath;
   final String historicalImageId; // freely defined id, usually INT or URI
   final bool historicalPhotoFlipped;
-  final double lat;
-  final double lon;
+  final double latitude;
+  final double longitude;
   final double accuracy;
   //final double age; // age? what format? seconds? counting from when? never used?
-  final String date;
+  //final String date;
+  final DateTime timestamp;
   final double scale;
   final bool rephotoIsFlipped;
-  bool isUploaded = false;
+  bool isUploaded = false; // track locally stored data: uploaded to server yet?
 
   Draft(
     this.id,
@@ -19,26 +20,39 @@ class Draft {
     this.historicalImagePath,
     this.historicalImageId,
     this.historicalPhotoFlipped,
-    this.date,
+    this.timestamp,
     this.scale,
-    this.lat,
-    this.lon,
+    this.latitude,
+    this.longitude,
     this.accuracy,
     this.rephotoIsFlipped,
   );
 
+  // ajapaik uses some this format for timestamp:
+  // it isn't ISO-standard format but something specific to it
+  // -> handle as special when needed unless server can be modified too?
+  String dateForAjapaik() {
+    String convertedDateTime =
+        timestamp.day.toString().padLeft(2, '0') +
+            "-" +
+            timestamp.month.toString().padLeft(2, '0') +
+            "-" +
+            timestamp.year.toString();
+    return convertedDateTime;
+  }
+
   Map<String, dynamic> toJson() => {
         'id': id,
-        'historicalImageId': historicalImageId,
-        'historicalPhotoFlipped': historicalPhotoFlipped,
-        'lat': lat,
-        'lon': lon,
-        'accuracy': accuracy,
-        'date': date,
-        'scale': scale,
-        'rephotoIsFlipped': rephotoIsFlipped,
         'filename': imagePath,
         'historicalImagePath': historicalImagePath,
+        'historicalImageId': historicalImageId,
+        'historicalPhotoFlipped': historicalPhotoFlipped,
+        'timestamp': timestamp.toIso8601String(), // keep it in standard format when saving normally
+        'scale': scale,
+        'latitude': latitude,
+        'longitude': longitude,
+        'accuracy': accuracy,
+        'rephotoIsFlipped': rephotoIsFlipped,
         'isUploaded': isUploaded
       };
 

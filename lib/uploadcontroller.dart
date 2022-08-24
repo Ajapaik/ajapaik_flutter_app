@@ -17,14 +17,12 @@ class UploadController  {
     var request = http.MultipartRequest("POST", postUri);
     request.headers['Cookie'] = 'sessionid=' + sessionid;
     //    request.headers['Content-Type']="application/json; charset=UTF-8";
-    request.fields['id'] =
-        draft.historicalImageId; // Historical photo id in Ajapaik or Finna_url
-    request.fields['latitude'] = draft.lat.toString(); // optional
-    request.fields['longitude'] = draft.lon.toString(); // optional
+    request.fields['id'] = draft.historicalImageId; // Historical photo id in Ajapaik or Finna_url
+    request.fields['latitude'] = draft.latitude.toString(); // optional
+    request.fields['longitude'] = draft.longitude.toString(); // optional
     //    request.fields['accuracy'] = 'blah'; //optional
     //    request.fields['age'] = 'blah'; // optional, coordinates_age
-    request.fields['date'] =
-        draft.date; //'01-01-1999'; // optional, coordinate_accuracy
+    request.fields['date'] = draft.dateForAjapaik(); //'01-01-1999'; // optional, coordinate_accuracy
     request.fields['scale'] = draft.scale.toString();
     request.fields['yaw'] = '0'; // device_yaw
     request.fields['pitch'] = '0'; // device_pitch
