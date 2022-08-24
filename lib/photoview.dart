@@ -1,4 +1,10 @@
 import 'dart:io';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:ajapaik_flutter_app/localization.dart';
 import 'package:ajapaik_flutter_app/rephotocompareview.dart';
 import 'package:ajapaik_flutter_app/services/geolocation.dart';
@@ -6,11 +12,8 @@ import 'package:ajapaik_flutter_app/settings.dart';
 import 'package:ajapaik_flutter_app/upload.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:camera/camera.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'camera.dart';
@@ -18,9 +21,6 @@ import 'data/draft.json.dart';
 import 'data/album.geojson.dart';
 import 'map.dart';
 import 'fullscreenimageview.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:latlong2/latlong.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'draftstorage.dart';
 
 class Photoview extends StatefulWidget {
