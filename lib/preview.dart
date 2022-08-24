@@ -49,8 +49,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
   GlobalKey cameraPhotoKey = GlobalKey();
   double oldCenterX = 0;
   double oldCenterY = 0;
-  final TransformationController _transformationController =
-      TransformationController();
+  //final TransformationController _transformationController = TransformationController();
 
   // TODO: keep shared
   DraftStorage draftStorage = DraftStorage();
