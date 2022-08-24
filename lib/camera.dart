@@ -244,24 +244,25 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   void onPointerMove(details) {
     //print("onPointerMove: " + pinchToZoomBusy.toString());
     //double diffX=details.localDelta.dx;
-
-    if (pinchToZoomBusy == false) {
-      setState(() {
-        if (details.delta.dy > 1) {
-          historicalPhotoTransparency =
-              historicalPhotoTransparency + 0.02;
-          if (historicalPhotoTransparency > 1) {
-            historicalPhotoTransparency = 1;
-          }
-        } else if (details.delta.dy < -1) {
-          historicalPhotoTransparency =
-              historicalPhotoTransparency - 0.02;
-          if (historicalPhotoTransparency < 0) {
-            historicalPhotoTransparency = 0;
-          }
-        }
-      });
+    if (pinchToZoomBusy == true) {
+      return;
     }
+
+    setState(() {
+      if (details.delta.dy > 1) {
+        historicalPhotoTransparency =
+            historicalPhotoTransparency + 0.02;
+        if (historicalPhotoTransparency > 1) {
+          historicalPhotoTransparency = 1;
+        }
+      } else if (details.delta.dy < -1) {
+        historicalPhotoTransparency =
+            historicalPhotoTransparency - 0.02;
+        if (historicalPhotoTransparency < 0) {
+          historicalPhotoTransparency = 0;
+        }
+      }
+    });
   }
 
   @override
