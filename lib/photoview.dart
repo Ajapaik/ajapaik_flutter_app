@@ -66,7 +66,7 @@ class PhotoviewState extends State<Photoview> {
 
   final locator = Get.put(AppLocator());
 
-  _getTooltipValue() async {
+  getTooltipPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var prefsValue = prefs.getBool("tooltip");
     if (prefsValue != tooltip) {
@@ -192,7 +192,7 @@ class PhotoviewState extends State<Photoview> {
                                 builder: (context) => const SettingsScreen()))
                         .then((_) {
                       setState(() {
-                        _getTooltipValue();
+                        getTooltipPrefs();
                       });
                     });
                   }
