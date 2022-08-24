@@ -399,7 +399,7 @@ class PhotoviewState extends State<Photoview> {
                   child: GestureDetector(
                       onDoubleTap: openImageMapScreen,
                       child: buildMarkedMap(context))))),
-      Visibility(visible: mapInfoVisibility == false, child: _buildInfoText()),
+      Visibility(visible: mapInfoVisibility == false, child: buildInfoText()),
     ]);
   }
 
@@ -433,7 +433,7 @@ class PhotoviewState extends State<Photoview> {
                         onDoubleTap: openImageMapScreen,
                         child: buildMarkedMap(context))))),
         Visibility(
-            visible: mapInfoVisibility == false, child: _buildInfoText()),
+            visible: mapInfoVisibility == false, child: buildInfoText()),
         Padding(
           padding: const EdgeInsets.only(
             right: 30,
@@ -467,7 +467,7 @@ class PhotoviewState extends State<Photoview> {
     );
   }
 
-  Widget _buildInfoText() {
+  Widget buildInfoText() {
     return Expanded(
       child: Padding(
           padding: const EdgeInsets.all(20),
