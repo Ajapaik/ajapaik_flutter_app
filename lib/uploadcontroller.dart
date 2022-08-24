@@ -90,7 +90,7 @@ class UploadController  {
     }
     if (request == null) {
       // not yet implemented others
-      return null;
+      throw UnimplementedError('server request not yet implemented');
     }
     var multipart = http.MultipartFile.fromPath(
         'original', File(draft.imagePath).path);
