@@ -9,7 +9,7 @@ class Draft {
   final double accuracy;
   //final double age; // age? what format? seconds? counting from when? never used?
   //final String date;
-  final DateTime timestamp;
+  final DateTime timestamp; // use original until we need to convert
   final double scale;
   final bool rephotoIsFlipped;
   bool isUploaded = false; // track locally stored data: uploaded to server yet?
@@ -41,6 +41,8 @@ class Draft {
     return convertedDateTime;
   }
 
+  /* currently this isn't even used? all fields are used directly when generating upload now
+  -> modify more later
   Map<String, dynamic> toJson() => {
         'id': id,
         'filename': imagePath,
@@ -55,6 +57,8 @@ class Draft {
         'rephotoIsFlipped': rephotoIsFlipped,
         'isUploaded': isUploaded
       };
+
+   */
 
 /*  Draft.fromJson(Map json)
       : id = json['id'],
