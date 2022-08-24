@@ -37,8 +37,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   Orientation? lastKnownOrientation;
 
   // Interactive viewer overlay
-  TransformationController historicalPhotoController =
-      TransformationController();
+  TransformationController historicalPhotoController = TransformationController();
   GlobalKey historicalPhotoKey = GlobalKey();
   bool historicalPhotoFlipped = false;
   double historicalPhotoTransparency = 0.65;
@@ -242,6 +241,29 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     });
   }
 
+  void onPointerMove(details) {
+    //print("onPointerMove: " + pinchToZoomBusy.toString());
+    //double diffX=details.localDelta.dx;
+
+    if (pinchToZoomBusy == false) {
+      setState(() {
+        if (details.delta.dy > 1) {
+          historicalPhotoTransparency =
+              historicalPhotoTransparency + 0.02;
+          if (historicalPhotoTransparency > 1) {
+            historicalPhotoTransparency = 1;
+          }
+        } else if (details.delta.dy < -1) {
+          historicalPhotoTransparency =
+              historicalPhotoTransparency - 0.02;
+          if (historicalPhotoTransparency < 0) {
+            historicalPhotoTransparency = 0;
+          }
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
 //      Future.delayed(Duration(milliseconds: 1500), () => fixposition(context) );
@@ -323,26 +345,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                         },
                         child: Listener(
                             onPointerMove: (details) {
-                              //print("onPointerMove: " + pinchToZoomBusy.toString());
-                              //double diffX=details.localDelta.dx;
-
-                              if (pinchToZoomBusy == false) {
-                                setState(() {
-                                  if (details.delta.dy > 1) {
-                                    historicalPhotoTransparency =
-                                        historicalPhotoTransparency + 0.02;
-                                    if (historicalPhotoTransparency > 1) {
-                                      historicalPhotoTransparency = 1;
-                                    }
-                                  } else if (details.delta.dy < -1) {
-                                    historicalPhotoTransparency =
-                                        historicalPhotoTransparency - 0.02;
-                                    if (historicalPhotoTransparency < 0) {
-                                      historicalPhotoTransparency = 0;
-                                    }
-                                  }
-                                });
-                              }
+                              onPointerMove(details);
                             },
                             child: Transform.rotate(
                                 angle: 0, // 90 degree angle in radians
