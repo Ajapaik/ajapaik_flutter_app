@@ -51,8 +51,9 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
   /* TAKE PHOTO */
   void onTakePicture() async {
-    // Take the Picture in a try / catch block. If anything goes wrong,
-    // catch the error.
+    // camera handling can take exception for a number of reasons:
+    // a) no permissions b) no camera on the device c) any other reason..
+    // -> maybe should informat the user somehow as well?
     try {
       // Ensure that the camera is initialized.
       await initializeCameraControllerFuture;
