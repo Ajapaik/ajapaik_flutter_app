@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 import 'package:ajapaik_flutter_app/localization.dart';
 import 'package:ajapaik_flutter_app/rephotocompareview.dart';

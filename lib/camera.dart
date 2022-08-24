@@ -407,8 +407,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                             iconSize: 36.0,
                             onPressed: () {
                               setState(() {
-                                historicalPhotoFlipped =
-                                    !historicalPhotoFlipped;
+                                historicalPhotoFlipped = !historicalPhotoFlipped;
                               });
                             })))),
           ]);
