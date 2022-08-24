@@ -94,6 +94,7 @@ class Geometry {
   factory Geometry.fromJson(Map<String, dynamic> json) {
     String type = json['type'];
 
+    // GeoJson (RFC 7946) uses array of two values..
     List<double> coordinates = [
       json["coordinates"][1].toDouble() as double,
       json["coordinates"][0].toDouble() as double
@@ -103,7 +104,8 @@ class Geometry {
   }
 
   bool hasCoordinates() {
-    // must have two values to make any sense of a list
+    // must have two values to make any sense of the list:
+    // it is pointless if we have only latitude or longitude without the other
     if (coordinates.length == 2) {
       return true;
     }
@@ -122,6 +124,7 @@ class Geometry {
     return Geometry(type: "", coordinates: []);
   }
 
+  // GeoJson (RFC 7946) uses array of two values..
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['type'] = type;
