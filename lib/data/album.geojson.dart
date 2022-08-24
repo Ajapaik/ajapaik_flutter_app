@@ -102,6 +102,22 @@ class Geometry {
     return Geometry(type: type, coordinates: coordinates);
   }
 
+  bool hasCoordinates() {
+    // must have two values to make any sense of a list
+    if (coordinates.length == 2) {
+      return true;
+    }
+    return false;
+  }
+  // at least try to ensure these are used consistently:
+  // these should not be "guessed" by indices but named which is which
+  double getLatitude() {
+    return coordinates[0];
+  }
+  double getLongitude() {
+    return coordinates[1];
+  }
+
   factory Geometry.empty() {
     return Geometry(type: "", coordinates: []);
   }

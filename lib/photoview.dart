@@ -127,9 +127,9 @@ class PhotoviewState extends State<Photoview> {
 
   @override
   void initState() {
-    if (widget.historicalCoordinates.coordinates.isNotEmpty) {
-      imageLatitude = widget.historicalCoordinates.coordinates[0];
-      imageLongitude = widget.historicalCoordinates.coordinates[1];
+    if (widget.historicalCoordinates.hasCoordinates()) {
+      imageLatitude = widget.historicalCoordinates.getLatitude();
+      imageLongitude = widget.historicalCoordinates.getLongitude();
     }
     locator.init();
 
