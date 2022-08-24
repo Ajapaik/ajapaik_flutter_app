@@ -41,6 +41,12 @@ class Draft {
     return convertedDateTime;
   }
 
+  // FYI: if we need the age of this draft:
+  // just calculate it when needed..
+  getAge() {
+    return DateTime.now().difference(timestamp);
+  }
+
   /* currently this isn't even used? all fields are used directly when generating upload now
   -> modify more later
   Map<String, dynamic> toJson() => {
