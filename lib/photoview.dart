@@ -93,7 +93,7 @@ class PhotoviewState extends State<Photoview> {
   }
   */
 
-  void _takeRephoto(context) {
+  void takeRephoto(context) {
     availableCameras().then((availableCameras) async {
       CameraDescription firstCamera = availableCameras.first;
       var rephoto = await Navigator.push(
@@ -116,7 +116,7 @@ class PhotoviewState extends State<Photoview> {
     });
   }
 
-  void _launchInfo() async {
+  void launchInfo() async {
     Uri url = Uri.parse(widget.historicalSurl);
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
@@ -179,10 +179,10 @@ class PhotoviewState extends State<Photoview> {
                     _main();
                   }
                   if (result == 1) {
-                    _launchInfo();
+                    launchInfo();
                   }
                   if (result == 3) {
-                    _openImageMapScreen();
+                    openImageMapScreen();
                   }
                   if (result == 4) {
                     Navigator.push(
@@ -246,7 +246,7 @@ class PhotoviewState extends State<Photoview> {
     });
   }
 
-  void _openImageMapScreen() async {
+  void openImageMapScreen() async {
     print(imageLatitude);
     await Navigator.push(
         context,
@@ -280,7 +280,7 @@ class PhotoviewState extends State<Photoview> {
     return distanceToImage;
   }
 
-  Widget _getRephotoNumberIconBottomLeft(numberOfRephotos) {
+  Widget getRephotoNumberIconBottomLeft(numberOfRephotos) {
     IconData numberOfRephotosIcon;
 
     switch (numberOfRephotos) {
@@ -363,7 +363,7 @@ class PhotoviewState extends State<Photoview> {
               },
               child: Stack(children: [
                 Image.network(widget.historicalPhotoUri, fit: BoxFit.contain),
-                _getRephotoNumberIconBottomLeft(widget.numberOfRephotos)
+                getRephotoNumberIconBottomLeft(widget.numberOfRephotos)
               ]))),
       Padding(
           padding: const EdgeInsets.only(top: 20, bottom: 20),
@@ -375,7 +375,7 @@ class PhotoviewState extends State<Photoview> {
                   alignment: Alignment.center,
                   iconSize: 50,
                   onPressed: () {
-                    _takeRephoto(context);
+                    takeRephoto(context);
                   },
                   icon: const Icon(Icons.camera)),
             ),
@@ -397,7 +397,7 @@ class PhotoviewState extends State<Photoview> {
               child: Align(
                   alignment: Alignment.bottomCenter,
                   child: GestureDetector(
-                      onDoubleTap: _openImageMapScreen,
+                      onDoubleTap: openImageMapScreen,
                       child: buildMarkedMap(context))))),
       Visibility(visible: mapInfoVisibility == false, child: _buildInfoText()),
     ]);
@@ -421,7 +421,7 @@ class PhotoviewState extends State<Photoview> {
               },
               child: Stack(children: [
                 CachedNetworkImage(imageUrl: widget.historicalPhotoUri),
-                _getRephotoNumberIconBottomLeft(widget.numberOfRephotos)
+                getRephotoNumberIconBottomLeft(widget.numberOfRephotos)
               ])),
         ),
         Visibility(
@@ -430,7 +430,7 @@ class PhotoviewState extends State<Photoview> {
                 child: Align(
                     alignment: Alignment.bottomCenter,
                     child: GestureDetector(
-                        onDoubleTap: _openImageMapScreen,
+                        onDoubleTap: openImageMapScreen,
                         child: buildMarkedMap(context))))),
         Visibility(
             visible: mapInfoVisibility == false, child: _buildInfoText()),
@@ -447,7 +447,7 @@ class PhotoviewState extends State<Photoview> {
                     alignment: Alignment.center,
                     iconSize: 50,
                     onPressed: () {
-                      _takeRephoto(context);
+                      takeRephoto(context);
                     },
                     icon: const Icon(Icons.camera)),
                 IconButton(
