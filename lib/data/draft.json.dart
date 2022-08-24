@@ -7,7 +7,7 @@ class Draft {
   final double lat;
   final double lon;
   final double accuracy;
-  final double age;
+  //final double age; // age? what format? seconds? counting from when? never used?
   final String date;
   final double scale;
   final bool rephotoIsFlipped;
@@ -24,7 +24,6 @@ class Draft {
     this.lat,
     this.lon,
     this.accuracy,
-    this.age,
     this.rephotoIsFlipped,
   );
 
@@ -35,7 +34,6 @@ class Draft {
         'lat': lat,
         'lon': lon,
         'accuracy': accuracy,
-        'age': age,
         'date': date,
         'scale': scale,
         'rephotoIsFlipped': rephotoIsFlipped,
