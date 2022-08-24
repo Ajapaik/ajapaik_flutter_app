@@ -126,8 +126,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     if (orientation == Orientation.portrait) {
       cameraController.lockCaptureOrientation(DeviceOrientation.portraitUp);
     } else {
-      cameraController
-          .lockCaptureOrientation(DeviceOrientation.landscapeRight);
+      cameraController.lockCaptureOrientation(DeviceOrientation.landscapeRight);
     }
   }
 
@@ -170,8 +169,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   }
 
   void updateImageInfo(info) {
-    historicalPhotoImageSize =
-        Size(info.width.toDouble(), info.height.toDouble());
+    historicalPhotoImageSize = Size(info.width.toDouble(), info.height.toDouble());
     double aspectratio = info.width / info.height;
     if (aspectratio > 1) {
       SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeRight]);
