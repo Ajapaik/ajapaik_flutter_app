@@ -21,8 +21,7 @@ class UploadController  {
     request.fields['latitude'] = draft.latitude.toString(); // optional
     request.fields['longitude'] = draft.longitude.toString(); // optional
     //    request.fields['accuracy'] = 'blah'; //optional
-    //    request.fields['age'] = 'blah'; // optional, coordinates_age
-    request.fields['date'] = draft.dateForAjapaik(); //'01-01-1999'; // optional, coordinate_accuracy
+    request.fields['date'] = draft.timestamp.toIso8601String(); // use standard format whenever possible
     request.fields['scale'] = draft.scale.toString();
     request.fields['yaw'] = '0'; // device_yaw
     request.fields['pitch'] = '0'; // device_pitch

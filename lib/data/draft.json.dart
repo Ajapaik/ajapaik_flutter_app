@@ -28,19 +28,6 @@ class Draft {
     this.rephotoIsFlipped,
   );
 
-  // ajapaik uses some this format for timestamp:
-  // it isn't ISO-standard format but something specific to it
-  // -> handle as special when needed unless server can be modified too?
-  String dateForAjapaik() {
-    String convertedDateTime =
-        timestamp.day.toString().padLeft(2, '0') +
-            "-" +
-            timestamp.month.toString().padLeft(2, '0') +
-            "-" +
-            timestamp.year.toString();
-    return convertedDateTime;
-  }
-
   // FYI: if we need the age of this draft:
   // just calculate it when needed..
   getAge() {
