@@ -147,6 +147,7 @@ class PhotoviewState extends State<Photoview> {
     super.dispose();
   }
 
+  // this makes the top-right corner dropdown menu and related actions to it
   @override
   Widget build(BuildContext context) {
     return Scaffold(
