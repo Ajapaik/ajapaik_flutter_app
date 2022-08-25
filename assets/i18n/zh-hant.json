@@ -1,0 +1,37 @@
+{
+	"@metadata": {
+		"authors": [
+			"Kly"
+		]
+	},
+	"albumList-navItem1": "最近的",
+	"albumList-navItem2": "地圖",
+	"albumList-navItem3": "能見度",
+	"homePage-NavItem1": "首頁",
+	"homePage-NavItem2": "喜歡",
+	"homePage-NavItem3": "拍照",
+	"homePage-NavItem4": "事件",
+	"homePage-NavItem5": "登入",
+	"homePage-NavItem6": "登出",
+	"imageMapScreen-appbarTitle": "地圖",
+	"localFileSelect-option1": "照片庫",
+	"localFileSelect-option2": "相機",
+	"login-appBarTitle": "登入",
+	"map-appbarTitle": "地圖",
+	"projectList-navItem1": "庫",
+	"projectList-navItem2": "拍照",
+	"projectList-navItem3": "登入",
+	"projectList-navItem4": "登出",
+	"photoManipulation-appbarTitle": "翻拍應用",
+	"rePhoto-appbarTitle": "翻拍應用",
+	"rePhoto-popupMenu1": "分享",
+	"rePhoto-popupMenu2": "資訊",
+	"rePhoto-popupMenu3": "TIFY-演示",
+	"rePhoto-popupMenu4": "地圖",
+	"rePhoto-popupMenu5": "設定",
+	"settings-appbarTitle": "設定",
+	"settings-cardItem1": "更改語言",
+	"settings-cardItem2": "更改環境",
+	"settings-helperText": "進階設定",
+	"settings-showMapTile": "顯示地圖"
+}
