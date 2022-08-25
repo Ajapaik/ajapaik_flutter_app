@@ -4,6 +4,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:latlong2/latlong.dart';
 import 'package:ajapaik_flutter_app/data/album.geojson.dart';
 import 'package:ajapaik_flutter_app/data/project.json.dart';
 
@@ -37,3 +38,22 @@ List<Project> parsePhotos(String responseBody) {
   final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
   return parsed.map<Project>((json) => Project.fromJson(json)).toList();
 }
+
+String addLocationToUrl(String url, LatLng position) {
+  if (url.contains("__LAT__")) {
+    url = url.replaceFirst("__LAT__", position.latitude.toString());
+  } else {
+    url = url.replaceAll(RegExp(r'([?]latitude=)[0-9.]+'),'?');
+    url = url.replaceAll(RegExp(r'([&]latitude=)[0-9.]+'),'');
+    url += "&latitude=" + position.latitude.toString();
+  }
+  if (url.contains("__LON__")) {
+    url = url.replaceFirst("__LON__", position.longitude.toString());
+  } else {
+    url = url.replaceAll(RegExp(r'([?]longitude=)[0-9.]+'),'?');
+    url = url.replaceAll(RegExp(r'([&]longitude=)[0-9.]+'),'');
+    url += "&longitude=" + position.longitude.toString();
+  }
+  return url;
+}
+

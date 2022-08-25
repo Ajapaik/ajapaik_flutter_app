@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
-import 'package:latlong2/latlong.dart';
 
 class Album {
   List<Feature> features;
@@ -204,23 +202,5 @@ class Properties {
     data['geojson'] = geojson;
     return data;
   }
-}
-
-String addLocationToUrl(String url, LatLng position) {
-  if (url.contains("__LAT__")) {
-    url = url.replaceFirst("__LAT__", position.latitude.toString());
-  } else {
-    url = url.replaceAll(RegExp(r'([?]latitude=)[0-9.]+'),'?');
-    url = url.replaceAll(RegExp(r'([&]latitude=)[0-9.]+'),'');
-    url += "&latitude=" + position.latitude.toString();
-  }
-  if (url.contains("__LON__")) {
-    url = url.replaceFirst("__LON__", position.longitude.toString());
-  } else {
-    url = url.replaceAll(RegExp(r'([?]longitude=)[0-9.]+'),'?');
-    url = url.replaceAll(RegExp(r'([&]longitude=)[0-9.]+'),'');
-    url += "&longitude=" + position.longitude.toString();
-  }
-  return url;
 }
 
