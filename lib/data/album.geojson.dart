@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Album {
   List<Feature> features;
   String name = "";

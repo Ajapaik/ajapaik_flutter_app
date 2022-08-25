@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Project {
   int? projectId;
   String? projectWikidataId;

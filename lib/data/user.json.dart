@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class User {
   String name = "anonymous";
   String state = "";
@@ -8,15 +6,6 @@ class User {
   User() {
 
   }
-
-
-  /*
-  User({
-    required this.name,
-    required this.state,
-    required this.wiki,
-  });
-   */
 
   User.fromJson(Map<String, dynamic> json) {
     name = (json['name'] != null) ? json['name'] : "anonymous";
