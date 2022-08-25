@@ -24,6 +24,9 @@ class AppLocator extends Geolocator  {
   //double accuracy = -1; // absolutely bogus location by default
 
   /* TODO: check if this is still needed..
+  updating position automatically would be nice but to conserve battery
+  it would be better to trigger on/off at times?
+
   StreamSubscription<Position>? _positionStream;
   void listenCurrentLocation() {
     LocationSettings locationSettings = const LocationSettings(
