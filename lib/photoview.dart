@@ -246,9 +246,11 @@ class PhotoviewState extends State<Photoview> {
     });
   }
 
-  void openImageMapScreen() async {
-    print(imageLatitude);
-    await Navigator.push(
+  openImageMapScreen() async {
+
+    // when opening from top-right dropdown while looking at single image:
+    // error: Expected a value of type 'Future<dynamic>?', but got one of type 'Position'
+    return await Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => Map(
@@ -268,9 +270,9 @@ class PhotoviewState extends State<Photoview> {
         pos.longitude != 0) {
       double distance = Geolocator.distanceBetween(
           pos.latitude, pos.longitude, imageLatitude, imageLongitude);
-      double calcDistance = distance / 1000;
 
       if (distance >= 1000) {
+        double calcDistance = distance / 1000;
         distanceToImage = calcDistance.toStringAsFixed(2) + ' Km';
       } else {
         distanceToImage = distance.toStringAsFixed(2) + ' M';
