@@ -47,9 +47,9 @@ class Project {
   }
 }
 
-Future<List<Project>> fetchProjects(http.Client client) async {
+Future<List<Project>> fetchProjects(http.Client client, String uri) async {
   final response = await client
-      .get(Uri.parse('https://ajapaik.toolforge.org/api/projects.php'));
+      .get(Uri.parse(uri));
 
   // Use the compute function to run parsePhotos in a separate isolate.
   return compute(parsePhotos, response.body);

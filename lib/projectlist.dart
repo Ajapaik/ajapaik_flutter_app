@@ -18,6 +18,8 @@ class ProjectListPage extends StatefulWidget {
   ProjectListPageState createState() => ProjectListPageState();
 }
 
+final String projectUri = 'https://ajapaik.toolforge.org/api/projects.php';
+
 class ProjectListPageState extends State<ProjectListPage> {
   final sessionController = Get.put(SessionController());
 
@@ -91,7 +93,7 @@ class ProjectListBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Project>>(
-      future: fetchProjects(http.Client()),
+      future: fetchProjects(http.Client(), projectUri),
       builder: (context, snapshot) {
         if (snapshot.hasError) (snapshot.error);
 
