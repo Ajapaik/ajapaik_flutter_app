@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:ajapaik_flutter_app/data/project.json.dart';
 import 'package:ajapaik_flutter_app/albumlist.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -8,6 +7,7 @@ import 'localfileselect.dart';
 import 'login.dart';
 import 'package:get/get.dart';
 import 'sessioncontroller.dart';
+import 'httpcontroller.dart';
 
 class ProjectListPage extends StatefulWidget {
   final String? title;
@@ -93,7 +93,7 @@ class ProjectListBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Project>>(
-      future: fetchProjects(http.Client(), projectUri),
+      future: fetchProjects(projectUri),
       builder: (context, snapshot) {
         if (snapshot.hasError) (snapshot.error);
 

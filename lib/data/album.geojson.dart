@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -225,14 +224,3 @@ String addLocationToUrl(String url, LatLng position) {
   return url;
 }
 
-Future<List<Album>> fetchAlbum(http.Client client, String url) async {
-  print(url);
-  final response = await client.get(Uri.parse(url));
-  // Use the compute function to run parsePhotos in a separate isolate.
-  return compute(parseAlbums, response.body);
-}
-
-List<Album> parseAlbums(String responseBody) {
-  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
-  return parsed.map<Album>((json) => Album.fromJson(json)).toList();
-}

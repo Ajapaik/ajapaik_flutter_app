@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 
 class Project {
@@ -47,15 +46,3 @@ class Project {
   }
 }
 
-Future<List<Project>> fetchProjects(http.Client client, String uri) async {
-  final response = await client
-      .get(Uri.parse(uri));
-
-  // Use the compute function to run parsePhotos in a separate isolate.
-  return compute(parsePhotos, response.body);
-}
-
-List<Project> parsePhotos(String responseBody) {
-  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
-  return parsed.map<Project>((json) => Project.fromJson(json)).toList();
-}

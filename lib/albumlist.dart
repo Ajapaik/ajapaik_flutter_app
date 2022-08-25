@@ -1,17 +1,17 @@
 import 'package:ajapaik_flutter_app/projectlist.dart';
 import 'package:ajapaik_flutter_app/services/geolocation.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:ajapaik_flutter_app/data/album.geojson.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'localization.dart';
 import 'sessioncontroller.dart';
 import 'package:get/get.dart';
 import 'localfileselect.dart';
 import 'login.dart';
 import 'photoview.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'httpcontroller.dart';
 
 // ignore: must_be_immutable
 class AlbumListPage extends StatefulWidget {
@@ -114,7 +114,7 @@ class AlbumListPageState extends State<AlbumListPage> {
     url = addLocationToUrl(url, locator.getLatLong());
     //print("fetchAlbum location: $position.toString()");
 
-    await (_albumData = fetchAlbum(http.Client(), url));
+    await (_albumData = fetchAlbum(url));
   }
 
   void toggleSearchDialog() {

@@ -14,7 +14,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:camera/camera.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'camera.dart';
 import 'data/draft.json.dart';
@@ -22,6 +21,7 @@ import 'data/album.geojson.dart';
 import 'map.dart';
 import 'fullscreenimageview.dart';
 import 'draftstorage.dart';
+import 'httpcontroller.dart';
 
 class Photoview extends StatefulWidget {
   final String historicalPhotoId;
@@ -163,8 +163,7 @@ class PhotoviewState extends State<Photoview> {
                 icon: const Icon(Icons.menu, color: Colors.white),
                 onSelected: (result) async {
                   if (result == 0) {
-                    final url = Uri.parse(widget.historicalPhotoUri);
-                    final response = await http.get(url);
+                    final response = await fetchQuery(widget.historicalPhotoUri);
 
                     final temp = await getTemporaryDirectory();
                     final path = '${temp.path}/image.jpg';
@@ -341,7 +340,7 @@ class PhotoviewState extends State<Photoview> {
 
     // TODO: check if there are permissions to use network and/or session is active
     // can this be activated if there isn't connection?
-    return fetchAlbum(http.Client(), url);
+    return fetchAlbum(url);
   }
 
   Widget verticalPreview(BuildContext context) {
