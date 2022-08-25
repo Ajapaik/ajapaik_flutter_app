@@ -9,7 +9,13 @@ class AppLocator extends Geolocator  {
   // note: should use Position directly instead of "unpacking" to separate variables..
   double latitudePos = 0;
   double longitudePos = 0;
+
+  // did we get actual position
+  // TODO: use accuracy instead..
+  bool isRealPosition = false;
+
   bool isInitialized = false;
+
   bool isFixed = false; // user-selected position in use, don't overwrite
   //DateTime timestamp = DateTime.now(); // time of position
 
@@ -87,6 +93,7 @@ class AppLocator extends Geolocator  {
         //timestamp = DateTime.now();
         // also keep accuracy
         //LocationAccuracyStatus las = await determineAccuracy();
+        isRealPosition = true; // TODO: use accuracry instead
         return true;
       }
     }
@@ -99,6 +106,7 @@ class AppLocator extends Geolocator  {
     print("location service not enabled");
     latitudePos = 60;
     longitudePos = 24;
+    isRealPosition = false; // TODO: use accuracry instead
     return false;
   }
 

@@ -49,18 +49,7 @@ class MapState extends State<Map> {
       appBar: AppBar(title: Text(AppLocalizations.getText(context, 'imageMapScreen-appbarTitle'))),
       body: Stack(children: [
         Positioned(
-            child: FutureBuilder(
-                builder:
-                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                  // this used to expect Position in snapshot?
-                  // TODO: see if this thing can be simplified further (no "future", just build it)
-                  if (snapshot.hasError) (snapshot.error);
-
-                  return snapshot.hasData
-                      ? buildMapWidgetSnapshot(context, widgetPos)
-                      : Center(
-                          child: buildMapWidget(context, widgetPos));
-                })),
+            child: buildMapWidget(context, widgetPos)),
          GestureDetector(
             onTap: () {
               Navigator.pop(context);
@@ -71,8 +60,7 @@ class MapState extends State<Map> {
                   constraints: const BoxConstraints(
                     maxHeight: 350,
                   ),
-                  child: Image.network(widget.historicalPhotoUri,
-                      fit: BoxFit.contain),
+                  child: Image.network(widget.historicalPhotoUri, fit: BoxFit.contain),
                 ))),
       ]),
     );
@@ -88,45 +76,32 @@ class MapState extends State<Map> {
 
   Widget buildMapWidget(BuildContext context, LatLng widgetPos) {
     LatLng imgPos = locator.getLatLong();
-    return FlutterMap(
-        options: MapOptions(
-          center: widgetPos,
-          interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
-          zoom: 17.0,
-        ),
-        layers: [
-          TileLayerOptions(
-            urlTemplate: streetmapUrlTemplate,
-            subdomains: ['a', 'b', 'c'],
-          ),
-          MarkerLayerOptions(markers: [
-            getMarker(imgPos, (ctx) => const Icon(Icons.location_pin, color: Colors.blue)),
-          ]),
-          MarkerLayerOptions(markers: [
-            getMarker(widgetPos, (ctx) => const Icon(Icons.location_pin, color: Colors.red)),
-          ])
-        ]);
-  }
 
-  // this version expects Position from locator().getPosition(),
-  // but this only uses latitude and longitude from it..
-  //
-  Widget buildMapWidgetSnapshot(BuildContext context, LatLng widgetPos) {
-
-    // this is now the same as was used from the Position given in snapshot
-    // -> simplify
-    LatLng imgPos = locator.getLatLong();
-    return FlutterMap(
-        mapController: mapController,
-        options: MapOptions(
-          bounds: LatLngBounds(widgetPos, imgPos),
-          interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
-          zoom: 17.0,
-          minZoom: 2.5,
-          boundsOptions: const FitBoundsOptions(
-            padding: EdgeInsets.all(100),
-          ),
+    MapOptions options;
+    // TODO: use accuracry instead
+    if (locator.isRealPosition == true) {
+      // we know both where the picture was taken and where we are currently
+      options = MapOptions(
+        bounds: LatLngBounds(widgetPos, imgPos),
+        interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
+        zoom: 17.0,
+        minZoom: 2.5,
+        boundsOptions: const FitBoundsOptions(
+          padding: EdgeInsets.all(100),
         ),
+      );
+    } else {
+      // we only know where the picture was taken, not where we are currently
+      options = MapOptions(
+        center: widgetPos,
+        interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
+        zoom: 17.0,
+      );
+    }
+
+    return FlutterMap(
+        mapController: mapController, // is there reason this wasn't included in the other? static map?
+        options: options,
         layers: [
           TileLayerOptions(
             urlTemplate: streetmapUrlTemplate,
