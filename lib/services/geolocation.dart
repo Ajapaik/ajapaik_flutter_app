@@ -92,6 +92,9 @@ class AppLocator extends Geolocator  {
         latitudePos = pos.latitude;
         longitudePos = pos.longitude;
 
+        // there is altitude and heading in degrees in the position,
+        // which might be nice to store at least
+
         // also keep timestamp
         //timestamp = DateTime.now();
         // also keep accuracy

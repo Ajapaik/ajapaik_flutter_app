@@ -246,10 +246,8 @@ class PhotoviewState extends State<Photoview> {
     });
   }
 
+  // open map from top-right dropdown while looking at single image
   openImageMapScreen() async {
-
-    // when opening from top-right dropdown while looking at single image:
-    // error: Expected a value of type 'Future<dynamic>?', but got one of type 'Position'
     return await Navigator.push(
         context,
         MaterialPageRoute(
