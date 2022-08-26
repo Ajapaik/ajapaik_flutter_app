@@ -51,8 +51,9 @@ class AppLocalizations {
   Map<String, String> defaultLocalizationStrings = {};
 
   Future<bool> loadStrings(String languageCode, { bool isDefaults = false }) async {
-    // Load the language JSON file from the "lang" folder
-    String jsonString = await rootBundle.loadString('i18n/$languageCode.json');
+    // Load the language JSON file
+    String file = 'assets/i18n/$languageCode.json';
+    String jsonString = await rootBundle.loadString(file);
 
     Map<String, dynamic> jsonMap = json.decode(jsonString);
     Map<String, String> strings = jsonMap.map((key, value) {
@@ -117,11 +118,16 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations>
       await localizations.loadStrings(locale.languageCode);
     }
     catch (e) {
-      print("failed loading localizations for ${locale.languageCode}");
+      print("failed loading localizations for ${locale.languageCode}: ${e.toString()}");
       //rethrow;
     }
-
-    await localizations.loadStrings('en', isDefaults: true);
+    try {
+      await localizations.loadStrings('en', isDefaults: true);
+    }
+    catch (e) {
+      print("failed loading localizations for ${locale.languageCode}: ${e.toString()}");
+      //rethrow;
+    }
     return localizations;
   }
 
