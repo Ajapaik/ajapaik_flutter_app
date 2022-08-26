@@ -52,6 +52,11 @@ class AppLocalizations {
 
   Future<bool> loadStrings(String languageCode, { bool isDefaults = false }) async {
     // Load the language JSON file
+    //
+    // Note: flutter documentation claims that part of path is implied
+    // but this isn't true, at least on Android emulator.
+    // So regardless what documentation says, use full path to make it work.
+    //
     String file = 'assets/i18n/$languageCode.json';
     String jsonString = await rootBundle.loadString(file);
 
