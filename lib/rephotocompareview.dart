@@ -111,7 +111,7 @@ class RephotoCompareView extends StatelessWidget {
       var image = Stack(children: [
       Image.network(feature.properties.thumbnail!,
             fit: BoxFit.contain, height: 8000, width: 8000),
-    Align(alignment: Alignment.bottomCenter,
+      Align(alignment: Alignment.bottomCenter,
         child:Text(labels.join(" "),
             style: TextStyle(fontSize: 20,height:7, color:Colors.white, decoration: TextDecoration.none, fontWeight: FontWeight.normal)))
       ]);
