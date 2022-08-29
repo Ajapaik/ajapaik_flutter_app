@@ -1,0 +1,32 @@
+{
+	"@metadata": {
+		"authors": [
+			"Hanna Tardos"
+		]
+	},
+	"albumList-navItem1": "Legközelebbi",
+	"albumList-navItem2": "Térkép",
+	"albumList-navItem3": "Láthatóság",
+	"homePage-NavItem1": "Főoldal",
+	"homePage-NavItem3": "Fényképezés",
+	"homePage-NavItem4": "Események",
+	"homePage-NavItem5": "Bejelentkezés",
+	"homePage-NavItem6": "Kijelentkezés",
+	"imageMapScreen-appbarTitle": "Térkép",
+	"localFileSelect-option1": "Fotóalbum",
+	"localFileSelect-option2": "Fényképezőgép",
+	"login-appBarTitle": "Bejelentkezés",
+	"map-appbarTitle": "Térkép",
+	"projectList-navItem1": "Könyvtár",
+	"projectList-navItem2": "Fényképezés",
+	"projectList-navItem3": "Bejelentkezés",
+	"projectList-navItem4": "Kijelentkezés",
+	"rePhoto-popupMenu1": "Megosztás",
+	"rePhoto-popupMenu2": "Információ",
+	"rePhoto-popupMenu4": "Térkép",
+	"rePhoto-popupMenu5": "Beállítások",
+	"settings-appbarTitle": "Beállítások",
+	"settings-cardItem1": "Nyelv megváltoztatása",
+	"settings-helperText": "Speciális beállítások",
+	"settings-showMapTile": "Térkép megjelenítése"
+}
