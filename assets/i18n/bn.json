@@ -1,0 +1,32 @@
+{
+	"@metadata": {
+		"authors": [
+			"আজিজ"
+		]
+	},
+	"albumList-navItem1": "কাছাকাছি",
+	"albumList-navItem2": "মানচিত্র",
+	"albumList-navItem3": "প্রদর্শনযোগ্যতা",
+	"homePage-NavItem1": "প্রধান পাতা",
+	"homePage-NavItem3": "একটি ছবি তুলুন",
+	"homePage-NavItem4": "ঘটনা",
+	"homePage-NavItem5": "প্রবেশ",
+	"homePage-NavItem6": "প্রস্থান",
+	"imageMapScreen-appbarTitle": "মানচিত্র",
+	"localFileSelect-option1": "চিত্রাগার",
+	"localFileSelect-option2": "ক্যামেরা",
+	"login-appBarTitle": "প্রবেশ",
+	"map-appbarTitle": "মানচিত্র",
+	"projectList-navItem1": "পাঠাগার",
+	"projectList-navItem2": "একটি ছবি তুলুন",
+	"projectList-navItem3": "প্রবেশ",
+	"projectList-navItem4": "প্রস্থান",
+	"rePhoto-popupMenu1": "শেয়ার করুন",
+	"rePhoto-popupMenu2": "তথ্য",
+	"rePhoto-popupMenu4": "মানচিত্র",
+	"rePhoto-popupMenu5": "সেটিংস",
+	"settings-appbarTitle": "সেটিংস",
+	"settings-cardItem1": "ভাষা পরিবর্তন করুন",
+	"settings-helperText": "উন্নত সেটিং",
+	"settings-showMapTile": "মানচিত্র দেখাও"
+}

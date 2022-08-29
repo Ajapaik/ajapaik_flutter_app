@@ -1,0 +1,27 @@
+{
+	"@metadata": {
+		"authors": [
+			"Beta16"
+		]
+	},
+	"albumList-navItem2": "Mappa",
+	"albumList-navItem3": "Visibilità",
+	"homePage-NavItem1": "Pagina principale",
+	"homePage-NavItem4": "Eventi",
+	"homePage-NavItem5": "Entra",
+	"homePage-NavItem6": "Esci",
+	"imageMapScreen-appbarTitle": "Mappa",
+	"localFileSelect-option2": "Fotocamera",
+	"login-appBarTitle": "Entra",
+	"map-appbarTitle": "Mappa",
+	"projectList-navItem1": "Libreria",
+	"projectList-navItem3": "Entra",
+	"projectList-navItem4": "Esci",
+	"rePhoto-popupMenu1": "Condividi",
+	"rePhoto-popupMenu2": "Informazioni",
+	"rePhoto-popupMenu4": "Mappa",
+	"rePhoto-popupMenu5": "Impostazioni",
+	"settings-appbarTitle": "Impostazioni",
+	"settings-cardItem1": "Cambia lingua",
+	"settings-helperText": "Impostazioni avanzate"
+}

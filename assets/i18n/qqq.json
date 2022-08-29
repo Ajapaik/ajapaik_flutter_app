@@ -1,6 +1,8 @@
 {
 	"@metadata": {
-		"authors": []
+		"authors": [
+			"HJT"
+		]
 	},
 	"albumList-navItem1": "Upon user viewing images, under icon displaying nearest items, upon clicking shows the user nearest items in albums in order from closest to farthest",
 	"albumList-navItem2": "Upon user viewing images, under icon displaying a map, upon clicking takes user to a map screen to view the albums items",

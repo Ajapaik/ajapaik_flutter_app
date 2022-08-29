@@ -1,0 +1,33 @@
+{
+	"@metadata": {
+		"authors": [
+			"MathXplore"
+		]
+	},
+	"albumList-navItem1": "最寄り",
+	"albumList-navItem2": "地図",
+	"albumList-navItem3": "可視性",
+	"homePage-NavItem1": "ホーム",
+	"homePage-NavItem2": "いいね!しました",
+	"homePage-NavItem3": "写真を撮る",
+	"homePage-NavItem4": "イベント",
+	"homePage-NavItem5": "ログイン",
+	"homePage-NavItem6": "ログアウト",
+	"imageMapScreen-appbarTitle": "地図",
+	"localFileSelect-option1": "フォトライブラリ",
+	"localFileSelect-option2": "カメラ",
+	"login-appBarTitle": "ログイン",
+	"map-appbarTitle": "地図",
+	"projectList-navItem1": "ライブラリ",
+	"projectList-navItem2": "写真を撮る",
+	"projectList-navItem3": "ログイン",
+	"projectList-navItem4": "ログアウト",
+	"rePhoto-popupMenu1": "共有",
+	"rePhoto-popupMenu2": "情報",
+	"rePhoto-popupMenu4": "地図",
+	"rePhoto-popupMenu5": "設定",
+	"settings-appbarTitle": "設定",
+	"settings-cardItem1": "言語を変更",
+	"settings-helperText": "高度な設定",
+	"settings-showMapTile": "地図を表示"
+}

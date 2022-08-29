@@ -1,0 +1,22 @@
+{
+	"@metadata": {
+		"authors": [
+			"Kareyac"
+		]
+	},
+	"albumList-navItem1": "Nejbližší",
+	"albumList-navItem2": "Mapa",
+	"homePage-NavItem4": "Události",
+	"homePage-NavItem6": "Odhlásit se",
+	"imageMapScreen-appbarTitle": "Mapa",
+	"localFileSelect-option1": "Knihovna fotografií",
+	"localFileSelect-option2": "Fotoaparát",
+	"map-appbarTitle": "Mapa",
+	"projectList-navItem1": "Knihovna",
+	"rePhoto-popupMenu1": "Sdílet",
+	"rePhoto-popupMenu2": "Informace",
+	"rePhoto-popupMenu4": "Mapa",
+	"rePhoto-popupMenu5": "Nastavení",
+	"settings-appbarTitle": "Nastavení",
+	"settings-cardItem1": "Změnit jazyk"
+}
