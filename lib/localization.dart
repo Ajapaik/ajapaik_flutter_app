@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
@@ -72,19 +71,6 @@ class AppLocalizations {
     }
     //isLoaded = true;
     return true;
-  }
-
-  // this is stored for later, not just set:
-  // what is the point of this? user can change language of the OS
-  // or it could be selected from menu -> no need for persistent storage
-  Future<void> storeLanguageCode(Locale locale) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('locale', locale.languageCode);
-  }
-
-  Future<String?> loadLanguageCode() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('locale');
   }
 
   static List<Locale> getSupportedLocales() {
