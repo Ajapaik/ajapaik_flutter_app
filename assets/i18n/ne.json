@@ -1,0 +1,26 @@
+{
+	"@metadata": {
+		"authors": [
+			"Bada Kaji"
+		]
+	},
+	"albumList-navItem2": "नक्सा",
+	"homePage-NavItem1": "मुख्य पृष्ठ",
+	"homePage-NavItem2": "मन पर्यो",
+	"homePage-NavItem3": "तस्वीर खिच्नुहोस्",
+	"homePage-NavItem4": "कार्यक्रमहरू",
+	"homePage-NavItem5": "प्रवेश",
+	"homePage-NavItem6": "निर्गमन",
+	"imageMapScreen-appbarTitle": "नक्सा",
+	"login-appBarTitle": "प्रवेश",
+	"map-appbarTitle": "नक्सा",
+	"projectList-navItem1": "पुस्तकालय",
+	"projectList-navItem2": "तस्वीर खिच्नुहोस्",
+	"projectList-navItem3": "प्रवेश",
+	"projectList-navItem4": "निर्गमन",
+	"rePhoto-popupMenu2": "जानकारी",
+	"rePhoto-popupMenu4": "नक्सा",
+	"rePhoto-popupMenu5": "मेरो अभिरुचिहरू",
+	"settings-appbarTitle": "मेरो अभिरुचिहरू",
+	"settings-showMapTile": "नक्सा देखाउनुहोस्"
+}
