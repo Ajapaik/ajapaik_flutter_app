@@ -52,7 +52,7 @@ class MapState extends State<Map> {
       appBar: AppBar(title: Text(AppLocalizations.getText(context, 'imageMapScreen-appbarTitle'))),
       body: Stack(children: [
         Positioned(
-            child: buildMapWidget(context, widget.getImagePosition())),
+            child: buildMapWidget(context, locator.getLatLong(), widget.getImagePosition())),
          GestureDetector(
             onTap: () {
               Navigator.pop(context);
@@ -80,15 +80,15 @@ class MapState extends State<Map> {
 
   // nearly identical with second case when embedded in view with photo
   // -> combine cases
-  Widget buildMapWidget(BuildContext context, LatLng widgetPos) {
-    LatLng locPos = locator.getLatLong();
+  Widget buildMapWidget(BuildContext context, LatLng locPos, LatLng imgPos) {
+    List<Marker> markerList = [];
 
     MapOptions options;
     // TODO: use accuracry instead
     if (locator.isRealPosition == true) {
       // we know both where the picture was taken and where we are currently
       options = MapOptions(
-        bounds: LatLngBounds(widgetPos, locPos),
+        bounds: LatLngBounds(imgPos, locPos),
         interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
         zoom: 17.0,
         minZoom: 2.5,
@@ -99,11 +99,19 @@ class MapState extends State<Map> {
     } else {
       // we only know where the picture was taken, not where we are currently
       options = MapOptions(
-        center: widgetPos,
+        center: imgPos,
         interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
         zoom: 17.0,
       );
     }
+
+    if (locator.isRealPosition == true) {
+      Marker userMarker = getMarker(locPos, (ctx) => const Icon(Icons.location_pin, color: Colors.blue));
+      markerList.add(userMarker);
+    }
+
+    Marker imageMarker = getMarker(imgPos, (ctx) => const Icon(Icons.location_pin, color: Colors.red));
+    markerList.add(imageMarker);
 
     FlutterMap map = FlutterMap(
         mapController: mapController, // is there reason this wasn't included in the other? static map?
@@ -113,12 +121,7 @@ class MapState extends State<Map> {
             urlTemplate: streetmapUrlTemplate,
             subdomains: ['a', 'b', 'c'],
           ),
-          MarkerLayerOptions(markers: [
-            getMarker(locPos, (ctx) => const Icon(Icons.location_pin, color: Colors.blue)),
-          ]),
-          MarkerLayerOptions(markers: [
-            getMarker(widgetPos, (ctx) => const Icon(Icons.location_pin, color: Colors.red)),
-          ])
+          MarkerLayerOptions(markers: markerList)
         ]);
     return map;
   }
