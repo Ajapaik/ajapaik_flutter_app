@@ -5,11 +5,6 @@ import 'dart:async';
 
 // could use something like Singleton<> ..
 class AppLocator extends Geolocator  {
-  // don't repeat same in every place..
-  // note: should use Position directly instead of "unpacking" to separate variables..
-  double latitudePos = 0;
-  double longitudePos = 0;
-
   // keep position along with rest of metadata
   // (timestamp, heading, altitude, accuracy..)
   Position? position;
@@ -21,6 +16,10 @@ class AppLocator extends Geolocator  {
   bool isInitialized = false;
 
   bool isFixed = false; // user-selected position in use, don't overwrite
+
+  AppLocator() {
+    position = Position.fromMap({'latitude': 0, 'longitude': 0, 'timestamp': DateTime.now()});
+  }
 
 
   /* TODO: check if this is still needed..
@@ -57,10 +56,7 @@ class AppLocator extends Geolocator  {
   */
 
   LatLng getLatLong() {
-    if (position != null) {
-      return LatLng(position!.latitude, position!.longitude);
-    }
-    return LatLng(latitudePos, longitudePos);
+    return LatLng(position!.latitude, position!.longitude);
   }
 
   // just make sure we hav other values apart from initial position?
@@ -75,8 +71,7 @@ class AppLocator extends Geolocator  {
   // when not available otherwise or there is significant error otherwise?
   // -> prevent overwriting by repeated calls later
   void setFixedPosition(double longitude, double latitude) {
-    longitudePos = longitude;
-    latitudePos = latitude;
+    position = Position.fromMap({'latitude': latitude, 'longitude': longitude, 'timestamp': DateTime.now()});
     isFixed = true;
   }
 
@@ -92,8 +87,6 @@ class AppLocator extends Geolocator  {
       bool isEnabled = await verifyService();
       if (isEnabled == true) {
         position = await Geolocator.getCurrentPosition();
-        latitudePos = position!.latitude;
-        longitudePos = position!.longitude;
 
         isRealPosition = true; // TODO: use accuracry instead
         return true;
@@ -106,9 +99,8 @@ class AppLocator extends Geolocator  {
     // we should be called at least once in init(), which is called when app starts first..
     // but we could set defaults in constructor too
     print("location service not enabled");
-    latitudePos = 60;
-    longitudePos = 24;
     isRealPosition = false; // TODO: use accuracry instead
+    position = Position.fromMap({'latitude': 60, 'longitude': 24, 'timestamp': DateTime.now()});
     return false;
   }
 
@@ -148,15 +140,4 @@ class AppLocator extends Geolocator  {
     // by this, it seems location should be available
     return true;
   }
-
-  getPosition(double latitude, double longitude) {
-    // timestamp: DateTime.now()
-    return Position.fromMap({'latitude': latitude, 'longitude': longitude});
-  }
-
-  Future<LocationAccuracyStatus> determineAccuracy() async {
-    return await Geolocator.getLocationAccuracy();
-  }
-
 }
-
