@@ -21,6 +21,10 @@ class Map extends StatefulWidget {
 
   @override
   MapState createState() => MapState();
+
+  LatLng getImagePosition() {
+    return LatLng(imageLatitude, imageLongitude);
+  }
 }
 
 const String streetmapUrlTemplate = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
@@ -44,12 +48,11 @@ class MapState extends State<Map> {
 
   @override
   Widget build(BuildContext context) {
-    LatLng widgetPos = LatLng(widget.imageLatitude, widget.imageLongitude);
-    return Scaffold(
+    Scaffold s = Scaffold(
       appBar: AppBar(title: Text(AppLocalizations.getText(context, 'imageMapScreen-appbarTitle'))),
       body: Stack(children: [
         Positioned(
-            child: buildMapWidget(context, widgetPos)),
+            child: buildMapWidget(context, widget.getImagePosition())),
          GestureDetector(
             onTap: () {
               Navigator.pop(context);
@@ -64,6 +67,7 @@ class MapState extends State<Map> {
                 ))),
       ]),
     );
+    return s;
   }
 
   static Marker getMarker(LatLng point, builder) {
@@ -131,7 +135,7 @@ class MapState extends State<Map> {
       markerList.add(imageMarker);
     }
 
-    return FlutterMap(
+    FlutterMap map = FlutterMap(
         options: MapOptions(
           bounds: LatLngBounds(imgPos, locPos),
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
@@ -149,6 +153,7 @@ class MapState extends State<Map> {
             markers: markerList,
           ),
         ]);
+    return map;
   }
 
 }
