@@ -65,6 +65,10 @@ class PhotoviewState extends State<Photoview> {
 
   final locator = Get.put(AppLocator());
 
+  LatLng getImagePosition() {
+    return LatLng(imageLatitude, imageLongitude);
+  }
+
   getTooltipPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var prefsValue = prefs.getBool("tooltip");
@@ -495,6 +499,6 @@ class PhotoviewState extends State<Photoview> {
   // because we show markers with the map lets call it marked map, not "toolkitmap"
   // TODO: compare with the one in map.dart, duplication?
   Widget buildMarkedMap(BuildContext context) {
-    return MapState.buildMarkedMap(context, locator.getLatLong(), LatLng(imageLatitude, imageLongitude));
+    return MapState.buildMarkedMap(context, locator.getLatLong(), getImagePosition());
   }
 }
