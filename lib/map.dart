@@ -99,7 +99,7 @@ class MapState extends State<Map> {
       );
     }
 
-    return FlutterMap(
+    FlutterMap map = FlutterMap(
         mapController: mapController, // is there reason this wasn't included in the other? static map?
         options: options,
         layers: [
@@ -114,6 +114,7 @@ class MapState extends State<Map> {
             getMarker(widgetPos, (ctx) => const Icon(Icons.location_pin, color: Colors.red)),
           ])
         ]);
+    return map;
   }
 
   // currently doesn't use any members, just moved out of the way
