@@ -9,6 +9,7 @@ import 'package:app_links/app_links.dart';
 import 'package:get/get.dart';
 import 'sessioncontroller.dart';
 import 'localization.dart';
+import 'preferences.dart';
 
 void main()  {
   runApp(MyApp());
@@ -28,6 +29,7 @@ class MyAppState extends State<MyApp> {
   StreamSubscription<Uri>? _linkSubscription;
   final sessionController = Get.put(SessionController());
   final locator = Get.put(AppLocator());
+  final prefs = Get.put(Preferences());
 
   // TODO: first url would be different when using commons?
   // -> what is the default in future versions?
@@ -40,6 +42,7 @@ class MyAppState extends State<MyApp> {
     //AppLocalizations.load()
 
     initDeepLinks();
+    prefs.loadPrefs();
     locator.init();
     super.initState();
   }
