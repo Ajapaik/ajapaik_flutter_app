@@ -10,6 +10,10 @@ class AppLocator extends Geolocator  {
   double latitudePos = 0;
   double longitudePos = 0;
 
+  // keep position along with rest of metadata
+  // (timestamp, heading, altitude, accuracy..)
+  Position? position;
+
   // did we get actual position
   // TODO: use accuracy instead..
   bool isRealPosition = false;
@@ -17,11 +21,7 @@ class AppLocator extends Geolocator  {
   bool isInitialized = false;
 
   bool isFixed = false; // user-selected position in use, don't overwrite
-  //DateTime timestamp = DateTime.now(); // time of position
 
-  //TODO: also keep accuracy
-  //LocationAccuracyStatus accuracy;
-  //double accuracy = -1; // absolutely bogus location by default
 
   /* TODO: check if this is still needed..
   updating position automatically would be nice but to conserve battery
@@ -57,6 +57,9 @@ class AppLocator extends Geolocator  {
   */
 
   LatLng getLatLong() {
+    if (position != null) {
+      return LatLng(position!.latitude, position!.longitude);
+    }
     return LatLng(latitudePos, longitudePos);
   }
 
@@ -88,17 +91,10 @@ class AppLocator extends Geolocator  {
     try {
       bool isEnabled = await verifyService();
       if (isEnabled == true) {
-        Position pos = await Geolocator.getCurrentPosition();
-        latitudePos = pos.latitude;
-        longitudePos = pos.longitude;
+        position = await Geolocator.getCurrentPosition();
+        latitudePos = position!.latitude;
+        longitudePos = position!.longitude;
 
-        // there is altitude and heading in degrees in the position,
-        // which might be nice to store at least
-
-        // also keep timestamp
-        //timestamp = DateTime.now();
-        // also keep accuracy
-        //LocationAccuracyStatus las = await determineAccuracy();
         isRealPosition = true; // TODO: use accuracry instead
         return true;
       }
@@ -153,9 +149,9 @@ class AppLocator extends Geolocator  {
     return true;
   }
 
-  getPosition() {
+  getPosition(double latitude, double longitude) {
     // timestamp: DateTime.now()
-    return Position.fromMap({'latitude': latitudePos, 'longitude': longitudePos});
+    return Position.fromMap({'latitude': latitude, 'longitude': longitude});
   }
 
   Future<LocationAccuracyStatus> determineAccuracy() async {
