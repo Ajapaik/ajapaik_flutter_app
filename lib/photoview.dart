@@ -498,6 +498,8 @@ class PhotoviewState extends State<Photoview> {
 
   // because we show markers with the map lets call it marked map, not "toolkitmap"
   // TODO: compare with the one in map.dart, duplication?
+  // this is for some reason different from when opening from dropdown menu?
+  // -> unify, map contents should be same either way..
   Widget buildMarkedMap(BuildContext context) {
     return MapState.buildMarkedMap(context, locator.getLatLong(), getImagePosition());
   }

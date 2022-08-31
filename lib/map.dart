@@ -122,6 +122,9 @@ class MapState extends State<Map> {
   }
 
   // currently doesn't use any members, just moved out of the way
+  // this is called when opening map from button on screen (photoview),
+  // which for some reason is different from when opening from the dropdown menu..
+  // -> should use same code for both, no reason why these are different
   static Widget buildMarkedMap(BuildContext context, LatLng locPos, LatLng imgPos) {
     List<Marker> markerList = [];
 

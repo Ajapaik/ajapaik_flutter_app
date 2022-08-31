@@ -57,6 +57,9 @@ class AppLocator extends Geolocator  {
   */
 
   LatLng getLatLong() {
+    if (isInitialized == false) {
+      print("location isn't initialized");
+    }
     return LatLng(position!.latitude, position!.longitude);
   }
   /*
