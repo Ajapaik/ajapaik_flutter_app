@@ -18,7 +18,8 @@ class AppLocator extends Geolocator  {
   bool isFixed = false; // user-selected position in use, don't overwrite
 
   AppLocator() {
-    position = Position.fromMap({'latitude': 0, 'longitude': 0, 'timestamp': DateTime.now()});
+    position = Position(longitude: 0, latitude: 0, timestamp: DateTime.now(),
+        accuracy: 0, altitude: 0, heading: 0, speed: 0, speedAccuracy: 0, floor: 0);
   }
 
 
@@ -58,6 +59,14 @@ class AppLocator extends Geolocator  {
   LatLng getLatLong() {
     return LatLng(position!.latitude, position!.longitude);
   }
+  /*
+  Position? getPosition() {
+    if (position == null) {
+      return Position.fromMap({'latitude': 0, 'longitude': 0, 'timestamp': DateTime.now()});
+    }
+    return position;
+  }
+  */
 
   // just make sure we hav other values apart from initial position?
   void init() {
@@ -71,7 +80,7 @@ class AppLocator extends Geolocator  {
   // when not available otherwise or there is significant error otherwise?
   // -> prevent overwriting by repeated calls later
   void setFixedPosition(double longitude, double latitude) {
-    position = Position.fromMap({'latitude': latitude, 'longitude': longitude, 'timestamp': DateTime.now()});
+    position = Position.fromMap({'latitude': latitude, 'longitude': longitude});
     isFixed = true;
   }
 
@@ -100,7 +109,7 @@ class AppLocator extends Geolocator  {
     // but we could set defaults in constructor too
     print("location service not enabled");
     isRealPosition = false; // TODO: use accuracry instead
-    position = Position.fromMap({'latitude': 60, 'longitude': 24, 'timestamp': DateTime.now()});
+    position = Position.fromMap({'latitude': 60, 'longitude': 24});
     return false;
   }
 
