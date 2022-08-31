@@ -43,7 +43,7 @@ class AlbumListPageState extends State<AlbumListPage> {
 
   Future<List<Album>>? _albumData;
 
-  Future<List<Album>> test(BuildContext context) {
+  Future<List<Album>> getAlbumData(BuildContext context) {
     return _albumData!;
   }
 
@@ -224,7 +224,7 @@ class AlbumListPageState extends State<AlbumListPage> {
       child:RefreshIndicator(
         onRefresh:RefreshIndicatorOnRefresh ,
             child: FutureBuilder<List<Album>>(
-              future: test(context),
+              future: getAlbumData(context),
               builder: (context, snapshot) {
                 if (snapshot.connectionState != ConnectionState.done && pullDownRefreshDone) {
                   return const Center(child: CircularProgressIndicator());
