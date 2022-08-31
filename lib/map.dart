@@ -78,15 +78,17 @@ class MapState extends State<Map> {
         builder: builder);
   }
 
+  // nearly identical with second case when embedded in view with photo
+  // -> combine cases
   Widget buildMapWidget(BuildContext context, LatLng widgetPos) {
-    LatLng imgPos = locator.getLatLong();
+    LatLng locPos = locator.getLatLong();
 
     MapOptions options;
     // TODO: use accuracry instead
     if (locator.isRealPosition == true) {
       // we know both where the picture was taken and where we are currently
       options = MapOptions(
-        bounds: LatLngBounds(widgetPos, imgPos),
+        bounds: LatLngBounds(widgetPos, locPos),
         interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
         zoom: 17.0,
         minZoom: 2.5,
@@ -112,7 +114,7 @@ class MapState extends State<Map> {
             subdomains: ['a', 'b', 'c'],
           ),
           MarkerLayerOptions(markers: [
-            getMarker(imgPos, (ctx) => const Icon(Icons.location_pin, color: Colors.blue)),
+            getMarker(locPos, (ctx) => const Icon(Icons.location_pin, color: Colors.blue)),
           ]),
           MarkerLayerOptions(markers: [
             getMarker(widgetPos, (ctx) => const Icon(Icons.location_pin, color: Colors.red)),
@@ -121,7 +123,6 @@ class MapState extends State<Map> {
     return map;
   }
 
-  // currently doesn't use any members, just moved out of the way
   // this is called when opening map from button on screen (photoview),
   // which for some reason is different from when opening from the dropdown menu..
   // -> should use same code for both, no reason why these are different

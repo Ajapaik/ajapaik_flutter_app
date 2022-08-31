@@ -64,6 +64,7 @@ class PhotoviewState extends State<Photoview> {
   DraftStorage draftStorage = DraftStorage();
 
   final locator = Get.put(AppLocator());
+  //late Map map;
 
   LatLng getImagePosition() {
     return LatLng(imageLatitude, imageLongitude);
@@ -126,6 +127,13 @@ class PhotoviewState extends State<Photoview> {
     mapInfoVisibility = false;
     //saveMapInfoVisibility();
     //getMapInfoVisibility();
+    /*
+    map = Map(
+        imageLatitude: imageLatitude,
+        imageLongitude: imageLongitude,
+        historicalPhotoUri: widget.historicalPhotoUri);
+
+     */
     super.initState();
   }
 
@@ -233,7 +241,8 @@ class PhotoviewState extends State<Photoview> {
     });
   }
 
-  // open map from top-right dropdown while looking at single image
+  // open map from top-right dropdown while looking at single image:
+  // app view is changed to a map instead of showing photo + map
   openImageMapScreen() async {
     return await Navigator.push(
         context,
@@ -499,8 +508,11 @@ class PhotoviewState extends State<Photoview> {
   // because we show markers with the map lets call it marked map, not "toolkitmap"
   // TODO: compare with the one in map.dart, duplication?
   // this is for some reason different from when opening from dropdown menu?
+  // this shows map embedded in the photo view, but map contents should be same
+  // regardless how the view is showing it..
   // -> unify, map contents should be same either way..
   Widget buildMarkedMap(BuildContext context) {
+
     return MapState.buildMarkedMap(context, locator.getLatLong(), getImagePosition());
   }
 }
