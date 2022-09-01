@@ -47,13 +47,13 @@ class Preferences {
   */
 
 
-/*
+  /*
   bool searchVisibility = false;
-    setSearchVisibility() async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
+  void setSearchVisibility(bool searchVisibility) async {
+      //SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool('searchVisibility', searchVisibility);
-    }
-     */
+  }
+  */
 
 /* there is no point to this:
   only place the stored value is retrieved is when initializing

@@ -46,7 +46,7 @@ class RephotoCompareView extends StatelessWidget {
                 //color: Colors.pink[600]!,
                 width: 0,
               )),
-              child: _getCarouselSlider(context)))
+              child: getCarouselSlider(context)))
     ]);
   }
 
@@ -60,7 +60,7 @@ class RephotoCompareView extends StatelessWidget {
 //                color: Colors.pink[600]!,
                 width: 0,
               )),
-              child: _getCarouselSlider(context)))
+              child: getCarouselSlider(context)))
     ]);
   }
 
@@ -90,7 +90,7 @@ class RephotoCompareView extends StatelessWidget {
               style: TextStyle(fontSize: 20,height:7, color:Colors.white, decoration: TextDecoration.none, fontWeight: FontWeight.normal)))
     ]);
   }
-  _getCarouselSlider(context) {
+  getCarouselSlider(context) {
     print("getCarouselSlider");
     print(album.first.features.length);
     if (album.first.features.length == 1) {

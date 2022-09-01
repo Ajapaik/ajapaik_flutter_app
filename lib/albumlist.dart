@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:ajapaik_flutter_app/data/album.geojson.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'localization.dart';
 import 'sessioncontroller.dart';
 import 'package:get/get.dart';
@@ -12,6 +11,7 @@ import 'localfileselect.dart';
 import 'login.dart';
 import 'photoview.dart';
 import 'httpcontroller.dart';
+import 'preferences.dart';
 
 // ignore: must_be_immutable
 class AlbumListPage extends StatefulWidget {
@@ -40,6 +40,7 @@ class AlbumListPageState extends State<AlbumListPage> {
   final searchController = TextEditingController();
   final sessionController = Get.put(SessionController());
   final locator = Get.put(AppLocator());
+  final prefs = Get.put(Preferences());
 
   Future<List<Album>>? _albumData;
 
@@ -153,11 +154,6 @@ class AlbumListPageState extends State<AlbumListPage> {
     super.dispose();
   }
 
-  void saveNameVisibility(bool visibility) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('visibility', visibility);
-  }
-
   @override
   Widget build(BuildContext context) {
 
@@ -172,7 +168,7 @@ class AlbumListPageState extends State<AlbumListPage> {
       else if (index == 2) {
         setState(() {
           nameVisibility = !nameVisibility;
-          saveNameVisibility(nameVisibility);
+          prefs.saveNameVisibility(nameVisibility);
         });
       }
     }
@@ -208,7 +204,7 @@ class AlbumListPageState extends State<AlbumListPage> {
               onPressed: () {
                 setState(() {
                   searchVisibility = !searchVisibility;
-                  //setSearchVisibility();
+                  //prefs.setSearchVisibility(searchVisibility);
                 });
               }),
          /* IconButton(
