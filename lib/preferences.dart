@@ -19,7 +19,7 @@ class Preferences {
     return prefs.getBool("tooltip");
   }
 
-  saveTooltipPrefs() async {
+  void saveTooltipPrefs() async {
     //SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('tooltip', tooltip);
   }

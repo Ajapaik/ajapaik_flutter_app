@@ -73,7 +73,6 @@ class PhotoviewState extends State<Photoview> {
 
   // only reason to have this is that setState()
   // which could be removed entirely?
-  /*
   getTooltipPrefs() async {
     bool? prefsValue = prefs.getTooltipPrefs();
     if (prefsValue != prefs.tooltip) {
@@ -83,7 +82,6 @@ class PhotoviewState extends State<Photoview> {
       return prefsValue;
     }
   }
-  */
 
   void takeRephoto(context) {
     availableCameras().then((availableCameras) async {
@@ -190,7 +188,7 @@ class PhotoviewState extends State<Photoview> {
                                 builder: (context) => const SettingsScreen()))
                         .then((_) {
                       setState(() {
-                        prefs.getTooltipPrefs();
+                        getTooltipPrefs();
                       });
                     });
                   }
