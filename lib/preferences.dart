@@ -13,10 +13,15 @@ class Preferences {
     prefs = await SharedPreferences.getInstance();
   }
 
-  //bool tooltip = false;
-  Future<bool?> getTooltipPrefs() async {
+  bool tooltip = true;
+  bool? getTooltipPrefs() {
     //final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getBool("tooltip");
+  }
+
+  saveTooltipPrefs() async {
+    //SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('tooltip', tooltip);
   }
 
   //bool visibility = false;

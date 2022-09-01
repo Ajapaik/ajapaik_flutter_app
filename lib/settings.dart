@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
 
 import 'localization.dart';
+import 'preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -10,13 +11,8 @@ class SettingsScreen extends StatefulWidget {
   SettingsScreenState createState() => SettingsScreenState();
 }
 
-bool tooltip = true;
-
 class SettingsScreenState extends State<SettingsScreen> {
-  saveTooltipPrefs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('tooltip', tooltip);
-  }
+  final prefs = Get.put(Preferences());
 
   @override
   Widget build(BuildContext context) {
@@ -54,11 +50,11 @@ class SettingsScreenState extends State<SettingsScreen> {
                 Text(AppLocalizations.getText(context, 'settings-helperText')),
         SwitchListTile(
           activeColor: Colors.blue,
-          value: tooltip,
+          value: prefs.tooltip,
           title: Text(AppLocalizations.getText(context, 'settings-showMapTile')),
           onChanged: (bool newValue) {
-            setState(() => tooltip = newValue);
-            saveTooltipPrefs();
+            setState(() => prefs.tooltip = newValue);
+            prefs.saveTooltipPrefs();
           },
         )
       ])),

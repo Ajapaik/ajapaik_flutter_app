@@ -52,7 +52,7 @@ class MapState extends State<Map> {
       appBar: AppBar(title: Text(AppLocalizations.getText(context, 'imageMapScreen-appbarTitle'))),
       body: Stack(children: [
         Positioned(
-            child: buildMapWidget(context, locator.getLatLong(), widget.getImagePosition())),
+            child: buildMapWidget(context, mapController, locator, widget.getImagePosition())),
          GestureDetector(
             onTap: () {
               Navigator.pop(context);
@@ -80,7 +80,8 @@ class MapState extends State<Map> {
 
   // nearly identical with second case when embedded in view with photo
   // -> combine cases
-  Widget buildMapWidget(BuildContext context, LatLng locPos, LatLng imgPos) {
+  static Widget buildMapWidget(BuildContext context, MapController mapController, AppLocator locator, LatLng imgPos) {
+    LatLng locPos = locator.getLatLong();
     List<Marker> markerList = [];
 
     MapOptions options;
@@ -129,7 +130,8 @@ class MapState extends State<Map> {
   // this is called when opening map from button on screen (photoview),
   // which for some reason is different from when opening from the dropdown menu..
   // -> should use same code for both, no reason why these are different
-  static Widget buildMarkedMap(BuildContext context, LatLng locPos, LatLng imgPos) {
+  static Widget buildMarkedMap(BuildContext context, AppLocator locator, LatLng imgPos) {
+    LatLng locPos = locator.getLatLong();
     List<Marker> markerList = [];
 
     if (locPos.latitude != 0 && locPos.longitude != 0) {

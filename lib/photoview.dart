@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:ajapaik_flutter_app/localization.dart';
@@ -22,6 +21,7 @@ import 'map.dart';
 import 'fullscreenimageview.dart';
 import 'draftstorage.dart';
 import 'httpcontroller.dart';
+import 'preferences.dart';
 
 class Photoview extends StatefulWidget {
   final String historicalPhotoId;
@@ -64,18 +64,20 @@ class PhotoviewState extends State<Photoview> {
   DraftStorage draftStorage = DraftStorage();
 
   final locator = Get.put(AppLocator());
+  final prefs = Get.put(Preferences());
   //late Map map;
 
   LatLng getImagePosition() {
     return LatLng(imageLatitude, imageLongitude);
   }
 
+  // only reason to have this is that setState()
+  // which could be removed entirely?
   getTooltipPrefs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var prefsValue = prefs.getBool("tooltip");
-    if (prefsValue != tooltip) {
+    bool? prefsValue = prefs.getTooltipPrefs();
+    if (prefsValue != prefs.tooltip) {
       setState(() {
-        tooltip = prefsValue!;
+        prefs.tooltip = prefsValue!;
       });
       return prefsValue;
     }
@@ -513,6 +515,6 @@ class PhotoviewState extends State<Photoview> {
   // -> unify, map contents should be same either way..
   Widget buildMarkedMap(BuildContext context) {
 
-    return MapState.buildMarkedMap(context, locator.getLatLong(), getImagePosition());
+    return MapState.buildMarkedMap(context, locator, getImagePosition());
   }
 }
