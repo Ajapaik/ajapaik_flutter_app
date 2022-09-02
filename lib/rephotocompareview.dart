@@ -3,12 +3,9 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'data/album.geojson.dart';
-import 'sessioncontroller.dart';
-import 'package:get/get.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class RephotoCompareView extends StatelessWidget {
-  final sessionController = Get.put(SessionController());
   late List<Album> album;
   String historicalImageUrl = "";
 
