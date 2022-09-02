@@ -66,7 +66,7 @@ class AlbumListPageState extends State<AlbumListPage> {
               textAlign: TextAlign.start,
               onSubmitted: (value) {
                 setState(() {
-                  refresh();
+                  refreshAlbumData();
                   print("valmista");
                 });
               },
@@ -77,7 +77,7 @@ class AlbumListPageState extends State<AlbumListPage> {
                   prefixIcon: IconButton(
                       onPressed: () {
                         setState(() {
-                          refresh();
+                          refreshAlbumData();
                         });
                         onSearchTextChanged('');
                       }, icon: const Icon(Icons.search)),
@@ -91,7 +91,7 @@ class AlbumListPageState extends State<AlbumListPage> {
   void sorting() async {
     setState(() {
       orderBy = (orderBy == "alpha") ? "distance" : "alpha";
-      refresh();
+      refreshAlbumData();
     });
     Get.snackbar(
       "Sorting",
@@ -102,12 +102,12 @@ class AlbumListPageState extends State<AlbumListPage> {
   Future<void> RefreshIndicatorOnRefresh() async {
     pullDownRefreshDone=false;
     setState(() {
-      refresh();
+      refreshAlbumData();
     });
     pullDownRefreshDone=true;
   }
 
-  void refresh() async {
+  void refreshAlbumData() async {
     String url = getDataSourceUrl();
 
     // TODO: check if there are permissions to use network and/or session is active
@@ -144,7 +144,7 @@ class AlbumListPageState extends State<AlbumListPage> {
           print("Updating login status to screen. Session " +
               sessionController.getSessionId());
         }));
-    refresh();
+    refreshAlbumData();
     super.initState();
   }
 

@@ -110,8 +110,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     // https://medium.com/flutter-community/advanced-flutter-matrix4-and-perspective-transformations-a79404a0d828
 
     final Matrix4 translationMatrix = historicalPhotoController.value;
-    final currentScaleValue =
-        historicalPhotoController.value.getMaxScaleOnAxis();
+    final currentScaleValue = translationMatrix.getMaxScaleOnAxis();
     final double centerX = (w - w * currentScaleValue) / 2;
     final double centerY = (h - h * currentScaleValue) / 2;
     translationMatrix.setTranslationRaw(centerX, centerY, 0.0);
@@ -248,14 +247,12 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
     setState(() {
       if (details.delta.dy > 1) {
-        historicalPhotoTransparency =
-            historicalPhotoTransparency + 0.02;
+        historicalPhotoTransparency = historicalPhotoTransparency + 0.02;
         if (historicalPhotoTransparency > 1) {
           historicalPhotoTransparency = 1;
         }
       } else if (details.delta.dy < -1) {
-        historicalPhotoTransparency =
-            historicalPhotoTransparency - 0.02;
+        historicalPhotoTransparency = historicalPhotoTransparency - 0.02;
         if (historicalPhotoTransparency < 0) {
           historicalPhotoTransparency = 0;
         }

@@ -90,6 +90,7 @@ class RephotoCompareView extends StatelessWidget {
               style: TextStyle(fontSize: 20,height:7, color:Colors.white, decoration: TextDecoration.none, fontWeight: FontWeight.normal)))
     ]);
   }
+
   getCarouselSlider(context) {
     print("getCarouselSlider");
     print(album.first.features.length);
