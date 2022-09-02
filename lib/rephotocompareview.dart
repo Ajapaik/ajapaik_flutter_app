@@ -77,11 +77,10 @@ class RephotoCompareView extends StatelessWidget {
     var feature = album.first.features[0];
     List<String> labels = [];
     labels.add("");
-    if (feature.properties.author != null &&
-        feature.properties.author != "") {
+    if (feature.properties.hasAuthor()) {
       labels.add(feature.properties.author!);
     }
-    if (feature.properties.date != null && feature.properties.date != "") {
+    if (feature.properties.hasDate()) {
       labels.add(feature.properties.date!);
     }
     return Stack(children:[getImage(filename, context),
@@ -102,11 +101,10 @@ class RephotoCompareView extends StatelessWidget {
       print(i);
       var feature = album.first.features[i];
       List<String> labels = [];
-      if (feature.properties.author != null &&
-          feature.properties.author != "") {
+      if (feature.properties.hasAuthor()) {
         labels.add(feature.properties.author!);
       }
-      if (feature.properties.date != null && feature.properties.date != "") {
+      if (feature.properties.hasDate()) {
         labels.add(feature.properties.date!);
       }
       var image = Stack(children: [

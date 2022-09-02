@@ -184,6 +184,19 @@ class Properties {
     geojson = "";
   }
 
+  bool hasAuthor() {
+    if (author != null && author != "") {
+      return true;
+    }
+    return false;
+  }
+  bool hasDate() {
+    if (date != null && date != "") {
+      return true;
+    }
+    return false;
+  }
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
