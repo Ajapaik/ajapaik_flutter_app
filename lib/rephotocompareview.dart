@@ -88,14 +88,11 @@ class RephotoCompareView extends StatelessWidget {
   }
 
   getCarouselSlider(context) {
-    print("getCarouselSlider");
-    print(album.first.features.length);
     if (album.first.features.length == 1) {
       return Text("");
     }
     List<Widget> items = [];
     for (var i = 1; i < album.first.features.length; i++) {
-      print(i);
       var feature = album.first.features[i];
       List<String> labels = [];
       if (feature.properties.hasAuthor()) {
