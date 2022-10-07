@@ -168,9 +168,11 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
       return Image.network(filename, fit: BoxFit.cover);
     }
 
+    // is there a situation where the file might not exist when coming here?
     File imageFile = File(filename);
     if (imageFile.existsSync()) {
 
+      // is there a real chance that decoding fails here?
       img.Image? sourceImage = img.decodeImage(imageFile.readAsBytesSync());
       if (sourceImage != null) {
         double heightScale=1.0;
@@ -207,13 +209,16 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
         img.Image croppedImage =
             img.copyCrop(sourceImage, left, top, scaledImageWidth, scaledImageHeight);
 
-        // .. and this of course breaks if it is .png or .jpeg or .webp or .avif..
-        // fix this
-        // new name is also wrong as it will not be jpeg after encoding to png
-        String croppedFilename=filename.replaceFirst(".jpg", ".cropped.jpg");
+        // try to look whatever ending is used (if camera takes avif, jpeg or png, account for naming)
+        // and save cropped image under new name
+        String croppedFilename = filename.substring(0, filename.lastIndexOf('.'));
+        croppedFilename += ".cropped.png";
         File croppedFile = File(croppedFilename);
+
+        // throws exception if writing fails so checks after this should be pointless?
         croppedFile.writeAsBytesSync(img.encodePng(croppedImage), flush:true);
 
+        // it was just written, is there a case where it might not exist? out of space?
         if (croppedFile.existsSync()) {
           return Image.file(croppedFile);
         }
