@@ -176,12 +176,6 @@ class PhotoviewState extends State<Photoview> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-          /* title: Text(
-              AppLocalizations.of(context)!.translate('rePhoto-appbarTitle'),
-              style: const TextStyle(
-                fontWeight: FontWeight.w400,
-                fontFamily: 'Roboto',
-              )),*/
           actions: [
             PopupMenuButton<int>(
                 icon: const Icon(Icons.menu, color: Colors.white),
