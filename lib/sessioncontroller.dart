@@ -17,13 +17,6 @@ class SessionController extends GetxController {
   // TODO: we need to determine somehow where user wants to login & upload..
   ServerType server = ServerType.serverNone;
 
-  var count = 0;
-
-  void increment() {
-    count++;
-    update();
-  }
-
   Future<void> storeSession(String session) async {
     currentSessionId = session;
     FlutterSecureStorage storage = const FlutterSecureStorage();
