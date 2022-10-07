@@ -147,11 +147,21 @@ class PhotoviewState extends State<Photoview> {
     super.dispose();
   }
 
+  // TODO: if user presses share but system is slow user can change to other screen
+  // and then will get into confusing situation when it finally responds
+  // -> either make it clear UI is waiting or avoid opening after user has navigated
+  // out of the view to avoid tricky situations later
   void onSelectedImageMenu(result) async {
     //ImageMenu.menuShare
     if (result == 0) {
+      // TODO: when share the photo is already known
+      // -> look it up in the DOM or whatever without asking server for it again..
       final response = await fetchQuery(widget.historicalPhotoUri);
 
+      // TODO: this is a problem in web-version, also needs some special
+      //  permissions on some platforms?
+      // -> see comment above about using the picture that is already being shown
+      // instead of all this
       final temp = await getTemporaryDirectory();
       final path = '${temp.path}/image.jpg';
       File(path).writeAsBytesSync(response.bodyBytes);
