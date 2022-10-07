@@ -193,10 +193,6 @@ class AlbumListPageState extends State<AlbumListPage> {
                   builder: (context) => const ProjectListPage(title: "Albums")));
         }),
         actions: <Widget>[
-/*          IconButton(
-              icon: Icon(Icons.search),
-              tooltip: "Search",
-              onPressed: toggleSearchDialog),*/
           IconButton(
               icon: searchVisibility
                   ? const Icon(Icons.search, color: Color(0xff03dac6))
@@ -207,12 +203,6 @@ class AlbumListPageState extends State<AlbumListPage> {
                   //prefs.setSearchVisibility(searchVisibility);
                 });
               }),
-         /* IconButton(
-              icon: Icon(((orderBy == "alpha")
-                  ? Icons.sort_by_alpha
-                  : Icons.sort_sharp)),
-              tooltip: "Sort",
-              onPressed: sorting),*/
         ],
       ),
       body: Column(children: [
