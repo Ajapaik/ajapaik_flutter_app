@@ -156,12 +156,8 @@ class PhotoviewState extends State<Photoview> {
       File(path).writeAsBytesSync(response.bodyBytes);
 
       await Share.shareFiles([path], text: widget.historicalName);
-      void _main() {
-        final dir = Directory(path);
-        dir.deleteSync(recursive: true);
-      }
-
-      _main();
+      final dir = Directory(path);
+      dir.deleteSync(recursive: true);
     }
     if (result == 1) {
       launchInfo();
