@@ -165,7 +165,7 @@ class PhotoviewState extends State<Photoview> {
       launchInfo();
     }
     //ImageMenu.menuMap
-    if (result == 3) {
+    if (result == 2) {
       openImageMapScreen();
     }
   }
@@ -200,7 +200,7 @@ class PhotoviewState extends State<Photoview> {
                               leading: const Icon(Icons.info),
                               title: Text(AppLocalizations.getText(context, 'rePhoto-popupMenu2')))),
                       PopupMenuItem(
-                          value: 3, //ImageMenu.menuMap
+                          value: 2, //ImageMenu.menuMap
                           child: ListTile(
                             leading: const Icon(Icons.map),
                             title: Text(AppLocalizations.getText(context, 'rePhoto-popupMenu4')),
