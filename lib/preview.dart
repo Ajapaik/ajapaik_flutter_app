@@ -161,26 +161,30 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
   }
 
   Widget getImage4(filename, context) {
+    Image image;
+
+    // this is stupid to do here.. try get rid of this
     // TOdO: another hard-coded url to move..
     // TODO: try to avoid these, flutter does not like cross-domain files..
     // -> include file with app or seek alternative?
     String wikiExample = "https://upload.wikimedia.org/wikipedia/commons/a/a9/Example.jpg";
-    Image image=Image.network(wikiExample);
+    image=Image.network(wikiExample);
+
     bool validURL = Uri.parse(filename).host == '' ? false : true;
-
     if (validURL) {
-      image = Image.network(filename, fit: BoxFit.cover);
-    } else if (File(filename).existsSync()) {
+      return Image.network(filename, fit: BoxFit.cover);
+    }
 
-      img.Image? sourceImage =
-          img.decodeImage(File(filename).readAsBytesSync());
+    File imageFile = File(filename);
+    if (imageFile.existsSync()) {
+
+      img.Image? sourceImage = img.decodeImage(imageFile.readAsBytesSync());
       if (sourceImage != null) {
         double heightScale=1.0;
         double widthScale=1.0;
         double historicaPhotoScale=widget.historicalPhotoScale!/heightScale;
 
         if (needsHeightScaling(sourceImage.width, sourceImage.height)) {
-          print("needsHeightScale");
 
           double scale=sourceImage.width / widget.historicalPhotoSize!.width;
           heightScale=(widget.historicalPhotoSize!.height*scale) / sourceImage.height;
@@ -192,8 +196,6 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
         }
         else
         {
-          print("needsWidthScale");
-
           double scale=sourceImage.height / widget.historicalPhotoSize!.height;
           widthScale=(widget.historicalPhotoSize!.width*scale) / sourceImage.width;
 
@@ -213,15 +215,11 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
             img.copyCrop(sourceImage, left, top, scaledImageWidth, scaledImageHeight);
 
         String croppedFilename=filename.replaceFirst(".jpg", ".cropped.jpg");
-        File(croppedFilename).writeAsBytesSync(img.encodePng(croppedImage), flush:true);
+        File croppedFile = File(croppedFilename);
+        croppedFile.writeAsBytesSync(img.encodePng(croppedImage), flush:true);
 
-        if (File(croppedFilename).existsSync()) {
-          File croppedFileNew=File(croppedFilename);
-          return Image.file(croppedFileNew);
-        }
-        else {
-          // so, why is this really here now?
-          Image.network(wikiExample);
+        if (croppedFile.existsSync()) {
+          return Image.file(croppedFile);
         }
       }
     }
