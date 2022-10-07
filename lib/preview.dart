@@ -160,7 +160,9 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
     return widthScale<heightScale;
   }
 
-  Widget getImage4(filename, context) {
+  // this is called when creating image comparison after taking a picture with camera
+  //
+  Widget getScaledImage(filename, context) {
 
     if (Uri.parse(filename).host.isNotEmpty) {
       return Image.network(filename, fit: BoxFit.cover);
@@ -256,7 +258,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
 //                      color: Colors.pink[600]!,
                       width: 0,
                     )),
-                    child: getImage4( widget.imagePath, context))))
+                    child: getScaledImage( widget.imagePath, context))))
       ],
     );
   }
@@ -280,7 +282,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
 //                      color: Colors.pink[600]!,
                       width: 0,
                     )),
-                    child: getImage4( widget.imagePath, context))))
+                    child: getScaledImage( widget.imagePath, context))))
       ],
     );
   }
