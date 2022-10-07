@@ -162,7 +162,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
 
   // this is called when creating image comparison after taking a picture with camera
   //
-  Widget getScaledImage(filename, context) {
+  Widget getScaledImage(String filename, context) {
 
     if (Uri.parse(filename).host.isNotEmpty) {
       return Image.network(filename, fit: BoxFit.cover);
