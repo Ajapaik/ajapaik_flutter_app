@@ -196,6 +196,12 @@ class Properties {
     }
     return false;
   }
+  bool hasGeojson() {
+    if (geojson != null && geojson != "") {
+      return true;
+    }
+    return false;
+  }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

@@ -358,8 +358,7 @@ class AlbumList extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        if (feat.properties.geojson != null &&
-            feat.properties.geojson != "") {
+        if (feat.properties.hasGeojson()) {
           moveToGeoJson(context, index);
         } else {
           showphoto(context, index);
