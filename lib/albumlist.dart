@@ -282,7 +282,7 @@ class AlbumList extends StatelessWidget {
       historicalName: feat.properties.name.toString(),
       historicalDate: feat.properties.date.toString(),
       historicalAuthor: feat.properties.author.toString(),
-      historicalSurl: feat.properties.sourceUrl.toString(),
+      historicalSrcUrl: feat.properties.sourceUrl.toString(),
       historicalLabel: feat.properties.sourceLabel.toString(),
       historicalCoordinates: feat.geometry,
       numberOfRephotos: feat.properties.rephotos!.toInt(),

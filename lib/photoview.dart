@@ -7,12 +7,11 @@ import 'package:latlong2/latlong.dart';
 import 'package:ajapaik_flutter_app/localization.dart';
 import 'package:ajapaik_flutter_app/rephotocompareview.dart';
 import 'package:ajapaik_flutter_app/services/geolocation.dart';
-import 'package:ajapaik_flutter_app/settings.dart';
 import 'package:ajapaik_flutter_app/upload.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:camera/camera.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:path_provider/path_provider.dart'; // <- used by the temporary directory lookup which shouldn't be needed anyway
 import 'package:url_launcher/url_launcher.dart';
 import 'camera.dart';
 import 'data/draft.json.dart';
@@ -30,7 +29,7 @@ class Photoview extends StatefulWidget {
   final String historicalDate;
   final String historicalAuthor;
   final String historicalLabel;
-  final String historicalSurl;
+  final String historicalSrcUrl;
   final int numberOfRephotos;
 
   final Geometry historicalCoordinates;
@@ -43,7 +42,7 @@ class Photoview extends StatefulWidget {
       required this.historicalDate,
       required this.historicalAuthor,
       required this.historicalLabel,
-      required this.historicalSurl,
+      required this.historicalSrcUrl,
       required this.historicalCoordinates,
       required this.numberOfRephotos})
       : super(key: key);
@@ -110,7 +109,7 @@ class PhotoviewState extends State<Photoview> {
   }
 
   void launchInfo() async {
-    Uri url = Uri.parse(widget.historicalSurl);
+    Uri url = Uri.parse(widget.historicalSrcUrl);
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
     } else {
@@ -162,6 +161,8 @@ class PhotoviewState extends State<Photoview> {
       //  permissions on some platforms?
       // -> see comment above about using the picture that is already being shown
       // instead of all this
+      //
+      // get rid of this and remove path_provider after that
       final temp = await getTemporaryDirectory();
       final path = '${temp.path}/image.jpg';
       File(path).writeAsBytesSync(response.bodyBytes);
@@ -479,7 +480,7 @@ class PhotoviewState extends State<Photoview> {
                       ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () async {
-                          Uri url = Uri.parse(widget.historicalSurl);
+                          Uri url = Uri.parse(widget.historicalSrcUrl);
                           if (await canLaunchUrl(url)) {
                             await launchUrl(url);
                           } else {
