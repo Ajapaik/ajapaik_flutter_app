@@ -52,6 +52,9 @@ class Photoview extends StatefulWidget {
   PhotoviewState createState() => PhotoviewState();
 }
 
+// TODO: check redoing menu
+//enum ImageMenu { menuShare, menuInfo, menuMap, menuSettings }
+
 class PhotoviewState extends State<Photoview> {
   bool boolValue = true;
   bool mapInfoVisibility = false;
@@ -144,6 +147,41 @@ class PhotoviewState extends State<Photoview> {
     super.dispose();
   }
 
+  void onSelectedImageMenu(result) async {
+    if (result == 0) {
+      final response = await fetchQuery(widget.historicalPhotoUri);
+
+      final temp = await getTemporaryDirectory();
+      final path = '${temp.path}/image.jpg';
+      File(path).writeAsBytesSync(response.bodyBytes);
+
+      await Share.shareFiles([path], text: widget.historicalName);
+      void _main() {
+        final dir = Directory(path);
+        dir.deleteSync(recursive: true);
+      }
+
+      _main();
+    }
+    if (result == 1) {
+      launchInfo();
+    }
+    if (result == 3) {
+      openImageMapScreen();
+    }
+    if (result == 4) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const SettingsScreen()))
+          .then((_) {
+        setState(() {
+          getTooltipPrefs();
+        });
+      });
+    }
+  }
+
   // this makes the top-right corner dropdown menu and related actions to it
   @override
   Widget build(BuildContext context) {
@@ -160,38 +198,7 @@ class PhotoviewState extends State<Photoview> {
             PopupMenuButton<int>(
                 icon: const Icon(Icons.menu, color: Colors.white),
                 onSelected: (result) async {
-                  if (result == 0) {
-                    final response = await fetchQuery(widget.historicalPhotoUri);
-
-                    final temp = await getTemporaryDirectory();
-                    final path = '${temp.path}/image.jpg';
-                    File(path).writeAsBytesSync(response.bodyBytes);
-
-                    await Share.shareFiles([path], text: widget.historicalName);
-                    void _main() {
-                      final dir = Directory(path);
-                      dir.deleteSync(recursive: true);
-                    }
-
-                    _main();
-                  }
-                  if (result == 1) {
-                    launchInfo();
-                  }
-                  if (result == 3) {
-                    openImageMapScreen();
-                  }
-                  if (result == 4) {
-                    Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SettingsScreen()))
-                        .then((_) {
-                      setState(() {
-                        getTooltipPrefs();
-                      });
-                    });
-                  }
+                  onSelectedImageMenu(result);
                 },
                 itemBuilder: (context) => [
                       PopupMenuItem(
@@ -204,14 +211,6 @@ class PhotoviewState extends State<Photoview> {
                           child: ListTile(
                               leading: const Icon(Icons.info),
                               title: Text(AppLocalizations.getText(context, 'rePhoto-popupMenu2')))),
-                      /*        PopupMenuItem(
-                        value: 2,
-                        child: ListTile(
-                          leading: const Icon(Icons.enhance_photo_translate),
-                          title: Text(AppLocalizations.of(context)!
-                              .translate('rePhoto-popupMenu3')),
-                        ),
-                      ),*/
                       PopupMenuItem(
                           value: 3,
                           child: ListTile(
