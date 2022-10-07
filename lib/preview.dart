@@ -170,8 +170,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
     String wikiExample = "https://upload.wikimedia.org/wikipedia/commons/a/a9/Example.jpg";
     image=Image.network(wikiExample);
 
-    bool validURL = Uri.parse(filename).host == '' ? false : true;
-    if (validURL) {
+    if (Uri.parse(filename).host.isNotEmpty) {
       return Image.network(filename, fit: BoxFit.cover);
     }
 
