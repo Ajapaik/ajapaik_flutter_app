@@ -53,7 +53,7 @@ class Photoview extends StatefulWidget {
 }
 
 // TODO: check redoing menu
-//enum ImageMenu { menuShare, menuInfo, menuMap, menuSettings }
+enum ImageMenu { menuShare, menuInfo, menuMap, menuSettings }
 
 class PhotoviewState extends State<Photoview> {
   bool boolValue = true;
@@ -148,6 +148,7 @@ class PhotoviewState extends State<Photoview> {
   }
 
   void onSelectedImageMenu(result) async {
+    //ImageMenu.menuShare
     if (result == 0) {
       final response = await fetchQuery(widget.historicalPhotoUri);
 
@@ -159,9 +160,11 @@ class PhotoviewState extends State<Photoview> {
       final dir = Directory(path);
       dir.deleteSync(recursive: true);
     }
+    //ImageMenu.menuInfo
     if (result == 1) {
       launchInfo();
     }
+    //ImageMenu.menuMap
     if (result == 3) {
       openImageMapScreen();
     }
@@ -198,17 +201,17 @@ class PhotoviewState extends State<Photoview> {
                 },
                 itemBuilder: (context) => [
                       PopupMenuItem(
-                          value: 0,
+                          value: 0, // ImageMenu.menuShare
                           child: ListTile(
                               leading: const Icon(Icons.share),
                               title: Text(AppLocalizations.getText(context, 'rePhoto-popupMenu1')))),
                       PopupMenuItem(
-                          value: 1,
+                          value: 1, // ImageMenu.menuInfo
                           child: ListTile(
                               leading: const Icon(Icons.info),
                               title: Text(AppLocalizations.getText(context, 'rePhoto-popupMenu2')))),
                       PopupMenuItem(
-                          value: 3,
+                          value: 3, //ImageMenu.menuMap
                           child: ListTile(
                             leading: const Icon(Icons.map),
                             title: Text(AppLocalizations.getText(context, 'rePhoto-popupMenu4')),
