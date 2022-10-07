@@ -1,6 +1,10 @@
 import 'dart:io';
 import 'data/draft.json.dart';
 
+// this might be useful but since app is using newer path_provider this can't be used
+//
+// import 'package:localstorage/localstorage.dart';
+
 // TOOD: dart:io doesn't work web-browser apps so look for alternative
 // in the meanwhile, make something for testing
 

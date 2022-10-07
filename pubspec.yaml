@@ -54,6 +54,8 @@ dependencies:
   shared_preferences: ^2.0.12
   latlong2: ^0.8.1
 
+  ## this might solve temporary storage but since this uses newer path_provider we can't use it
+  #localstorage: ^3.0.6
 
   flutter_localizations:
     sdk: flutter
