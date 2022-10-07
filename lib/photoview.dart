@@ -168,17 +168,6 @@ class PhotoviewState extends State<Photoview> {
     if (result == 3) {
       openImageMapScreen();
     }
-    if (result == 4) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => const SettingsScreen()))
-          .then((_) {
-        setState(() {
-          getTooltipPrefs();
-        });
-      });
-    }
   }
 
   // this makes the top-right corner dropdown menu and related actions to it
@@ -216,13 +205,6 @@ class PhotoviewState extends State<Photoview> {
                             leading: const Icon(Icons.map),
                             title: Text(AppLocalizations.getText(context, 'rePhoto-popupMenu4')),
                           )),
-                      /*       PopupMenuItem(
-                          value: 4,
-                          child: ListTile(
-                            leading: const Icon(Icons.settings),
-                            title: Text(AppLocalizations.of(context)!
-                                .translate('rePhoto-popupMenu5')),
-                          )),*/
                     ])
           ]),
       body: Column(children: [
