@@ -205,6 +205,9 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
         img.Image croppedImage =
             img.copyCrop(sourceImage, left, top, scaledImageWidth, scaledImageHeight);
 
+        // .. and this of course breaks if it is .png or .jpeg or .webp or .avif..
+        // fix this
+        // new name is also wrong as it will not be jpeg after encoding to png
         String croppedFilename=filename.replaceFirst(".jpg", ".cropped.jpg");
         File croppedFile = File(croppedFilename);
         croppedFile.writeAsBytesSync(img.encodePng(croppedImage), flush:true);
