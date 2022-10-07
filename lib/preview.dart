@@ -161,14 +161,6 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
   }
 
   Widget getImage4(filename, context) {
-    Image image;
-
-    // this is stupid to do here.. try get rid of this
-    // TOdO: another hard-coded url to move..
-    // TODO: try to avoid these, flutter does not like cross-domain files..
-    // -> include file with app or seek alternative?
-    String wikiExample = "https://upload.wikimedia.org/wikipedia/commons/a/a9/Example.jpg";
-    image=Image.network(wikiExample);
 
     if (Uri.parse(filename).host.isNotEmpty) {
       return Image.network(filename, fit: BoxFit.cover);
@@ -223,7 +215,12 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
       }
     }
 
-    return image;
+    // this is stupid to do here.. try get rid of this
+    // TOdO: another hard-coded url to move..
+    // TODO: try to avoid these, flutter does not like cross-domain files..
+    // -> include file with app or seek alternative?
+    String wikiExample = "https://upload.wikimedia.org/wikipedia/commons/a/a9/Example.jpg";
+    return Image.network(wikiExample);
   }
 
   Future<ui.Image> getImageInfo(Image image) async {
