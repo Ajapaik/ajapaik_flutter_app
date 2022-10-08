@@ -225,12 +225,11 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
       }
     }
 
-    // this is stupid to do here.. try get rid of this
-    // TOdO: another hard-coded url to move..
-    // TODO: try to avoid these, flutter does not like cross-domain files..
-    // -> include file with app or seek alternative?
-    String wikiExample = "https://upload.wikimedia.org/wikipedia/commons/a/a9/Example.jpg";
-    return Image.network(wikiExample);
+    // old used network access to file:
+    // "https://upload.wikimedia.org/wikipedia/commons/a/a9/Example.jpg";
+    // instead, keep it with app:
+    File examplefile = File("assets/Example.jpg");
+    return Image.file(examplefile);
   }
 
   Future<ui.Image> getImageInfo(Image image) async {
