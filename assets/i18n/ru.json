@@ -1,24 +1,31 @@
 {
 	"@metadata": {
 		"authors": [
-			"Kareyac"
+			"Kareyac",
+			"Артём 13327"
 		]
 	},
 	"albumList-navItem2": "Карта",
 	"albumList-navItem3": "Видимость",
 	"homePage-NavItem3": "Сфотографировать",
 	"homePage-NavItem4": "События",
+	"homePage-NavItem5": "Войти",
+	"homePage-NavItem6": "Выйти",
 	"imageMapScreen-appbarTitle": "Карта",
 	"localFileSelect-option1": "Библиотека фотографий",
 	"localFileSelect-option2": "Камера",
+	"login-appBarTitle": "Войти",
 	"map-appbarTitle": "Карта",
 	"projectList-navItem1": "Библиотека",
 	"projectList-navItem2": "Сфотографировать",
+	"projectList-navItem3": "Войти",
+	"projectList-navItem4": "Выйти",
 	"rePhoto-popupMenu1": "Поделиться",
 	"rePhoto-popupMenu2": "Информация",
 	"rePhoto-popupMenu4": "Карта",
 	"rePhoto-popupMenu5": "Настройки",
 	"settings-appbarTitle": "Настройки",
+	"settings-cardItem1": "Изменить язык",
 	"settings-helperText": "Дополнительные настройки",
 	"settings-showMapTile": "Показать карту"
 }
