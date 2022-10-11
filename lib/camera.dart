@@ -299,7 +299,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                       builder: (context, snapshot) {
                         /* Initialize camera */
                         if (snapshot.connectionState == ConnectionState.done) {
-                          // If the Future is complete, display the preview.
+                          // If the Future is complete, disable flash and  display the preview.
+                          cameraController.setFlashMode(FlashMode.off);
                           return CameraPreview(cameraController);
                         } else {
                           // Otherwise, display a loading indicator.
