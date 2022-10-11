@@ -117,12 +117,12 @@ class MapState extends State<Map> {
     FlutterMap map = FlutterMap(
         mapController: mapController, // is there reason this wasn't included in the other? static map?
         options: options,
-        layers: [
-          TileLayerOptions(
-            urlTemplate: streetmapUrlTemplate,
-            subdomains: ['a', 'b', 'c'],
+        children: [
+          TileLayer(
+            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            userAgentPackageName: 'ee.ajapaik.ajapaikFlutterApp',
           ),
-          MarkerLayerOptions(markers: markerList)
+          MarkerLayer(markers: markerList)
         ]);
     return map;
   }
@@ -153,12 +153,12 @@ class MapState extends State<Map> {
             padding: EdgeInsets.all(50),
           ),
         ),
-        layers: [
-          TileLayerOptions(
-              urlTemplate: streetmapUrlTemplate,
-              subdomains: ['a', 'b', 'c']
+        children: [
+          TileLayer(
+            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            userAgentPackageName: 'ee.ajapaik.ajapaikFlutterApp',
           ),
-          MarkerLayerOptions(
+          MarkerLayer(
             markers: markerList,
           ),
         ]);

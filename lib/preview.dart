@@ -17,6 +17,7 @@ import 'package:image/image.dart' as img;
 // ignore: must_be_immutable
 class DisplayPictureScreen extends StatefulWidget {
   final String imagePath;
+  final String historicalImageDescription;
   final String historicalImagePath;
   final String historicalImageId;
   final Orientation? cameraPhotoOrientation;
@@ -29,6 +30,7 @@ class DisplayPictureScreen extends StatefulWidget {
   const DisplayPictureScreen(
       {Key? key,
       required this.imagePath,
+      required this.historicalImageDescription,
       required this.historicalImagePath,
       required this.historicalImageId,
       this.cameraPhotoOrientation,
@@ -49,6 +51,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
   GlobalKey cameraPhotoKey = GlobalKey();
   double oldCenterX = 0;
   double oldCenterY = 0;
+
   //final TransformationController _transformationController = TransformationController();
 
   // TODO: keep shared
@@ -111,18 +114,18 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
     LatLng pos = locator.getLatLong();
 
     Draft draft = Draft(
-      "",
-      widget.imagePath,
-      widget.historicalImagePath,
-      widget.historicalImageId,
-      widget.historicalPhotoFlipped! == true,
-      now,
-      widget.historicalPhotoScale ?? 1,
-      pos.latitude,
-      pos.longitude,
-      -1,
-      false
-    );
+        "",
+        widget.imagePath,
+        widget.historicalImageDescription,
+        widget.historicalImagePath,
+        widget.historicalImageId,
+        widget.historicalPhotoFlipped! == true,
+        now,
+        widget.historicalPhotoScale ?? 1,
+        pos.latitude,
+        pos.longitude,
+        -1,
+        false);
     // keep for later if we can't upload right away
     draftStorage.store(draft);
 
@@ -155,15 +158,14 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
   }
 
   bool needsHeightScaling(cameraImageWidth, cameraImageHeight) {
-    double heightScale = cameraImageHeight/widget.historicalPhotoSize!.height;
-    double widthScale = cameraImageWidth/widget.historicalPhotoSize!.width;
-    return widthScale<heightScale;
+    double heightScale = cameraImageHeight / widget.historicalPhotoSize!.height;
+    double widthScale = cameraImageWidth / widget.historicalPhotoSize!.width;
+    return widthScale < heightScale;
   }
 
   // this is called when creating image comparison after taking a picture with camera
   //
   Widget getScaledImage(String filename, context) {
-
     if (Uri.parse(filename).host.isNotEmpty) {
       return Image.network(filename, fit: BoxFit.cover);
     }
@@ -171,52 +173,56 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
     // is there a situation where the file might not exist when coming here?
     File imageFile = File(filename);
     if (imageFile.existsSync()) {
-
       // is there a real chance that decoding fails here?
       img.Image? sourceImage = img.decodeImage(imageFile.readAsBytesSync());
       if (sourceImage != null) {
-        double heightScale=1.0;
-        double widthScale=1.0;
-        double historicaPhotoScale=widget.historicalPhotoScale!/heightScale;
+        double heightScale = 1.0;
+        double widthScale = 1.0;
+        double historicaPhotoScale = widget.historicalPhotoScale! / heightScale;
 
         if (needsHeightScaling(sourceImage.width, sourceImage.height)) {
+          double scale = sourceImage.width / widget.historicalPhotoSize!.width;
+          heightScale =
+              (widget.historicalPhotoSize!.height * scale) / sourceImage.height;
 
-          double scale=sourceImage.width / widget.historicalPhotoSize!.width;
-          heightScale=(widget.historicalPhotoSize!.height*scale) / sourceImage.height;
+          double aspectratio = widget.historicalPhotoSize!.height /
+              widget.historicalPhotoSize!.width;
+          if (aspectratio > 1) {
+            historicaPhotoScale = historicaPhotoScale / aspectratio;
+          }
+        } else {
+          double scale =
+              sourceImage.height / widget.historicalPhotoSize!.height;
+          widthScale =
+              (widget.historicalPhotoSize!.width * scale) / sourceImage.width;
 
-          double aspectratio=widget.historicalPhotoSize!.height/widget.historicalPhotoSize!.width;
-          if (aspectratio>1) {
-            historicaPhotoScale=historicaPhotoScale/aspectratio;
+          double aspectratio = widget.historicalPhotoSize!.width /
+              widget.historicalPhotoSize!.height;
+          if (aspectratio > 1) {
+            historicaPhotoScale = historicaPhotoScale / aspectratio;
           }
         }
-        else
-        {
-          double scale=sourceImage.height / widget.historicalPhotoSize!.height;
-          widthScale=(widget.historicalPhotoSize!.width*scale) / sourceImage.width;
 
-          double aspectratio=widget.historicalPhotoSize!.width/widget.historicalPhotoSize!.height;
-          if (aspectratio>1) {
-            historicaPhotoScale=historicaPhotoScale/aspectratio;
-          }
-        }
-
-        int scaledImageWidth = (sourceImage.width*widthScale*historicaPhotoScale).toInt();
-        int scaledImageHeight = (sourceImage.height*heightScale*historicaPhotoScale).toInt();
+        int scaledImageWidth =
+            (sourceImage.width * widthScale * historicaPhotoScale).toInt();
+        int scaledImageHeight =
+            (sourceImage.height * heightScale * historicaPhotoScale).toInt();
 
         int left = ((sourceImage.width - scaledImageWidth) / 2).toInt();
         int top = ((sourceImage.height - scaledImageHeight) / 2).toInt();
 
-        img.Image croppedImage =
-            img.copyCrop(sourceImage, left, top, scaledImageWidth, scaledImageHeight);
+        img.Image croppedImage = img.copyCrop(
+            sourceImage, left, top, scaledImageWidth, scaledImageHeight);
 
         // try to look whatever ending is used (if camera takes avif, jpeg or png, account for naming)
         // and save cropped image under new name
-        String croppedFilename = filename.substring(0, filename.lastIndexOf('.'));
+        String croppedFilename =
+            filename.substring(0, filename.lastIndexOf('.'));
         croppedFilename += ".cropped.png";
         File croppedFile = File(croppedFilename);
 
         // throws exception if writing fails so checks after this should be pointless?
-        croppedFile.writeAsBytesSync(img.encodePng(croppedImage), flush:true);
+        croppedFile.writeAsBytesSync(img.encodePng(croppedImage), flush: true);
 
         // it was just written, is there a case where it might not exist? out of space?
         if (croppedFile.existsSync()) {
@@ -262,7 +268,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
 //                      color: Colors.pink[600]!,
                       width: 0,
                     )),
-                    child: getScaledImage( widget.imagePath, context))))
+                    child: getScaledImage(widget.imagePath, context))))
       ],
     );
   }
@@ -286,7 +292,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
 //                      color: Colors.pink[600]!,
                       width: 0,
                     )),
-                    child: getScaledImage( widget.imagePath, context))))
+                    child: getScaledImage(widget.imagePath, context))))
       ],
     );
   }

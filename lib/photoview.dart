@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:ajapaik_flutter_app/utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,6 +18,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'camera.dart';
 import 'data/draft.json.dart';
 import 'data/album.geojson.dart';
+import 'services/crossplatformshare.dart';
 import 'map.dart';
 import 'fullscreenimageview.dart';
 import 'draftstorage.dart';
@@ -84,7 +87,16 @@ class PhotoviewState extends State<Photoview> {
       return prefsValue;
     }
   }
+  String generateDescription() {
+    List<String> parts=[];
+    if (widget.historicalName !="") parts.add(widget.historicalName);
+    if (widget.historicalDate !="") parts.add(widget.historicalDate);
+    if (widget.historicalAuthor !="") parts.add(widget.historicalAuthor);
+    if (widget.historicalLabel !="") parts.add(widget.historicalLabel);
+    if (widget.historicalSrcUrl !="") parts.add(widget.historicalSrcUrl);
 
+    return parts.join("\n");
+  }
   void takeRephoto(context) {
     availableCameras().then((availableCameras) async {
       CameraDescription firstCamera = availableCameras.first;
@@ -95,6 +107,7 @@ class PhotoviewState extends State<Photoview> {
                     camera: firstCamera,
                     historicalPhotoId: widget.historicalPhotoId,
                     historicalPhotoUri: widget.historicalPhotoUri,
+                    historicalPhotoDescription:  generateDescription()
                   )));
       // TODO: if user has no network connectivity or is in standalone mode
       // -> just keep draft and let user upload later
@@ -153,23 +166,9 @@ class PhotoviewState extends State<Photoview> {
   void onSelectedImageMenu(result) async {
     //ImageMenu.menuShare
     if (result == 0) {
+      CrossplatformShare.shareFile(widget.historicalPhotoUri, widget.historicalName );
       // TODO: when share the photo is already known
       // -> look it up in the DOM or whatever without asking server for it again..
-      final response = await fetchQuery(widget.historicalPhotoUri);
-
-      // TODO: this is a problem in web-version, also needs some special
-      //  permissions on some platforms?
-      // -> see comment above about using the picture that is already being shown
-      // instead of all this
-      //
-      // get rid of this and remove path_provider after that
-      final temp = await getTemporaryDirectory();
-      final path = '${temp.path}/image.jpg';
-      File(path).writeAsBytesSync(response.bodyBytes);
-
-      await Share.shareFiles([path], text: widget.historicalName);
-      final dir = Directory(path);
-      dir.deleteSync(recursive: true);
     }
     //ImageMenu.menuInfo
     if (result == 1) {
@@ -264,40 +263,7 @@ class PhotoviewState extends State<Photoview> {
   }
 
   Widget getRephotoNumberIconBottomLeft(numberOfRephotos) {
-    IconData numberOfRephotosIcon;
-
-    switch (numberOfRephotos) {
-      case 1:
-        numberOfRephotosIcon = Icons.filter_1;
-        break;
-      case 2:
-        numberOfRephotosIcon = Icons.filter_2;
-        break;
-      case 3:
-        numberOfRephotosIcon = Icons.filter_3;
-        break;
-      case 4:
-        numberOfRephotosIcon = Icons.filter_4;
-        break;
-      case 5:
-        numberOfRephotosIcon = Icons.filter_5;
-        break;
-      case 6:
-        numberOfRephotosIcon = Icons.filter_6;
-        break;
-      case 7:
-        numberOfRephotosIcon = Icons.filter_7;
-        break;
-      case 8:
-        numberOfRephotosIcon = Icons.filter_8;
-        break;
-      case 9:
-        numberOfRephotosIcon = Icons.filter_9;
-        break;
-      default:
-        numberOfRephotosIcon = Icons.filter_9_plus;
-        break;
-    }
+    IconData numberOfRephotosIcon=getNumberOfRephotosIcon(numberOfRephotos);
 
     return Visibility(
         visible: numberOfRephotos > 0,

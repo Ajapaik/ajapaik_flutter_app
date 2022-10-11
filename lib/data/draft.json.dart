@@ -1,12 +1,14 @@
 class Draft {
   final String id; // freely defined id, usually INT or URI
   final String imagePath;
+  final String historicalImageDescription; // some nice refence text for historical image
   final String historicalImagePath;
   final String historicalImageId; // freely defined id, usually INT or URI
   final bool historicalPhotoFlipped;
   final double latitude;
   final double longitude;
   final double accuracy;
+
   //final double age; // age? what format? seconds? counting from when? never used?
   //final String date;
   final DateTime timestamp; // use original until we need to convert
@@ -17,6 +19,7 @@ class Draft {
   Draft(
     this.id,
     this.imagePath,
+    this.historicalImageDescription,
     this.historicalImagePath,
     this.historicalImageId,
     this.historicalPhotoFlipped,
@@ -34,7 +37,7 @@ class Draft {
     return DateTime.now().difference(timestamp);
   }
 
-  /* currently this isn't even used? all fields are used directly when generating upload now
+/* currently this isn't even used? all fields are used directly when generating upload now
   -> modify more later
   Map<String, dynamic> toJson() => {
         'id': id,

@@ -83,7 +83,7 @@ class RephotoCompareView extends StatelessWidget {
     return Stack(children:[getImage(filename, context),
       Align(alignment: Alignment.bottomCenter,
           child:Text(labels.join(" "),
-              style: TextStyle(fontSize: 20,height:7, color:Colors.white, decoration: TextDecoration.none, fontWeight: FontWeight.normal)))
+              style: TextStyle(fontSize: 16,height:7, color:Colors.white, decoration: TextDecoration.none, fontWeight: FontWeight.normal)))
     ]);
   }
 
@@ -106,7 +106,7 @@ class RephotoCompareView extends StatelessWidget {
             fit: BoxFit.contain, height: 8000, width: 8000),
       Align(alignment: Alignment.bottomCenter,
         child:Text(labels.join(" "),
-            style: TextStyle(fontSize: 20,height:7, color:Colors.white, decoration: TextDecoration.none, fontWeight: FontWeight.normal)))
+            style: TextStyle(fontSize: 16,height:7, color:Colors.white, decoration: TextDecoration.none, fontWeight: FontWeight.normal)))
       ]);
       items.add(image);
     }

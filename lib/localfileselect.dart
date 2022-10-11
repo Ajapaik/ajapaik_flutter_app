@@ -21,7 +21,9 @@ Future getImageFromGallery(context) async {
             builder: (context) => TakePictureScreen(
                 camera: firstCamera,
                 historicalPhotoId: pickedFile.path.toString(),
-                historicalPhotoUri: pickedFile.path.toString())),
+                historicalPhotoUri: pickedFile.path.toString(),
+                historicalPhotoDescription: "Historical image is from gallery"
+            )),
       );
     });
   } else {

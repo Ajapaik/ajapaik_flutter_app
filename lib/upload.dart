@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:ajapaik_flutter_app/services/crossplatformshare.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sign_in_button/sign_in_button.dart';
@@ -29,6 +33,21 @@ class DisplayUploadScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(title: const Text('Save to')),
         body: saveToButtons(context));
+  }
+
+  shareFile(BuildContext) {
+    List<String> fileNames=[];
+    String text=draft.historicalImageDescription;
+    fileNames.add(draft.historicalImagePath);
+    fileNames.add(draft.imagePath);
+
+    String croppedFilename =
+    draft.imagePath.substring(0, draft.imagePath.lastIndexOf('.'));
+    croppedFilename += ".cropped.png";
+    if ( File(croppedFilename).existsSync() ) {
+      fileNames.add(croppedFilename);
+    }
+    CrossplatformShare.shareFiles(fileNames, text );
   }
 
 
@@ -135,6 +154,23 @@ class DisplayUploadScreen extends StatelessWidget {
 
     const EdgeInsets padding = EdgeInsets.all(11.0);
     List<Widget> buttons = [];
+
+    // if not web then show Share
+    if (!kIsWeb) {
+      SignInButtonBuilder sibShare = SignInButtonBuilder(
+        text: 'Share',
+        innerPadding: padding,
+        fontSize: 25,
+
+        icon: Icons.share,
+        onPressed: () {
+          shareFile(context);
+        },
+        backgroundColor: const Color(0xFF3366cc),
+      );
+      buttons.add(sibShare);
+    }
+
     SignInButtonBuilder sibGallery = SignInButtonBuilder(
       text: 'Gallery',
       innerPadding: padding,
@@ -147,6 +183,7 @@ class DisplayUploadScreen extends StatelessWidget {
       backgroundColor: const Color(0xFF3366cc),
     );
     buttons.add(sibGallery);
+
 
     if (draft.historicalImagePath.contains("ajapaik.ee")) {
       SignInButtonBuilder sibAjapaik = SignInButtonBuilder(
@@ -166,22 +203,24 @@ class DisplayUploadScreen extends StatelessWidget {
       );
       buttons.add(sibAjapaik);
     }
-    SignInButtonBuilder sibWiki = SignInButtonBuilder(
-      text: 'Wikimedia Commons',
-      icon: Icons.cloud_upload,
-      onPressed: () {
-        if (sessionController.isExpired()) {
-          Get.to(DisplayLoginScreen());
-        } else {
-          ("Logged in");
-          uploadFile(context);
-          Navigator.pop(context);
-        }
-      },
-      backgroundColor: const Color(0xFF3366cc),
-    );
-    buttons.add(sibWiki);
-
+    // TODO: if debug then show Wikimedia Commons
+    if (false) {
+      SignInButtonBuilder sibWiki = SignInButtonBuilder(
+        text: 'Wikimedia Commons',
+        icon: Icons.cloud_upload,
+        onPressed: () {
+          if (sessionController.isExpired()) {
+            Get.to(DisplayLoginScreen());
+          } else {
+            ("Logged in");
+            uploadFile(context);
+            Navigator.pop(context);
+          }
+        },
+        backgroundColor: const Color(0xFF3366cc),
+      );
+      buttons.add(sibWiki);
+    }
     Center c = Center(
         child: Wrap(spacing: 10, runSpacing: 10, children: buttons));
     return c;
