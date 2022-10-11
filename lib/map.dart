@@ -27,8 +27,6 @@ class Map extends StatefulWidget {
   }
 }
 
-const String streetmapUrlTemplate = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-
 class MapState extends State<Map> {
   late final MapController mapController;
 
@@ -78,6 +76,14 @@ class MapState extends State<Map> {
         builder: builder);
   }
 
+  static TileLayer getMapTilelayer() {
+    return TileLayer(
+      urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+      userAgentPackageName: 'ee.ajapaik.ajapaikFlutterApp',
+    );
+  }
+
+
   // nearly identical with second case when embedded in view with photo
   // -> combine cases
   static Widget buildMapWidget(BuildContext context, MapController mapController, AppLocator locator, LatLng imgPos) {
@@ -118,10 +124,7 @@ class MapState extends State<Map> {
         mapController: mapController, // is there reason this wasn't included in the other? static map?
         options: options,
         children: [
-          TileLayer(
-            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-            userAgentPackageName: 'ee.ajapaik.ajapaikFlutterApp',
-          ),
+          getMapTilelayer(),
           MarkerLayer(markers: markerList)
         ]);
     return map;
@@ -154,10 +157,7 @@ class MapState extends State<Map> {
           ),
         ),
         children: [
-          TileLayer(
-            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-            userAgentPackageName: 'ee.ajapaik.ajapaikFlutterApp',
-          ),
+          getMapTilelayer(),
           MarkerLayer(
             markers: markerList,
           ),
