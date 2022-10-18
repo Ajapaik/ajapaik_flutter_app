@@ -145,7 +145,8 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
     Image oldImage = getImage(widget.historicalImagePath.toString(), context);
     Widget flippedImage =
         getFlippedImage(oldImage, widget.historicalPhotoFlipped == true);
-    Widget newImage = getScaledImageBuilder(widget.image, flippedImage, context);
+    Widget newImage =
+        getScaledImageBuilder(widget.image, flippedImage, context);
 
     return OrientationBuilder(builder: (context, orientation) {
       if (orientation == Orientation.portrait) {

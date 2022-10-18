@@ -39,11 +39,12 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   Orientation? lastKnownOrientation;
 
   // Interactive viewer overlay
-  TransformationController historicalPhotoController = TransformationController();
+  TransformationController historicalPhotoController =
+      TransformationController();
   GlobalKey historicalPhotoKey = GlobalKey();
   bool historicalPhotoFlipped = false;
   double historicalPhotoTransparency = 0.65;
-  int transparencyOnOff=1;
+  int transparencyOnOff = 1;
   bool pinchToZoomBusy = false;
   late Size historicalPhotoImageSize;
 
@@ -73,19 +74,19 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       // ->
 
       MaterialPageRoute mpr = MaterialPageRoute(
-        builder: (context) => DisplayPictureScreen(
-          // Pass the automatically generated path to
-          // the DisplayPictureScreen widget.
-            image: image,
-            historicalImageDescription: widget.historicalPhotoDescription,
-            historicalImagePath: widget.historicalPhotoUri,
-            historicalImageId: widget.historicalPhotoId,
-            cameraPhotoOrientation: lastKnownOrientation,
-            historicalPhotoRotation: false,
-            historicalPhotoFlipped: historicalPhotoFlipped,
-            historicalPhotoSize: historicalPhotoImageSize,
-            historicalPhotoScale:
-            historicalPhotoController.value.getMaxScaleOnAxis()));
+          builder: (context) => DisplayPictureScreen(
+              // Pass the automatically generated path to
+              // the DisplayPictureScreen widget.
+              image: image,
+              historicalImageDescription: widget.historicalPhotoDescription,
+              historicalImagePath: widget.historicalPhotoUri,
+              historicalImageId: widget.historicalPhotoId,
+              cameraPhotoOrientation: lastKnownOrientation,
+              historicalPhotoRotation: false,
+              historicalPhotoFlipped: historicalPhotoFlipped,
+              historicalPhotoSize: historicalPhotoImageSize,
+              historicalPhotoScale:
+                  historicalPhotoController.value.getMaxScaleOnAxis()));
 
       // suggestion: use in gap with async action
       if (!mounted) return;
@@ -99,7 +100,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
   // Center the historicalPhoto to the center of the screen
   void movehistoricalPhotoToCenter() {
-
     // get historicalPhoto's context
     final context = historicalPhotoKey.currentContext!;
 
@@ -148,10 +148,11 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     //"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Grundsteinlegung_MiQua-7004_%28cropped%29.jpg/690px-Grundsteinlegung_MiQua-7004_%28cropped%29.jpg",
     //                          "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Katarina_Taikon_1953.jpg/596px-Katarina_Taikon_1953.jpg",
 
-    if (kIsWeb==false && File(filename).existsSync()) {
+    if (kIsWeb == false && File(filename).existsSync()) {
       image = Image.file(
         File(filename),
-        color: Color.fromRGBO(255, 255, 255, historicalPhotoTransparency*transparencyOnOff),
+        color: Color.fromRGBO(
+            255, 255, 255, historicalPhotoTransparency * transparencyOnOff),
         colorBlendMode: BlendMode.modulate,
         height: 8000,
         width: 8000,
@@ -159,7 +160,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     } else {
       image = Image.network(
         filename,
-        color: Color.fromRGBO(255, 255, 255, historicalPhotoTransparency*transparencyOnOff),
+        color: Color.fromRGBO(
+            255, 255, 255, historicalPhotoTransparency * transparencyOnOff),
         colorBlendMode: BlendMode.modulate,
         height: 8000,
         width: 8000,
@@ -171,7 +173,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   }
 
   void updateImageInfo(info) {
-    historicalPhotoImageSize = Size(info.width.toDouble(), info.height.toDouble());
+    historicalPhotoImageSize =
+        Size(info.width.toDouble(), info.height.toDouble());
     double aspectratio = info.width / info.height;
     if (aspectratio > 1) {
       SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeRight]);
@@ -228,16 +231,16 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     SystemChrome.setPreferredOrientations([
       //  DeviceOrientation.landscapeRight,
       //  DeviceOrientation.landscapeLeft,
-        DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitUp,
       //  DeviceOrientation.portraitDown,
-      ]);
+    ]);
 
     super.dispose();
   }
 
   void toggleTransparency() {
     setState(() {
-       transparencyOnOff = transparencyOnOff == 1 ? 0 : 1;
+      transparencyOnOff = transparencyOnOff == 1 ? 0 : 1;
     });
   }
 
@@ -262,6 +265,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       }
     });
   }
+
   Widget buildCameraUi(BuildContext context) {
     return Stack(
         clipBehavior: Clip.none,
@@ -269,13 +273,13 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         children: <Widget>[
           Center(
 
-            // Red borders for debugging
+              // Red borders for debugging
               child: Container(
                   decoration: BoxDecoration(
                       border: Border.all(
 //                      color: Colors.pink[800]!,
-                        width: 1,
-                      )), //             <--- BoxDecoration here
+                    width: 1,
+                  )), //             <--- BoxDecoration here
 
                   // Camera preview window
                   child: FutureBuilder<void>(
@@ -288,22 +292,21 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                         return CameraPreview(cameraController);
                       } else {
                         // Otherwise, display a loading indicator.
-                        return const Center(
-                            child: CircularProgressIndicator());
+                        return const Center(child: CircularProgressIndicator());
                       }
                     },
                   ))),
 
           // Old image
           Center(
-            // Red borders for debugging
+              // Red borders for debugging
               child: Container(
                   key: historicalPhotoKey,
                   decoration: BoxDecoration(
                       border: Border.all(
 //                      color: Colors.red[800]!,
-                        width: 1,
-                      )), //             <--- BoxDecoration here
+                    width: 1,
+                  )), //             <--- BoxDecoration here
 
                   // Actual pinch-to-zoom image
                   child: InteractiveViewer(
@@ -336,15 +339,15 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                                       historicalPhotoFlipped == true
                                           ? math.pi
                                           : 0),
-                                  child: getImage(
-                                      widget.historicalPhotoUri))))))),
+                                  child:
+                                      getImage(widget.historicalPhotoUri))))))),
           // Take photo button
           Positioned.fill(
               child: Align(
-                  alignment: MediaQuery.of(context).orientation ==
-                      Orientation.portrait
-                      ? Alignment.bottomCenter
-                      : Alignment.centerRight,
+                  alignment:
+                      MediaQuery.of(context).orientation == Orientation.portrait
+                          ? Alignment.bottomCenter
+                          : Alignment.centerRight,
                   child: Container(
                       padding: const EdgeInsets.all(7),
                       decoration: ShapeDecoration(
@@ -401,8 +404,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     if (kIsWeb) {
       return buildCameraUi(context);
     } else {
-      return OrientationBuilder(builder: (context, orientation)
-      {
+      return OrientationBuilder(builder: (context, orientation) {
         onOrientationChange(context, orientation);
         return buildCameraUi(context);
       });
@@ -411,7 +413,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         //   appBar: AppBar(title: Text('Take a picture')),
         // Wait until the controller is initialized before displaying the
@@ -420,8 +421,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
         body: GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onTap: toggleTransparency ,
-        child: addOrientationBuilderIfNotWeb(context)));
-
+            onTap: toggleTransparency,
+            child: addOrientationBuilderIfNotWeb(context)));
   }
 }
