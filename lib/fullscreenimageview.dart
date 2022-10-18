@@ -13,13 +13,11 @@ class FullScreenImageView extends StatelessWidget {
   final String historicalPhotoUri;
 
   Image getImage(String filename) {
-    Image image;
     if (kIsWeb == false && File(filename).existsSync()) {
-      image = Image.file(File(filename));
+      return Image.file(File(filename));
     } else {
-      image = Image.network(filename);
+      return Image.network(filename);
     }
-    return image;
   }
 
   @override

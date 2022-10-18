@@ -158,9 +158,7 @@ class MapState extends State<Map> {
         ),
         children: [
           getMapTilelayer(),
-          MarkerLayer(
-            markers: markerList,
-          ),
+          MarkerLayer(markers: markerList)
         ]);
     return map;
   }

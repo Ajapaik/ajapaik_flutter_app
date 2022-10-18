@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'data/draft.json.dart';
 
@@ -25,17 +26,17 @@ class DraftStorage {
       list[i].
     }
     */
+    //Directory dir = FileSystem.currentDirectory();
     return false;
   }
 
   // for now, just keep list
   bool store(draft) {
     draftlist.add(draft);
-    /*
-    var f = File(draft) // TODO: generate name
-    // TOOD: check there's no duplicate for it..
-    isExisting
-    */
+    File f = File("draft"); // TODO: generate name
+    if (!f.existsSync()) {
+      f.writeAsStringSync(draft.toString());
+    }
     return true;
   }
 
@@ -57,6 +58,10 @@ class DraftStorage {
     var list = tempDir.list(name);
     Directory.delete()
      */
+    File f = File("draft"); // TODO: get generated name
+    if (f.existsSync()) {
+      f.deleteSync();
+    }
     return true;
   }
 

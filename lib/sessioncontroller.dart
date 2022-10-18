@@ -79,6 +79,15 @@ class SessionController extends GetxController {
     return server;
   }
 
+  // ..or whatever method it is currently using..
+  String getLoginOauthUri() {
+    if (server == ServerType.serverAjapaik) {
+      return "https://ajapaik.ee/accounts/";
+    }
+    // or throw "not yet implemented"
+    return "";
+  }
+
   String getLoginUri() {
     if (server == ServerType.serverAjapaik) {
       return "https://ajapaik.ee/api/v1/login/";
@@ -108,6 +117,23 @@ class SessionController extends GetxController {
     // or throw "not yet implemented"
     return "";
   }
+  String getFetchUserUri() {
+    if (server == ServerType.serverAjapaik) {
+      return "https://ajapaik.ee/api/v1/user/me";
+    }
+    // or throw "not yet implemented"
+    return "";
+  }
+
+  /* try to get rid of copy-pasted urls everywhere
+  String getProjectUri() {
+    if (server == ServerType.serverAjapaik) {
+      return "https://ajapaik.toolforge.org/api/projects.php";
+    }
+    // or throw "not yet implemented"
+    return "";
+  }
+  */
 
   // TODO: handle different types in caller too somehow
   // note: there is another doLogin() in DisplayLoginScreen,
@@ -157,7 +183,7 @@ class SessionController extends GetxController {
   // commons etc.
   Future<User> fetchUser() async {
     http.Client client = http.Client();
-    var serverUri = 'https://ajapaik.ee/api/v1/user/me';
+    String serverUri = getFetchUserUri();
 
     final response = await client.get(
         Uri.parse(serverUri),

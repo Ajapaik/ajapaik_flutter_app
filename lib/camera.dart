@@ -5,6 +5,7 @@ import 'dart:math' as math;
 import 'dart:ui' as ui;
 
 import 'package:camera/camera.dart';
+import 'package:get/get.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -47,8 +48,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   bool pinchToZoomBusy = false;
   late Size historicalPhotoImageSize;
 
-  // TODO: keep shared
-  DraftStorage draftStorage = DraftStorage();
+  final draftStorage = Get.put(DraftStorage());
 
   /* TAKE PHOTO */
   void onTakePicture() async {
@@ -222,7 +222,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   @override
   void dispose() {
     // Dispose of the controller when the widget is disposed.
-    print("Dispose");
     cameraController.dispose();
 
     SystemChrome.setPreferredOrientations([

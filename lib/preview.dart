@@ -48,14 +48,13 @@ class DisplayPictureScreen extends StatefulWidget {
 class DisplayPictureScreenState extends State<DisplayPictureScreen>
     with TickerProviderStateMixin {
   final locator = Get.put(AppLocator());
+  final draftStorage = Get.put(DraftStorage());
   GlobalKey cameraPhotoKey = GlobalKey();
   double oldCenterX = 0;
   double oldCenterY = 0;
 
   //final TransformationController _transformationController = TransformationController();
 
-  // TODO: keep shared
-  DraftStorage draftStorage = DraftStorage();
 
 /*
   @override

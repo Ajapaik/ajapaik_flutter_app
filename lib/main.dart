@@ -31,6 +31,7 @@ class MyAppState extends State<MyApp> {
   final locator = Get.put(AppLocator());
   final prefs = Get.put(Preferences());
 
+  // try to get rid of copy-pasted urls everywhere
   // TODO: first url would be different when using commons?
   // -> what is the default in future versions?
   var firstUrl="https://ajapaik.toolforge.org/api/ajapaiknearest.php?search=&limit=100&orderby=alpha&orderdirection=desc";

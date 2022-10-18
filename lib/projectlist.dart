@@ -18,6 +18,7 @@ class ProjectListPage extends StatefulWidget {
   ProjectListPageState createState() => ProjectListPageState();
 }
 
+// try to get rid of copy-pasted urls everywhere
 final String projectUri = 'https://ajapaik.toolforge.org/api/projects.php';
 
 class ProjectListPageState extends State<ProjectListPage> {

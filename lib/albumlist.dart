@@ -68,7 +68,6 @@ class AlbumListPageState extends State<AlbumListPage> {
           onSubmitted: (value) {
             setState(() {
               refreshAlbumData();
-              print("valmista");
             });
           },
           onChanged: onSearchTextChanged,

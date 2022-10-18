@@ -25,12 +25,12 @@ class DisplayLoginScreen extends StatelessWidget {
     // when user wants to upload to commons and/or social media
     // -> don't depend on external server
 
-    var nextParam =
-        "/accounts/launcher/?token=token&route=route&provider=" + provider;
-    var url = "https://ajapaik.ee/accounts/" +
-        provider +
-        "/login/?next=" +
-        Uri.encodeComponent(nextParam);
+    String nextParam = "/accounts/launcher/?token=token&route=route&provider=";
+    nextParam += provider;
+    String url = sessionController.getLoginOauthUri();
+    url += provider;
+    url += "/login/?next=";
+    url += Uri.encodeComponent(nextParam);
     _launchURL(Uri.parse(url));
 
     // should get user information now,
