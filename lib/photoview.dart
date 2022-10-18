@@ -311,7 +311,7 @@ class PhotoviewState extends State<Photoview> {
                             )));
               },
               child: Stack(children: [
-                Image.network(widget.historicalPhotoUri, fit: BoxFit.contain),
+                CachedNetworkImage(imageUrl:widget.historicalPhotoUri.toString(), fit: BoxFit.contain),
                 getRephotoNumberIconBottomLeft(widget.numberOfRephotos)
               ]))),
       Padding(

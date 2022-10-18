@@ -41,9 +41,10 @@ class DisplayUploadScreen extends StatelessWidget {
     fileNames.add(draft.historicalImagePath);
     fileNames.add(draft.imagePath);
 
+    // Saved on preview.dart:saveCroppedImage()
     String croppedFilename =
-    draft.imagePath.substring(0, draft.imagePath.lastIndexOf('.'));
-    croppedFilename += ".cropped.png";
+      draft.imagePath.substring(0, draft.imagePath.lastIndexOf('.'));
+    croppedFilename += ".cropped.jpg";
     if ( File(croppedFilename).existsSync() ) {
       fileNames.add(croppedFilename);
     }
