@@ -138,12 +138,8 @@ class PhotoviewState extends State<Photoview> {
     }
     locator.init();
 
-    // this same thing is first set, saved and then retrieved again?
-    // -> just remove storing since this is only place where it is retrieved
-    // .. right after resetting it..
     mapInfoVisibility = false;
-    //saveMapInfoVisibility();
-    //getMapInfoVisibility();
+
     /*
     map = Map(
         imageLatitude: imageLatitude,
@@ -166,6 +162,9 @@ class PhotoviewState extends State<Photoview> {
   void onSelectedImageMenu(result) async {
     //ImageMenu.menuShare
     if (result == 0) {
+      // disable sharing when using web-application?
+      // build time constant kIsWeb == true ?
+
       CrossplatformShare.shareFile(widget.historicalPhotoUri, widget.historicalName );
       // TODO: when share the photo is already known
       // -> look it up in the DOM or whatever without asking server for it again..
@@ -193,6 +192,8 @@ class PhotoviewState extends State<Photoview> {
                   onSelectedImageMenu(result);
                 },
                 itemBuilder: (context) => [
+                      // disable sharing when using web-application?
+                      // build time constant kIsWeb == true ?
                       PopupMenuItem(
                           value: 0, // ImageMenu.menuShare
                           child: ListTile(

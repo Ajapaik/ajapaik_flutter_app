@@ -144,8 +144,6 @@ class AlbumListPageState extends State<AlbumListPage> {
     //  -> try to work without connection
 
     sessionController.loadSession().then((_) => setState(() {
-          print("Updating login status to screen. Session " +
-              sessionController.getSessionId());
         }));
     refreshAlbumData();
     super.initState();

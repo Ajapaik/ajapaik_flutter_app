@@ -80,7 +80,10 @@ class RephotoCompareView extends StatelessWidget {
     if (feature.properties.hasDate()) {
       labels.add(feature.properties.date!);
     }
-    return Stack(children:[getImage(filename, context),
+
+    // so.. image can be local or from network?
+    Image image = getImage(filename, context);
+    return Stack(children:[image,
       Align(alignment: Alignment.bottomCenter,
           child:Text(labels.join(" "),
               style: TextStyle(fontSize: 16,height:7, color:Colors.white, decoration: TextDecoration.none, fontWeight: FontWeight.normal)))
@@ -101,16 +104,18 @@ class RephotoCompareView extends StatelessWidget {
       if (feature.properties.hasDate()) {
         labels.add(feature.properties.date!);
       }
-      var image = Stack(children: [
-      Image.network(feature.properties.thumbnail!,
-            fit: BoxFit.contain, height: 8000, width: 8000),
+
+      // only images from network in this case?
+      Image image = Image.network(feature.properties.thumbnail!,
+          fit: BoxFit.contain, height: 8000, width: 8000);
+      Stack imagestack = Stack(children: [
+      image,
       Align(alignment: Alignment.bottomCenter,
         child:Text(labels.join(" "),
             style: TextStyle(fontSize: 16,height:7, color:Colors.white, decoration: TextDecoration.none, fontWeight: FontWeight.normal)))
       ]);
-      items.add(image);
+      items.add(imagestack);
     }
-    print(MediaQuery.of(context).size.height);
     return CarouselSlider(
         items: items,
         options: CarouselOptions(

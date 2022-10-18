@@ -55,22 +55,4 @@ class Preferences {
   }
   */
 
-/* there is no point to this:
-  only place the stored value is retrieved is when initializing
-  right after resetting and saving it first
-  -> just remove it
-
-  bool mapInfoVisibility = false;
-  saveMapInfoVisibility() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('MapInfoVisibility', mapInfoVisibility);
-  }
-
-  void getMapInfoVisibility() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    mapInfoVisibility = prefs.getBool("MapInfoVisibility")!;
-    setState(() {});
-  }
-  */
-
 }
