@@ -35,11 +35,6 @@ class MyAppState extends State<MyApp> {
   final draftStorage = Get.put(DraftStorage());
   final imageStorage = Get.put(ImageStorage());
 
-  // try to get rid of copy-pasted urls everywhere
-  // TODO: first url would be different when using commons?
-  // -> what is the default in future versions?
-  var firstUrl="https://ajapaik.toolforge.org/api/ajapaiknearest.php?search=&limit=100&orderby=alpha&orderdirection=desc";
-
   @override
   void initState() {
     // TODO: should load localizations before starting to build the UI
@@ -116,7 +111,7 @@ class MyAppState extends State<MyApp> {
 
       title: appTitle,
       theme: ThemeData.dark(),
-      home: AlbumListPage.network(appTitle, firstUrl),
+      home: AlbumListPage(appTitle),
     );
     return gma;
   }

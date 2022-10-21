@@ -21,12 +21,12 @@ class AlbumListPage extends StatefulWidget {
   String pageTitle = "";
   String dataSourceUrl = "";
 
-  AlbumListPage({Key? key}) : super(key: key);
+  // constructor for when starting: only title is known
+  AlbumListPage(this.pageTitle, {Key? key})
+      : super(key: key);
 
-  // two ways this is called:
-  // - when navigating and getting some data from geojson
-  // - hard-coded when starting app
-  // -> url can change during runtime but we also need something to initialize this with..
+  // this is used when navigating and getting some data from geojson
+  // -> url can change during runtime
   AlbumListPage.network(this.pageTitle, this.dataSourceUrl, {Key? key})
       : super(key: key);
 
@@ -115,19 +115,17 @@ class AlbumListPageState extends State<AlbumListPage> {
     pullDownRefreshDone = true;
   }
 
+  void toggleSearchDialog() {
+    searchDialogVisible = searchDialogVisible ? false : true;
+  }
+
   void refreshAlbumData() async {
     String url = getUrlForNearest();
 
     // TODO: check if there are permissions to use network and/or session is active
 
     url = addLocationToUrl(url, locator.getLatLong());
-    //print("fetchAlbum location: $position.toString()");
-
     await (_albumData = fetchAlbum(url));
-  }
-
-  void toggleSearchDialog() {
-    searchDialogVisible = searchDialogVisible ? false : true;
   }
 
   String getUrlForNearest() {
@@ -139,7 +137,6 @@ class AlbumListPageState extends State<AlbumListPage> {
     else {
       url = widget.dataSourceUrl;
     }
-
 
     if (url.contains("?")) {
       url += "&orderby=" + orderBy + "&orderdirection=" + orderDirection;
