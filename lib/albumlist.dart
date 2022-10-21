@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:ajapaik_flutter_app/data/album.geojson.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:get/get.dart';
 import 'localization.dart';
 import 'sessioncontroller.dart';
-import 'package:get/get.dart';
 import 'localfileselect.dart';
 import 'login.dart';
 import 'photoview.dart';
@@ -116,7 +116,7 @@ class AlbumListPageState extends State<AlbumListPage> {
   }
 
   void refreshAlbumData() async {
-    String url = getDataSourceUrl();
+    String url = getUrlForNearest();
 
     // TODO: check if there are permissions to use network and/or session is active
 
@@ -130,8 +130,17 @@ class AlbumListPageState extends State<AlbumListPage> {
     searchDialogVisible = searchDialogVisible ? false : true;
   }
 
-  String getDataSourceUrl() {
-    String url = widget.dataSourceUrl;
+  String getUrlForNearest() {
+    String url;
+    if (widget.dataSourceUrl.isEmpty) {
+      url = sessionController.getDatasourceUri();
+      url += "/ajapaiknearest.php?search=&limit=100&orderby=alpha&orderdirection=desc";
+    }
+    else {
+      url = widget.dataSourceUrl;
+    }
+
+
     if (url.contains("?")) {
       url += "&orderby=" + orderBy + "&orderdirection=" + orderDirection;
     } else {

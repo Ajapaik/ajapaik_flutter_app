@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-//import 'package:share_plus/share_plus.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:ajapaik_flutter_app/localization.dart';
 import 'package:ajapaik_flutter_app/rephotocompareview.dart';
@@ -13,7 +12,6 @@ import 'package:ajapaik_flutter_app/upload.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:camera/camera.dart';
 import 'package:geolocator/geolocator.dart';
-//import 'package:path_provider/path_provider.dart'; // <- used by the temporary directory lookup which shouldn't be needed anyway
 import 'package:url_launcher/url_launcher.dart';
 import 'camera.dart';
 import 'data/draft.json.dart';
@@ -21,6 +19,7 @@ import 'data/album.geojson.dart';
 import 'services/crossplatformshare.dart';
 import 'map.dart';
 import 'fullscreenimageview.dart';
+import 'sessioncontroller.dart';
 import 'draftstorage.dart';
 import 'httpcontroller.dart';
 import 'preferences.dart';
@@ -64,15 +63,19 @@ class PhotoviewState extends State<Photoview> {
   double imageLatitude = 0; // image being viewed, not the one just taken?
   double imageLongitude = 0;
 
-  // another hard-coded domain-name to get reduce..
-  String dataSourceUrl = "https://ajapaik.toolforge.org/api/ajapaikimageinfo.php?id=";
-
   // TODO: keep shared
   DraftStorage draftStorage = DraftStorage();
 
   final locator = Get.put(AppLocator());
   final prefs = Get.put(Preferences());
+  final sessionController = Get.put(SessionController());
   //late Map map;
+
+  String getDatasource() {
+    String dataSourceUrl = sessionController.getDatasourceUri();
+    dataSourceUrl += "/ajapaikimageinfo.php?id=";
+    return dataSourceUrl;
+  }
 
   LatLng getImagePosition() {
     return LatLng(imageLatitude, imageLongitude);
@@ -287,8 +290,8 @@ class PhotoviewState extends State<Photoview> {
                 })));
   }
   onFetchAlbum() async {
-    var url = dataSourceUrl +
-            widget.historicalPhotoId.toString();
+    String url = getDatasource();
+    url += widget.historicalPhotoId.toString();
 
     url = addLocationToUrl(url, locator.getLatLong());
     //print("fetchAlbum location: $position.toString()");

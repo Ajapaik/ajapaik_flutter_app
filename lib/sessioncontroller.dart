@@ -98,6 +98,16 @@ class SessionController extends GetxController {
     // or throw "not yet implemented"
     return "";
   }
+  // data source for photos etc.
+  // nearest/imageinfo/projects
+  String getDatasourceUri() {
+    if (server == ServerType.serverAjapaik) {
+      return "https://ajapaik.toolforge.org/api";
+    }
+    // or throw "not yet implemented"
+    return "";
+  }
+
   String getFetchUserUri() {
     if (server == ServerType.serverAjapaik) {
       return "https://ajapaik.ee/api/v1/user/me";
@@ -105,16 +115,6 @@ class SessionController extends GetxController {
     // or throw "not yet implemented"
     return "";
   }
-
-  /* try to get rid of copy-pasted urls everywhere
-  String getProjectUri() {
-    if (server == ServerType.serverAjapaik) {
-      return "https://ajapaik.toolforge.org/api/projects.php";
-    }
-    // or throw "not yet implemented"
-    return "";
-  }
-  */
 
   // TODO: handle different types in caller too somehow
   // note: there is another doLogin() in DisplayLoginScreen,

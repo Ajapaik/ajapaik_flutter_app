@@ -18,11 +18,14 @@ class ProjectListPage extends StatefulWidget {
   ProjectListPageState createState() => ProjectListPageState();
 }
 
-// try to get rid of copy-pasted urls everywhere
-final String projectUri = 'https://ajapaik.toolforge.org/api/projects.php';
-
 class ProjectListPageState extends State<ProjectListPage> {
   final sessionController = Get.put(SessionController());
+
+  String getProjectUrl() {
+    String url = sessionController.getDatasourceUri();
+    url += "/projects.php";
+    return url;
+  }
 
   @override
   void initState() {
@@ -48,7 +51,7 @@ class ProjectListPageState extends State<ProjectListPage> {
 
 
       ),
-      body: const ProjectListBuilder(),
+      body: ProjectListBuilder(getProjectUrl()),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {
           (index);
@@ -76,12 +79,13 @@ class ProjectListPageState extends State<ProjectListPage> {
 }
 
 class ProjectListBuilder extends StatelessWidget {
-  const ProjectListBuilder({Key? key}) : super(key: key);
+  final String projectUrl;
+  const ProjectListBuilder(this.projectUrl, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Project>>(
-      future: fetchProjects(projectUri),
+      future: fetchProjects(projectUrl),
       builder: (context, snapshot) {
         if (snapshot.hasError) (snapshot.error);
 
