@@ -63,6 +63,8 @@ class PhotoviewState extends State<Photoview> {
   bool newMapInfoValue = true;
   double imageLatitude = 0; // image being viewed, not the one just taken?
   double imageLongitude = 0;
+
+  // another hard-coded domain-name to get reduce..
   String dataSourceUrl = "https://ajapaik.toolforge.org/api/ajapaikimageinfo.php?id=";
 
   // TODO: keep shared
