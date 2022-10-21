@@ -24,19 +24,19 @@ class ImageStorage {
   Image getImage(String filename) {
     if (kIsWeb == false && File(filename).existsSync()) {
       return Image.file(File(filename));
-    } else {
-      return Image.network(filename);
     }
+
+    return Image.network(filename);
   }
 
   Image getImageBoxed(String filename, {double scale = 1}) {
     if (File(filename).existsSync()) {
       return Image.file(File(filename),
           fit: BoxFit.contain, height: 8000 * scale, width: 8000);
-    } else {
-      return Image.network(filename,
-          fit: BoxFit.contain, height: 8000 * scale, width: 8000);
     }
+
+    return Image.network(filename,
+          fit: BoxFit.contain, height: 8000 * scale, width: 8000);
   }
 
 
