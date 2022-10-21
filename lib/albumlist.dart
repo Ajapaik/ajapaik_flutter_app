@@ -147,7 +147,11 @@ class AlbumListPageState extends State<AlbumListPage> {
     // TODO: check if there are no permissions or no network connection
     //  -> try to work without connection
 
-    sessionController.loadSession();
+    /*
+    sessionController.loadSession().then((_) => setState(() {
+        }));
+
+     */
     refreshAlbumData();
     super.initState();
   }

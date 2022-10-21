@@ -29,7 +29,10 @@ class ProjectListPageState extends State<ProjectListPage> {
     // TODO: if there are no network permissions or no connectivity for another reason
     // -> working without connection
 
-    sessionController.loadSession();
+    /*
+    sessionController.loadSession().then((_) => setState(() {
+        }));
+        */
     // TODO: implement initState
     super.initState();
   }
