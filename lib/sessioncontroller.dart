@@ -15,7 +15,8 @@ class SessionController extends GetxController {
   User currentUser = User();
 
   // TODO: we need to determine somehow where user wants to login & upload..
-  ServerType server = ServerType.serverNone;
+  // default to a sensible value so data can be used without login (anonymously)
+  ServerType server = ServerType.serverAjapaik;
 
   Future<void> storeSession(String session) async {
     currentSessionId = session;
