@@ -48,7 +48,7 @@ class SessionController extends GetxController {
   // so apparently flutter does not understand oauth properly
   // without some extra steps in between?
   // -> recheck this logic
-  Future<String> loadSessionKey() async {
+  Future<void> loadSessionKey() async {
     FlutterSecureStorage storage = const FlutterSecureStorage();
     String? s = await storage.read(key: 'session');
     if (s != null) {
@@ -64,7 +64,6 @@ class SessionController extends GetxController {
     } else if (isExpired() == false) {
       await logout();
     }
-    return currentSessionId;
   }
 
   Future<void> logout() async {
