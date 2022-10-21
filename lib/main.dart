@@ -10,6 +10,8 @@ import 'package:get/get.dart';
 import 'sessioncontroller.dart';
 import 'localization.dart';
 import 'preferences.dart';
+import 'draftstorage.dart';
+import 'imagestorage.dart';
 
 void main()  {
   runApp(MyApp());
@@ -30,6 +32,8 @@ class MyAppState extends State<MyApp> {
   final sessionController = Get.put(SessionController());
   final locator = Get.put(AppLocator());
   final prefs = Get.put(Preferences());
+  final draftStorage = Get.put(DraftStorage());
+  final imageStorage = Get.put(ImageStorage());
 
   // try to get rid of copy-pasted urls everywhere
   // TODO: first url would be different when using commons?
