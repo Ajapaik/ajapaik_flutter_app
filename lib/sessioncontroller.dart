@@ -36,12 +36,14 @@ class SessionController extends GetxController {
     return false;
   }
 
+  // so all this does is load user name?
+  // why?
   Future<String> loadSession() async {
     FlutterSecureStorage storage = const FlutterSecureStorage();
     String? s = await storage.read(key: 'session');
     if (s != null) {
       currentSessionId = s;
-      var user=await fetchUser();
+      var user = await fetchUser();
       print("LoadSession");
       print(user.name);
       if (user.isAnon()) {

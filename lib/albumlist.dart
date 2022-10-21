@@ -23,6 +23,10 @@ class AlbumListPage extends StatefulWidget {
 
   AlbumListPage({Key? key}) : super(key: key);
 
+  // two ways this is called:
+  // - when navigating and getting some data from geojson
+  // - hard-coded when starting app
+  // -> url can change during runtime but we also need something to initialize this with..
   AlbumListPage.network(this.pageTitle, this.dataSourceUrl, {Key? key})
       : super(key: key);
 
@@ -143,8 +147,7 @@ class AlbumListPageState extends State<AlbumListPage> {
     // TODO: check if there are no permissions or no network connection
     //  -> try to work without connection
 
-    sessionController.loadSession().then((_) => setState(() {
-        }));
+    sessionController.loadSession();
     refreshAlbumData();
     super.initState();
   }
