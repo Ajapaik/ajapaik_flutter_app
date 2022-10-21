@@ -10,6 +10,7 @@ import 'package:gallery_saver/gallery_saver.dart';
 import 'package:get/get.dart';
 import 'data/draft.json.dart';
 import 'draftstorage.dart';
+import 'imagestorage.dart';
 import 'package:image/image.dart' as img;
 
 // A widget that displays the picture taken by the user.
@@ -49,6 +50,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
     with TickerProviderStateMixin {
   final locator = Get.put(AppLocator());
   final draftStorage = Get.put(DraftStorage());
+  final imageStorage = Get.put(ImageStorage());
   GlobalKey cameraPhotoKey = GlobalKey();
   double oldCenterX = 0;
   double oldCenterY = 0;
@@ -130,13 +132,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
   }
 
   Image getImage(String filename, BuildContext context, {double scale = 1}) {
-    if (File(filename).existsSync()) {
-      return Image.file(File(widget.historicalImagePath),
-          fit: BoxFit.contain, height: 8000 * scale, width: 8000);
-    } else {
-      return Image.network(filename,
-          fit: BoxFit.contain, height: 8000 * scale, width: 8000);
-    }
+    return imageStorage.getImageBoxed(filename, scale: scale);
   }
 
   bool needsHeightScaling(cameraImageWidth, cameraImageHeight) {
@@ -240,7 +236,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
                 transform: Matrix4.rotationY(
                     widget.historicalPhotoFlipped == true ? math.pi : 0),
                 child:
-                    getImage(widget.historicalImagePath.toString(), context))),
+                    getImage(widget.historicalImagePath, context))),
         Expanded(
             child: AspectRatio(
                 aspectRatio: 1,
@@ -264,7 +260,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
                 transform: Matrix4.rotationY(
                     widget.historicalPhotoFlipped == true ? math.pi : 0),
                 child:
-                    getImage(widget.historicalImagePath.toString(), context))),
+                    getImage(widget.historicalImagePath, context))),
         Expanded(
             child: AspectRatio(
                 aspectRatio: 1,

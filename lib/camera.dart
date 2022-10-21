@@ -12,6 +12,7 @@ import 'package:flutter/services.dart';
 
 import 'package:ajapaik_flutter_app/preview.dart';
 import 'draftstorage.dart';
+import 'imagestorage.dart';
 
 class TakePictureScreen extends StatefulWidget {
   final CameraDescription camera;
@@ -49,6 +50,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   late Size historicalPhotoImageSize;
 
   final draftStorage = Get.put(DraftStorage());
+  final imageStorage = Get.put(ImageStorage());
 
   /* TAKE PHOTO */
   void onTakePicture() async {
@@ -61,6 +63,9 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       // Attempt to take a picture and get the file `image`
       // where it was saved.
       final image = await cameraController.takePicture();
+
+      // keep track of current photo
+      //imageStorage.putCurrent(image);
 
       final context = historicalPhotoKey.currentContext!;
       // If the picture was taken, display it on a new screen.
@@ -358,6 +363,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                                     child: getImage(
                                         widget.historicalPhotoUri))))))),
             // Take photo button
+            // TODO: should show as "greyed out" or similar when it isn't possible
+            // (no permissions or no camera on device)
             Positioned.fill(
                 child: Align(
                     alignment: MediaQuery.of(context).orientation ==

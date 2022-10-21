@@ -35,7 +35,7 @@ class DraftStorage {
     draftlist.add(draft);
     File f = File("draft"); // TODO: generate name
     if (!f.existsSync()) {
-      f.writeAsStringSync(draft.toString());
+      f.writeAsStringSync(draft.toString()); // should probably use tojson here
     }
     return true;
   }

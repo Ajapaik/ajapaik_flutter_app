@@ -254,9 +254,11 @@ class PhotoviewState extends State<Photoview> {
 
       if (distance >= 1000) {
         double calcDistance = distance / 1000;
-        distanceToImage = calcDistance.toStringAsFixed(2) + ' Km';
+        distanceToImage = calcDistance.toStringAsFixed(2);
+        distanceToImage += ' Km';
       } else {
-        distanceToImage = distance.toStringAsFixed(2) + ' M';
+        distanceToImage = distance.toStringAsFixed(2);
+        distanceToImage += ' M';
       }
     }
 

@@ -1,30 +1,24 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'localization.dart';
+import 'imagestorage.dart';
 
 class FullScreenImageView extends StatelessWidget {
-  const FullScreenImageView({
+  final imageStorage = Get.put(ImageStorage());
+
+  FullScreenImageView({
     Key? key,
     required this.historicalPhotoUri,
   }) : super(key: key);
 
   final String historicalPhotoUri;
 
-  Image getImage(String filename) {
-    if (kIsWeb == false && File(filename).existsSync()) {
-      return Image.file(File(filename));
-    } else {
-      return Image.network(filename);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     Expanded e = Expanded(
                     child: InteractiveViewer(
-                        child: getImage(historicalPhotoUri)));
+                        child: imageStorage.getImage(historicalPhotoUri)));
 
     Scaffold s = Scaffold(
         appBar: AppBar(

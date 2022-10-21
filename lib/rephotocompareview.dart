@@ -2,10 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'data/album.geojson.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'imagestorage.dart';
 
 class RephotoCompareView extends StatelessWidget {
+  final imageStorage = Get.put(ImageStorage());
   late List<Album> album;
   String historicalImageUrl = "";
 
@@ -61,15 +64,6 @@ class RephotoCompareView extends StatelessWidget {
     ]);
   }
 
-  Image getImage(String filename, BuildContext context, {double scale = 1}) {
-    if (File(filename).existsSync()) {
-      return Image.file(File(filename),
-          fit: BoxFit.contain, height: 8000 * scale, width: 8000);
-    } else {
-      return Image.network(filename,
-          fit: BoxFit.contain, height: 8000 * scale, width: 8000);
-    }
-  }
   Widget getImageWithText(String filename, BuildContext context) {
     var feature = album.first.features[0];
     List<String> labels = [];
@@ -82,7 +76,7 @@ class RephotoCompareView extends StatelessWidget {
     }
 
     // so.. image can be local or from network?
-    Image image = getImage(filename, context);
+    Image image = imageStorage.getImageBoxed(filename, scale: 1);
     return Stack(children:[image,
       Align(alignment: Alignment.bottomCenter,
           child:Text(labels.join(" "),
