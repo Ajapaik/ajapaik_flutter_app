@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:share_plus/share_plus.dart';
+//import 'package:share_plus/share_plus.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:ajapaik_flutter_app/localization.dart';
 import 'package:ajapaik_flutter_app/rephotocompareview.dart';
@@ -13,7 +13,7 @@ import 'package:ajapaik_flutter_app/upload.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:camera/camera.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:path_provider/path_provider.dart'; // <- used by the temporary directory lookup which shouldn't be needed anyway
+//import 'package:path_provider/path_provider.dart'; // <- used by the temporary directory lookup which shouldn't be needed anyway
 import 'package:url_launcher/url_launcher.dart';
 import 'camera.dart';
 import 'data/draft.json.dart';
