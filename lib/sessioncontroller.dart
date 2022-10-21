@@ -18,12 +18,6 @@ class SessionController extends GetxController {
   // default to a sensible value so data can be used without login (anonymously)
   ServerType server = ServerType.serverAjapaik;
 
-  Future<void> storeSession(String session) async {
-    currentSessionId = session;
-    FlutterSecureStorage storage = const FlutterSecureStorage();
-    await storage.write(key: 'session', value: session);
-  }
-
   String getSessionId() {
     return currentSessionId;
   }
@@ -37,9 +31,44 @@ class SessionController extends GetxController {
     return false;
   }
 
-  Future<void> logout() async {
+  // if oauth key was stored -> destroy it
+  Future<void> clearSessionKey() async {
     FlutterSecureStorage storage = const FlutterSecureStorage();
     await storage.delete(key: 'session');
+  }
+
+  // oauth key needs to be stored for flutter?
+  // -> check this
+  Future<void> storeSessionKey(String session) async {
+    currentSessionId = session;
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+    await storage.write(key: 'session', value: session);
+  }
+
+  // so apparently flutter does not understand oauth properly
+  // without some extra steps in between?
+  // -> recheck this logic
+  Future<String> loadSessionKey() async {
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+    String? s = await storage.read(key: 'session');
+    if (s != null) {
+      currentSessionId = s;
+
+      var user = await fetchUser();
+      if (user.isAnon()) {
+        clearSessionKey(); // anon should not have bogus key, right? -> destroy
+        //storeSessionKey("");
+      }
+
+      currentUser = user;
+    } else if (isExpired() == false) {
+      await logout();
+    }
+    return currentSessionId;
+  }
+
+  Future<void> logout() async {
+    clearSessionKey();
     currentSessionId = "";
     currentUser.resetUser();
   }
@@ -146,7 +175,7 @@ class SessionController extends GetxController {
     if (response.statusCode == 200) {
       (response.body.toString());
       Map<String, dynamic> json = jsonDecode(response.body);
-      await storeSession(json["session"]);
+      await storeSessionKey(json["session"]);
 
       var user = await fetchUser();
       if (user.isValid() == true) {
