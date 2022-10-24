@@ -14,6 +14,10 @@ GeoJSON album Example
 App dependecies
 * [Platform dependency matrix](https://github.com/Ajapaik/ajapaik_flutter_app/wiki/Platform-dependency-matrix)
 
+Oauth-login
+* [ajapaik-mwapi](https://github.com/Ajapaik/ajapaik-mwapi)
+
+
 Program structure
 ![Program structure](https://upload.wikimedia.org/wikipedia/commons/e/e6/Ajapaik_flutter_app_structure_2022-07-24.svg)
 * [source code of the diagram](https://github.com/Ajapaik/ajapaik_flutter_app/wiki/Ajapaik-flutter-app-diagram)
