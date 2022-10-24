@@ -10,10 +10,14 @@ import 'uploadcontroller.dart';
 import 'package:http/http.dart' as http;
 import 'data/draft.json.dart';
 import 'login.dart';
+import 'draftstorage.dart';
+import 'imagestorage.dart';
 
 class DisplayUploadScreen extends StatelessWidget {
   final sessionController = Get.put(SessionController());
   final uploadController = Get.put(UploadController());
+  final draftStorage = Get.put(DraftStorage());
+  final imageStorage = Get.put(ImageStorage());
   final Draft draft;
 
   DisplayUploadScreen({Key? key, required this.draft}) : super(key: key);
@@ -37,12 +41,12 @@ class DisplayUploadScreen extends StatelessWidget {
 
   shareFile(BuildContext) {
     List<String> fileNames=[];
-    String text=draft.historicalImageDescription;
-    fileNames.add(draft.historicalImagePath);
-    fileNames.add(draft.imagePath);
+    String text=draft.historicalImageDescription!;
+    fileNames.add(draft.historicalImagePath!);
+    fileNames.add(draft.imagePath!);
 
     String croppedFilename =
-    draft.imagePath.substring(0, draft.imagePath.lastIndexOf('.'));
+    draft.imagePath!.substring(0, draft.imagePath!.lastIndexOf('.'));
     croppedFilename += ".cropped.png";
     if ( File(croppedFilename).existsSync() ) {
       fileNames.add(croppedFilename);
@@ -185,7 +189,7 @@ class DisplayUploadScreen extends StatelessWidget {
     buttons.add(sibGallery);
 
 
-    if (draft.historicalImagePath.contains("ajapaik.ee")) {
+    if (draft.historicalImagePath!.contains("ajapaik.ee")) {
       SignInButtonBuilder sibAjapaik = SignInButtonBuilder(
         text: 'Ajapaik',
         fontSize: 25,

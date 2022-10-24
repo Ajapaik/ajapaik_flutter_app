@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:convert';
 import 'data/draft.json.dart';
 
 // this might be useful but since app is using newer path_provider this can't be used
@@ -27,15 +28,29 @@ class DraftStorage {
     }
     */
     //Directory dir = FileSystem.currentDirectory();
+    String filename = "draft"; // TODO: generate name, get path
+    File f = File(filename);
+    if (f.existsSync()) {
+      String jsonString = f.readAsBytesSync().toString();
+      Map<String, dynamic> jsonMap = jsonDecode(jsonString);
+      Draft d = Draft.fromJson(jsonMap);
+    }
+
     return false;
   }
 
   // for now, just keep list
   bool store(draft) {
     draftlist.add(draft);
-    File f = File("draft"); // TODO: generate name
+    //String jsonString = json.encode();
+
+    String filename = "draft"; // TODO: generate name, get path
+    draft.filename = filename;
+    File f = File(filename);
     if (!f.existsSync()) {
-      f.writeAsStringSync(draft.toString()); // should probably use tojson here
+      Map<String, dynamic> jsonMap = draft.toJson();
+      String jsonString = jsonEncode(jsonMap);
+      f.writeAsStringSync(jsonString);
     }
     return true;
   }
@@ -53,12 +68,11 @@ class DraftStorage {
 
   // remove from tracking
   bool remove(draft) {
-    /* TODO: delete draft from local storage after uploading
-    var tempDir = Directory.systemTemp;
-    var list = tempDir.list(name);
-    Directory.delete()
-     */
-    File f = File("draft"); // TODO: get generated name
+    if (draft.filename.isEmpty) {
+      // never stored
+      return true;
+    }
+    File f = File(draft.filename);
     if (f.existsSync()) {
       f.deleteSync();
     }

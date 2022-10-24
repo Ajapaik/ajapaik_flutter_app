@@ -16,6 +16,8 @@ class ImageStorage {
 
   // when picture is taken, keep track of what and where it is
   //XFile currentImage?;
+  // for now, use just name
+  String? currentImageName;
 
   ImageStorage() {
 
@@ -57,5 +59,13 @@ class ImageStorage {
     currentImage = image;
   }
   */
+
+  // temporarily use just filename instead of image itself
+  void setCurrentImageName(String imageFilename) {
+    currentImageName = imageFilename;
+  }
+  String? getCurrentImageName() {
+    return currentImageName;
+  }
 
 }

@@ -17,11 +17,11 @@ class UploadController  {
     var request = http.MultipartRequest("POST", postUri);
     request.headers['Cookie'] = 'sessionid=' + sessionid;
     //    request.headers['Content-Type']="application/json; charset=UTF-8";
-    request.fields['id'] = draft.historicalImageId; // Historical photo id in Ajapaik or Finna_url
+    request.fields['id'] = draft.historicalImageId!; // Historical photo id in Ajapaik or Finna_url
     request.fields['latitude'] = draft.latitude.toString(); // optional
     request.fields['longitude'] = draft.longitude.toString(); // optional
     //    request.fields['accuracy'] = 'blah'; //optional
-    request.fields['date'] = draft.timestamp.toIso8601String(); // use standard format whenever possible
+    request.fields['date'] = draft.timestamp!.toIso8601String(); // use standard format whenever possible
     request.fields['scale'] = draft.scale.toString();
     request.fields['yaw'] = '0'; // device_yaw
     request.fields['pitch'] = '0'; // device_pitch
@@ -47,8 +47,8 @@ class UploadController  {
 
      */
     // TODO: does filename include path or just the name?
-    File f = File(draft.imagePath);
-    request.fields['filename'] = draft.imagePath;
+    File f = File(draft.imagePath!);
+    request.fields['filename'] = draft.imagePath!;
     request.fields['filesize'] = f.length().toString();
 
     //comment, see also text
@@ -92,7 +92,7 @@ class UploadController  {
       throw UnimplementedError('server request not yet implemented');
     }
     var multipart = http.MultipartFile.fromPath(
-        'original', File(draft.imagePath).path);
+        'original', File(draft.imagePath!).path);
     request.files.add(multipart);
     return request;
   }
