@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 import 'data/draft.json.dart';
+import 'package:path_provider/path_provider.dart';
 
 // this might be useful but since app is using newer path_provider this can't be used
 //
@@ -19,7 +20,7 @@ class DraftStorage {
   }
 
   // TODO: load un-uploaded on start (if any)
-  bool load() {
+  Future<bool> load() async {
     /*
     var tempDir = Directory.systemTemp;
     var list = tempDir.list();
@@ -27,8 +28,11 @@ class DraftStorage {
       list[i].
     }
     */
+    final Directory tempPath = await getTemporaryDirectory();
+
     //Directory dir = FileSystem.currentDirectory();
-    String filename = "draft"; // TODO: generate name, get path
+    String filename = tempPath.path;
+    filename += "draft"; // TODO: generate name, get path
     File f = File(filename);
     if (f.existsSync()) {
       String jsonString = f.readAsBytesSync().toString();
@@ -40,11 +44,12 @@ class DraftStorage {
   }
 
   // for now, just keep list
-  bool store(draft) {
+  Future<bool> store(draft) async {
     draftlist.add(draft);
-    //String jsonString = json.encode();
 
-    String filename = "draft"; // TODO: generate name, get path
+    final Directory tempPath = await getTemporaryDirectory();
+    String filename = tempPath.path;
+    filename += "draft"; // TODO: generate name, get path
     draft.filename = filename;
     File f = File(filename);
     if (!f.existsSync()) {
