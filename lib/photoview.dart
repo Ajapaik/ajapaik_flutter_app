@@ -63,12 +63,10 @@ class PhotoviewState extends State<Photoview> {
   double imageLatitude = 0; // image being viewed, not the one just taken?
   double imageLongitude = 0;
 
-  // TODO: keep shared
-  DraftStorage draftStorage = DraftStorage();
-
   final locator = Get.put(AppLocator());
   final prefs = Get.put(Preferences());
   final sessionController = Get.put(SessionController());
+  final draftStorage = Get.put(DraftStorage());
   //late Map map;
 
   String getDatasource() {
@@ -114,9 +112,11 @@ class PhotoviewState extends State<Photoview> {
                     historicalPhotoUri: widget.historicalPhotoUri,
                     historicalPhotoDescription:  generateDescription()
                   )));
+
       // TODO: if user has no network connectivity or is in standalone mode
       // -> just keep draft and let user upload later
-      //draftStorage.
+
+      // this is expected to return from DisplayPictureScreenState::onTakePhotoButton() ?
       if (rephoto.runtimeType == Draft) {
         Navigator.push(
             context,

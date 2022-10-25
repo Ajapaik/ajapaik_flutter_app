@@ -116,6 +116,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
     if (!mounted) return;
 
     // Close preview and cameraview by going two steps back
+    // So this returns to PhotoviewState::takeRephoto() ?
     Navigator.pop(context);
     Navigator.pop(context, draft);
   }
