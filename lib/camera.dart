@@ -68,22 +68,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       // keep track of current photo
       imageStorage.putCurrent(image);
 
-      Draft draft = Draft(
-          image.path,
-          widget.historicalPhotoDescription,
-          widget.historicalPhotoUri,
-          widget.historicalPhotoId,
-          historicalPhotoFlipped,
-          false, // rotation
-          // orientation?
-          DateTime.now(),
-          historicalPhotoController.value.getMaxScaleOnAxis(),
-          0, // position added later
-          0, // position added later
-          -1, // accuracy of position
-          false // is new picture flipped?
-      );
       // keep for later if we can't upload right away
+      Draft draft = makeDraft(image.path);
       draftStorage.store(draft);
 
       final context = historicalPhotoKey.currentContext!;
@@ -117,6 +103,25 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       // If an error occurs, log the error to the console.
       (e);
     }
+  }
+
+  Draft makeDraft(String imagepath) {
+    Draft draft = Draft(
+        imagepath,
+        widget.historicalPhotoDescription,
+        widget.historicalPhotoUri,
+        widget.historicalPhotoId,
+        historicalPhotoFlipped,
+        false, // rotation
+        // orientation?
+        DateTime.now(),
+        historicalPhotoController.value.getMaxScaleOnAxis(),
+        0, // position added later
+        0, // position added later
+        -1, // accuracy of position
+        false // is new picture flipped?
+    );
+    return draft;
   }
 
   // Center the historicalPhoto to the center of the screen
