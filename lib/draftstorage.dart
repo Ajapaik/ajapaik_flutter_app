@@ -39,12 +39,13 @@ class DraftStorage {
 
     //Directory dir = FileSystem.currentDirectory();
     String filename = tempPath.path;
-    filename += "draft"; // TODO: generate name, get path
+    filename += "/draft.json"; // TODO: generate name, get path
     File f = File(filename);
     if (f.existsSync()) {
-      String jsonString = f.readAsBytesSync().toString();
+      String jsonString = f.readAsStringSync().toString();
       Map<String, dynamic> jsonMap = jsonDecode(jsonString);
       Draft d = Draft.fromJson(jsonMap);
+      draftlist.add(d);
     }
 
     return false;
@@ -60,7 +61,7 @@ class DraftStorage {
 
     final Directory tempPath = await getTemporaryDirectory();
     String filename = tempPath.path;
-    filename += "draft"; // TODO: generate name, get path
+    filename += "/draft.json"; // TODO: generate name, get path
     draft.filename = filename;
     File f = File(filename);
     if (!f.existsSync()) {
