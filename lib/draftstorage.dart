@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
+
 import 'data/draft.json.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -21,6 +23,11 @@ class DraftStorage {
 
   // TODO: load un-uploaded on start (if any)
   Future<bool> load() async {
+    if (kIsWeb == true) {
+      // no support in the web-version for paths: just ignored
+      return true;
+    }
+
     /*
     var tempDir = Directory.systemTemp;
     var list = tempDir.list();
@@ -46,6 +53,10 @@ class DraftStorage {
   // for now, just keep list
   Future<bool> store(draft) async {
     draftlist.add(draft);
+    if (kIsWeb == true) {
+      // no support in the web-version for paths: just ignored
+      return true;
+    }
 
     final Directory tempPath = await getTemporaryDirectory();
     String filename = tempPath.path;
