@@ -54,19 +54,19 @@ class Draft {
         'isUploaded': isUploaded
       };
 
+  // note that format may potentially be different if application is upgraded between saving and loading
   Draft.fromJson(Map<String, dynamic> json) {
-       id = (json['id'] != null) ? json['id'] : "";
+       id = json['id'];
        imagePath = json['imagePath'];
        historicalImageDescription = json['historicalImageDescription'];
        historicalImagePath = json['historicalImagePath'];
        historicalImageId = json['historicalImageId'];
        historicalPhotoFlipped = json['historicalPhotoFlipped'];
-       timestamp = json['timestamp'];
-       scale = double.parse(json['scale']);
-       latitude = double.parse(json['latitude']);
-       longitude = double.parse(json['longitude']);
-       accuracy = double.parse(json['accuracy']);
+       timestamp = DateTime.parse(json['timestamp']);
+       scale = json['scale'];
+       latitude = json['latitude'];
+       longitude = json['longitude'];
+       accuracy = json['accuracy'];
        rephotoIsFlipped = json['rephotoIsFlipped'];
   }
-
 }

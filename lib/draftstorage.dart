@@ -84,16 +84,22 @@ class DraftStorage {
   */
 
   // remove from tracking
-  bool remove(draft) {
+  void remove(draft) {
+    draftlist.remove(draft);
+    if (kIsWeb == true) {
+      // no support in the web-version for paths: just ignored
+      return;
+    }
+
     if (draft.filename.isEmpty) {
       // never stored
-      return true;
+      return;
     }
     File f = File(draft.filename);
     if (f.existsSync()) {
       f.deleteSync();
     }
-    return true;
+    return;
   }
 
 }
