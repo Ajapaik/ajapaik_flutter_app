@@ -3,6 +3,8 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart'; // constants like kIsWeb
 import 'package:flutter/material.dart'; // for Image
+import 'package:cross_file/cross_file.dart'; // XFile needs some wrapper
+
 //import 'package:image/image.dart' as img;
 
 // reduce repeating same things
@@ -15,7 +17,7 @@ class ImageStorage {
   //List<Image> images;
 
   // when picture is taken, keep track of what and where it is
-  //XFile currentImage?;
+  XFile? currentImage;
   // for now, use just name
   String? currentImageName;
 
@@ -50,22 +52,12 @@ class ImageStorage {
   }
   */
 
-  /*
-  void getCurrent(image) {
+  XFile? getCurrent() {
     return currentImage;
   }
 
   void putCurrent(image) {
     currentImage = image;
-  }
-  */
-
-  // temporarily use just filename instead of image itself
-  void setCurrentImageName(String imageFilename) {
-    currentImageName = imageFilename;
-  }
-  String? getCurrentImageName() {
-    return currentImageName;
   }
 
 }

@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:ajapaik_flutter_app/preview.dart';
+import 'data/draft.json.dart';
 import 'draftstorage.dart';
 import 'imagestorage.dart';
 
@@ -65,14 +66,28 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       final image = await cameraController.takePicture();
 
       // keep track of current photo
-      //imageStorage.putCurrent(image);
+      imageStorage.putCurrent(image);
+
+      Draft draft = Draft(
+          image.path,
+          widget.historicalPhotoDescription,
+          widget.historicalPhotoUri,
+          widget.historicalPhotoId,
+          historicalPhotoFlipped,
+          false, // rotation
+          // orientation?
+          DateTime.now(),
+          historicalPhotoController.value.getMaxScaleOnAxis(),
+          0, // position added later
+          0, // position added later
+          -1, // accuracy of position
+          false // is new picture flipped?
+      );
+      // keep for later if we can't upload right away
+      draftStorage.store(draft);
 
       final context = historicalPhotoKey.currentContext!;
-      // If the picture was taken, display it on a new screen.
-/*      (historicalPhotoController.value.getMaxScaleOnAxis());
-      (historicalPhotoImageSize);
-      (MediaQuery.of(context).size);
-*/
+
       // TODO: following uses historicalPhotoImageSize
       // but it isn't updated here (updateImageInfo() isn't called before)
       // -> either set it to something or don't use
@@ -82,7 +97,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         builder: (context) => DisplayPictureScreen(
           // Pass the automatically generated path to
           // the DisplayPictureScreen widget.
-            imagePath: image.path.toString(),
+            imagePath: image.path,
             historicalImageDescription: widget.historicalPhotoDescription,
             historicalImagePath: widget.historicalPhotoUri,
             historicalImageId: widget.historicalPhotoId,
@@ -91,7 +106,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             historicalPhotoFlipped: historicalPhotoFlipped,
             historicalPhotoSize: historicalPhotoImageSize,
             historicalPhotoScale:
-            historicalPhotoController.value.getMaxScaleOnAxis()));
+            historicalPhotoController.value.getMaxScaleOnAxis()
+        ));
 
       // suggestion: use in gap with async action
       if (!mounted) return;
@@ -111,8 +127,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     // Get size of the image layer. Positioning is correct only for fullscreen images
     final double w = MediaQuery.of(context).size.width;
     final double h = MediaQuery.of(context).size.height;
-
-    (w.toString() + " " + h.toString());
 
     // Calculate correct X,Y position in the screen
     // https://medium.com/flutter-community/advanced-flutter-matrix4-and-perspective-transformations-a79404a0d828

@@ -88,29 +88,29 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
             ]));
   }
 
+  // this is on pressing to actually save the taken photo:
+  // (confirmation after preview).
+  // actual photo must be already taken in TakePictureScreenState::onTakePicture().
+  //
+  // all of the information must be passed from Camera to here already so..
   void onTakePhotoButton() async {
-    await GallerySaver.saveImage(widget.imagePath);
+    //final image = imageStorage.getCurrent();
 
-    DateTime now = DateTime.now();
+    await GallerySaver.saveImage(widget.imagePath);
 
     // location may be disallowed but save photo still
     await locator.updatePosition();
     LatLng pos = locator.getLatLong();
 
-    Draft draft = Draft(
-        widget.imagePath,
-        widget.historicalImageDescription,
-        widget.historicalImagePath,
-        widget.historicalImageId,
-        widget.historicalPhotoFlipped! == true,
-        now,
-        widget.historicalPhotoScale ?? 1,
-        pos.latitude,
-        pos.longitude,
-        -1,
-        false);
-    // keep for later if we can't upload right away
-    draftStorage.store(draft);
+    Draft draft = draftStorage.getLast();
+
+    // why does this have hard-coded the flipped when it is passed from camera already?
+    draft.historicalPhotoFlipped = (widget.historicalPhotoFlipped! == true);
+
+    draft.latitude = pos.latitude;
+    draft.longitude = pos.longitude;
+    draft.accuracy = -1;
+    draft.rephotoIsFlipped = false;
 
     // async gap
     if (!mounted) return;

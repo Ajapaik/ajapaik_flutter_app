@@ -52,7 +52,7 @@ class DraftStorage {
   }
 
   // for now, just keep list
-  Future<bool> store(draft) async {
+  Future<bool> store(Draft draft) async {
     draftlist.add(draft);
     if (kIsWeb == true) {
       // no support in the web-version for paths: just ignored
@@ -70,6 +70,10 @@ class DraftStorage {
       f.writeAsStringSync(jsonString);
     }
     return true;
+  }
+
+  Draft getLast() {
+    return draftlist.last;
   }
 
   /*
