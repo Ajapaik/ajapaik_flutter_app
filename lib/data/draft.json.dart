@@ -7,6 +7,7 @@ class Draft {
   String? historicalImageId; // freely defined id, usually INT or URI
   bool? historicalPhotoFlipped;
   bool? historicalPhotoRotation;
+  bool? historicalPortrait; // true: portrait, false: landscape
   DateTime? timestamp; // use original until we need to convert
   double? scale;
   double? latitude;
@@ -23,6 +24,7 @@ class Draft {
     this.historicalImageId,
     this.historicalPhotoFlipped,
     this.historicalPhotoRotation,
+    this.historicalPortrait,
     this.timestamp,
     this.scale,
     this.latitude,
@@ -45,6 +47,7 @@ class Draft {
         'historicalImageId': historicalImageId,
         'historicalPhotoFlipped': historicalPhotoFlipped,
         'historicalPhotoRotation': historicalPhotoRotation,
+        'historicalPortrait': historicalPortrait,
         'timestamp': timestamp!.toIso8601String(), // keep it in standard format when saving normally
         'scale': scale,
         'latitude': latitude,
@@ -62,6 +65,7 @@ class Draft {
        historicalImageId = json['historicalImageId'];
        historicalPhotoFlipped = json['historicalPhotoFlipped'];
        historicalPhotoRotation = json['historicalPhotoRotation'];
+       historicalPortrait = json['historicalPortrait'];
        timestamp = DateTime.parse(json['timestamp']);
        scale = json['scale'];
        latitude = json['latitude'];

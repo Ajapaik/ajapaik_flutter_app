@@ -113,7 +113,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         widget.historicalPhotoId,
         historicalPhotoFlipped,
         false, // rotation
-        // orientation?
+        lastKnownOrientation == Orientation.portrait, // true: portrait, false: landscape
         DateTime.now(),
         historicalPhotoController.value.getMaxScaleOnAxis(),
         0, // position added later
