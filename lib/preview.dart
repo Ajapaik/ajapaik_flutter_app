@@ -89,7 +89,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
   }
 
   void onTakePhotoButton() async {
-    await GallerySaver.saveImage(widget.imagePath.toString());
+    await GallerySaver.saveImage(widget.imagePath);
 
     DateTime now = DateTime.now();
 
