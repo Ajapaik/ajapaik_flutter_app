@@ -104,9 +104,6 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
 
     Draft draft = draftStorage.getLast();
 
-    // why does this have hard-coded the flipped when it is passed from camera already?
-    draft.historicalPhotoFlipped = (widget.historicalPhotoFlipped! == true);
-
     draft.latitude = pos.latitude;
     draft.longitude = pos.longitude;
     draft.accuracy = -1;
