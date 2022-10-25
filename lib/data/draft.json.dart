@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 class Draft {
-  String? id; // freely defined id, usually INT or URI
   String? imagePath;
   String? historicalImageDescription; // some nice refence text for historical image
   String? historicalImagePath;
@@ -17,7 +16,6 @@ class Draft {
   String? filename = ""; // temporary name when handling in app, no need to store
 
   Draft(
-    this.id,
     this.imagePath,
     this.historicalImageDescription,
     this.historicalImagePath,
@@ -40,7 +38,6 @@ class Draft {
 /* currently this isn't even used? all fields are used directly when generating upload now
   -> modify more later */
   Map<String, dynamic> toJson() => {
-        'id': id,
         'imagePath': imagePath,
         'historicalImagePath': historicalImagePath,
         'historicalImageId': historicalImageId,
@@ -56,7 +53,6 @@ class Draft {
 
   // note that format may potentially be different if application is upgraded between saving and loading
   Draft.fromJson(Map<String, dynamic> json) {
-       id = json['id'];
        imagePath = json['imagePath'];
        historicalImageDescription = json['historicalImageDescription'];
        historicalImagePath = json['historicalImagePath'];

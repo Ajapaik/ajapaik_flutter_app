@@ -98,7 +98,6 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
     LatLng pos = locator.getLatLong();
 
     Draft draft = Draft(
-        "",
         widget.imagePath,
         widget.historicalImageDescription,
         widget.historicalImagePath,
