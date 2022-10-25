@@ -100,8 +100,21 @@ class PhotoviewState extends State<Photoview> {
 
     return parts.join("\n");
   }
+
+  // opens camera mode, which shows preview before returning here
   void takeRephoto(context) {
+    // this should be the place to check if there are permissions to use a camera
+    // or if there are cameras at all..
+
+    // try to update location now so we have something when photo is taken
+    locator.updatePosition();
+
     availableCameras().then((availableCameras) async {
+
+      // check that there is at least one
+      if (availableCameras.isEmpty) {
+        return;
+      }
       CameraDescription firstCamera = availableCameras.first;
       var rephoto = await Navigator.push(
           context,
@@ -117,6 +130,7 @@ class PhotoviewState extends State<Photoview> {
       // -> just keep draft and let user upload later
 
       // this is expected to return from DisplayPictureScreenState::onTakePhotoButton() ?
+      // -> null if user backs off
       if (rephoto.runtimeType == Draft) {
         Navigator.push(
             context,
