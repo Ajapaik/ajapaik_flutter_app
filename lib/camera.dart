@@ -84,9 +84,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
           // Pass the automatically generated path to
           // the DisplayPictureScreen widget.
             imagePath: image.path,
-            historicalImageDescription: widget.historicalPhotoDescription,
             historicalImagePath: widget.historicalPhotoUri,
-            historicalImageId: widget.historicalPhotoId,
             cameraPhotoOrientation: lastKnownOrientation,
             historicalPhotoRotation: false,
             historicalPhotoFlipped: historicalPhotoFlipped,

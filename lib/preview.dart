@@ -18,9 +18,7 @@ import 'package:image/image.dart' as img;
 // ignore: must_be_immutable
 class DisplayPictureScreen extends StatefulWidget {
   final String imagePath;
-  final String historicalImageDescription;
   final String historicalImagePath;
-  final String historicalImageId;
   final Orientation? cameraPhotoOrientation;
   final bool? historicalPhotoRotation;
   final bool? historicalPhotoFlipped;
@@ -31,9 +29,7 @@ class DisplayPictureScreen extends StatefulWidget {
   const DisplayPictureScreen(
       {Key? key,
       required this.imagePath,
-      required this.historicalImageDescription,
       required this.historicalImagePath,
-      required this.historicalImageId,
       this.cameraPhotoOrientation,
       this.historicalPhotoRotation,
       this.historicalPhotoFlipped,
@@ -224,14 +220,17 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
     return imageInfo;
   }
 
+  double getRotationY() {
+    return widget.historicalPhotoFlipped == true ? math.pi : 0;
+  }
+
   Widget getHorizontalImageComparison(BuildContext context) {
     return Row(
       children: [
         Expanded(
             child: Transform(
                 alignment: Alignment.center,
-                transform: Matrix4.rotationY(
-                    widget.historicalPhotoFlipped == true ? math.pi : 0),
+                transform: Matrix4.rotationY(getRotationY()),
                 child:
                     getImage(widget.historicalImagePath, context))),
         Expanded(
@@ -254,8 +253,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
         Expanded(
             child: Transform(
                 alignment: Alignment.center,
-                transform: Matrix4.rotationY(
-                    widget.historicalPhotoFlipped == true ? math.pi : 0),
+                transform: Matrix4.rotationY(getRotationY()),
                 child:
                     getImage(widget.historicalImagePath, context))),
         Expanded(
