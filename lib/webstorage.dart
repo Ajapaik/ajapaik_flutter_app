@@ -1,5 +1,7 @@
-import 'dart:html'; // localStorage, already through dart:io
+import 'dart:html'; // window for localStorage, File conflicts with the one in dart:io
 
+// note that apparently stored things are lost if Flutter web version starts in another port:
+// so it is hit or miss if stored things are found or not..
 class WebStorage {
   //final Storage weblocalStorage = window.localStorage;
 
