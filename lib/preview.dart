@@ -99,11 +99,9 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
     LatLng pos = locator.getLatLong();
 
     Draft draft = draftStorage.getLast();
-
     draft.latitude = pos.latitude;
     draft.longitude = pos.longitude;
     draft.accuracy = -1;
-    draft.rephotoIsFlipped = false;
 
     // async gap
     if (!mounted) return;
