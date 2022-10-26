@@ -2,9 +2,10 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'data/draft.json.dart';
-import 'package:path_provider/path_provider.dart';
+import 'webstorage.dart';
 
 // this might be useful but since app is using newer path_provider this can't be used
 //
@@ -25,19 +26,17 @@ class DraftStorage {
   Future<bool> load() async {
     if (kIsWeb == true) {
       // no support in the web-version for paths: just ignored
+      String? jsonString = WebStorage.load('draft');
+      if (jsonString != null) {
+        Map<String, dynamic> jsonMap = jsonDecode(jsonString);
+        Draft d = Draft.fromJson(jsonMap);
+        draftlist.add(d);
+      }
       return true;
     }
 
-    /*
-    var tempDir = Directory.systemTemp;
-    var list = tempDir.list();
-    for (int i = 0; i < list.length; i++) {
-      list[i].
-    }
-    */
     final Directory tempPath = await getTemporaryDirectory();
 
-    //Directory dir = FileSystem.currentDirectory();
     String filename = tempPath.path;
     filename += "/draft.json"; // TODO: generate name, get path
     File f = File(filename);
@@ -54,8 +53,12 @@ class DraftStorage {
   // for now, just keep list
   Future<bool> store(Draft draft) async {
     draftlist.add(draft);
+    Map<String, dynamic> jsonMap = draft.toJson();
+    String jsonString = jsonEncode(jsonMap);
+
     if (kIsWeb == true) {
       // no support in the web-version for paths: just ignored
+      WebStorage.save('draft', jsonString);
       return true;
     }
 
@@ -65,8 +68,6 @@ class DraftStorage {
     draft.filename = filename;
     File f = File(filename);
     if (!f.existsSync()) {
-      Map<String, dynamic> jsonMap = draft.toJson();
-      String jsonString = jsonEncode(jsonMap);
       f.writeAsStringSync(jsonString);
     }
     return true;
@@ -92,6 +93,7 @@ class DraftStorage {
     draftlist.remove(draft);
     if (kIsWeb == true) {
       // no support in the web-version for paths: just ignored
+      WebStorage.clear('draft');
       return;
     }
 
