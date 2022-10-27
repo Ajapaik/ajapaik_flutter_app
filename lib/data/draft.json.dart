@@ -1,21 +1,23 @@
 import 'dart:convert';
 
 class Draft {
-  String? imagePath;
+  String? imagePath; // path and name of image saved from camera
   String? historicalImageDescription; // some nice refence text for historical image
   String? historicalImagePath;
   String? historicalImageId; // freely defined id, usually INT or URI
   bool? historicalPhotoFlipped;
   bool? historicalPhotoRotation;
   bool? historicalPortrait; // true: portrait, false: landscape
-  DateTime? timestamp; // use original until we need to convert
-  double? scale;
-  double? latitude;
-  double? longitude;
-  double? accuracy;
+  DateTime? timestamp;      // timestamp when associated image was taken
+  double? scale;      // scaling factor of image
+  double? latitude;   // location coordinates
+  double? longitude;  // location coordinates
+  double? accuracy;   // accuracy or location
   bool? rephotoIsFlipped;
-  bool? isInGallery = false; // track locally: image stored to gallery?
+  bool? isInGallery = false;  // track locally: image stored to gallery?
+                              // gallery is second step after saving image from camera (but user may cancel)
   bool? isUploaded = false; // track locally stored data: uploaded to server yet?
+                            // user might want to cancel upload or delay until later
   String? filename = ""; // temporary name when handling in app, no need to store
 
   Draft(
