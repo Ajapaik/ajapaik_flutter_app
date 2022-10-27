@@ -99,6 +99,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
     LatLng pos = locator.getLatLong();
 
     Draft draft = draftStorage.getLast();
+    draft.isInGallery = true; // saved to gallery -> keep track of
     draft.latitude = pos.latitude;
     draft.longitude = pos.longitude;
     draft.accuracy = -1;

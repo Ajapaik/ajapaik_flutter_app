@@ -14,6 +14,7 @@ class Draft {
   double? longitude;
   double? accuracy;
   bool? rephotoIsFlipped;
+  bool? isInGallery = false; // track locally: image stored to gallery?
   bool? isUploaded = false; // track locally stored data: uploaded to server yet?
   String? filename = ""; // temporary name when handling in app, no need to store
 
