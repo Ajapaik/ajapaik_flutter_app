@@ -20,8 +20,8 @@ Future getImageFromGallery(context) async {
         MaterialPageRoute(
             builder: (context) => TakePictureScreen(
                 camera: firstCamera,
-                historicalPhotoId: pickedFile.path.toString(),
-                historicalPhotoUri: pickedFile.path.toString(),
+                historicalPhotoId: pickedFile.path,
+                historicalPhotoUri: pickedFile.path,
                 historicalPhotoDescription: "Historical image is from gallery"
             )),
       );
