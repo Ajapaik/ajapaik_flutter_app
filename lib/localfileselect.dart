@@ -18,7 +18,7 @@ Future getImageFromGallery(context) async {
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => TakePictureScreen(
+            builder: (context) => CameraScreen(
                 camera: firstCamera,
                 historicalPhotoId: pickedFile.path,
                 historicalPhotoUri: pickedFile.path,

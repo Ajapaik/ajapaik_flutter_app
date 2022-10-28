@@ -119,7 +119,7 @@ class PhotoviewState extends State<Photoview> {
       var rephoto = await Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => TakePictureScreen(
+              builder: (context) => CameraScreen(
                     camera: firstCamera,
                     historicalPhotoId: widget.historicalPhotoId,
                     historicalPhotoUri: widget.historicalPhotoUri,

@@ -15,13 +15,13 @@ import 'data/draft.json.dart';
 import 'draftstorage.dart';
 import 'imagestorage.dart';
 
-class TakePictureScreen extends StatefulWidget {
+class CameraScreen extends StatefulWidget {
   final CameraDescription camera;
   final String historicalPhotoUri;
   final String historicalPhotoId;
   final String historicalPhotoDescription;
 
-  const TakePictureScreen({
+  const CameraScreen({
     Key? key,
     required this.camera,
     required this.historicalPhotoId,
@@ -30,10 +30,10 @@ class TakePictureScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  TakePictureScreenState createState() => TakePictureScreenState();
+  CameraScreenState createState() => CameraScreenState();
 }
 
-class TakePictureScreenState extends State<TakePictureScreen> {
+class CameraScreenState extends State<CameraScreen> {
   // Camera
   late CameraController cameraController;
   Future<void>? initializeCameraControllerFuture;
