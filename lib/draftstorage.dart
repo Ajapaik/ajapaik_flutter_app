@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'data/draft.json.dart';
-import 'webstorage.dart';
+//import 'webstorage.dart'; // can't build non-web versions due to dart:html
 
 // this might be useful but since app is using newer path_provider this can't be used
 //
@@ -26,12 +26,14 @@ class DraftStorage {
   Future<bool> load() async {
     if (kIsWeb == true) {
       // no support in the web-version for paths: just ignored
+      /*
       String? jsonString = WebStorage.load('draft');
       if (jsonString != null) {
         Map<String, dynamic> jsonMap = jsonDecode(jsonString);
         Draft d = Draft.fromJson(jsonMap);
         draftlist.add(d);
       }
+      */
       return true;
     }
 
@@ -58,7 +60,7 @@ class DraftStorage {
 
     if (kIsWeb == true) {
       // no support in the web-version for paths: just ignored
-      WebStorage.save('draft', jsonString);
+      //WebStorage.save('draft', jsonString);
       return true;
     }
 
@@ -93,7 +95,7 @@ class DraftStorage {
     draftlist.remove(draft);
     if (kIsWeb == true) {
       // no support in the web-version for paths: just ignored
-      WebStorage.clear('draft');
+      //WebStorage.clear('draft');
       return;
     }
 
