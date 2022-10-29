@@ -269,6 +269,7 @@ class AlbumList extends StatelessWidget {
     Photoview p = Photoview(
       historicalPhotoId: feat.properties.id.toString(),
       historicalPhotoUri: feat.properties.thumbnail.toString(),
+      historicalFullPhotoUri: feat.properties.image.toString(),
       historicalName: feat.properties.name.toString(),
       historicalDate: feat.properties.date.toString(),
       historicalAuthor: feat.properties.author.toString(),

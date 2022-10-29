@@ -1,10 +1,8 @@
-import 'dart:io';
 import 'package:ajapaik_flutter_app/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:ajapaik_flutter_app/localization.dart';
 import 'package:ajapaik_flutter_app/rephotocompareview.dart';
@@ -13,7 +11,6 @@ import 'package:ajapaik_flutter_app/upload.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:camera/camera.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:path_provider/path_provider.dart'; // <- used by the temporary directory lookup which shouldn't be needed anyway
 import 'package:url_launcher/url_launcher.dart';
 import 'camera.dart';
 import 'data/draft.json.dart';
@@ -28,6 +25,7 @@ import 'preferences.dart';
 class Photoview extends StatefulWidget {
   final String historicalPhotoId;
   final String historicalPhotoUri;
+  final String historicalFullPhotoUri;
   final String historicalName;
   final String historicalDate;
   final String historicalAuthor;
@@ -41,6 +39,7 @@ class Photoview extends StatefulWidget {
       {Key? key,
       required this.historicalPhotoId,
       required this.historicalPhotoUri,
+      required this.historicalFullPhotoUri,
       required this.historicalName,
       required this.historicalDate,
       required this.historicalAuthor,
@@ -106,7 +105,7 @@ class PhotoviewState extends State<Photoview> {
               builder: (context) => TakePictureScreen(
                     camera: firstCamera,
                     historicalPhotoId: widget.historicalPhotoId,
-                    historicalPhotoUri: widget.historicalPhotoUri,
+                    historicalPhotoUri: widget.historicalFullPhotoUri,
                     historicalPhotoDescription:  generateDescription()
                   )));
       // TODO: if user has no network connectivity or is in standalone mode
@@ -166,7 +165,7 @@ class PhotoviewState extends State<Photoview> {
   void onSelectedImageMenu(result) async {
     //ImageMenu.menuShare
     if (result == 0) {
-      CrossplatformShare.shareFile(widget.historicalPhotoUri, widget.historicalName );
+      CrossplatformShare.shareFile(widget.historicalFullPhotoUri, widget.historicalName );
       // TODO: when share the photo is already known
       // -> look it up in the DOM or whatever without asking server for it again..
     }
@@ -307,7 +306,7 @@ class PhotoviewState extends State<Photoview> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => FullScreenImageView(
-                              historicalPhotoUri: widget.historicalPhotoUri,
+                              historicalPhotoUri: widget.historicalFullPhotoUri,
                             )));
               },
               child: Stack(children: [
