@@ -59,7 +59,7 @@ class ProjectListPageState extends State<ProjectListPage> {
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {
           (index);
-          if (index == 2) {
+          if (index == 0) {
             Get.to(DisplayLoginScreen())?.then((_) => setState(() {
                 }));
           } else {

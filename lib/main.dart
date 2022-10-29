@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:ajapaik_flutter_app/localization.dart';
+import 'package:ajapaik_flutter_app/projectlist.dart';
 import 'package:ajapaik_flutter_app/services/geolocation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -40,6 +41,7 @@ class MyAppState extends State<MyApp> {
     // TODO: should load localizations before starting to build the UI
     // so that localized strings are actually available
     //AppLocalizations.load()
+    final locator = Get.put(AppLocator());
 
     initDeepLinks();
     prefs.loadPrefs();
@@ -87,7 +89,7 @@ class MyAppState extends State<MyApp> {
     //
     // -> should load localizations first before starting to build UI
     //
-    const String appTitle = "Nearest";
+    const String appTitle = "Ajapaik nearest";
 
     GetMaterialApp gma = GetMaterialApp(
         supportedLocales: AppLocalizations.getSupportedLocales(),
@@ -111,7 +113,7 @@ class MyAppState extends State<MyApp> {
 
       title: appTitle,
       theme: ThemeData.dark(),
-      home: AlbumListPage.network(appTitle, firstUrl),
+      home: const ProjectListPage(title: "Albums") //AlbumListPage.network(appTitle, firstUrl),
     );
     return gma;
   }
