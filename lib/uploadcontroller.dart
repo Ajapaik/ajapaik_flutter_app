@@ -12,6 +12,7 @@ class UploadController  {
   UploadController({Key? key});
 
   generateAjapaikUploadRequest(String sessionid, String uploadUri, Draft draft) {
+    uploadUri="https://ajapaik.ee/api/v1/photo/upload/";
 
     var postUri = Uri.parse(uploadUri);
     var request = http.MultipartRequest("POST", postUri);
@@ -72,9 +73,9 @@ class UploadController  {
     return request;
   }
 
-  generateUploadRequest(Draft draft) {
+  generateUploadRequest(Draft draft) async {
     var request;
-    if (sessionController.getServer() == ServerType.serverAjapaik) {
+    if (true ||  sessionController.getServer() == ServerType.serverAjapaik) {
       request = generateAjapaikUploadRequest(sessionController.getSessionId(),
           sessionController.getUploadUri(),
           draft);
@@ -91,7 +92,7 @@ class UploadController  {
       // not yet implemented others
       throw UnimplementedError('server request not yet implemented');
     }
-    var multipart = http.MultipartFile.fromPath(
+    var multipart = await http.MultipartFile.fromPath(
         'original', File(draft.imagePath).path);
     request.files.add(multipart);
     return request;

@@ -77,14 +77,13 @@ class DisplayUploadScreen extends StatelessWidget {
     // -> may need to login now if was in standalone before
     // -> may need multiple session for different uploads
     // etc.
-    var request = uploadController.generateUploadRequest(draft);
+    var request = await uploadController.generateUploadRequest(draft);
     if (request == null) {
       // destination not yet implemented
       return false;
     }
 
     ("Upload file send");
-    (request.fields);
     Get.showSnackbar(
       const GetSnackBar(
         title: "Uploading file to Ajapaik",
