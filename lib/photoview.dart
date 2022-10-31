@@ -391,7 +391,7 @@ class PhotoviewState extends State<Photoview> {
                             )));
               },
               child: Stack(children: [
-                CachedNetworkImage(imageUrl: widget.historicalPhotoUri),
+                Image.network(widget.historicalPhotoUri),
                 getRephotoNumberIconBottomLeft(widget.numberOfRephotos)
               ])),
         ),
