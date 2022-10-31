@@ -29,6 +29,29 @@ class ImageStorage {
 
   }
 
+  // if given name has uri -> not local
+  bool isNetworkFile(String name) {
+    if (name.contains("://")) {
+      return true;
+    }
+    return false;
+  }
+
+  // get domain from name: if cross-domain expect problems,
+  // compare to current session
+  String getDomain(String name) {
+    int start = name.indexOf("://");
+    if (start == -1) {
+      return "";
+    }
+    start += 3; // skip
+    int end = name.indexOf('/', start);
+    if (end == -1) {
+      end = name.length;
+    }
+    return name.substring(start, end);
+  }
+
   Image getImage(String filename) {
     if (kIsWeb == false && File(filename).existsSync()) {
       // not supported on flutter web-version
