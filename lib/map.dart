@@ -6,6 +6,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:get/get.dart';
 
 import 'localization.dart';
+import 'imagestorage.dart';
 
 class Map extends StatefulWidget {
   final double imageLatitude;
@@ -31,6 +32,7 @@ class MapState extends State<Map> {
   late final MapController mapController;
 
   final locator = Get.find<AppLocator>();
+  final imageStorage = Get.find<ImageStorage>();
 
   @override
   void initState() {
@@ -61,6 +63,7 @@ class MapState extends State<Map> {
                   constraints: const BoxConstraints(
                     maxHeight: 350,
                   ),
+                  // TODO: fetch image from imageStorage, cached if possible, check parameters..
                   child: Image.network(widget.historicalPhotoUri, fit: BoxFit.contain),
                 ))),
       ]),

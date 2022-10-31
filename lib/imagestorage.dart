@@ -66,14 +66,14 @@ class ImageStorage {
       if (file.existsSync()) {
         // not supported on flutter web-version
         return Image.file(file,
-            fit: BoxFit.contain, height: 8000, width: 8000);
+            fit: BoxFit.contain, height: 8000, width: 8000); // <- are the sizes really necessary at all?
       }
     }
     if (getDomain(filename) == "ajapaik.ee") {
-      return CachedNetworkImage(imageUrl: filename);
+      return CachedNetworkImage(imageUrl: filename, height: 8000, width: 8000); // <- are the sizes really necessary at all?
     }
     return Image.network(filename,
-          fit: BoxFit.contain, height: 8000, width: 8000);
+          fit: BoxFit.contain, height: 8000, width: 8000); // <- are the sizes really necessary at all?
   }
 
   // TODO: check if caching is allowed, if there are cross-domain issues
