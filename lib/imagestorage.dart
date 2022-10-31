@@ -31,14 +31,15 @@ class ImageStorage {
 
   Image getImage(String filename) {
     if (kIsWeb == false && File(filename).existsSync()) {
+      // not supported on flutter web-version
       return Image.file(File(filename));
     }
-
     return Image.network(filename);
   }
 
   Image getImageBoxed(String filename, {double scale = 1}) {
-    if (File(filename).existsSync()) {
+    if (kIsWeb == false && File(filename).existsSync()) {
+      // not supported on flutter web-version
       return Image.file(File(filename),
           fit: BoxFit.contain, height: 8000 * scale, width: 8000);
     }
@@ -52,11 +53,9 @@ class ImageStorage {
   Widget getCachedNetworkImage(String url) {
     // if we can use cached image or not:
     // this domain should be found according to session, this is a hack
-    /*
     if (url.contains("ajapaik.ee")) {
       return CachedNetworkImage(imageUrl: url);
     }
-    */
     // another domain -> can't use cache
     return Image.network(url);
   }
