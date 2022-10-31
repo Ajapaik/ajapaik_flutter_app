@@ -74,7 +74,8 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
                     child: const Icon(Icons.check),
                   )),
 
-              // Go two steps backward so the rephoto camera will be closed
+              // Go two steps backward so the rephoto camera will be closed:
+              // this returns to PhotoviewState::takeRephoto() ?
               CloseButton(
                 onPressed: () {
                   Navigator.pop(context);

@@ -5,7 +5,7 @@ import 'localization.dart';
 import 'imagestorage.dart';
 
 class FullScreenImageView extends StatelessWidget {
-  final imageStorage = Get.put(ImageStorage());
+  final imageStorage = Get.find<ImageStorage>();
 
   FullScreenImageView({
     Key? key,

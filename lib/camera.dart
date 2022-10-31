@@ -50,8 +50,8 @@ class CameraScreenState extends State<CameraScreen> {
   bool pinchToZoomBusy = false;
   late Size historicalPhotoImageSize;
 
-  final draftStorage = Get.put(DraftStorage());
-  final imageStorage = Get.put(ImageStorage());
+  final draftStorage = Get.find<DraftStorage>();
+  final imageStorage = Get.find<ImageStorage>();
 
   /* TAKE PHOTO */
   void onTakePicture() async {

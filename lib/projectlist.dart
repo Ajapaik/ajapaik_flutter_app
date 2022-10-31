@@ -19,7 +19,7 @@ class ProjectListPage extends StatefulWidget {
 }
 
 class ProjectListPageState extends State<ProjectListPage> {
-  final sessionController = Get.put(SessionController());
+  final sessionController = Get.find<SessionController>();
 
   String getProjectUrl() {
     String url = sessionController.getDatasourceUri();

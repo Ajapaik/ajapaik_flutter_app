@@ -14,10 +14,10 @@ import 'draftstorage.dart';
 import 'imagestorage.dart';
 
 class DisplayUploadScreen extends StatelessWidget {
-  final sessionController = Get.put(SessionController());
-  final uploadController = Get.put(UploadController());
-  final draftStorage = Get.put(DraftStorage());
-  final imageStorage = Get.put(ImageStorage());
+  final sessionController = Get.find<SessionController>();
+  final uploadController = Get.find<UploadController>();
+  final draftStorage = Get.find<DraftStorage>();
+  final imageStorage = Get.find<ImageStorage>();
   final Draft draft;
 
   DisplayUploadScreen({Key? key, required this.draft}) : super(key: key);

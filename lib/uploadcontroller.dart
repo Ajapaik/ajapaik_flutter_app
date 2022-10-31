@@ -6,7 +6,7 @@ import 'dart:io';
 import 'data/draft.json.dart';
 
 class UploadController  {
-  final sessionController = Get.put(SessionController());
+  final sessionController = Get.find<SessionController>();
   //Draft draft;
 
   UploadController({Key? key});

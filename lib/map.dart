@@ -30,7 +30,7 @@ class Map extends StatefulWidget {
 class MapState extends State<Map> {
   late final MapController mapController;
 
-  final locator = Get.put(AppLocator());
+  final locator = Get.find<AppLocator>();
 
   @override
   void initState() {

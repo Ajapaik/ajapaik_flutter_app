@@ -63,10 +63,10 @@ class PhotoviewState extends State<Photoview> {
   double imageLatitude = 0; // image being viewed, not the one just taken?
   double imageLongitude = 0;
 
-  final locator = Get.put(AppLocator());
-  final prefs = Get.put(Preferences());
-  final sessionController = Get.put(SessionController());
-  final draftStorage = Get.put(DraftStorage());
+  final locator = Get.find<AppLocator>();
+  final prefs = Get.find<Preferences>();
+  final sessionController = Get.find<SessionController>();
+  final draftStorage = Get.find<DraftStorage>();
   //late Map map;
 
   String getDatasource() {

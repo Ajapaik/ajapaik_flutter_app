@@ -8,7 +8,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'imagestorage.dart';
 
 class RephotoCompareView extends StatelessWidget {
-  final imageStorage = Get.put(ImageStorage());
+  final imageStorage = Get.find<ImageStorage>();
   late List<Album> album;
   String historicalImageUrl = "";
 

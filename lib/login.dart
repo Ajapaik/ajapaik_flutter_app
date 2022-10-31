@@ -11,7 +11,7 @@ import 'data/user.json.dart';
 enum LoginProviders { loginGoogle, loginFacebook, loginWikimedia }
 
 class DisplayLoginScreen extends StatelessWidget {
-  final sessionController = Get.put(SessionController());
+  final sessionController = Get.find<SessionController>();
   DisplayLoginScreen({Key? key}) : super(key: key);
 
   void _launchURL(_url) async => await canLaunchUrl(_url)

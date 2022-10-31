@@ -16,7 +16,7 @@ import 'preferences.dart';
 
 // ignore: must_be_immutable
 class AlbumListPage extends StatefulWidget {
-  final sessionController = Get.put(SessionController());
+  final sessionController = Get.find<SessionController>();
 
   String pageTitle = "";
   String dataSourceUrl = "";
@@ -43,9 +43,9 @@ class AlbumListPageState extends State<AlbumListPage> {
   bool filterBoxOn = false;
   bool pullDownRefreshDone = true;
   final searchController = TextEditingController();
-  final sessionController = Get.put(SessionController());
-  final locator = Get.put(AppLocator());
-  final prefs = Get.put(Preferences());
+  final sessionController = Get.find<SessionController>();
+  final locator = Get.find<AppLocator>();
+  final prefs = Get.find<Preferences>();
 
   Future<List<Album>>? _albumData;
 

@@ -8,6 +8,7 @@ import 'albumlist.dart';
 import 'package:app_links/app_links.dart';
 import 'package:get/get.dart';
 import 'sessioncontroller.dart';
+import 'uploadcontroller.dart';
 import 'localization.dart';
 import 'preferences.dart';
 import 'draftstorage.dart';
@@ -18,8 +19,6 @@ void main()  {
 }
 
 class MyApp extends StatefulWidget {
-  final controller = Get.put(SessionController());
-
   MyApp({Key? key}) : super(key: key);
 
   @override
@@ -30,6 +29,7 @@ class MyAppState extends State<MyApp> {
   late AppLinks _appLinks;
   StreamSubscription<Uri>? _linkSubscription;
   final sessionController = Get.put(SessionController());
+  final uploadController = Get.put(UploadController());
   final locator = Get.put(AppLocator());
   final prefs = Get.put(Preferences());
   final draftStorage = Get.put(DraftStorage());
