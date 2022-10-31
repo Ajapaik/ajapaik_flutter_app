@@ -5,11 +5,21 @@
 		]
 	},
 	"albumList-navItem3": "Sichtbarkeit",
+	"homePage-NavItem5": "Anmelden",
+	"homePage-NavItem6": "Abmelden",
+	"localFileSelect-option1": "Fotobibliothek",
+	"localFileSelect-option2": "Kamera",
 	"login-appBarTitle": "Anmelden",
+	"map-appbarTitle": "Karte",
+	"projectList-navItem1": "Bibliothek",
 	"projectList-navItem3": "Anmelden",
 	"projectList-navItem4": "Abmelden",
+	"rePhoto-popupMenu1": "Teilen",
+	"rePhoto-popupMenu2": "Information",
+	"rePhoto-popupMenu4": "Karte",
 	"rePhoto-popupMenu5": "Einstellungen",
 	"settings-appbarTitle": "Einstellungen",
 	"settings-cardItem1": "Sprache ändern",
-	"settings-helperText": "Erweiterte Einstellungen"
+	"settings-helperText": "Erweiterte Einstellungen",
+	"settings-showMapTile": "Karte anzeigen"
 }
