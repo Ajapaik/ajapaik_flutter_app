@@ -76,7 +76,7 @@ class RephotoCompareView extends StatelessWidget {
     }
 
     // so.. image can be local or from network?
-    Image image = imageStorage.getImageBoxed(filename);
+    Widget image = imageStorage.getImageBoxed(filename);
     return Stack(children:[image,
       Align(alignment: Alignment.bottomCenter,
           child:Text(labels.join(" "),
@@ -100,7 +100,7 @@ class RephotoCompareView extends StatelessWidget {
       }
 
       // only images from network in this case?
-      Image image = imageStorage.getImageBoxed(feature.properties.thumbnail!);
+      Widget image = imageStorage.getImageBoxed(feature.properties.thumbnail!);
       Stack imagestack = Stack(children: [
       image,
       Align(alignment: Alignment.bottomCenter,
