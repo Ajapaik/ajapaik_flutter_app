@@ -124,10 +124,6 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
     });
   }
 
-  Image getImage(String filename, BuildContext context, {double scale = 1}) {
-    return imageStorage.getImageBoxed(filename, scale: scale);
-  }
-
   bool needsHeightScaling(cameraImageWidth, cameraImageHeight) {
     double heightScale = cameraImageHeight / widget.historicalPhotoSize!.height;
     double widthScale = cameraImageWidth / widget.historicalPhotoSize!.width;
@@ -232,7 +228,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
                 alignment: Alignment.center,
                 transform: Matrix4.rotationY(getRotationY()),
                 child:
-                    getImage(widget.historicalImagePath, context))),
+                imageStorage.getImageBoxed(widget.historicalImagePath))),
         Expanded(
             child: AspectRatio(
                 aspectRatio: 1,
@@ -255,7 +251,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen>
                 alignment: Alignment.center,
                 transform: Matrix4.rotationY(getRotationY()),
                 child:
-                    getImage(widget.historicalImagePath, context))),
+                imageStorage.getImageBoxed(widget.historicalImagePath))),
         Expanded(
             child: AspectRatio(
                 aspectRatio: 1,
