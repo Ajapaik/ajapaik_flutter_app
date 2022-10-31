@@ -44,9 +44,9 @@ class DisplayPictureScreen extends StatefulWidget {
 
 class DisplayPictureScreenState extends State<DisplayPictureScreen>
     with TickerProviderStateMixin {
-  final locator = Get.put(AppLocator());
-  final draftStorage = Get.put(DraftStorage());
-  final imageStorage = Get.put(ImageStorage());
+  final locator = Get.find<AppLocator>();
+  final draftStorage = Get.find<DraftStorage>();
+  final imageStorage = Get.find<ImageStorage>();
   GlobalKey cameraPhotoKey = GlobalKey();
   double oldCenterX = 0;
   double oldCenterY = 0;
