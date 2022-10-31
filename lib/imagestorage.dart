@@ -74,9 +74,16 @@ class ImageStorage {
   // TODO: check if caching is allowed, if there are cross-domain issues
   // and select cached/non-cached if it is not allowed
   Widget getCachedNetworkImage(String url) {
+    if (isNetworkFile(url) == false) {
+      // should not be here..
+      // -> load local file instead
+      return getImage(url);
+    }
     // if we can use cached image or not:
-    // this domain should be found according to session, this is a hack
-    if (url.contains("ajapaik.ee")) {
+    // this domain should be found according to session, this is a hack!
+    // ! TODO: should check which domain we currently are using instead of hard-coding !
+    // -> ask session controller which domain is used
+    if (getDomain(url) == "ajapaik.ee") {
       return CachedNetworkImage(imageUrl: url);
     }
     // another domain -> can't use cache
