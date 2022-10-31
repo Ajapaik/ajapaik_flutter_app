@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:ajapaik_flutter_app/data/project.json.dart';
 import 'package:ajapaik_flutter_app/albumlist.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:get/get.dart';
 import 'localization.dart';
 import 'localfileselect.dart';
 import 'login.dart';
-import 'package:get/get.dart';
 import 'sessioncontroller.dart';
 import 'httpcontroller.dart';
+import 'imagestorage.dart';
 
 class ProjectListPage extends StatefulWidget {
   final String? title;
@@ -99,8 +99,9 @@ class ProjectListBuilder extends StatelessWidget {
 
 class ProjectList extends StatelessWidget {
   final List<Project>? photos;
+  final imageStorage = Get.find<ImageStorage>();
 
-  const ProjectList({Key? key, required this.photos}) : super(key: key);
+  ProjectList({Key? key, required this.photos}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -123,9 +124,7 @@ class ProjectList extends StatelessWidget {
                 }
               },
               child: Column(children: [
-                CachedNetworkImage(
-                  imageUrl: photos![index].thumbnailUrl!.toString(),
-                ),
+                imageStorage.getCachedNetworkImage(photos![index].thumbnailUrl!),
                 Text(
                   photos![index].name,
                   textAlign: TextAlign.center,

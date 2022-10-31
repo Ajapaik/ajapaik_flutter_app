@@ -3,7 +3,6 @@ import 'package:ajapaik_flutter_app/services/geolocation.dart';
 import 'package:ajapaik_flutter_app/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:ajapaik_flutter_app/data/album.geojson.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'localization.dart';
@@ -13,6 +12,7 @@ import 'login.dart';
 import 'photoview.dart';
 import 'httpcontroller.dart';
 import 'preferences.dart';
+import 'imagestorage.dart';
 
 // ignore: must_be_immutable
 class AlbumListPage extends StatefulWidget {
@@ -46,6 +46,7 @@ class AlbumListPageState extends State<AlbumListPage> {
   final sessionController = Get.find<SessionController>();
   final locator = Get.find<AppLocator>();
   final prefs = Get.find<Preferences>();
+  final imageStorage = Get.find<ImageStorage>();
 
   Future<List<Album>>? _albumData;
 
@@ -263,8 +264,9 @@ class AlbumListPageState extends State<AlbumListPage> {
 class AlbumList extends StatelessWidget {
   final List<Album>? albums;
   final bool toggle;
+  final imageStorage = Get.find<ImageStorage>();
 
-  const AlbumList({Key? key, this.albums, this.toggle = true})
+  AlbumList({Key? key, this.albums, this.toggle = true})
       : super(key: key);
 
   Photoview getPhotoView(Feature feat) {
@@ -323,10 +325,10 @@ class AlbumList extends StatelessWidget {
   }
 
   Widget headerTile(context, index) {
-    StatelessWidget headerImage;
+    Widget headerImage;
 
     if (albums!.first.image != "") {
-      headerImage = CachedNetworkImage(imageUrl: albums!.first.image);
+      headerImage = imageStorage.getCachedNetworkImage(albums!.first.image);
     } else {
       headerImage = Container();
     }
@@ -351,7 +353,7 @@ class AlbumList extends StatelessWidget {
       },
       child: Column(children: [
         Stack(children: [
-          CachedNetworkImage(imageUrl: feat.properties.thumbnail.toString()),
+          imageStorage.getCachedNetworkImage(feat.properties.thumbnail!),
           getRephotoNumberIconBottomLeft(feat.properties.rephotos!.toInt()),
         ]),
         Visibility(

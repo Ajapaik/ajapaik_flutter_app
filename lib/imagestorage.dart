@@ -7,6 +7,10 @@ import 'package:cross_file/cross_file.dart'; // XFile needs some wrapper
 
 //import 'package:image/image.dart' as img;
 
+//
+import 'package:cached_network_image/cached_network_image.dart';
+
+
 // reduce repeating same things
 
 // should inherit from ImageCache ?
@@ -43,6 +47,19 @@ class ImageStorage {
           fit: BoxFit.contain, height: 8000 * scale, width: 8000);
   }
 
+  // TODO: check if caching is allowed, if there are cross-domain issues
+  // and select cached/non-cached if it is not allowed
+  Widget getCachedNetworkImage(String url) {
+    // if we can use cached image or not:
+    // this domain should be found according to session, this is a hack
+    /*
+    if (url.contains("ajapaik.ee")) {
+      return CachedNetworkImage(imageUrl: url);
+    }
+    */
+    // another domain -> can't use cache
+    return Image.network(url);
+  }
 
   /*
   File getImageFile(String filename) {

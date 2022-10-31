@@ -9,7 +9,6 @@ import 'package:ajapaik_flutter_app/localization.dart';
 import 'package:ajapaik_flutter_app/rephotocompareview.dart';
 import 'package:ajapaik_flutter_app/services/geolocation.dart';
 import 'package:ajapaik_flutter_app/upload.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:camera/camera.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -23,6 +22,7 @@ import 'sessioncontroller.dart';
 import 'draftstorage.dart';
 import 'httpcontroller.dart';
 import 'preferences.dart';
+import 'imagestorage.dart';
 
 class Photoview extends StatefulWidget {
   final String historicalPhotoId;
@@ -67,6 +67,7 @@ class PhotoviewState extends State<Photoview> {
   final prefs = Get.find<Preferences>();
   final sessionController = Get.find<SessionController>();
   final draftStorage = Get.find<DraftStorage>();
+  final imageStorage = Get.find<ImageStorage>();
   //late Map map;
 
   String getDatasource() {
@@ -391,7 +392,7 @@ class PhotoviewState extends State<Photoview> {
                             )));
               },
               child: Stack(children: [
-                Image.network(widget.historicalPhotoUri),
+                imageStorage.getCachedNetworkImage(widget.historicalPhotoUri),
                 getRephotoNumberIconBottomLeft(widget.numberOfRephotos)
               ])),
         ),
