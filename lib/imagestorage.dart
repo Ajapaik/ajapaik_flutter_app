@@ -60,20 +60,20 @@ class ImageStorage {
     return Image.network(filename);
   }
 
-  Widget getImageBoxed(String filename, {double scale = 1}) {
+  Widget getImageBoxed(String filename) {
     if (isNetworkFile(filename) == false && kIsWeb == false) {
       File file = File(filename);
       if (file.existsSync()) {
         // not supported on flutter web-version
         return Image.file(file,
-            fit: BoxFit.contain, height: 8000 * scale, width: 8000);
+            fit: BoxFit.contain, height: 8000, width: 8000);
       }
     }
     if (getDomain(filename) == "ajapaik.ee") {
       return CachedNetworkImage(imageUrl: filename);
     }
     return Image.network(filename,
-          fit: BoxFit.contain, height: 8000 * scale, width: 8000);
+          fit: BoxFit.contain, height: 8000, width: 8000);
   }
 
   // TODO: check if caching is allowed, if there are cross-domain issues
