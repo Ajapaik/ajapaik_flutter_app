@@ -18,7 +18,7 @@ class FullScreenImageView extends StatelessWidget {
   Widget build(BuildContext context) {
     Expanded e = Expanded(
                     child: InteractiveViewer(
-                        child: imageStorage.getImage(historicalPhotoUri)));
+                        child: imageStorage.getCachedNetworkImage(historicalPhotoUri)));
 
     Scaffold s = Scaffold(
         appBar: AppBar(
