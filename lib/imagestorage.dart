@@ -52,14 +52,6 @@ class ImageStorage {
     return name.substring(start, end);
   }
 
-  Image getImage(String filename) {
-    if (kIsWeb == false && File(filename).existsSync()) {
-      // not supported on flutter web-version
-      return Image.file(File(filename));
-    }
-    return Image.network(filename);
-  }
-
   // height and width are to reserve layout space for the image
   // so that rest of the layout has a "guess" before image is loaded and size is known
   // -> it should be in caller..
