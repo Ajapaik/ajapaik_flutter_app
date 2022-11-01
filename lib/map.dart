@@ -63,7 +63,7 @@ class GeoMapState extends State<GeoMap> {
                   constraints: const BoxConstraints(
                     maxHeight: 350,
                   ),
-                  child: imageStorage.getImageBoxed(widget.historicalPhotoUri),
+                  child: imageStorage.getCachedNetworkImage(widget.historicalPhotoUri, BoxFit.contain),
                 ))),
       ]),
     );

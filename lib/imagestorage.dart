@@ -60,40 +60,43 @@ class ImageStorage {
     return Image.network(filename);
   }
 
-  // can we just remove width and height entirely?
-  Widget getImageBoxed(String filename, [double? height, double? width]) {
+  // height and width are to reserve layout space for the image
+  // so that rest of the layout has a "guess" before image is loaded and size is known
+  // -> it should be in caller..
+  Widget getImageBoxed(String filename) {
     if (isNetworkFile(filename) == false && kIsWeb == false) {
       File file = File(filename);
       if (file.existsSync()) {
         // not supported on flutter web-version
         return Image.file(file,
-            fit: BoxFit.contain, height: height, width: width); // <- are the sizes really necessary at all?
+            fit: BoxFit.contain, height: 8000, width: 8000);
       }
     }
     if (getDomain(filename) == "ajapaik.ee") {
-      return CachedNetworkImage(imageUrl: filename, height: height, width: width); // <- are the sizes really necessary at all?
+      return CachedNetworkImage(imageUrl: filename, height: 8000, width: 8000);
     }
     return Image.network(filename,
-          fit: BoxFit.contain, height: height, width: width); // <- are the sizes really necessary at all?
+          fit: BoxFit.contain, height: 8000, width: 8000);
   }
 
   // TODO: check if caching is allowed, if there are cross-domain issues
   // and select cached/non-cached if it is not allowed
-  Widget getCachedNetworkImage(String url) {
-    if (isNetworkFile(url) == false) {
-      // should not be here..
-      // -> load local file instead
-      return getImage(url);
+  Widget getCachedNetworkImage(String url, [BoxFit? fit]) {
+    if (isNetworkFile(url) == false && kIsWeb == false) {
+      File file = File(url);
+      if (file.existsSync()) {
+        return Image.file(file, fit: fit);
+      }
     }
     // if we can use cached image or not:
     // this domain should be found according to session, this is a hack!
     // ! TODO: should check which domain we currently are using instead of hard-coding !
     // -> ask session controller which domain is used
     if (getDomain(url) == "ajapaik.ee") {
-      return CachedNetworkImage(imageUrl: url);
+      return CachedNetworkImage(imageUrl: url, fit: fit);
     }
     // another domain -> can't use cache
-    return Image.network(url);
+    return Image.network(url, fit: fit);
   }
 
   /*
