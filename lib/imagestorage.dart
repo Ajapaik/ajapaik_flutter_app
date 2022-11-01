@@ -55,20 +55,23 @@ class ImageStorage {
   // height and width are to reserve layout space for the image
   // so that rest of the layout has a "guess" before image is loaded and size is known
   // -> it should be in caller..
-  Widget getImageBoxed(String filename) {
+  //
+  // note: there will be overflow error in RenderFlex if you try to use these sizes
+  // in a view with many images like albumlist -> don't call here unless necessary
+  Widget getImageBoxed(String filename, {BoxFit fit = BoxFit.contain, double height = 8000, double width = 8000}) {
     if (isNetworkFile(filename) == false && kIsWeb == false) {
       File file = File(filename);
       if (file.existsSync()) {
         // not supported on flutter web-version
         return Image.file(file,
-            fit: BoxFit.contain, height: 8000, width: 8000);
+            fit: fit, height: height, width: width);
       }
     }
     if (getDomain(filename) == "ajapaik.ee") {
-      return CachedNetworkImage(imageUrl: filename, height: 8000, width: 8000);
+      return CachedNetworkImage(imageUrl: filename, fit: fit, height: height, width: width);
     }
     return Image.network(filename,
-          fit: BoxFit.contain, height: 8000, width: 8000);
+          fit: fit, height: height, width: width);
   }
 
   // TODO: check if caching is allowed, if there are cross-domain issues
