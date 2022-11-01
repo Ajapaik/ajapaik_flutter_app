@@ -8,12 +8,12 @@ import 'package:get/get.dart';
 import 'localization.dart';
 import 'imagestorage.dart';
 
-class Map extends StatefulWidget {
+class GeoMap extends StatefulWidget {
   final double imageLatitude;
   final double imageLongitude;
   final String historicalPhotoUri;
 
-  const Map({
+  const GeoMap({
     Key? key,
     required this.imageLatitude,
     required this.imageLongitude,
@@ -21,14 +21,14 @@ class Map extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  MapState createState() => MapState();
+  GeoMapState createState() => GeoMapState();
 
   LatLng getImagePosition() {
     return LatLng(imageLatitude, imageLongitude);
   }
 }
 
-class MapState extends State<Map> {
+class GeoMapState extends State<GeoMap> {
   late final MapController mapController;
 
   final locator = Get.find<AppLocator>();

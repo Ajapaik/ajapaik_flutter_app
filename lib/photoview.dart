@@ -150,6 +150,14 @@ class PhotoviewState extends State<Photoview> {
     }
   }
 
+  GeoMap buildMap() {
+    GeoMap map = GeoMap(
+        imageLatitude: imageLatitude,
+        imageLongitude: imageLongitude,
+        historicalPhotoUri: widget.historicalPhotoUri);
+    return map;
+  }
+
   @override
   void initState() {
     if (widget.historicalCoordinates.hasCoordinates()) {
@@ -160,13 +168,6 @@ class PhotoviewState extends State<Photoview> {
 
     mapInfoVisibility = false;
 
-    /*
-    map = Map(
-        imageLatitude: imageLatitude,
-        imageLongitude: imageLongitude,
-        historicalPhotoUri: widget.historicalPhotoUri);
-
-     */
     super.initState();
   }
 
@@ -254,7 +255,7 @@ class PhotoviewState extends State<Photoview> {
     return await Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => Map(
+            builder: (context) => GeoMap(
                   imageLatitude: imageLatitude,
                   imageLongitude: imageLongitude,
                   historicalPhotoUri: widget.historicalPhotoUri,
@@ -489,6 +490,6 @@ class PhotoviewState extends State<Photoview> {
   // -> unify, map contents should be same either way..
   Widget buildMarkedMap(BuildContext context) {
 
-    return MapState.buildMarkedMap(context, locator, getImagePosition());
+    return GeoMapState.buildMarkedMap(context, locator, getImagePosition());
   }
 }
