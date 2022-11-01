@@ -16,7 +16,7 @@ import 'camera.dart';
 import 'data/draft.json.dart';
 import 'data/album.geojson.dart';
 import 'services/crossplatformshare.dart';
-import 'map.dart';
+import 'geomap.dart';
 import 'fullscreenimageview.dart';
 import 'sessioncontroller.dart';
 import 'draftstorage.dart';
@@ -150,14 +150,6 @@ class PhotoviewState extends State<Photoview> {
     }
   }
 
-  GeoMap buildMap() {
-    GeoMap map = GeoMap(
-        imageLatitude: imageLatitude,
-        imageLongitude: imageLongitude,
-        historicalPhotoUri: widget.historicalPhotoUri);
-    return map;
-  }
-
   @override
   void initState() {
     if (widget.historicalCoordinates.hasCoordinates()) {
@@ -247,6 +239,15 @@ class PhotoviewState extends State<Photoview> {
         return horizontalPreview(context);
       }
     });
+  }
+
+  // build map for embedding in to view
+  GeoMap buildMap() {
+    GeoMap map = GeoMap(
+        imageLatitude: imageLatitude,
+        imageLongitude: imageLongitude,
+        historicalPhotoUri: widget.historicalPhotoUri);
+    return map;
   }
 
   // open map from top-right dropdown while looking at single image:
@@ -484,13 +485,13 @@ class PhotoviewState extends State<Photoview> {
   }
 
   // because we show markers with the map lets call it marked map, not "toolkitmap"
-  // TODO: compare with the one in map.dart, duplication?
+  // TODO: compare with the one in geomap.dart, duplication?
   // this is for some reason different from when opening from dropdown menu?
   // this shows map embedded in the photo view, but map contents should be same
   // regardless how the view is showing it..
   // -> unify, map contents should be same either way..
   Widget buildMarkedMap(BuildContext context) {
 
-    return GeoMapState.buildMarkedMap(context, locator, getImagePosition());
+    return GeoMapState.buildMarkedMap(locator, getImagePosition());
   }
 }
