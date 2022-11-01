@@ -12,6 +12,7 @@ class GeoMap extends StatefulWidget {
   final double imageLatitude;
   final double imageLongitude;
   final String historicalPhotoUri;
+  //LatLng? imagePosition;
 
   const GeoMap({
     Key? key,
@@ -52,7 +53,7 @@ class GeoMapState extends State<GeoMap> {
       appBar: AppBar(title: Text(AppLocalizations.getText(context, 'imageMapScreen-appbarTitle'))),
       body: Stack(children: [
         Positioned(
-            child: buildMapWidget(context, mapController, locator, widget.getImagePosition())),
+            child: buildMapWidget(mapController, locator, widget.getImagePosition())),
          GestureDetector(
             onTap: () {
               Navigator.pop(context);
@@ -63,6 +64,7 @@ class GeoMapState extends State<GeoMap> {
                   constraints: const BoxConstraints(
                     maxHeight: 350,
                   ),
+                  // photo is shown as small thumbnail while viewing local area map (street map)
                   child: imageStorage.getCachedNetworkImage(widget.historicalPhotoUri, BoxFit.contain),
                 ))),
       ]),
@@ -88,7 +90,7 @@ class GeoMapState extends State<GeoMap> {
 
   // nearly identical with second case when embedded in view with photo
   // -> combine cases
-  static Widget buildMapWidget(BuildContext context, MapController mapController, AppLocator locator, LatLng imgPos) {
+  static Widget buildMapWidget(MapController mapController, AppLocator locator, LatLng imgPos) {
     LatLng locPos = locator.getLatLong();
     List<Marker> markerList = [];
 
@@ -135,9 +137,18 @@ class GeoMapState extends State<GeoMap> {
   // this is called when opening map from button on screen (photoview),
   // which for some reason is different from when opening from the dropdown menu..
   // -> should use same code for both, no reason why these are different
-  static Widget buildMarkedMap(BuildContext context, AppLocator locator, LatLng imgPos) {
+  static Widget buildMarkedMap(AppLocator locator, LatLng imgPos) {
     LatLng locPos = locator.getLatLong();
     List<Marker> markerList = [];
+
+    MapOptions options = MapOptions(
+      bounds: LatLngBounds(imgPos, locPos),
+      interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
+      zoom: 17.0,
+      boundsOptions: const FitBoundsOptions(
+        padding: EdgeInsets.all(50),
+      ),
+    );
 
     if (locPos.latitude != 0 && locPos.longitude != 0) {
       Marker userMarker = getMarker(locPos, (ctx) => const Icon(Icons.location_pin, color: Colors.blue));
@@ -150,14 +161,7 @@ class GeoMapState extends State<GeoMap> {
     }
 
     FlutterMap map = FlutterMap(
-        options: MapOptions(
-          bounds: LatLngBounds(imgPos, locPos),
-          interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
-          zoom: 17.0,
-          boundsOptions: const FitBoundsOptions(
-            padding: EdgeInsets.all(50),
-          ),
-        ),
+        options: options,
         children: [
           getMapTilelayer(),
           MarkerLayer(markers: markerList)
