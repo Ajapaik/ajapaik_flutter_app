@@ -60,20 +60,21 @@ class ImageStorage {
     return Image.network(filename);
   }
 
-  Widget getImageBoxed(String filename) {
+  // can we just remove width and height entirely?
+  Widget getImageBoxed(String filename, [double? height, double? width]) {
     if (isNetworkFile(filename) == false && kIsWeb == false) {
       File file = File(filename);
       if (file.existsSync()) {
         // not supported on flutter web-version
         return Image.file(file,
-            fit: BoxFit.contain, height: 8000, width: 8000); // <- are the sizes really necessary at all?
+            fit: BoxFit.contain, height: height, width: width); // <- are the sizes really necessary at all?
       }
     }
     if (getDomain(filename) == "ajapaik.ee") {
-      return CachedNetworkImage(imageUrl: filename, height: 8000, width: 8000); // <- are the sizes really necessary at all?
+      return CachedNetworkImage(imageUrl: filename, height: height, width: width); // <- are the sizes really necessary at all?
     }
     return Image.network(filename,
-          fit: BoxFit.contain, height: 8000, width: 8000); // <- are the sizes really necessary at all?
+          fit: BoxFit.contain, height: height, width: width); // <- are the sizes really necessary at all?
   }
 
   // TODO: check if caching is allowed, if there are cross-domain issues
