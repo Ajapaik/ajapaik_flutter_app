@@ -141,15 +141,6 @@ class PhotoviewState extends State<Photoview> {
     });
   }
 
-  void launchInfo() async {
-    Uri url = Uri.parse(widget.historicalSrcUrl);
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
-    } else {
-      throw 'Could not launch $widget.historicalSurl';
-    }
-  }
-
   @override
   void initState() {
     if (widget.historicalCoordinates.hasCoordinates()) {
@@ -184,7 +175,7 @@ class PhotoviewState extends State<Photoview> {
     }
     //ImageMenu.menuInfo
     if (result == 1) {
-      launchInfo();
+      launchInfoUrl();
     }
     //ImageMenu.menuMap
     if (result == 2) {
@@ -242,6 +233,7 @@ class PhotoviewState extends State<Photoview> {
   }
 
   // build map for embedding in to view
+  /*
   GeoMap buildMap() {
     GeoMap map = GeoMap(
         imageLatitude: imageLatitude,
@@ -249,10 +241,12 @@ class PhotoviewState extends State<Photoview> {
         historicalPhotoUri: widget.historicalPhotoUri);
     return map;
   }
+  */
 
   // open map from top-right dropdown while looking at single image:
   // app view is changed to a map instead of showing photo + map
   openImageMapScreen() async {
+    locator.updatePosition();
     return await Navigator.push(
         context,
         MaterialPageRoute(
@@ -472,16 +466,21 @@ class PhotoviewState extends State<Photoview> {
                       ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () async {
-                          Uri url = Uri.parse(widget.historicalSrcUrl);
-                          if (await canLaunchUrl(url)) {
-                            await launchUrl(url);
-                          } else {
-                            throw 'Could not launch $widget.historicalSurl';
-                          }
+                          launchInfoUrl();
                         }),
                 ),
               ])),
     );
+  }
+
+  void launchInfoUrl() async {
+    Uri url = Uri.parse(widget.historicalSrcUrl);
+    bool isLaunchable = await canLaunchUrl(url);
+    if (isLaunchable) {
+      await launchUrl(url);
+    } else {
+      throw 'Could not launch $widget.historicalSurl';
+    }
   }
 
   // because we show markers with the map lets call it marked map, not "toolkitmap"
@@ -491,7 +490,7 @@ class PhotoviewState extends State<Photoview> {
   // regardless how the view is showing it..
   // -> unify, map contents should be same either way..
   Widget buildMarkedMap(BuildContext context) {
-
+    locator.updatePosition();
     return GeoMapState.buildMarkedMap(locator, getImagePosition());
   }
 }
