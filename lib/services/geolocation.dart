@@ -72,7 +72,7 @@ class AppLocator extends Geolocator  {
   */
 
   // just make sure we hav other values apart from initial position?
-  void init() {
+  void init() async {
     if (isInitialized == false) {
       updatePosition();
       isInitialized = true;

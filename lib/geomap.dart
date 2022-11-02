@@ -12,7 +12,6 @@ class GeoMap extends StatefulWidget {
   final double imageLatitude;
   final double imageLongitude;
   final String historicalPhotoUri;
-  //LatLng? imagePosition;
 
   const GeoMap({
     Key? key,

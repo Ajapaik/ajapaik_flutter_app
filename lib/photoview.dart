@@ -147,9 +147,11 @@ class PhotoviewState extends State<Photoview> {
       imageLatitude = widget.historicalCoordinates.getLatitude();
       imageLongitude = widget.historicalCoordinates.getLongitude();
     }
-    locator.init();
 
     mapInfoVisibility = false;
+
+    // check we have some kind of idea about position
+    locator.updatePosition();
 
     super.initState();
   }
@@ -163,7 +165,7 @@ class PhotoviewState extends State<Photoview> {
   // and then will get into confusing situation when it finally responds
   // -> either make it clear UI is waiting or avoid opening after user has navigated
   // out of the view to avoid tricky situations later
-  void onSelectedImageMenu(result) async {
+  void onSelectedImageMenu(BuildContext context, result) async {
     //ImageMenu.menuShare
     if (result == 0) {
       // disable sharing when using web-application?
@@ -179,21 +181,36 @@ class PhotoviewState extends State<Photoview> {
     }
     //ImageMenu.menuMap
     if (result == 2) {
-      openImageMapScreen();
+      openImageMapScreen(context);
+    }
+  }
+
+  Widget getImageComparison(BuildContext context, orientation) {
+    String distanceToImage = getDistanceToImage();
+
+    if (orientation == Orientation.portrait) {
+      return verticalPreview(context, distanceToImage);
+    } else {
+      return horizontalPreview(context, distanceToImage);
     }
   }
 
   // this makes the top-right corner dropdown menu and related actions to it
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    Column bodycol = Column(children: [
+      Flexible(child:
+      OrientationBuilder(builder: (context, orientation) {
+        return getImageComparison(context, orientation); })),
+    ]);
+    Scaffold s = Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
           actions: [
             PopupMenuButton<int>(
                 icon: const Icon(Icons.menu, color: Colors.white),
                 onSelected: (result) async {
-                  onSelectedImageMenu(result);
+                  onSelectedImageMenu(context, result);
                 },
                 itemBuilder: (context) => [
                       // disable sharing when using web-application?
@@ -216,37 +233,14 @@ class PhotoviewState extends State<Photoview> {
                           )),
                     ])
           ]),
-      body: Column(children: [
-        Flexible(child: getImageComparison(context)),
-      ]),
+      body: bodycol
     );
+    return s;
   }
-
-  Widget getImageComparison(BuildContext context) {
-    return OrientationBuilder(builder: (context, orientation) {
-      if (orientation == Orientation.portrait) {
-        return verticalPreview(context);
-      } else {
-        return horizontalPreview(context);
-      }
-    });
-  }
-
-  // build map for embedding in to view
-  /*
-  GeoMap buildMap() {
-    GeoMap map = GeoMap(
-        imageLatitude: imageLatitude,
-        imageLongitude: imageLongitude,
-        historicalPhotoUri: widget.historicalPhotoUri);
-    return map;
-  }
-  */
 
   // open map from top-right dropdown while looking at single image:
   // app view is changed to a map instead of showing photo + map
-  openImageMapScreen() async {
-    locator.updatePosition();
+  Future<Widget> openImageMapScreen(BuildContext context) async {
     return await Navigator.push(
         context,
         MaterialPageRoute(
@@ -255,6 +249,13 @@ class PhotoviewState extends State<Photoview> {
                   imageLongitude: imageLongitude,
                   historicalPhotoUri: widget.historicalPhotoUri,
                 )));
+  }
+  GeoMap buildGeomap() {
+    return GeoMap(
+      imageLatitude: imageLatitude,
+      imageLongitude: imageLongitude,
+      historicalPhotoUri: widget.historicalPhotoUri,
+    );
   }
 
   String getDistanceToImage() {
@@ -281,8 +282,8 @@ class PhotoviewState extends State<Photoview> {
     return distanceToImage;
   }
 
-  Widget getRephotoNumberIconBottomLeft(numberOfRephotos) {
-    IconData numberOfRephotosIcon=getNumberOfRephotosIcon(numberOfRephotos);
+  Widget getRephotoNumberIconBottomLeft(BuildContext context, int numberOfRephotos) {
+    IconData numberOfRephotosIcon = getNumberOfRephotosIcon(numberOfRephotos);
 
     return Visibility(
         visible: numberOfRephotos > 0,
@@ -290,15 +291,19 @@ class PhotoviewState extends State<Photoview> {
             right: 5.0,
             bottom: 10.0,
             child: IconButton(
-                icon: new Icon(numberOfRephotosIcon),
+                icon: Icon(numberOfRephotosIcon),
                 onPressed: () async {
-                  List<Album> _rephotoAlbumData = await onFetchAlbum();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              RephotoCompareView(album: _rephotoAlbumData)));
+                  openRephotoView(context);
                 })));
+  }
+  openRephotoView(BuildContext context) async {
+    List<Album> rephotoAlbumData = await onFetchAlbum();
+    if (!mounted) return; // async gap
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                RephotoCompareView(album: rephotoAlbumData)));
   }
   onFetchAlbum() async {
     String url = getDatasource();
@@ -312,8 +317,7 @@ class PhotoviewState extends State<Photoview> {
     return fetchAlbum(url);
   }
 
-  Widget verticalPreview(BuildContext context) {
-    String distanceToImage = getDistanceToImage();
+  Widget verticalPreview(BuildContext context, String distanceToImage) {
 
     return Column(children: [
       ConstrainedBox(
@@ -332,7 +336,7 @@ class PhotoviewState extends State<Photoview> {
               child: Stack(children: [
                 // another one that could use caching
                 imageStorage.getImageBoxed(widget.historicalPhotoUri),
-                getRephotoNumberIconBottomLeft(widget.numberOfRephotos)
+                getRephotoNumberIconBottomLeft(context, widget.numberOfRephotos)
               ]))),
       Padding(
           padding: const EdgeInsets.only(top: 20, bottom: 20),
@@ -366,14 +370,13 @@ class PhotoviewState extends State<Photoview> {
               child: Align(
                   alignment: Alignment.bottomCenter,
                   child: GestureDetector(
-                      onDoubleTap: openImageMapScreen,
-                      child: buildMarkedMap(context))))),
+                      onDoubleTap: buildGeomap,
+                      child: buildMarkedMap())))),
       Visibility(visible: mapInfoVisibility == false, child: buildInfoText()),
     ]);
   }
 
-  Widget horizontalPreview(BuildContext context) {
-    String distanceToImage = getDistanceToImage();
+  Widget horizontalPreview(BuildContext context, String distanceToImage) {
 
     return Row(
       children: [
@@ -390,7 +393,7 @@ class PhotoviewState extends State<Photoview> {
               },
               child: Stack(children: [
                 imageStorage.getCachedNetworkImage(widget.historicalPhotoUri),
-                getRephotoNumberIconBottomLeft(widget.numberOfRephotos)
+                getRephotoNumberIconBottomLeft(context, widget.numberOfRephotos)
               ])),
         ),
         Visibility(
@@ -399,8 +402,8 @@ class PhotoviewState extends State<Photoview> {
                 child: Align(
                     alignment: Alignment.bottomCenter,
                     child: GestureDetector(
-                        onDoubleTap: openImageMapScreen,
-                        child: buildMarkedMap(context))))),
+                        onDoubleTap: buildGeomap,
+                        child: buildMarkedMap())))),
         Visibility(
             visible: mapInfoVisibility == false, child: buildInfoText()),
         Padding(
@@ -489,8 +492,7 @@ class PhotoviewState extends State<Photoview> {
   // this shows map embedded in the photo view, but map contents should be same
   // regardless how the view is showing it..
   // -> unify, map contents should be same either way..
-  Widget buildMarkedMap(BuildContext context) {
-    locator.updatePosition();
+  Widget buildMarkedMap() {
     return GeoMapState.buildMarkedMap(locator, getImagePosition());
   }
 }
