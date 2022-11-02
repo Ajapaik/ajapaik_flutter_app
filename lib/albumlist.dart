@@ -161,20 +161,26 @@ class AlbumListPageState extends State<AlbumListPage> {
     super.dispose();
   }
 
+  // actions from buttons on lower part of the screen:
+  // * login
+  // * photo library/camera selection
+  // * toggle image footer text visibility
+  //
+  void bottomNavigationBarOnTap(index) {
+    if (index == 0) {
+      Get.to(DisplayLoginScreen())?.then((_) => setState(() {}));
+    } else if (index == 1) {
+      showPicker(context);
+    } else if (index == 2) {
+      setState(() {
+        nameVisibility = !nameVisibility;
+        prefs.saveNameVisibility(nameVisibility);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    void bottomNavigationBarOnTap(index) {
-      if (index == 0) {
-        Get.to(DisplayLoginScreen())?.then((_) => setState(() {}));
-      } else if (index == 1) {
-        showPicker(context);
-      } else if (index == 2) {
-        setState(() {
-          nameVisibility = !nameVisibility;
-          prefs.saveNameVisibility(nameVisibility);
-        });
-      }
-    }
 
     Color visibilityIconColor = searchVisibility
         ? Theme.of(context).disabledColor
@@ -354,13 +360,10 @@ class AlbumList extends StatelessWidget {
       child: Column(children: [
         Stack(children: [
           imageStorage.getCachedNetworkImage(feat.properties.thumbnail!),
-          getRephotoNumberIconBottomLeft(feat.properties.rephotos!.toInt()),
+          getRephotoNumberIconBottomLeft(feat.properties.rephotos!),
         ]),
         Visibility(
-          child: Text(
-            feat.properties.name.toString(),
-            textAlign: TextAlign.center,
-          ),
+          child: Text(feat.properties.name!, textAlign: TextAlign.center),
           visible: toggle,
         ),
       ]),
