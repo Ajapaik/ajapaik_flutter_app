@@ -282,7 +282,9 @@ class PhotoviewState extends State<Photoview> {
     return distanceToImage;
   }
 
-  Widget getRephotoNumberIconBottomLeft(BuildContext context, int numberOfRephotos) {
+  // in photoview, overlay number of new photos in a corner:
+  // select icon based on count of new photos available
+  Widget getRephotoNumberIcon(BuildContext context, int numberOfRephotos) {
     IconData numberOfRephotosIcon = getNumberOfRephotosIcon(numberOfRephotos);
 
     return Visibility(
@@ -296,6 +298,8 @@ class PhotoviewState extends State<Photoview> {
                   openRephotoView(context);
                 })));
   }
+
+  // open view with carousel of newer photos
   openRephotoView(BuildContext context) async {
     List<Album> rephotoAlbumData = await onFetchAlbum();
     if (!mounted) return; // async gap
@@ -305,6 +309,7 @@ class PhotoviewState extends State<Photoview> {
             builder: (context) =>
                 RephotoCompareView(album: rephotoAlbumData)));
   }
+
   onFetchAlbum() async {
     String url = getDatasource();
     url += widget.historicalPhotoId.toString();
@@ -336,7 +341,7 @@ class PhotoviewState extends State<Photoview> {
               child: Stack(children: [
                 // another one that could use caching
                 imageStorage.getImageBoxed(widget.historicalPhotoUri),
-                getRephotoNumberIconBottomLeft(context, widget.numberOfRephotos)
+                getRephotoNumberIcon(context, widget.numberOfRephotos)
               ]))),
       Padding(
           padding: const EdgeInsets.only(top: 20, bottom: 20),
@@ -393,7 +398,7 @@ class PhotoviewState extends State<Photoview> {
               },
               child: Stack(children: [
                 imageStorage.getCachedNetworkImage(widget.historicalPhotoUri),
-                getRephotoNumberIconBottomLeft(context, widget.numberOfRephotos)
+                getRephotoNumberIcon(context, widget.numberOfRephotos)
               ])),
         ),
         Visibility(
