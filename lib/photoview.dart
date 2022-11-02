@@ -322,6 +322,16 @@ class PhotoviewState extends State<Photoview> {
     return fetchAlbum(url);
   }
 
+  // open large view of the old image
+  onOpenFullscreenPreview(BuildContext context) async {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => FullScreenImageView(
+              historicalPhotoUri: widget.historicalPhotoUri,
+            )));
+  }
+
   Widget verticalPreview(BuildContext context, String distanceToImage) {
 
     return Column(children: [
@@ -331,12 +341,7 @@ class PhotoviewState extends State<Photoview> {
           ),
           child: GestureDetector(
               onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => FullScreenImageView(
-                              historicalPhotoUri: widget.historicalPhotoUri,
-                            )));
+                onOpenFullscreenPreview(context);
               },
               child: Stack(children: [
                 // another one that could use caching
@@ -389,12 +394,7 @@ class PhotoviewState extends State<Photoview> {
           flex: 1,
           child: GestureDetector(
               onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => FullScreenImageView(
-                              historicalPhotoUri: widget.historicalPhotoUri,
-                            )));
+                onOpenFullscreenPreview(context);
               },
               child: Stack(children: [
                 imageStorage.getCachedNetworkImage(widget.historicalPhotoUri),
