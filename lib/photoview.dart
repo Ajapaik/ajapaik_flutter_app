@@ -372,8 +372,7 @@ class PhotoviewState extends State<Photoview> {
           child: Expanded(
               child: Align(
                   alignment: Alignment.bottomCenter,
-                  child: GestureDetector(
-                      child: buildMarkedMap())))),
+                  child: buildEmbeddedMap()))),
       Visibility(visible: mapInfoVisibility == false, child: buildInfoText()),
     ]);
   }
@@ -398,8 +397,7 @@ class PhotoviewState extends State<Photoview> {
             child: Expanded(
                 child: Align(
                     alignment: Alignment.bottomCenter,
-                    child: GestureDetector(
-                        child: buildMarkedMap())))),
+                    child: buildEmbeddedMap()))),
         Visibility(
             visible: mapInfoVisibility == false, child: buildInfoText()),
         Padding(
@@ -488,7 +486,7 @@ class PhotoviewState extends State<Photoview> {
   // this shows map embedded in the photo view, but map contents should be same
   // regardless how the view is showing it..
   // -> unify, map contents should be same either way..
-  Widget buildMarkedMap() {
-    return GeoMapState.buildMarkedMap(locator, getImagePosition());
+  Widget buildEmbeddedMap() {
+    return GeoMapState.buildEmbeddedMap(locator, getImagePosition());
   }
 }

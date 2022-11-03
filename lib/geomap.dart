@@ -29,8 +29,6 @@ class GeoMap extends StatefulWidget {
 }
 
 class GeoMapState extends State<GeoMap> {
-  late final MapController mapController;
-
   final locator = Get.find<AppLocator>();
   final imageStorage = Get.find<ImageStorage>();
 
@@ -38,7 +36,6 @@ class GeoMapState extends State<GeoMap> {
   void initState() {
     super.initState();
     locator.init();
-    mapController = MapController();
   }
 
   @override
@@ -46,16 +43,21 @@ class GeoMapState extends State<GeoMap> {
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
+    // this builds the full screen view and shows map in it
+    // with thumbnail of an image
     Scaffold s = Scaffold(
       appBar: AppBar(title: Text(AppLocalizations.getText(context, 'imageMapScreen-appbarTitle'))),
       body: Stack(children: [
         Positioned(
-            child: buildMapWidget(mapController, locator, widget.getImagePosition())),
+            child: buildMapWidget(locator, widget.getImagePosition())),
          GestureDetector(
             onTap: () {
-              Navigator.pop(context);
+              // if user taps on the map, logical result would be to zoom in, right?
+              // -> back button is separate
+              //Navigator.pop(context);
             },
              child: Padding(
                 padding: const EdgeInsets.only(top: 650, left: 10, bottom: 10),
@@ -71,7 +73,48 @@ class GeoMapState extends State<GeoMap> {
     return s;
   }
 
-  static Marker getMarker(LatLng point, builder) {
+  // nearly identical with second case when embedded in view with photo
+  // -> combine cases
+  static Widget buildMapWidget(AppLocator locator, LatLng imgPos) {
+    if (locator.isRealPosition == true) {
+      return GeoMapView(imagelocation: imgPos, currentLocation: locator.getLatLong() ).buildFullscreen();
+    }
+    else {
+      return GeoMapView(imagelocation: imgPos).buildFullscreen();
+    }
+  }
+
+  // this is called when opening map from button on screen (photoview),
+  // which for some reason is different from when opening from the dropdown menu..
+  // -> should use same code for both, no reason why these are different
+  static Widget buildEmbeddedMap(AppLocator locator, LatLng imgPos) {
+    if (locator.isRealPosition == true) {
+      return GeoMapView(imagelocation: imgPos, currentLocation: locator.getLatLong() ).buildEmbedded();
+    }
+    else {
+      return GeoMapView(imagelocation: imgPos).buildEmbedded();
+    }
+  }
+
+}
+
+class GeoMapView {
+  final LatLng imagelocation;
+  LatLng? currentLocation;
+  final MapController mapController = MapController();
+
+  GeoMapView({
+              required this.imagelocation,
+              this.currentLocation}) {
+  }
+
+  void initState() {
+  }
+
+  void dispose() {
+  }
+
+  Marker getMarker(LatLng point, builder) {
     return Marker(
         width: 80.0,
         height: 80.0,
@@ -79,29 +122,22 @@ class GeoMapState extends State<GeoMap> {
         builder: builder);
   }
 
-  static TileLayer getMapTilelayer() {
+  TileLayer getMapTilelayer() {
     return TileLayer(
       urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
       userAgentPackageName: 'ee.ajapaik.ajapaikFlutterApp',
     );
   }
 
-
-  // nearly identical with second case when embedded in view with photo
-  // -> combine cases
-  static Widget buildMapWidget(MapController mapController, AppLocator locator, LatLng imgPos) {
-    LatLng locPos = locator.getLatLong();
-    List<Marker> markerList = [];
-
+  MapOptions getMapOptions(double? minZoom) {
     MapOptions options;
-    // TODO: use accuracry instead
-    if (locator.isRealPosition == true) {
+    if (currentLocation != null) {
       // we know both where the picture was taken and where we are currently
       options = MapOptions(
-        bounds: LatLngBounds(imgPos, locPos),
+        bounds: LatLngBounds(imagelocation, currentLocation),
         interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
         zoom: 17.0,
-        minZoom: 2.5,
+        minZoom: minZoom,
         boundsOptions: const FitBoundsOptions(
           padding: EdgeInsets.all(100),
         ),
@@ -109,19 +145,31 @@ class GeoMapState extends State<GeoMap> {
     } else {
       // we only know where the picture was taken, not where we are currently
       options = MapOptions(
-        center: imgPos,
+        center: imagelocation,
         interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
         zoom: 17.0,
       );
     }
+    return options;
+  }
 
-    if (locator.isRealPosition == true) {
-      Marker userMarker = getMarker(locPos, (ctx) => const Icon(Icons.location_pin, color: Colors.blue));
+  List<Marker> getMarkerList() {
+    List<Marker> markerList = [];
+    if (currentLocation != null) {
+      Marker userMarker = getMarker(currentLocation!, (ctx) => const Icon(Icons.location_pin, color: Colors.blue));
       markerList.add(userMarker);
     }
 
-    Marker imageMarker = getMarker(imgPos, (ctx) => const Icon(Icons.location_pin, color: Colors.red));
-    markerList.add(imageMarker);
+    if (imagelocation.latitude != 0 && imagelocation.longitude != 0) {
+      Marker imageMarker = getMarker(imagelocation, (ctx) => const Icon(Icons.location_pin, color: Colors.red));
+      markerList.add(imageMarker);
+    }
+    return markerList;
+  }
+
+  Widget buildFullscreen() {
+    MapOptions options = getMapOptions(2.5);
+    List<Marker> markerList = getMarkerList();
 
     FlutterMap map = FlutterMap(
         mapController: mapController, // is there reason this wasn't included in the other? static map?
@@ -133,31 +181,10 @@ class GeoMapState extends State<GeoMap> {
     return map;
   }
 
-  // this is called when opening map from button on screen (photoview),
-  // which for some reason is different from when opening from the dropdown menu..
-  // -> should use same code for both, no reason why these are different
-  static Widget buildMarkedMap(AppLocator locator, LatLng imgPos) {
-    LatLng locPos = locator.getLatLong();
-    List<Marker> markerList = [];
 
-    MapOptions options = MapOptions(
-      bounds: LatLngBounds(imgPos, locPos),
-      interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
-      zoom: 17.0,
-      boundsOptions: const FitBoundsOptions(
-        padding: EdgeInsets.all(50),
-      ),
-    );
-
-    if (locPos.latitude != 0 && locPos.longitude != 0) {
-      Marker userMarker = getMarker(locPos, (ctx) => const Icon(Icons.location_pin, color: Colors.blue));
-      markerList.add(userMarker);
-    }
-
-    if (imgPos.latitude != 0 && imgPos.longitude != 0) {
-      Marker imageMarker = getMarker(imgPos, (ctx) => const Icon(Icons.location_pin, color: Colors.red));
-      markerList.add(imageMarker);
-    }
+  Widget buildEmbedded() {
+    MapOptions options = getMapOptions(null); // set some min zoom here too?
+    List<Marker> markerList = getMarkerList();
 
     FlutterMap map = FlutterMap(
         options: options,
@@ -167,5 +194,4 @@ class GeoMapState extends State<GeoMap> {
         ]);
     return map;
   }
-
 }
