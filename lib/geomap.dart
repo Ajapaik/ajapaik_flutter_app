@@ -75,24 +75,12 @@ class GeoMapState extends State<GeoMap> {
 
   // nearly identical with second case when embedded in view with photo
   // -> combine cases
-  static Widget buildMapWidget(AppLocator locator, LatLng imgPos) {
+  static Widget buildMapWidget(AppLocator locator, LatLng imagePos) {
     if (locator.isRealPosition == true) {
-      return GeoMapView(imagelocation: imgPos, currentLocation: locator.getLatLong() ).buildFullscreen();
+      return GeoMapView(imagelocation: imagePos, currentLocation: locator.getLatLong() ).buildMapview();
     }
     else {
-      return GeoMapView(imagelocation: imgPos).buildFullscreen();
-    }
-  }
-
-  // this is called when opening map from button on screen (photoview),
-  // which for some reason is different from when opening from the dropdown menu..
-  // -> should use same code for both, no reason why these are different
-  static Widget buildEmbeddedMap(AppLocator locator, LatLng imgPos) {
-    if (locator.isRealPosition == true) {
-      return GeoMapView(imagelocation: imgPos, currentLocation: locator.getLatLong() ).buildEmbedded();
-    }
-    else {
-      return GeoMapView(imagelocation: imgPos).buildEmbedded();
+      return GeoMapView(imagelocation: imagePos).buildMapview();
     }
   }
 
@@ -167,23 +155,8 @@ class GeoMapView {
     return markerList;
   }
 
-  Widget buildFullscreen() {
+  Widget buildMapview() {
     MapOptions options = getMapOptions(2.5);
-    List<Marker> markerList = getMarkerList();
-
-    FlutterMap map = FlutterMap(
-        mapController: mapController, // is there reason this wasn't included in the other? static map?
-        options: options,
-        children: [
-          getMapTilelayer(),
-          MarkerLayer(markers: markerList)
-        ]);
-    return map;
-  }
-
-
-  Widget buildEmbedded() {
-    MapOptions options = getMapOptions(null); // set some min zoom here too?
     List<Marker> markerList = getMarkerList();
 
     FlutterMap map = FlutterMap(

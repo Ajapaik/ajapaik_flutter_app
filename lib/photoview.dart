@@ -487,6 +487,6 @@ class PhotoviewState extends State<Photoview> {
   // regardless how the view is showing it..
   // -> unify, map contents should be same either way..
   Widget buildEmbeddedMap() {
-    return GeoMapState.buildEmbeddedMap(locator, getImagePosition());
+    return GeoMapState.buildMapWidget(locator, getImagePosition());
   }
 }
