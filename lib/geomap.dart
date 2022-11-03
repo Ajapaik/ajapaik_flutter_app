@@ -187,6 +187,7 @@ class GeoMapView {
     List<Marker> markerList = getMarkerList();
 
     FlutterMap map = FlutterMap(
+        mapController: mapController,
         options: options,
         children: [
           getMapTilelayer(),
