@@ -250,13 +250,6 @@ class PhotoviewState extends State<Photoview> {
                   historicalPhotoUri: widget.historicalPhotoUri,
                 )));
   }
-  GeoMap buildGeomap() {
-    return GeoMap(
-      imageLatitude: imageLatitude,
-      imageLongitude: imageLongitude,
-      historicalPhotoUri: widget.historicalPhotoUri,
-    );
-  }
 
   String getDistanceToImage() {
     String distanceToImage = '';
@@ -380,7 +373,6 @@ class PhotoviewState extends State<Photoview> {
               child: Align(
                   alignment: Alignment.bottomCenter,
                   child: GestureDetector(
-                      onDoubleTap: buildGeomap,
                       child: buildMarkedMap())))),
       Visibility(visible: mapInfoVisibility == false, child: buildInfoText()),
     ]);
@@ -407,7 +399,6 @@ class PhotoviewState extends State<Photoview> {
                 child: Align(
                     alignment: Alignment.bottomCenter,
                     child: GestureDetector(
-                        onDoubleTap: buildGeomap,
                         child: buildMarkedMap())))),
         Visibility(
             visible: mapInfoVisibility == false, child: buildInfoText()),
