@@ -285,157 +285,169 @@ class CameraScreenState extends State<CameraScreen> {
     });
   }
 
+  Widget buildCameraUi(BuildContext context) {
+    return Stack(
+        clipBehavior: Clip.none,
+        alignment: Alignment.center,
+        children: <Widget>[
+          Center(
+
+            // Red borders for debugging
+              child: Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(
+//                      color: Colors.pink[800]!,
+                        width: 1,
+                      )), //             <--- BoxDecoration here
+
+                  // Camera preview window
+                  child: FutureBuilder<void>(
+                    future: initializeCameraControllerFuture,
+                    builder: (context, snapshot) {
+                      /* Initialize camera */
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        // If the Future is complete, disable flash and  display the preview.
+                        cameraController.setFlashMode(FlashMode.off);
+                        return CameraPreview(cameraController);
+                      } else {
+                        // Otherwise, display a loading indicator.
+                        return const Center(
+                            child: CircularProgressIndicator());
+                      }
+                    },
+                  ))),
+
+          // Old image
+          Center(
+            // Red borders for debugging
+              child: Container(
+                  key: historicalPhotoKey,
+                  decoration: BoxDecoration(
+                      border: Border.all(
+//                      color: Colors.red[800]!,
+                        width: 1,
+                      )), //             <--- BoxDecoration here
+
+                  // Actual pinch-to-zoom image
+                  child: InteractiveViewer(
+                      panEnabled: false,
+                      maxScale: 2,
+                      minScale: 0.3,
+                      transformationController: historicalPhotoController,
+                      boundaryMargin: const EdgeInsets.all(double.infinity),
+//                        clipBehavior: Clip.none,
+
+                      onInteractionUpdate: (details) {
+                        //print("onInteractionUpdate:" + details.toString());
+                        if (details.scale != 1) {
+                          pinchToZoomBusy = true;
+                        }
+                        movehistoricalPhotoToCenter();
+                      },
+                      onInteractionStart: (details) {
+                        // pinchToZoomBusy=true;
+                      },
+                      onInteractionEnd: (details) {
+                        pinchToZoomBusy = false;
+                      },
+                      child: Listener(
+                          onPointerMove: (details) {
+                            onPointerMove(details);
+                          },
+                          child: Transform.rotate(
+                              angle: 0, // 90 degree angle in radians
+                              child: Transform(
+                                  alignment: Alignment.center,
+                                  transform: Matrix4.rotationY(
+                                      historicalPhotoFlipped == true
+                                          ? math.pi
+                                          : 0),
+                                  child: getImage(
+                                      widget.historicalPhotoUri))))))),
+          // Take photo button
+          // TODO: should show as "greyed out" or similar when it isn't possible
+          // (no permissions or no camera on device)
+          Positioned.fill(
+              child: Align(
+                  alignment: MediaQuery.of(context).orientation ==
+                      Orientation.portrait
+                      ? Alignment.bottomCenter
+                      : Alignment.centerRight,
+                  child: Container(
+                      padding: const EdgeInsets.all(7),
+                      decoration: ShapeDecoration(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        shape: const CircleBorder(),
+                      ),
+                      margin: const EdgeInsets.all(10),
+                      child: ElevatedButton(
+                        child: const Icon(Icons.camera, size: 85),
+                        style: ElevatedButton.styleFrom(
+                            shape: const CircleBorder()),
+                        onPressed: onTakePicture,
+                      )))),
+
+          // Move to previous view button
+          Positioned.fill(
+              child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                      decoration: ShapeDecoration(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        shape: const CircleBorder(),
+                      ),
+                      margin: const EdgeInsets.only(top: 32),
+                      child: const BackButton()))),
+
+          // Flip old photo button
+          Positioned.fill(
+              child: Align(
+                  alignment: Alignment.topRight,
+                  child: Container(
+                      decoration: ShapeDecoration(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        shape: const CircleBorder(),
+                      ),
+                      margin: const EdgeInsets.only(top: 32),
+                      child: IconButton(
+                          color: historicalPhotoFlipped
+                              ? Colors.green
+                              : Colors.white,
+                          icon: const Icon(Icons.flip),
+                          iconSize: 36.0,
+                          onPressed: () {
+                            setState(() {
+                              historicalPhotoFlipped = !historicalPhotoFlipped;
+                            });
+                          })))),
+        ]);
+  }
+
+  // FIXME: Orientation builder makes browser as fullscreen in web platform.
+  // as workaround we don't use it on web.
+  Widget addOrientationBuilderIfNotWeb(BuildContext context) {
+    if (kIsWeb) {
+      return buildCameraUi(context);
+    } else {
+      return OrientationBuilder(builder: (context, orientation)
+      {
+        onOrientationChange(context, orientation);
+        return buildCameraUi(context);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-//      Future.delayed(Duration(milliseconds: 1500), () => fixposition(context) );
+    // Wait until the controller is initialized before displaying the
+    // camera preview. Use a FutureBuilder to display a loading spinner
+    // until the controller has finished initializing.
 
-    return Scaffold(
-        //   appBar: AppBar(title: Text('Take a picture')),
-        // Wait until the controller is initialized before displaying the
-        // camera preview. Use a FutureBuilder to display a loading spinner
-        // until the controller has finished initializing.
-//      body:
+    Scaffold s = Scaffold(
         body: GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: toggleTransparency ,
-        child:OrientationBuilder(builder: (context, orientation) {
-      onOrientationChange(context, orientation);
-
-      return Stack(
-          clipBehavior: Clip.none,
-          alignment: Alignment.center,
-          children: <Widget>[
-            Center(
-
-                // Red borders for debugging
-                child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(
-//                      color: Colors.pink[800]!,
-                      width: 1,
-                    )), //             <--- BoxDecoration here
-
-                    // Camera preview window
-                    child: FutureBuilder<void>(
-                      future: initializeCameraControllerFuture,
-                      builder: (context, snapshot) {
-                        /* Initialize camera */
-                        if (snapshot.connectionState == ConnectionState.done) {
-                          // If the Future is complete, disable flash and  display the preview.
-                          cameraController.setFlashMode(FlashMode.off);
-                          return CameraPreview(cameraController);
-                        } else {
-                          // Otherwise, display a loading indicator.
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        }
-                      },
-                    ))),
-
-            // Old image
-            Center(
-                // Red borders for debugging
-                child: Container(
-                    key: historicalPhotoKey,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-//                      color: Colors.red[800]!,
-                      width: 1,
-                    )), //             <--- BoxDecoration here
-
-                    // Actual pinch-to-zoom image
-                    child: InteractiveViewer(
-                        panEnabled: false,
-                        maxScale: 2,
-                        minScale: 0.3,
-                        transformationController: historicalPhotoController,
-                        boundaryMargin: const EdgeInsets.all(double.infinity),
-//                        clipBehavior: Clip.none,
-
-                        onInteractionUpdate: (details) {
-                          //print("onInteractionUpdate:" + details.toString());
-                          if (details.scale != 1) {
-                            pinchToZoomBusy = true;
-                          }
-                          movehistoricalPhotoToCenter();
-                        },
-                        onInteractionStart: (details) {
-                          // pinchToZoomBusy=true;
-                        },
-                        onInteractionEnd: (details) {
-                          pinchToZoomBusy = false;
-                        },
-                        child: Listener(
-                            onPointerMove: (details) {
-                              onPointerMove(details);
-                            },
-                            child: Transform.rotate(
-                                angle: 0, // 90 degree angle in radians
-                                child: Transform(
-                                    alignment: Alignment.center,
-                                    transform: Matrix4.rotationY(
-                                        historicalPhotoFlipped == true
-                                            ? math.pi
-                                            : 0),
-                                    child: getImage(
-                                        widget.historicalPhotoUri))))))),
-            // Take photo button
-            // TODO: should show as "greyed out" or similar when it isn't possible
-            // (no permissions or no camera on device)
-            Positioned.fill(
-                child: Align(
-                    alignment: MediaQuery.of(context).orientation ==
-                            Orientation.portrait
-                        ? Alignment.bottomCenter
-                        : Alignment.centerRight,
-                    child: Container(
-                        padding: const EdgeInsets.all(7),
-                        decoration: ShapeDecoration(
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          shape: const CircleBorder(),
-                        ),
-                        margin: const EdgeInsets.all(10),
-                        child: ElevatedButton(
-                          child: const Icon(Icons.camera, size: 85),
-                          style: ElevatedButton.styleFrom(
-                              shape: const CircleBorder()),
-                          onPressed: onTakePicture,
-                        )))),
-
-            // Move to previous view button
-            Positioned.fill(
-                child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Container(
-                        decoration: ShapeDecoration(
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          shape: const CircleBorder(),
-                        ),
-                        margin: const EdgeInsets.only(top: 32),
-                        child: const BackButton()))),
-
-            // Flip old photo button
-            Positioned.fill(
-                child: Align(
-                    alignment: Alignment.topRight,
-                    child: Container(
-                        decoration: ShapeDecoration(
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          shape: const CircleBorder(),
-                        ),
-                        margin: const EdgeInsets.only(top: 32),
-                        child: IconButton(
-                            color: historicalPhotoFlipped
-                                ? Colors.green
-                                : Colors.white,
-                            icon: const Icon(Icons.flip),
-                            iconSize: 36.0,
-                            onPressed: () {
-                              setState(() {
-                                historicalPhotoFlipped = !historicalPhotoFlipped;
-                              });
-                            })))),
-          ]);
-    })));
+        child: addOrientationBuilderIfNotWeb(context)));
+    return s;
   }
 }
