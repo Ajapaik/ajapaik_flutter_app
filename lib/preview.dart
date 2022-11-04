@@ -1,17 +1,17 @@
 import 'dart:async';
 import 'dart:ui' as ui;
 import 'dart:math' as math;
+import 'dart:io';
+import 'package:image/image.dart' as img;
 
 import 'services/geolocation.dart';
 import 'package:latlong2/latlong.dart';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:get/get.dart';
 import 'data/draft.json.dart';
 import 'draftstorage.dart';
 import 'imagestorage.dart';
-import 'package:image/image.dart' as img;
 
 // A widget that displays the picture taken by the user.
 
