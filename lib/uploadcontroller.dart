@@ -72,7 +72,7 @@ class UploadController  {
     return request;
   }
 
-  generateUploadRequest(Draft draft) {
+  generateUploadRequest(Draft draft) async {
     var request;
     if (sessionController.getServer() == ServerType.serverAjapaik) {
       request = generateAjapaikUploadRequest(sessionController.getSessionId(),
@@ -91,7 +91,7 @@ class UploadController  {
       // not yet implemented others
       throw UnimplementedError('server request not yet implemented');
     }
-    var multipart = http.MultipartFile.fromPath(
+    var multipart = await http.MultipartFile.fromPath(
         'original', File(draft.imagePath!).path);
     request.files.add(multipart);
     return request;

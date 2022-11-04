@@ -87,7 +87,7 @@ class MyAppState extends State<MyApp> {
     //
     // -> should load localizations first before starting to build UI
     //
-    const String appTitle = "Nearest";
+    const String appTitle = "Ajapaik nearest";
 
     GetMaterialApp gma = GetMaterialApp(
         supportedLocales: AppLocalizations.getSupportedLocales(),
