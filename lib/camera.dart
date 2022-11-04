@@ -80,7 +80,7 @@ class CameraScreenState extends State<CameraScreen> {
       // ->
 
       MaterialPageRoute mpr = MaterialPageRoute(
-        builder: (context) => DisplayPictureScreen(
+        builder: (context) => PreviewScreen(
           // Pass the automatically generated path to
           // the DisplayPictureScreen widget.
             imagePath: image.path,

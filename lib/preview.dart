@@ -16,7 +16,7 @@ import 'imagestorage.dart';
 // A widget that displays the picture taken by the user.
 
 // ignore: must_be_immutable
-class DisplayPictureScreen extends StatefulWidget {
+class PreviewScreen extends StatefulWidget {
   final String imagePath;
   final String historicalImagePath;
   final Orientation? cameraPhotoOrientation;
@@ -26,7 +26,7 @@ class DisplayPictureScreen extends StatefulWidget {
   final Size? cameraPhotoSize;
   final double? historicalPhotoScale;
 
-  const DisplayPictureScreen(
+  const PreviewScreen(
       {Key? key,
       required this.imagePath,
       required this.historicalImagePath,
@@ -39,10 +39,10 @@ class DisplayPictureScreen extends StatefulWidget {
       : super(key: key);
 
   @override
-  DisplayPictureScreenState createState() => DisplayPictureScreenState();
+  PreviewScreenState createState() => PreviewScreenState();
 }
 
-class DisplayPictureScreenState extends State<DisplayPictureScreen>
+class PreviewScreenState extends State<PreviewScreen>
     with TickerProviderStateMixin {
   final locator = Get.find<AppLocator>();
   final draftStorage = Get.find<DraftStorage>();
