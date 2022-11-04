@@ -8,7 +8,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:ajapaik_flutter_app/localization.dart';
 import 'package:ajapaik_flutter_app/rephotocompareview.dart';
 import 'package:ajapaik_flutter_app/services/geolocation.dart';
-import 'package:ajapaik_flutter_app/upload.dart';
+import 'package:ajapaik_flutter_app/uploadscreen.dart';
 import 'package:camera/camera.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:url_launcher/url_launcher.dart';
