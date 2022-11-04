@@ -47,7 +47,7 @@ class CrossplatformShare {
   }
 
   static void shareFile(String fileName, String text) async {
-    List<String> fileNames = [fileName];
+    //List<String> fileNames = [fileName];
     CrossplatformShare.shareFiles([fileName], text);
   }
 }
