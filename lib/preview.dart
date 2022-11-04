@@ -2,8 +2,9 @@ import 'dart:async';
 import 'dart:ui' as ui;
 import 'dart:math' as math;
 import 'dart:io';
-import 'package:image/image.dart' as img;
 import 'package:flutter/foundation.dart'; // constants like kIsWeb
+import 'package:image/image.dart' as img;
+import 'package:cross_file/cross_file.dart';
 
 import 'services/geolocation.dart';
 import 'package:latlong2/latlong.dart';
@@ -15,27 +16,29 @@ import 'draftstorage.dart';
 import 'imagestorage.dart';
 
 // A widget that displays the picture taken by the user.
+// Preview and compare taken picture (after taken with camera which has continuously updating view),
+// then save final result if suitable.
 
 // ignore: must_be_immutable
 class PreviewScreen extends StatefulWidget {
+  final XFile imageFile;
   final String imagePath;
   final String historicalImagePath;
   final Orientation? cameraPhotoOrientation;
   final bool? historicalPhotoRotation;
   final bool? historicalPhotoFlipped;
   final Size? historicalPhotoSize;
-  final Size? cameraPhotoSize;
   final double? historicalPhotoScale;
 
   const PreviewScreen(
       {Key? key,
+      required this.imageFile,
       required this.imagePath,
       required this.historicalImagePath,
       this.cameraPhotoOrientation,
       this.historicalPhotoRotation,
       this.historicalPhotoFlipped,
       this.historicalPhotoSize,
-      this.cameraPhotoSize,
       this.historicalPhotoScale})
       : super(key: key);
 
@@ -97,8 +100,8 @@ class PreviewScreenState extends State<PreviewScreen>
 
     // not available in web-version
     if (kIsWeb == false) {
-      await GallerySaver.saveImage(widget.imagePath);
-      draft.isInGallery = true; // saved to gallery -> keep track of
+      await GallerySaver.saveImage(widget.imageFile.path);
+      draft.isInGallery = true; // saved to gallery -> keep track of (accepted image)
     }
 
     // location may be disallowed but save photo still
@@ -162,10 +165,8 @@ class PreviewScreenState extends State<PreviewScreen>
             historicaPhotoScale = historicaPhotoScale / aspectratio;
           }
         } else {
-          double scale =
-              sourceImage.height / widget.historicalPhotoSize!.height;
-          widthScale =
-              (widget.historicalPhotoSize!.width * scale) / sourceImage.width;
+          double scale = sourceImage.height / widget.historicalPhotoSize!.height;
+          widthScale =  (widget.historicalPhotoSize!.width * scale) / sourceImage.width;
 
           double aspectratio = widget.historicalPhotoSize!.width /
               widget.historicalPhotoSize!.height;

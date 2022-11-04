@@ -1,4 +1,3 @@
-// A screen that allows users to take a picture using a given camera.
 import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
@@ -15,6 +14,7 @@ import 'data/draft.json.dart';
 import 'draftstorage.dart';
 import 'imagestorage.dart';
 
+// A screen that allows users to take a picture using a given camera.
 class CameraScreen extends StatefulWidget {
   final CameraDescription camera;
   final String historicalPhotoUri;
@@ -74,15 +74,11 @@ class CameraScreenState extends State<CameraScreen> {
 
       final context = historicalPhotoKey.currentContext!;
 
-      // TODO: following uses historicalPhotoImageSize
-      // but it isn't updated here (updateImageInfo() isn't called before)
-      // -> either set it to something or don't use
-      // ->
-
       MaterialPageRoute mpr = MaterialPageRoute(
         builder: (context) => PreviewScreen(
           // Pass the automatically generated path to
           // the DisplayPictureScreen widget.
+            imageFile: image,
             imagePath: image.path,
             historicalImagePath: widget.historicalPhotoUri,
             cameraPhotoOrientation: lastKnownOrientation,
@@ -165,13 +161,11 @@ class CameraScreenState extends State<CameraScreen> {
     return imageInfo;
   }
 
-  Image getImage(String filename) {
+  Image getHistoricalImage(String filename) {
     Image image;
-    //"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Grundsteinlegung_MiQua-7004_%28cropped%29.jpg/690px-Grundsteinlegung_MiQua-7004_%28cropped%29.jpg",
-    //                          "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Katarina_Taikon_1953.jpg/596px-Katarina_Taikon_1953.jpg",
 
     File imageFile = File(filename);
-    if (kIsWeb==false && imageFile.existsSync()) {
+    if (kIsWeb == false && imageFile.existsSync()) {
       image = Image.file(
         imageFile,
         color: Color.fromRGBO(255, 255, 255, historicalPhotoTransparency*transparencyOnOff),
@@ -193,7 +187,7 @@ class CameraScreenState extends State<CameraScreen> {
     return image;
   }
 
-  void updateImageInfo(info) {
+  void updateImageInfo(ui.Image info) {
     historicalPhotoImageSize = Size(info.width.toDouble(), info.height.toDouble());
     double aspectratio = info.width / info.height;
     if (aspectratio > 1) {
@@ -362,7 +356,7 @@ class CameraScreenState extends State<CameraScreen> {
                                       historicalPhotoFlipped == true
                                           ? math.pi
                                           : 0),
-                                  child: getImage(
+                                  child: getHistoricalImage(
                                       widget.historicalPhotoUri))))))),
           // Take photo button
           // TODO: should show as "greyed out" or similar when it isn't possible
