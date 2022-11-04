@@ -138,7 +138,7 @@ class PhotoviewState extends State<Photoview> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => DisplayUploadScreen(draft: rephoto)));
+                builder: (context) => UploadScreen(draft: rephoto)));
       }
     });
   }

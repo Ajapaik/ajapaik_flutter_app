@@ -13,14 +13,14 @@ import 'login.dart';
 import 'draftstorage.dart';
 import 'imagestorage.dart';
 
-class DisplayUploadScreen extends StatelessWidget {
+class UploadScreen extends StatelessWidget {
   final sessionController = Get.find<SessionController>();
   final uploadController = Get.find<UploadController>();
   final draftStorage = Get.find<DraftStorage>();
   final imageStorage = Get.find<ImageStorage>();
   final Draft draft;
 
-  DisplayUploadScreen({Key? key, required this.draft}) : super(key: key);
+  UploadScreen({Key? key, required this.draft}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
