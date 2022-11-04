@@ -139,6 +139,7 @@ class Properties {
   String? favorites;
   int? rephotos;
   String? thumbnail;
+  String? image;
   String? geojson;
 
   Properties({
@@ -152,6 +153,7 @@ class Properties {
     required this.favorites,
     required this.rephotos,
     required this.thumbnail,
+    required this.image,
     required this.geojson,
   });
 
@@ -168,6 +170,8 @@ class Properties {
     geojson = json['geojson'];
     thumbnail =
         json['thumbnail'].toString().replaceFirst("http://", "https://");
+    image =
+        json['image'].toString().replaceFirst("http://", "https://");
   }
 
   Properties.empty() {
@@ -181,6 +185,7 @@ class Properties {
     favorites = "";
     rephotos = 0;
     thumbnail = "";
+    image = "";
     geojson = "";
   }
 
@@ -216,6 +221,7 @@ class Properties {
     data['rephotos'] = rephotos;
     // Only https is allowed
     data['thumbnail'] = thumbnail;
+    data['image'] = image;
     data['geojson'] = geojson;
     return data;
   }

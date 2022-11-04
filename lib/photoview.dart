@@ -27,6 +27,7 @@ import 'imagestorage.dart';
 class Photoview extends StatefulWidget {
   final String historicalPhotoId;
   final String historicalPhotoUri;
+  final String historicalFullPhotoUri;
   final String historicalName;
   final String historicalDate;
   final String historicalAuthor;
@@ -40,6 +41,7 @@ class Photoview extends StatefulWidget {
       {Key? key,
       required this.historicalPhotoId,
       required this.historicalPhotoUri,
+      required this.historicalFullPhotoUri,
       required this.historicalName,
       required this.historicalDate,
       required this.historicalAuthor,
@@ -123,7 +125,7 @@ class PhotoviewState extends State<Photoview> {
               builder: (context) => CameraScreen(
                     camera: firstCamera,
                     historicalPhotoId: widget.historicalPhotoId,
-                    historicalPhotoUri: widget.historicalPhotoUri,
+                    historicalPhotoUri: widget.historicalFullPhotoUri,
                     historicalPhotoDescription:  generateDescription()
                   )));
 
@@ -171,7 +173,7 @@ class PhotoviewState extends State<Photoview> {
       // disable sharing when using web-application?
       // build time constant kIsWeb == true ?
 
-      CrossplatformShare.shareFile(widget.historicalPhotoUri, widget.historicalName );
+      CrossplatformShare.shareFile(widget.historicalFullPhotoUri, widget.historicalName );
       // TODO: when share the photo is already known
       // -> look it up in the DOM or whatever without asking server for it again..
     }
@@ -321,7 +323,7 @@ class PhotoviewState extends State<Photoview> {
         context,
         MaterialPageRoute(
             builder: (context) => FullScreenImageView(
-              historicalPhotoUri: widget.historicalPhotoUri,
+              historicalPhotoUri: widget.historicalFullPhotoUri,
             )));
   }
 
