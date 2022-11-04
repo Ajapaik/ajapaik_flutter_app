@@ -132,7 +132,7 @@ class PhotoviewState extends State<Photoview> {
       // TODO: if user has no network connectivity or is in standalone mode
       // -> just keep draft and let user upload later
 
-      // this is expected to return from DisplayPictureScreenState::onTakePhotoButton() ?
+      // this is expected to return from DisplayPictureScreenState::onSavePhotoFromPreview() ?
       // -> null if user backs off
       if (rephoto.runtimeType == Draft) {
         Navigator.push(

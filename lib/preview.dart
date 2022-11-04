@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 import 'dart:math' as math;
 import 'dart:io';
 import 'package:image/image.dart' as img;
+import 'package:flutter/foundation.dart'; // constants like kIsWeb
 
 import 'services/geolocation.dart';
 import 'package:latlong2/latlong.dart';
@@ -69,7 +70,7 @@ class PreviewScreenState extends State<PreviewScreen>
                   // Take photo button
                   child: ElevatedButton(
                     onPressed: () async {
-                      onTakePhotoButton();
+                      onSavePhotoFromPreview();
                     },
                     child: const Icon(Icons.check),
                   )),
@@ -85,22 +86,25 @@ class PreviewScreenState extends State<PreviewScreen>
             ]));
   }
 
-  // this is on pressing to actually save the taken photo:
+  // when pressing to actually save the taken photo:
   // (confirmation after preview).
   // actual photo must be already taken in TakePictureScreenState::onTakePicture().
   //
   // all of the information must be passed from Camera to here already so..
-  void onTakePhotoButton() async {
+  void onSavePhotoFromPreview() async {
     //final image = imageStorage.getCurrent();
+    Draft draft = draftStorage.getLast();
 
-    await GallerySaver.saveImage(widget.imagePath);
+    // not available in web-version
+    if (kIsWeb == false) {
+      await GallerySaver.saveImage(widget.imagePath);
+      draft.isInGallery = true; // saved to gallery -> keep track of
+    }
 
     // location may be disallowed but save photo still
     await locator.updatePosition();
     LatLng pos = locator.getLatLong();
 
-    Draft draft = draftStorage.getLast();
-    draft.isInGallery = true; // saved to gallery -> keep track of
     draft.latitude = pos.latitude;
     draft.longitude = pos.longitude;
     draft.accuracy = -1;
