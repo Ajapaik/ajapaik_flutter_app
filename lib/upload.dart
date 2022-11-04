@@ -43,13 +43,14 @@ class DisplayUploadScreen extends StatelessWidget {
     List<String> fileNames=[];
     String text=draft.historicalImageDescription!;
     fileNames.add(draft.historicalImagePath!);
-    fileNames.add(draft.imagePath!);
 
     String croppedFilename =
     draft.imagePath!.substring(0, draft.imagePath!.lastIndexOf('.'));
     croppedFilename += ".cropped.png";
     if ( File(croppedFilename).existsSync() ) {
       fileNames.add(croppedFilename);
+    } else {
+      fileNames.add(draft.imagePath!);
     }
     CrossplatformShare.shareFiles(fileNames, text );
   }
