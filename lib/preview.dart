@@ -29,8 +29,9 @@ class PreviewScreen extends StatefulWidget {
   final bool? historicalPhotoFlipped;
   final Size? historicalPhotoSize;
   final double? historicalPhotoScale;
+  img.Image? croppedImage;
 
-  const PreviewScreen(
+  PreviewScreen(
       {Key? key,
       required this.imageFile,
       required this.imagePath,
@@ -122,6 +123,21 @@ class PreviewScreenState extends State<PreviewScreen>
   }
 
   Widget getImageComparison(BuildContext context) {
+    Widget oldImage = imageStorage.getImageBoxed(widget.historicalImagePath);
+    Widget flippedImage =
+    getFlippedImage(oldImage, widget.historicalPhotoFlipped == true);
+    Widget newImage = getScaledImageBuilder(widget.imageFile, flippedImage, context);
+
+    return OrientationBuilder(builder: (context, orientation) {
+      if (orientation == Orientation.portrait) {
+        return getVerticalImageComparison(context, newImage, flippedImage);
+      } else {
+        return getHorizontalImageComparison(context, newImage, flippedImage);
+      }
+    });
+  }
+  /*
+  Widget getImageComparison(BuildContext context) {
     return OrientationBuilder(builder: (context, orientation) {
       if (orientation == Orientation.portrait) {
         return getVerticalImageComparison(context);
@@ -130,6 +146,7 @@ class PreviewScreenState extends State<PreviewScreen>
       }
     });
   }
+   */
 
   bool needsHeightScaling(cameraImageWidth, cameraImageHeight) {
     double heightScale = cameraImageHeight / widget.historicalPhotoSize!.height;
@@ -137,8 +154,89 @@ class PreviewScreenState extends State<PreviewScreen>
     return widthScale < heightScale;
   }
 
+  // Returns scaled and cropped camera image
+  // FIXME: placeholder image is for having some element for reserving space in
+  // web platform so it stays intact. Looks like web platform bug and not ours.
+  Widget getScaledImageBuilder(
+      XFile image, Widget placeholder, BuildContext context) {
+    double refScale = widget.historicalPhotoScale!;
+    double refWidth = widget.historicalPhotoSize!.width;
+    double refHeight = widget.historicalPhotoSize!.height;
+
+    return FutureBuilder<Image>(
+      future: getScaledImageFromXFile(image, refScale, refWidth, refHeight),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return placeholder;
+        }
+        if (snapshot.hasError) (snapshot.error);
+
+        if (snapshot.hasData) {
+          Image? scaledImage = snapshot.data;
+          if (scaledImage != null) {
+            return scaledImage;
+          } else {
+            return Text("VIRHE");
+          }
+        } else {
+          print("Snapshot loading");
+          return placeholder;
+        }
+        //              : const Center(child: CircularProgressIndicator());
+      },
+    );
+  }
+  Future<Image> getScaledImageFromXFile(
+      XFile image, double refScale, double refWidth, double refHeight) async {
+    // is there a real chance that decoding fails here?
+    List<int> imageBytes = await image.readAsBytes();
+    img.Image? cameraImage = img.decodeImage(imageBytes);
+    if (cameraImage != null) {
+      double heightScale = 1.0;
+      double widthScale = 1.0;
+      double historicaPhotoScale = refScale / heightScale;
+
+      if (needsHeightScaling(cameraImage.width, cameraImage.height)) {
+        double scale = cameraImage.width / refWidth;
+        heightScale = (refHeight * scale) / cameraImage.height;
+
+        double aspectratio = refHeight / refWidth;
+        if (aspectratio > 1) {
+          historicaPhotoScale = historicaPhotoScale / aspectratio;
+        }
+      } else {
+        double scale = cameraImage.height / refHeight;
+        widthScale = (refWidth * scale) / cameraImage.width;
+
+        double aspectratio = refWidth / refHeight;
+        if (aspectratio > 1) {
+          historicaPhotoScale = historicaPhotoScale / aspectratio;
+        }
+      }
+
+      int scaledImageWidth =
+      (cameraImage.width * widthScale * historicaPhotoScale).toInt();
+      int scaledImageHeight =
+      (cameraImage.height * heightScale * historicaPhotoScale).toInt();
+
+      int left = ((cameraImage.width - scaledImageWidth) / 2).toInt();
+      int top = ((cameraImage.height - scaledImageHeight) / 2).toInt();
+
+      img.Image croppedImage = img.copyCrop(
+          cameraImage, left, top, scaledImageWidth, scaledImageHeight);
+
+      // save scaled version to memory for saving to disk later
+      widget.croppedImage = croppedImage;
+      return Image.memory(Uint8List.fromList(img.encodeJpg(croppedImage)));
+    }
+
+    // Failback to example file if there is no image:
+    File examplefile = File("assets/Example.jpg");
+    return Image.file(examplefile);
+  }
   // this is called when creating image comparison after taking a picture with camera
   //
+  /*
   Widget getScaledImage(String filename, context) {
     if (Uri.parse(filename).host.isNotEmpty) {
       return Image.network(filename, fit: BoxFit.cover);
@@ -209,6 +307,7 @@ class PreviewScreenState extends State<PreviewScreen>
     File examplefile = File("assets/Example.jpg");
     return Image.file(examplefile);
   }
+    */
 
   Future<ui.Image> getImageInfo(Image image) async {
     Completer<ui.Image> completer = Completer<ui.Image>();
@@ -221,10 +320,54 @@ class PreviewScreenState extends State<PreviewScreen>
     return imageInfo;
   }
 
+  // Mirror image flip
+  Widget getFlippedImage(Widget image, bool flipped) {
+    return Transform(
+        alignment: Alignment.center,
+        transform: Matrix4.rotationY(flipped ? math.pi : 0),
+        child: image);
+  }
   double getRotationY() {
     return widget.historicalPhotoFlipped == true ? math.pi : 0;
   }
 
+  Widget getHorizontalImageComparison(
+      BuildContext context, Widget newImage, Widget oldImage) {
+    return Row(
+      children: [
+        Expanded(child: oldImage),
+        Expanded(
+            child: AspectRatio(
+                aspectRatio: 1,
+                child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+//                      color: Colors.pink[600]!,
+                          width: 0,
+                        )),
+                    child: newImage)))
+      ],
+    );
+  }
+  Widget getVerticalImageComparison(
+      BuildContext context, Widget newImage, Widget oldImage) {
+    return Column(
+      children: [
+        Expanded(child: oldImage),
+        Expanded(
+            child: AspectRatio(
+                aspectRatio: 1,
+                child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+//                      color: Colors.pink[600]!,
+                          width: 0,
+                        )),
+                    child: newImage)))
+      ],
+    );
+  }
+  /*
   Widget getHorizontalImageComparison(BuildContext context) {
     return Row(
       children: [
@@ -248,6 +391,9 @@ class PreviewScreenState extends State<PreviewScreen>
     );
   }
 
+   */
+
+  /*
   Widget getVerticalImageComparison(BuildContext context) {
     return Column(
       children: [
@@ -270,4 +416,5 @@ class PreviewScreenState extends State<PreviewScreen>
       ],
     );
   }
+  */
 }
