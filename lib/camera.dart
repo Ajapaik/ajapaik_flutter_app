@@ -81,6 +81,7 @@ class CameraScreenState extends State<CameraScreen> {
             imageFile: image,
             imagePath: image.path,
             historicalImagePath: widget.historicalPhotoUri,
+            draft: draft,
             cameraPhotoOrientation: lastKnownOrientation,
             historicalPhotoRotation: false,
             historicalPhotoFlipped: historicalPhotoFlipped,

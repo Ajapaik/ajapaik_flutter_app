@@ -24,6 +24,7 @@ class PreviewScreen extends StatefulWidget {
   final XFile imageFile;
   final String imagePath;
   final String historicalImagePath;
+  final Draft draft;
   final Orientation? cameraPhotoOrientation;
   final bool? historicalPhotoRotation;
   final bool? historicalPhotoFlipped;
@@ -36,6 +37,7 @@ class PreviewScreen extends StatefulWidget {
       required this.imageFile,
       required this.imagePath,
       required this.historicalImagePath,
+      required this.draft,
       this.cameraPhotoOrientation,
       this.historicalPhotoRotation,
       this.historicalPhotoFlipped,
@@ -97,21 +99,20 @@ class PreviewScreenState extends State<PreviewScreen>
   // all of the information must be passed from Camera to here already so..
   void onSavePhotoFromPreview() async {
     //final image = imageStorage.getCurrent();
-    Draft draft = draftStorage.getLast();
 
     // not available in web-version
     if (kIsWeb == false) {
       await GallerySaver.saveImage(widget.imageFile.path);
-      draft.isInGallery = true; // saved to gallery -> keep track of (accepted image)
+      widget.draft.isInGallery = true; // saved to gallery -> keep track of (accepted image)
     }
 
     // location may be disallowed but save photo still
     await locator.updatePosition();
     LatLng pos = locator.getLatLong();
 
-    draft.latitude = pos.latitude;
-    draft.longitude = pos.longitude;
-    draft.accuracy = -1;
+    widget.draft.latitude = pos.latitude;
+    widget.draft.longitude = pos.longitude;
+    widget.draft.accuracy = -1;
 
     // async gap
     if (!mounted) return;
@@ -119,7 +120,7 @@ class PreviewScreenState extends State<PreviewScreen>
     // Close preview and cameraview by going two steps back
     // So this returns to PhotoviewState::takeRephoto() ?
     Navigator.pop(context);
-    Navigator.pop(context, draft);
+    Navigator.pop(context, widget.draft);
   }
 
   Widget getImageComparison(BuildContext context) {
