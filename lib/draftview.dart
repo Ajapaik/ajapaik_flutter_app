@@ -14,6 +14,10 @@ import 'imagestorage.dart';
 // Let user check them before uploading,
 // user also might wan't to discard (delete) some photos (not good enough/many alternatives).
 //
+// Some capabilities possibly needed:
+// - comparison with old (open preview-view if necessary?)
+// - editing of descriptions / adding new descriptions (text edit boxes)
+//
 class DraftView extends StatelessWidget {
   final draftStorage = Get.find<DraftStorage>();
   final imageStorage = Get.find<ImageStorage>();
@@ -25,12 +29,13 @@ class DraftView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Draft> drafts = draftStorage.draftlist;
-    /*
-    foreach (Draft d : drafts) {
-      Image i = imageStorage.getImageBoxed(d.imagePath);
+    for (int i = 1; i < draftStorage.draftlist.length; i++) {
+      Draft d = drafts[i];
+      if (d.imagePath!.isNotEmpty) {
+        Widget img = imageStorage.getImageBoxed(d.imagePath!);
+      }
     }
 
-     */
 
     /*
     Expanded e = Expanded(
