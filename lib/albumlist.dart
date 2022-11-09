@@ -179,6 +179,14 @@ class AlbumListPageState extends State<AlbumListPage> {
     }
   }
 
+  onOpenProjectlistPage() async {
+    await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+            const ProjectListPage(title: "Albums")));
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -194,11 +202,7 @@ class AlbumListPageState extends State<AlbumListPage> {
         leading: IconButton(
             icon: const BackButtonIcon(),
             onPressed: () async {
-              await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const ProjectListPage(title: "Albums")));
+              onOpenProjectlistPage();
             }),
         actions: <Widget>[
           IconButton(
