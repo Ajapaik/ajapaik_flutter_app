@@ -1,5 +1,7 @@
 # Ajapaik Flutter Application
 
+Ajapaik Flutter App is crossplatform rewrite of older [Ajapaik Rephoto Android App](https://github.com/Ajapaik/ajapaik-android-app).
+
 Install
 * [Install Flutter to MacOS notes](https://github.com/Ajapaik/ajapaik_flutter_app/wiki/Mac_OS_notes)
 
