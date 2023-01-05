@@ -1,0 +1,38 @@
+{
+	"@metadata": {
+		"authors": [
+			"HellojoeAoPS",
+			"Lakejason0"
+		]
+	},
+	"albumList-navItem1": "最近的",
+	"albumList-navItem2": "地图",
+	"albumList-navItem3": "能见度",
+	"homePage-NavItem1": "首页",
+	"homePage-NavItem2": "喜欢",
+	"homePage-NavItem3": "拍照",
+	"homePage-NavItem4": "事件",
+	"homePage-NavItem5": "登录",
+	"homePage-NavItem6": "退出",
+	"imageMapScreen-appbarTitle": "地图",
+	"localFileSelect-option1": "照片库",
+	"localFileSelect-option2": "相机",
+	"login-appBarTitle": "登录",
+	"map-appbarTitle": "地图",
+	"projectList-navItem1": "库",
+	"projectList-navItem2": "拍照",
+	"projectList-navItem3": "登录",
+	"projectList-navItem4": "退出",
+	"photoManipulation-appbarTitle": "翻拍申请",
+	"rePhoto-appbarTitle": "翻拍申请",
+	"rePhoto-popupMenu1": "分享",
+	"rePhoto-popupMenu2": "信息",
+	"rePhoto-popupMenu3": "TIFY-演示",
+	"rePhoto-popupMenu4": "地图",
+	"rePhoto-popupMenu5": "设置",
+	"settings-appbarTitle": "设置",
+	"settings-cardItem1": "更改语言",
+	"settings-cardItem2": "更改环境",
+	"settings-helperText": "高级设置",
+	"settings-showMapTile": "显示地图"
+}

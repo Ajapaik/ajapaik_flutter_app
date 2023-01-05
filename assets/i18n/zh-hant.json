@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"HellojoeAoPS",
 			"Kly"
 		]
 	},
@@ -22,8 +23,8 @@
 	"projectList-navItem2": "拍照",
 	"projectList-navItem3": "登入",
 	"projectList-navItem4": "登出",
-	"photoManipulation-appbarTitle": "翻拍應用",
-	"rePhoto-appbarTitle": "翻拍應用",
+	"photoManipulation-appbarTitle": "翻拍申請",
+	"rePhoto-appbarTitle": "翻拍申請",
 	"rePhoto-popupMenu1": "分享",
 	"rePhoto-popupMenu2": "資訊",
 	"rePhoto-popupMenu3": "TIFY-演示",

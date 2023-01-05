@@ -1,0 +1,37 @@
+{
+	"@metadata": {
+		"authors": [
+			"Eleassar"
+		]
+	},
+	"albumList-navItem1": "Najbližji",
+	"albumList-navItem2": "Zemljevid",
+	"albumList-navItem3": "Vidnost",
+	"homePage-NavItem1": "Domov",
+	"homePage-NavItem2": "Všečkano",
+	"homePage-NavItem3": "Posnemi fotografijo",
+	"homePage-NavItem4": "Dogodki",
+	"homePage-NavItem5": "Prijava",
+	"homePage-NavItem6": "Odjava",
+	"imageMapScreen-appbarTitle": "Zemljevid",
+	"localFileSelect-option1": "Fotoknjižnica",
+	"localFileSelect-option2": "Fotoaparat",
+	"login-appBarTitle": "Prijava",
+	"map-appbarTitle": "Zemljevid",
+	"projectList-navItem1": "Knjižnica",
+	"projectList-navItem2": "Posnemi fotografijo",
+	"projectList-navItem3": "Prijava",
+	"projectList-navItem4": "Odjava",
+	"photoManipulation-appbarTitle": "Refotografska aplikacija",
+	"rePhoto-appbarTitle": "Refotografska aplikacija",
+	"rePhoto-popupMenu1": "Deli",
+	"rePhoto-popupMenu2": "Informacije",
+	"rePhoto-popupMenu3": "Demo TIFY",
+	"rePhoto-popupMenu4": "Zemljevid",
+	"rePhoto-popupMenu5": "Nastavitve",
+	"settings-appbarTitle": "Nastavitve",
+	"settings-cardItem1": "Spremeni jezik",
+	"settings-cardItem2": "Spremeni okolje",
+	"settings-helperText": "Napredne nastavitve",
+	"settings-showMapTile": "Prikaži zemljevid"
+}
