@@ -1,9 +1,22 @@
 {
 	"@metadata": {
 		"authors": [
-			"Hibutima3"
+			"Hibutima3",
+			"Silvonen"
 		]
 	},
 	"albumList-navItem2": "Kartta",
-	"projectList-navItem2": "Ota kuva"
+	"imageMapScreen-appbarTitle": "Kartta",
+	"localFileSelect-option1": "Valokuvakirjasto",
+	"localFileSelect-option2": "Kamera",
+	"map-appbarTitle": "Kartta",
+	"projectList-navItem1": "Kirjasto",
+	"projectList-navItem2": "Ota kuva",
+	"rePhoto-popupMenu1": "Jaa",
+	"rePhoto-popupMenu4": "Kartta",
+	"rePhoto-popupMenu5": "Asetukset",
+	"settings-appbarTitle": "Asetukset",
+	"settings-cardItem1": "Vaihda kieli",
+	"settings-helperText": "Lisäasetukset",
+	"settings-showMapTile": "Näytä kartta"
 }
