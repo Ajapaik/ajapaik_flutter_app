@@ -1,0 +1,25 @@
+{
+	"@metadata": {
+		"authors": [
+			"Volvox"
+		]
+	},
+	"albumList-navItem2": "Kaart",
+	"albumList-navItem3": "Visibilitéit",
+	"homePage-NavItem1": "Haaptsäit",
+	"homePage-NavItem5": "Aloggen",
+	"homePage-NavItem6": "Ausloggen",
+	"imageMapScreen-appbarTitle": "Kaart",
+	"localFileSelect-option1": "Fotobibliothéik",
+	"localFileSelect-option2": "Fotoapparat",
+	"map-appbarTitle": "Kaart",
+	"projectList-navItem1": "Bibliothéik",
+	"rePhoto-popupMenu1": "Deelen",
+	"rePhoto-popupMenu2": "Informatiounen",
+	"rePhoto-popupMenu4": "Kaart",
+	"rePhoto-popupMenu5": "Astellungen",
+	"settings-appbarTitle": "Astellungen",
+	"settings-cardItem1": "Sprooch wiesselen",
+	"settings-helperText": "Erweidert Astellungen",
+	"settings-showMapTile": "Kaart weisen"
+}
