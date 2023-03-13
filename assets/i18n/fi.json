@@ -2,16 +2,22 @@
 	"@metadata": {
 		"authors": [
 			"Hibutima3",
+			"Pyscowicz",
 			"Silvonen"
 		]
 	},
 	"albumList-navItem2": "Kartta",
+	"homePage-NavItem5": "Kirjaudu sisään",
+	"homePage-NavItem6": "Kirjaudu ulos",
 	"imageMapScreen-appbarTitle": "Kartta",
 	"localFileSelect-option1": "Valokuvakirjasto",
 	"localFileSelect-option2": "Kamera",
+	"login-appBarTitle": "Kirjaudu sisään",
 	"map-appbarTitle": "Kartta",
 	"projectList-navItem1": "Kirjasto",
 	"projectList-navItem2": "Ota kuva",
+	"projectList-navItem3": "Kirjaudu sisään",
+	"projectList-navItem4": "Kirjaudu ulos",
 	"rePhoto-popupMenu1": "Jaa",
 	"rePhoto-popupMenu4": "Kartta",
 	"rePhoto-popupMenu5": "Asetukset",
