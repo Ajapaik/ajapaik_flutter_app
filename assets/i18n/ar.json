@@ -1,0 +1,38 @@
+{
+	"@metadata": {
+		"authors": [
+			"MRidhaAJ",
+			"محمد أحمد عبد الفتاح"
+		]
+	},
+	"albumList-navItem1": "الأقرب",
+	"albumList-navItem2": "خريطة",
+	"albumList-navItem3": "الرؤية",
+	"homePage-NavItem1": "الصفحة الرئيسية",
+	"homePage-NavItem2": "أحب",
+	"homePage-NavItem3": "التقط صورة",
+	"homePage-NavItem4": "الأحداث",
+	"homePage-NavItem5": "تسجيل الدخول",
+	"homePage-NavItem6": "تسجيل الخروج",
+	"imageMapScreen-appbarTitle": "خريطة",
+	"localFileSelect-option1": "مكتبة الصور",
+	"localFileSelect-option2": "كاميرا",
+	"login-appBarTitle": "تسجيل الدخول",
+	"map-appbarTitle": "خريطة",
+	"projectList-navItem1": "المكتبة",
+	"projectList-navItem2": "التقط صورة",
+	"projectList-navItem3": "تسجيل الدخول",
+	"projectList-navItem4": "تسجيل الخروج",
+	"photoManipulation-appbarTitle": "تطبيق إعادة تصوير",
+	"rePhoto-appbarTitle": "تطبيق إعادة تصوير",
+	"rePhoto-popupMenu1": "شارك",
+	"rePhoto-popupMenu2": "معلومات",
+	"rePhoto-popupMenu3": "عرض TIFY",
+	"rePhoto-popupMenu4": "خريطة",
+	"rePhoto-popupMenu5": "الإعدادات",
+	"settings-appbarTitle": "الإعدادات",
+	"settings-cardItem1": "تغيير اللغة",
+	"settings-cardItem2": "تغيير البيئة",
+	"settings-helperText": "إعدادات متقدمة",
+	"settings-showMapTile": "عرض الخريطة"
+}
