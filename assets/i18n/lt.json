@@ -1,0 +1,37 @@
+{
+	"@metadata": {
+		"authors": [
+			"Eitvys200"
+		]
+	},
+	"albumList-navItem1": "Artimiausias",
+	"albumList-navItem2": "Žemėlapis",
+	"albumList-navItem3": "Matomumas",
+	"homePage-NavItem1": "Pradžia",
+	"homePage-NavItem2": "Patinkantys",
+	"homePage-NavItem3": "Nufotografuoti",
+	"homePage-NavItem4": "Įvykiai",
+	"homePage-NavItem5": "Prisijungti",
+	"homePage-NavItem6": "Atsijungti",
+	"imageMapScreen-appbarTitle": "Žemėlapis",
+	"localFileSelect-option1": "Nuotraukų biblioteka",
+	"localFileSelect-option2": "Kamera",
+	"login-appBarTitle": "Prisijungti",
+	"map-appbarTitle": "Žemėlapis",
+	"projectList-navItem1": "Biblioteka",
+	"projectList-navItem2": "Nufotografuoti",
+	"projectList-navItem3": "Prisijungti",
+	"projectList-navItem4": "Atsijungti",
+	"photoManipulation-appbarTitle": "Pakartotinio fotografavimo programa",
+	"rePhoto-appbarTitle": "Pakartotinio fotografavimo programa",
+	"rePhoto-popupMenu1": "Dalintis",
+	"rePhoto-popupMenu2": "Informacija",
+	"rePhoto-popupMenu3": "TIFY demonstracija",
+	"rePhoto-popupMenu4": "Žemėlapis",
+	"rePhoto-popupMenu5": "Nustatymai",
+	"settings-appbarTitle": "Nustatymai",
+	"settings-cardItem1": "Keisti kalbą",
+	"settings-cardItem2": "Keisti aplinką",
+	"settings-helperText": "Išplėstiniai nustatymai",
+	"settings-showMapTile": "Rodyti žemėlapį"
+}
