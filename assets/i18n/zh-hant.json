@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"HellojoeAoPS",
-			"Kly"
+			"Kly",
+			"Winston Sung"
 		]
 	},
 	"albumList-navItem1": "最近的",
@@ -31,7 +32,7 @@
 	"rePhoto-popupMenu4": "地圖",
 	"rePhoto-popupMenu5": "設定",
 	"settings-appbarTitle": "設定",
-	"settings-cardItem1": "更改語言",
+	"settings-cardItem1": "變更語言",
 	"settings-cardItem2": "更改環境",
 	"settings-helperText": "進階設定",
 	"settings-showMapTile": "顯示地圖"
