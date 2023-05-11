@@ -1,21 +1,35 @@
 {
 	"@metadata": {
 		"authors": [
-			"Duke of Wikipädia"
+			"Duke of Wikipädia",
+			"Re demz"
 		]
 	},
+	"albumList-navItem1": "Mais próximo",
 	"albumList-navItem2": "Mapa",
 	"albumList-navItem3": "Visibilidade",
 	"homePage-NavItem1": "Início",
 	"homePage-NavItem3": "Tirar foto",
+	"homePage-NavItem4": "Eventos",
 	"homePage-NavItem5": "Entrar",
+	"homePage-NavItem6": "Sair",
+	"imageMapScreen-appbarTitle": "Mapa",
+	"localFileSelect-option1": "Biblioteca de fotos",
 	"localFileSelect-option2": "Câmera",
 	"login-appBarTitle": "Entrar",
+	"map-appbarTitle": "Mapa",
 	"projectList-navItem1": "Biblioteca",
+	"projectList-navItem2": "Tirar foto",
 	"projectList-navItem3": "Entrar",
 	"projectList-navItem4": "Sair",
 	"rePhoto-popupMenu1": "Compartilhar",
+	"rePhoto-popupMenu2": "Informação",
 	"rePhoto-popupMenu3": "TIFY-demo",
+	"rePhoto-popupMenu4": "Mapa",
+	"rePhoto-popupMenu5": "Configurações",
+	"settings-appbarTitle": "Configurações",
+	"settings-cardItem1": "Alterar idioma",
 	"settings-cardItem2": "Alterar ambiente",
+	"settings-helperText": "Configurações avançadas",
 	"settings-showMapTile": "Mostrar mapa"
 }
