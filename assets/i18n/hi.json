@@ -4,16 +4,25 @@
 			"Abijeet Patro"
 		]
 	},
+	"albumList-navItem1": "निकटतम",
 	"albumList-navItem2": "नक्शा",
 	"albumList-navItem3": "दृश्यता",
 	"homePage-NavItem1": "घर",
 	"homePage-NavItem2": "पसंद किया",
 	"homePage-NavItem4": "घटनायें",
+	"homePage-NavItem5": "लॉगिन",
+	"homePage-NavItem6": "लॉग-आउट करें",
 	"imageMapScreen-appbarTitle": "नक्शा",
 	"localFileSelect-option2": "कैमरा",
+	"login-appBarTitle": "लॉगिन",
 	"map-appbarTitle": "नक्शा",
 	"projectList-navItem1": "पुस्तकालय",
+	"projectList-navItem3": "लॉगिन",
+	"projectList-navItem4": "लॉग-आउट करें",
 	"rePhoto-popupMenu1": "साझा करें",
 	"rePhoto-popupMenu2": "जानकारी",
-	"rePhoto-popupMenu4": "नक्शा"
+	"rePhoto-popupMenu4": "नक्शा",
+	"rePhoto-popupMenu5": "सेटिंग्स",
+	"settings-appbarTitle": "सेटिंग्स",
+	"settings-cardItem1": "भाषा बदलें"
 }
