@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Hibutima3",
+			"Nike",
 			"Pyscowicz",
 			"Silvonen"
 		]
@@ -9,6 +10,7 @@
 	"albumList-navItem1": "Lähin",
 	"albumList-navItem2": "Kartta",
 	"albumList-navItem3": "Näkyvyys",
+	"homePage-NavItem1": "Koti",
 	"homePage-NavItem3": "Ota kuva",
 	"homePage-NavItem4": "Tapahtumat",
 	"homePage-NavItem5": "Kirjaudu sisään",
