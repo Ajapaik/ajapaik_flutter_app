@@ -1,0 +1,25 @@
+{
+	"@metadata": {
+		"authors": [
+			"TerranBoy"
+		]
+	},
+	"albumList-navItem1": "نزیکترین",
+	"albumList-navItem2": "نەخشە",
+	"homePage-NavItem1": "ماڵ",
+	"imageMapScreen-appbarTitle": "نەخشە",
+	"localFileSelect-option1": "کتاوخانەێ وێنە",
+	"localFileSelect-option2": "کامێرا",
+	"map-appbarTitle": "نەخشە",
+	"projectList-navItem1": "کتاوخانە",
+	"projectList-navItem2": "وێنەێگ بگر",
+	"rePhoto-popupMenu1": "هاوبەشیکردن",
+	"rePhoto-popupMenu2": "زانیاری",
+	"rePhoto-popupMenu4": "نەخشە",
+	"rePhoto-popupMenu5": "ڕیکخستنەگان",
+	"settings-appbarTitle": "ڕیکخستنەگان",
+	"settings-cardItem1": "ئاڵشتکردن زوان",
+	"settings-cardItem2": "ئاڵشتکردن دەوروبەر",
+	"settings-helperText": "ڕیکخستنەگان پێشکەفتێ",
+	"settings-showMapTile": "نیشاندان نەخشە"
+}
