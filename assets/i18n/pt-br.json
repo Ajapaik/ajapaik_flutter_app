@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Duke of Wikipädia",
+			"Felipe L. Ewald",
 			"Re demz"
 		]
 	},
@@ -23,6 +24,8 @@
 	"projectList-navItem2": "Tirar foto",
 	"projectList-navItem3": "Entrar",
 	"projectList-navItem4": "Sair",
+	"photoManipulation-appbarTitle": "Aplicação Rephoto",
+	"rePhoto-appbarTitle": "Aplicação Rephoto",
 	"rePhoto-popupMenu1": "Compartilhar",
 	"rePhoto-popupMenu2": "Informação",
 	"rePhoto-popupMenu3": "TIFY-demo",
