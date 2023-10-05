@@ -4,6 +4,19 @@
 			"Умар"
 		]
 	},
+	"albumList-navItem2": "Карта",
+	"albumList-navItem3": "Гуш хилар",
+	"homePage-NavItem3": "Сурт даккха",
+	"homePage-NavItem4": "Хилам",
+	"homePage-NavItem5": "ЧугӀо",
+	"homePage-NavItem6": "Аравала(йала)",
+	"imageMapScreen-appbarTitle": "Карта",
+	"localFileSelect-option1": "Суьртийн библиотека",
+	"localFileSelect-option2": "Камера",
+	"login-appBarTitle": "ЧугӀо",
+	"map-appbarTitle": "Карта",
+	"projectList-navItem1": "Библиотека",
+	"projectList-navItem2": "Сурт даккха",
 	"projectList-navItem3": "ЧугӀо",
 	"projectList-navItem4": "Болх дӀаберзор",
 	"rePhoto-popupMenu1": "Йекъа",
@@ -12,5 +25,6 @@
 	"rePhoto-popupMenu5": "Нисдаран гӀирс",
 	"settings-appbarTitle": "Нисдаран гӀирс",
 	"settings-cardItem1": "Хийца мотт",
+	"settings-helperText": "Кхин тӀе гӀирс нисбар",
 	"settings-showMapTile": "Гайта карта"
 }
