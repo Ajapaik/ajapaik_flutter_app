@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Bjankuloski06",
 			"Vlad5250"
 		]
 	},
@@ -8,11 +9,13 @@
 	"albumList-navItem2": "Карта",
 	"albumList-navItem3": "Видливост",
 	"homePage-NavItem1": "Почетна",
+	"homePage-NavItem2": "Допаднато",
 	"homePage-NavItem3": "Направи слика",
 	"homePage-NavItem4": "Настани",
 	"homePage-NavItem5": "Најава",
 	"homePage-NavItem6": "Одјава",
 	"imageMapScreen-appbarTitle": "Карта",
+	"localFileSelect-option1": "Фотобиблиотека",
 	"localFileSelect-option2": "Камера",
 	"login-appBarTitle": "Најава",
 	"map-appbarTitle": "Карта",
@@ -20,6 +23,8 @@
 	"projectList-navItem2": "Направи слика",
 	"projectList-navItem3": "Најава",
 	"projectList-navItem4": "Одјава",
+	"photoManipulation-appbarTitle": "Прилог „Рефото“",
+	"rePhoto-appbarTitle": "Прилог „Рефото“",
 	"rePhoto-popupMenu1": "Сподели",
 	"rePhoto-popupMenu2": "Информации",
 	"rePhoto-popupMenu3": "TIFY-демо",
@@ -28,5 +33,6 @@
 	"settings-appbarTitle": "Нагодувања",
 	"settings-cardItem1": "Смени јазик",
 	"settings-cardItem2": "Промени ја околината",
-	"settings-helperText": "Напредни нагодувања"
+	"settings-helperText": "Напредни нагодувања",
+	"settings-showMapTile": "Прикажи карта"
 }
