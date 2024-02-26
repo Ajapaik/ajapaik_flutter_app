@@ -7,6 +7,7 @@
 	"albumList-navItem2": "Kartenn",
 	"albumList-navItem3": "Gwelusted",
 	"homePage-NavItem1": "Degemer",
+	"homePage-NavItem4": "Darvoudoù",
 	"homePage-NavItem5": "Kevreañ",
 	"homePage-NavItem6": "Digevreañ",
 	"imageMapScreen-appbarTitle": "Kartenn",
@@ -14,6 +15,15 @@
 	"login-appBarTitle": "Kevreañ",
 	"map-appbarTitle": "Kartenn",
 	"projectList-navItem1": "Levraoueg",
+	"projectList-navItem2": "Tapout ur skeudenn",
 	"projectList-navItem3": "Kevreañ",
-	"projectList-navItem4": "Digevreañ"
+	"projectList-navItem4": "Digevreañ",
+	"rePhoto-popupMenu1": "Rannañ",
+	"rePhoto-popupMenu2": "Titouroù",
+	"rePhoto-popupMenu4": "Kartenn",
+	"rePhoto-popupMenu5": "Arventennoù",
+	"settings-appbarTitle": "Arventennoù",
+	"settings-cardItem1": "Cheñch yezh",
+	"settings-helperText": "Arventennoù araokaet",
+	"settings-showMapTile": "Diskouez ar gartenn"
 }
