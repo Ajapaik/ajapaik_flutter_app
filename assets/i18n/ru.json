@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Dirruw'o",
+			"Firapinch",
 			"Kareyac",
 			"Артём 13327"
 		]
@@ -25,10 +26,12 @@
 	"projectList-navItem4": "Выйти",
 	"rePhoto-popupMenu1": "Поделиться",
 	"rePhoto-popupMenu2": "Информация",
+	"rePhoto-popupMenu3": "TIFY-демо",
 	"rePhoto-popupMenu4": "Карта",
 	"rePhoto-popupMenu5": "Настройки",
 	"settings-appbarTitle": "Настройки",
 	"settings-cardItem1": "Изменить язык",
+	"settings-cardItem2": "Изменить среду",
 	"settings-helperText": "Дополнительные настройки",
 	"settings-showMapTile": "Показать карту"
 }
