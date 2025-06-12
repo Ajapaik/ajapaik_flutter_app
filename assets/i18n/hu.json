@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Anonymous123494",
 			"Hanna Tardos"
 		]
 	},
@@ -14,7 +15,7 @@
 	"homePage-NavItem6": "Kijelentkezés",
 	"imageMapScreen-appbarTitle": "Térkép",
 	"localFileSelect-option1": "Fotóalbum",
-	"localFileSelect-option2": "Fényképezőgép",
+	"localFileSelect-option2": "Kamera",
 	"login-appBarTitle": "Bejelentkezés",
 	"map-appbarTitle": "Térkép",
 	"projectList-navItem1": "Könyvtár",
