@@ -1,0 +1,29 @@
+{
+	"@metadata": {
+		"authors": [
+			"ABPMAB"
+		]
+	},
+	"albumList-navItem1": "Dichtstbijzijnde",
+	"albumList-navItem2": "Kaart",
+	"albumList-navItem3": "Zichtbaarheid",
+	"homePage-NavItem6": "Uitloggen",
+	"imageMapScreen-appbarTitle": "Kaart",
+	"localFileSelect-option1": "Fotobibliotheek",
+	"localFileSelect-option2": "Camera",
+	"login-appBarTitle": "Inloggen",
+	"map-appbarTitle": "Kaart",
+	"projectList-navItem1": "Bibliotheek",
+	"projectList-navItem2": "Foto nemen",
+	"projectList-navItem3": "Inloggen",
+	"projectList-navItem4": "Uitloggen",
+	"rePhoto-popupMenu1": "Delen",
+	"rePhoto-popupMenu2": "Informatie",
+	"rePhoto-popupMenu4": "Kaart",
+	"rePhoto-popupMenu5": "Instellingen",
+	"settings-appbarTitle": "Instellingen",
+	"settings-cardItem1": "Taal wijzigen",
+	"settings-cardItem2": "Verander de omgeving",
+	"settings-helperText": "Geavanceerde instellingen",
+	"settings-showMapTile": "Toon kaart"
+}
