@@ -1,25 +1,38 @@
 {
 	"@metadata": {
 		"authors": [
+			"Russianbabe1978",
 			"ThisCarthing"
 		]
 	},
+	"albumList-navItem1": "Nächste",
+	"albumList-navItem2": "Karte",
 	"albumList-navItem3": "Sichtbarkeit",
+	"homePage-NavItem1": "Startseite",
+	"homePage-NavItem2": "Gefallen",
+	"homePage-NavItem3": "Machen Sie ein Foto",
+	"homePage-NavItem4": "Ereignisse",
 	"homePage-NavItem5": "Anmelden",
 	"homePage-NavItem6": "Abmelden",
+	"imageMapScreen-appbarTitle": "Karte",
 	"localFileSelect-option1": "Fotobibliothek",
 	"localFileSelect-option2": "Kamera",
 	"login-appBarTitle": "Anmelden",
 	"map-appbarTitle": "Karte",
 	"projectList-navItem1": "Bibliothek",
+	"projectList-navItem2": "Machen Sie ein Foto",
 	"projectList-navItem3": "Anmelden",
 	"projectList-navItem4": "Abmelden",
+	"photoManipulation-appbarTitle": "Rephoto-Anwendung",
+	"rePhoto-appbarTitle": "Rephoto-Anwendung",
 	"rePhoto-popupMenu1": "Teilen",
 	"rePhoto-popupMenu2": "Information",
+	"rePhoto-popupMenu3": "TIFY-Demo",
 	"rePhoto-popupMenu4": "Karte",
 	"rePhoto-popupMenu5": "Einstellungen",
 	"settings-appbarTitle": "Einstellungen",
 	"settings-cardItem1": "Sprache ändern",
+	"settings-cardItem2": "Umgebung ändern",
 	"settings-helperText": "Erweiterte Einstellungen",
 	"settings-showMapTile": "Karte anzeigen"
 }
