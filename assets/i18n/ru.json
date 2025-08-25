@@ -2,11 +2,13 @@
 	"@metadata": {
 		"authors": [
 			"Dirruw'o",
+			"Dolbaeb",
 			"Firapinch",
 			"Kareyac",
 			"Артём 13327"
 		]
 	},
+	"albumList-navItem1": "Ближайший",
 	"albumList-navItem2": "Карта",
 	"albumList-navItem3": "Видимость",
 	"homePage-NavItem1": "В начало",
@@ -24,6 +26,8 @@
 	"projectList-navItem2": "Сфотографировать",
 	"projectList-navItem3": "Войти",
 	"projectList-navItem4": "Выйти",
+	"photoManipulation-appbarTitle": "Приложение для перефотографирования",
+	"rePhoto-appbarTitle": "Приложение для перефотографирования",
 	"rePhoto-popupMenu1": "Поделиться",
 	"rePhoto-popupMenu2": "Информация",
 	"rePhoto-popupMenu3": "TIFY-демо",
