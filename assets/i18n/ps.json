@@ -1,0 +1,37 @@
+{
+	"@metadata": {
+		"authors": [
+			"شاه زمان پټان"
+		]
+	},
+	"albumList-navItem1": "ډېر نږدې",
+	"albumList-navItem2": "نخشه",
+	"albumList-navItem3": "ښکارېدنه",
+	"homePage-NavItem1": "کور",
+	"homePage-NavItem2": "خوښ‌کړی",
+	"homePage-NavItem3": "يو انځور اخيستل",
+	"homePage-NavItem4": "پېښې",
+	"homePage-NavItem5": "ننوتل",
+	"homePage-NavItem6": "وتل",
+	"imageMapScreen-appbarTitle": "نخشه",
+	"localFileSelect-option1": "انځور کتابتون",
+	"localFileSelect-option2": "کيمره",
+	"login-appBarTitle": "ننوتل",
+	"map-appbarTitle": "نخشه",
+	"projectList-navItem1": "کتابتون",
+	"projectList-navItem2": "يو انځور اخيستل",
+	"projectList-navItem3": "ننوتل",
+	"projectList-navItem4": "وتل",
+	"photoManipulation-appbarTitle": "بياانځورونې غوښتنليک",
+	"rePhoto-appbarTitle": "بياانځورونې غوښتنليک",
+	"rePhoto-popupMenu1": "وېشل",
+	"rePhoto-popupMenu2": "مالومات",
+	"rePhoto-popupMenu3": "TIFY-ښکارونه",
+	"rePhoto-popupMenu4": "نخشه",
+	"rePhoto-popupMenu5": "اوڼنې",
+	"settings-appbarTitle": "اوڼنې",
+	"settings-cardItem1": "ژبه بدلول",
+	"settings-cardItem2": "چاپېريال بدلول",
+	"settings-helperText": "پرمختللې اوڼنې",
+	"settings-showMapTile": "نخشه ښودل"
+}
