@@ -1,0 +1,33 @@
+{
+	"@metadata": {
+		"authors": [
+			"Narazeni"
+		]
+	},
+	"albumList-navItem1": "უახოლაში",
+	"albumList-navItem2": "რუკა",
+	"albumList-navItem3": "ძირაფუანობა",
+	"homePage-NavItem1": "დუდხასჷლაშა",
+	"homePage-NavItem2": "მოწონებული",
+	"homePage-NavItem3": "სურათიშ გინოღალა",
+	"homePage-NavItem4": "მოლინეფი",
+	"homePage-NavItem5": "მიშულა",
+	"homePage-NavItem6": "გიშულა",
+	"imageMapScreen-appbarTitle": "რუკა",
+	"localFileSelect-option1": "სურათიშ ბიბლიოთეკა",
+	"localFileSelect-option2": "კამერა",
+	"login-appBarTitle": "მიშულა",
+	"map-appbarTitle": "რუკა",
+	"projectList-navItem1": "ბიბლიოთეკა",
+	"projectList-navItem2": "სურათიშ გინოღალა",
+	"projectList-navItem3": "მიშულა",
+	"projectList-navItem4": "გიშულა",
+	"rePhoto-popupMenu2": "ინფორმაცია",
+	"rePhoto-popupMenu3": "TIFY-დემო",
+	"rePhoto-popupMenu4": "რუკა",
+	"rePhoto-popupMenu5": "პარამეტრეფი",
+	"settings-appbarTitle": "პარამეტრეფი",
+	"settings-cardItem1": "ნინაშ თირუა",
+	"settings-helperText": "გაუჯგუშებული პარამეტრეფი",
+	"settings-showMapTile": "რუკაშ ძირაფა"
+}
