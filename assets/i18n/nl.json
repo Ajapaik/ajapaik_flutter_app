@@ -1,12 +1,18 @@
 {
 	"@metadata": {
 		"authors": [
-			"ABPMAB"
+			"ABPMAB",
+			"Siebrand"
 		]
 	},
 	"albumList-navItem1": "Dichtstbijzijnde",
 	"albumList-navItem2": "Kaart",
 	"albumList-navItem3": "Zichtbaarheid",
+	"homePage-NavItem1": "Startpagina",
+	"homePage-NavItem2": "Leuk gevonden",
+	"homePage-NavItem3": "Foto nemen",
+	"homePage-NavItem4": "Evenementen",
+	"homePage-NavItem5": "Aanmelden",
 	"homePage-NavItem6": "Uitloggen",
 	"imageMapScreen-appbarTitle": "Kaart",
 	"localFileSelect-option1": "Fotobibliotheek",
@@ -17,8 +23,11 @@
 	"projectList-navItem2": "Foto nemen",
 	"projectList-navItem3": "Inloggen",
 	"projectList-navItem4": "Uitloggen",
+	"photoManipulation-appbarTitle": "Rephoto-applicatie",
+	"rePhoto-appbarTitle": "Rephoto-applicatie",
 	"rePhoto-popupMenu1": "Delen",
 	"rePhoto-popupMenu2": "Informatie",
+	"rePhoto-popupMenu3": "TIFY-demo",
 	"rePhoto-popupMenu4": "Kaart",
 	"rePhoto-popupMenu5": "Instellingen",
 	"settings-appbarTitle": "Instellingen",
