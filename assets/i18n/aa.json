@@ -1,0 +1,23 @@
+{
+	"@metadata": {
+		"authors": [
+			"W11228"
+		]
+	},
+	"albumList-navItem1": "Upon user viewing images, under icon displaying nearest items, upon clicking shows the user nearest items in albums in order from closest to farthest",
+	"albumList-navItem2": "Upon user viewing images, under icon displaying a map, upon clicking takes user to a map screen to view the albums items",
+	"albumList-navItem3": "Upon user viewing images, under icon displaying visibility, upon clicking displays or hides the names of the images",
+	"homePage-NavItem1": "Home",
+	"homePage-NavItem2": "Liked",
+	"homePage-NavItem6": "Logout",
+	"imageMapScreen-appbarTitle": "Upon user viewing images, under icon displaying a map, upon clicking takes user to a map screen to view the albums items",
+	"localFileSelect-option1": "Photo library",
+	"localFileSelect-option2": "Camera",
+	"login-appBarTitle": "Login",
+	"map-appbarTitle": "Map",
+	"projectList-navItem1": "Library",
+	"projectList-navItem2": "Take a photo",
+	"rePhoto-popupMenu3": "TIFY-demo",
+	"rePhoto-popupMenu4": "Upon user viewing images, under icon displaying a map, upon clicking takes user to a map screen to view the albums items",
+	"settings-appbarTitle": "Settings"
+}
