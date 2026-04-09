@@ -1,0 +1,37 @@
+{
+	"@metadata": {
+		"authors": [
+			"Aindriu80"
+		]
+	},
+	"albumList-navItem1": "Is gaire",
+	"albumList-navItem2": "Léarscáil",
+	"albumList-navItem3": "Infheictheacht",
+	"homePage-NavItem1": "Baile",
+	"homePage-NavItem2": "Thaitin",
+	"homePage-NavItem3": "Tóg grianghraf",
+	"homePage-NavItem4": "Imeachtaí",
+	"homePage-NavItem5": "Logáil isteach",
+	"homePage-NavItem6": "Logáil Amach",
+	"imageMapScreen-appbarTitle": "Léarscáil",
+	"localFileSelect-option1": "Leabharlann grianghraf",
+	"localFileSelect-option2": "Ceamara",
+	"login-appBarTitle": "Logáil isteach",
+	"map-appbarTitle": "Léarscáil",
+	"projectList-navItem1": "Leabharlann",
+	"projectList-navItem2": "Tóg grianghraf",
+	"projectList-navItem3": "Logáil isteach",
+	"projectList-navItem4": "Logáil Amach",
+	"photoManipulation-appbarTitle": "Feidhmchlár Athghrianghrafadóireachta",
+	"rePhoto-appbarTitle": "Feidhmchlár Athghrianghrafadóireachta",
+	"rePhoto-popupMenu1": "Comhroinn",
+	"rePhoto-popupMenu2": "Eolas",
+	"rePhoto-popupMenu3": "Taispeántas TIFY",
+	"rePhoto-popupMenu4": "Léarscáil",
+	"rePhoto-popupMenu5": "Socruithe",
+	"settings-appbarTitle": "Socruithe",
+	"settings-cardItem1": "Athraigh teanga",
+	"settings-cardItem2": "Athraigh an timpeallacht",
+	"settings-helperText": "Socruithe ardleibhéil",
+	"settings-showMapTile": "Taispeáin léarscáil"
+}
