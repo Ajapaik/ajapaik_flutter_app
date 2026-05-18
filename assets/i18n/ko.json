@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Tensama0415",
 			"Ykhwong"
 		]
 	},
@@ -22,6 +23,8 @@
 	"projectList-navItem2": "사진 찍기",
 	"projectList-navItem3": "로그인",
 	"projectList-navItem4": "로그아웃",
+	"photoManipulation-appbarTitle": "재촬영 애플리케이션",
+	"rePhoto-appbarTitle": "재촬영 애플리케이션",
 	"rePhoto-popupMenu1": "공유",
 	"rePhoto-popupMenu2": "정보",
 	"rePhoto-popupMenu3": "TIFY-데모",
